@@ -52,6 +52,7 @@
                 let profile = store.getProfile();
                 if (login) {
                     let valid = false;
+                    if (!profile.email.trim()) throw new Error("No company is saved in this browser. Register your company, or ask an administrator to load the sample company data.");
                     if (profile.localCredential !== undefined) {
                         const credential = profile.localCredential;
                         if (!credential || credential.version !== 1 || credential.iterations !== iterations || !/^[0-9a-f]{32}$/.test(credential.salt) || !/^[0-9a-f]{64}$/.test(credential.hash)) throw new Error("Saved local credentials could not be read. They have not been changed.");
@@ -61,14 +62,15 @@
                     } else if (address === profile.email.trim().toLowerCase()) {
                         throw new Error("This saved preview has no local password yet. Open registration with this same email to set one; your existing workspace records will be kept.");
                     }
-                    if (!valid) throw new Error("Email or password is incorrect for the saved local account. Sample details work when the sample profile is active.");
+                    if (!valid) throw new Error("Email or password is incorrect for the saved local account. The sample details work only after an administrator loads the sample company data.");
                 } else {
                     const nameInput = document.getElementById("company-name"), name = nameInput.value.trim();
                     if (name.length < 2 || !/\p{L}/u.test(name)) { nameInput.focus(); throw new Error("Enter a name containing at least two characters and a letter."); }
                     if (secret.length < 12) { password.focus(); throw new Error("Use at least 12 characters for your password."); }
+                    if (store.isSampleWorkspace?.()) throw new Error("Sample company data is loaded in this browser. Ask an administrator to remove it before registering a company.");
                     const existing = profile.email.trim().toLowerCase();
                     if (existing !== address && store.hasConnectedRecords?.()) throw new Error("This company workspace already has connected student records. Sign in with its existing account; it cannot be replaced by another company.");
-                    if (existing !== address && (existing !== demoEmail || profile.localCredential)) throw new Error("A different local profile is already saved for this workspace. Its records have been kept. Use its email to sign in.");
+                    if (existing && existing !== address) throw new Error("A different local profile is already saved for this workspace. Its records have been kept. Use its email to sign in.");
                     if (profile.localCredential) throw new Error("This local profile is already registered. Sign in with its existing password.");
                     const salt = hex(crypto.getRandomValues(new Uint8Array(16)));
                     const localCredential = { version: 1, iterations, salt, hash: await derive(secret, salt) };

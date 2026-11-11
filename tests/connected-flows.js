@@ -8,9 +8,11 @@
  function submit(form){form.dispatchEvent(new win.Event("submit",{bubbles:true,cancelable:true}));}
  function throws(action){try{action();return false}catch{return true}}
  function mobile(name){frame.style.width="390px";doc.getAnimations().forEach(a=>{if(Number.isFinite(a.effect?.getComputedTiming().endTime))a.finish()});check(name,doc.documentElement.scrollWidth<=win.innerWidth+1);frame.style.width="1280px";}
+ // CloudPeak demo data exists only after an administrator loads the SAMPLE company workspace.
+ async function loadSampleCompany(){await load("pages/auth/company-login.html");const had=win.sessionStorage.getItem("codementor-admin-session");win.sessionStorage.setItem("codementor-admin-session",JSON.stringify({role:"admin",isDemo:true,signedInAt:Date.now()}));try{win.companyStore.admin.loadSampleCompany();}finally{if(had===null)win.sessionStorage.removeItem("codementor-admin-session");}}
  function setStudent(value){cmStorage.setItem("codementor-demo-session",JSON.stringify(value));}
  try{
-  testStorage.clear();setStudent(account);await load("pages/student/career.html");
+  testStorage.clear();setStudent(account);await loadSampleCompany();await load("pages/student/career.html");
   const store=win.companyStore,opp=store.addOpportunity({title:"Connected project",description:"Build and test a small console tool",skillsRequired:["Python"],duration:"2 weeks",stipend:"Unpaid demo"});
   await load("pages/student/career.html");
   check("Company opportunity is visible to the student",doc.body.textContent.includes("Connected project"));
@@ -21,7 +23,7 @@
   check("Training stays locked before acceptance",throws(()=>win.companyStore.updateStudentTraining(application.id,{tasks:{}},JSON.stringify(application.training),account.email)));
   await load("pages/company/company-applications.html");
   check("Guest company preview cannot read connected private applications",!doc.body.textContent.includes("My private application note"));
-  win.companyStore.setCompanySession({name:"CloudPeak Innovations",email:"company@example.com"});await load("pages/company/company-applications.html");
+  win.companyStore.setCompanySession({name:"CloudPeak Innovations (SAMPLE)",email:"company@example.com"});await load("pages/company/company-applications.html");
   check("Signed-in company sees the student's actual application",doc.getElementById("app-"+application.id)?.textContent.includes("My private application note"));
   doc.querySelector('#app-'+application.id+' .btn-accept-app').click();
   await load("pages/student/career.html");

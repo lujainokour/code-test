@@ -45,6 +45,26 @@
       "file": "js/company-workspace.js",
       "part": "Part 4",
       "reason": "Count (only) published talent profiles the company opens; show suspension errors from post/message actions instead of failing silently."
+    },
+    {
+      "file": "js/demo-account.js",
+      "part": "Part 4",
+      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; login/signup handle an empty or sample workspace."
+    },
+    {
+      "file": "js/workspace-shell.js",
+      "part": "Part 4",
+      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; neutral fallback company name."
+    },
+    {
+      "file": "pages/auth/company-login.html",
+      "part": "Part 4",
+      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; demo box says the sample must be loaded by an admin."
+    },
+    {
+      "file": "pages/auth/company-signup.html",
+      "part": "Part 4",
+      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; neutral placeholder."
     }
   ]
 }

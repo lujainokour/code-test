@@ -7,6 +7,8 @@
     const setAccount = email => cmStorage.setItem('codementor-demo-session', JSON.stringify(account(email)));
     function check(name, value) { checks.push({ name, passed: Boolean(value) }); output.textContent = JSON.stringify({ passed: checks.filter(x => x.passed).length, total: checks.length, checks }, null, 2); }
     function throws(fn) { try { fn(); return false; } catch { return true; } }
+    // CloudPeak demo data exists only after an administrator loads the SAMPLE company workspace.
+    async function loadSampleCompany(){await load("pages/auth/company-login.html");const had=win.sessionStorage.getItem("codementor-admin-session");win.sessionStorage.setItem("codementor-admin-session",JSON.stringify({role:"admin",isDemo:true,signedInAt:Date.now()}));try{win.companyStore.admin.loadSampleCompany();}finally{if(had===null)win.sessionStorage.removeItem("codementor-admin-session");}}
     async function load(route) {
         await new Promise((resolve, reject) => { const timer = setTimeout(() => reject(Error('Load timeout: ' + route)), 10000); frame.onload = () => { clearTimeout(timer); resolve(); }; frame.src = new URL('../' + route, location.href); });
         await wait(60); win = frame.contentWindow; doc = win.document;
@@ -14,7 +16,7 @@
     }
     function progress() { return JSON.parse(cmStorage.getItem('codementor-demo-learning') || '{"version":1,"lessons":[],"tasks":[],"assessments":{}}'); }
     try {
-        testStorage.clear(); setAccount('workflow-a@example.com');
+        testStorage.clear(); setAccount('workflow-a@example.com'); await loadSampleCompany();
         await load('pages/student/workspace.html?task=student-profile');
         let resolveRun;
         win.pythonRunner = { execute: () => new Promise(resolve => { resolveRun = resolve; }), stop() {} };

@@ -218,6 +218,74 @@ const portalData = () => ({
         assert.throws(() => admin.api.loadSample(), /could not be read/);
         assert.equal(shared.getItem(DIR), '{broken');
     });
+    // ---- SAMPLE company portal workspace (CloudPeak) ----
+    const fresh = memory();
+    const freshAdmin = tab(fresh, { admin: true }), portal = tab(fresh, { students: [] });
+    await check('No company data exists until a company registers or an admin loads the sample', async () => {
+        assert.equal(portal.store.getProfile().email, '');
+        deq(portal.store.getOpportunities(), []);
+        deq(portal.store.getTalentPool(), []);
+        assert.equal(portal.store.isSampleWorkspace(), false);
+        assert.equal(fresh.getItem(STORE), null, 'reading never writes');
+        assert.throws(() => portal.api.loadSampleCompany(), /administrator/);
+        assert.ok(!('resetToDefault' in portal.store), 'no unlabelled reset-to-demo path remains');
+    });
+    await check('Admin loads the SAMPLE CloudPeak workspace explicitly and idempotently', async () => {
+        assert.equal(freshAdmin.api.loadSampleCompany(), true);
+        const raw = fresh.getItem(STORE);
+        assert.equal(freshAdmin.api.loadSampleCompany(), false);
+        assert.equal(fresh.getItem(STORE), raw);
+        assert.ok(portal.store.isSampleWorkspace());
+        deq(freshAdmin.api.sampleCompanyStatus(), { loaded: true, realWorkspace: false });
+    });
+    await check('Every sample record is labelled SAMPLE and fictional', async () => {
+        const data = JSON.parse(fresh.getItem(STORE));
+        assert.equal(data.sample, true);
+        assert.match(data.profile.name, /\(SAMPLE\)$/); assert.match(data.profile.about, /SAMPLE/);
+        for (const list of ['opportunities', 'talentPool', 'applications', 'messages']) assert.ok(data[list].length && data[list].every(item => item.sample === true), list);
+        assert.ok(data.opportunities.every(o => o.title.startsWith('[SAMPLE] ')));
+        assert.ok([...data.talentPool.map(t => t.name), ...data.applications.map(a => a.studentName), ...data.messages.map(m => m.studentName)].every(name => /\(SAMPLE\)$/.test(name)));
+        assert.ok([...data.talentPool, ...data.applications].every(x => x.university === 'Sample University (fictional)' && !/\d/.test(x.gpa)));
+        assert.ok(data.messages.every(m => m.thread.every(t => t.text.startsWith('SAMPLE '))));
+        const text = fs.readFileSync('js/company-store.js', 'utf8') + JSON.stringify(data);
+        for (const real of ['Irbid National University', 'Lujain', 'Okour', 'Omar Khaled', 'Noor Al-Hassan', 'Zaid Ahmad', '3.88', '3.75', '3.82', '3.70', 'meet.google.com']) assert.ok(!text.includes(real), 'no ' + real);
+        assert.ok([...data.talentPool, ...data.applications].every(x => /@(example\.com|sample\.invalid)$/.test(x.email || x.studentEmail)));
+    });
+    await check('The admin directory shows the portal workspace as SAMPLE', async () => {
+        const c = freshAdmin.api.companies().find(x => x.id === 'portal:company@example.com');
+        assert.equal(c.sample, true); assert.equal(c.source, 'SAMPLE company portal workspace');
+        assert.ok(c.opportunities.flatMap(o => o.applications).every(a => /\(SAMPLE\)$/.test(a.applicant)));
+    });
+    await check('Removal deletes only the sample workspace and asks before losing real records', async () => {
+        fresh.setItem(SESSION, JSON.stringify({ role: 'company', isDemo: true, email: 'company@example.com' }));
+        const data = JSON.parse(fresh.getItem(STORE));
+        data.applications.push({ id: 'real-app', opportunityId: 'opp-101', studentEmail: 'real@example.test', studentName: 'Real', status: 'Under Review', appliedAt: daysAgo(1), linkedStudent: true });
+        fresh.setItem(STORE, JSON.stringify(data));
+        const before = fresh.getItem(STORE);
+        assert.throws(() => freshAdmin.api.removeSampleCompany(), e => e.realRecords === 1);
+        assert.equal(fresh.getItem(STORE), before);
+        assert.equal(freshAdmin.api.removeSampleCompany({ includeReal: true }), 2);
+        assert.equal(fresh.getItem(STORE), null); assert.equal(fresh.getItem(SESSION), null, 'sample company session ends');
+        assert.equal(freshAdmin.api.removeSampleCompany(), 0);
+    });
+    await check('A real company workspace is never replaced or removed by the sample buttons', async () => {
+        fresh.setItem(STORE, JSON.stringify(portalData()));
+        const raw = fresh.getItem(STORE);
+        assert.throws(() => freshAdmin.api.loadSampleCompany(), /real company workspace/);
+        assert.throws(() => freshAdmin.api.removeSampleCompany(), /not sample data/);
+        assert.equal(fresh.getItem(STORE), raw);
+        deq(freshAdmin.api.sampleCompanyStatus(), { loaded: false, realWorkspace: true });
+    });
+    await check('Company login and signup text and rules match the explicit sample', async () => {
+        const auth = fs.readFileSync('js/demo-account.js', 'utf8');
+        assert.match(auth, /ask an administrator to load the sample company data/);
+        assert.match(auth, /Sample company data is loaded in this browser/);
+        assert.match(fs.readFileSync('pages/auth/company-login.html', 'utf8'), /only after an administrator selects <strong>Load sample company data<\/strong>/);
+        for (const file of ['pages/company/company-dashboard.html', 'pages/company/company-profile.html', 'pages/auth/company-signup.html', 'js/workspace-shell.js'])
+            assert.ok(!fs.readFileSync(file, 'utf8').includes('CloudPeak'), file);
+        const page = tab(fresh, { admin: true }); page.runUI();
+        assert.ok(page.dom.document.querySelector('#sample-company-load') && page.dom.document.querySelector('#sample-company-remove'));
+    });
     console.log(`${count} admin company checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });
 function deq(a, b, m) { assert.deepEqual(plain(a), plain(b), m); }

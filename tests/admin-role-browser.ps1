@@ -110,6 +110,12 @@ try {
     Eval "localStorage.setItem('codementor-teacher-session',JSON.stringify({role:'teacher',isDemo:true,email:'teacher@example.com'}));true" | Out-Null
     Open 'pages/teacher/teacher-sessions.html'
     Check 'Legacy teacher identity cannot bypass admin sign in' (Eval "location.pathname.endsWith('/auth/admin-login.html')")
+    Eval "sessionStorage.setItem('codementor-admin-session',JSON.stringify({role:'admin',isDemo:true,signedInAt:Date.now()}));true" | Out-Null
+    Open 'pages/admin/admin-companies.html'
+    Eval "document.getElementById('sample-company-load').click();true" | Out-Null
+    Start-Sleep -Milliseconds 200
+    Check 'Admin loads the SAMPLE company workspace explicitly' (Eval "companyStore.isSampleWorkspace() && document.getElementById('admin-companies-content').textContent.includes('CloudPeak Innovations (SAMPLE)')")
+    Eval "sessionStorage.removeItem('codementor-admin-session');true" | Out-Null
     Open 'pages/auth/company-login.html'
     Eval "document.getElementById('fill-company-demo').click();document.getElementById('company-login-form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 650

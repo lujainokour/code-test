@@ -9,285 +9,62 @@
     const STORE_KEY = "codementor-company-store-v1";
     const SESSION_KEY = "codementor-company-session";
 
-    const defaultInitialData = {
-        profile: {
-            name: "CloudPeak Innovations",
-            industry: "Software Engineering & Cloud Systems",
-            email: "company@example.com",
-            phone: "+962 6 500 1234",
-            location: "Amman, Jordan",
-            website: "https://cloudpeak.example.com",
-            size: "50-100 employees",
-            foundedYear: 2021,
-            about: "CloudPeak Innovations is a high-growth technology solutions provider building enterprise web platforms, data pipelines, and AI systems. We actively collaborate with universities like Irbid National University to mentor and recruit rising software talent through virtual internships and practical freelance milestones.",
-            techStack: [
-                "Python (FastAPI / Django)",
-                "SQL Server & PostgreSQL",
-                "React & TypeScript",
-                "Machine Learning & AI",
-                "Docker & Cloud DevOps"
+    // No company data exists until a company registers or an administrator explicitly loads the
+    // SAMPLE workspace below. Every sample record is labelled and fictional.
+    const SAMPLE_EMAIL = "company@example.com";
+    const emptyData = () => ({
+        profile: { name: "", industry: "", email: "", phone: "", location: "", website: "", size: "", about: "", techStack: [], hiringStatus: "" },
+        opportunities: [], talentPool: [], applications: [], messages: []
+    });
+    function sampleCompanyData() {
+        const school = "Sample University (fictional)", gpa = "Not real (SAMPLE)";
+        const talent = (id, name, email, initials, major, skills, bio, role) => ({ id, sample: true, name, email, initials, university: school, major, gpa, graduationYear: "2027",
+            topSkills: skills, completedLessons: 0, solvedTasks: 0, portfolioProjects: ["SAMPLE project (fictional)"], bio: "SAMPLE profile. " + bio, availability: "SAMPLE availability", preferredRole: role });
+        const opp = (id, title, type, department, duration, stipend, applicantsCount, skills, description, postedAt) => ({ id, sample: true, title: "[SAMPLE] " + title, type, department, location: "Remote", duration, stipend, status: "Active", applicantsCount, skillsRequired: skills, description: "SAMPLE opportunity. " + description, postedAt });
+        const app = (id, opportunityId, opportunityTitle, studentName, studentEmail, studentInitials, major, coverNote, status, appliedAt, interviewDate, meetingLink) => ({ id, sample: true, opportunityId, opportunityTitle: "[SAMPLE] " + opportunityTitle, studentName, studentEmail, studentInitials, university: school, major, gpa, coverNote: "SAMPLE cover note. " + coverNote, status, appliedAt, interviewDate, meetingLink });
+        return {
+            sample: true,
+            profile: {
+                name: "CloudPeak Innovations (SAMPLE)", industry: "Software (sample)", email: SAMPLE_EMAIL, phone: "Not real (SAMPLE)", location: "Sample City",
+                website: "https://cloudpeak.example.com", size: "50-100 employees (sample)", foundedYear: 2021,
+                about: "SAMPLE company for demonstrations. CloudPeak Innovations is fictional and has no real employees, partners or universities.",
+                techStack: ["Python", "SQL", "JavaScript"], hiringStatus: "SAMPLE data"
+            },
+            opportunities: [
+                opp("opp-101", "Python Backend & API Engineering Intern", "Virtual Internship", "Core Engineering", "3 Months (Part-Time)", "Sample stipend", 2, ["Python", "RESTful APIs", "SQL"], "Build small REST services and tests with weekly code review.", "2026-10-24T10:00:00Z"),
+                opp("opp-102", "Relational Database Schema Refactoring", "Freelance Project", "Data Infrastructure", "4 Weeks", "Sample fixed fee", 1, ["SQL", "Normalization", "Indexing"], "Audit a schema, remove redundant keys and write verification queries.", "2026-10-30T14:30:00Z"),
+                opp("opp-103", "Machine Learning Model Evaluation Assistant", "Virtual Internship", "AI & Data", "2 Months", "Sample stipend", 1, ["Python", "Model Evaluation"], "Compute evaluation metrics and document findings.", "2026-11-02T09:15:00Z"),
+                opp("opp-104", "Frontend Dashboard UI Components", "Freelance Project", "Product Design", "2 Weeks", "Sample fixed fee", 1, ["HTML", "CSS", "JavaScript", "Accessibility"], "Build accessible dashboard widgets from a design token system.", "2026-11-04T12:00:00Z")
             ],
-            hiringStatus: "Actively Hiring"
-        },
-        opportunities: [
-            {
-                id: "opp-101",
-                title: "Python Backend & API Engineering Intern",
-                type: "Virtual Internship",
-                department: "Core Engineering",
-                location: "Remote / Hybrid (Jordan)",
-                duration: "3 Months (Part-Time)",
-                stipend: "$350 / month",
-                status: "Active",
-                applicantsCount: 6,
-                skillsRequired: ["Python", "Object-Oriented Programming (OOP)", "RESTful APIs", "SQL"],
-                description: "Collaborate directly with our senior backend engineers to develop RESTful microservices, optimize data structures, and write automated test suites. Weekly code reviews and structured mentorship provided.",
-                postedAt: "2026-10-24T10:00:00Z"
-            },
-            {
-                id: "opp-102",
-                title: "Relational Database Schema Refactoring & Indexing",
-                type: "Freelance Project",
-                department: "Data Infrastructure",
-                location: "Remote",
-                duration: "4 Weeks (Milestone-based)",
-                stipend: "$500 Project Fixed Fee",
-                status: "Active",
-                applicantsCount: 4,
-                skillsRequired: ["SQL Server", "3NF Normalization", "Complex Joins", "Index Optimization"],
-                description: "Audit existing schema tables, eliminate redundant keys, write comprehensive verification queries, and optimize query execution plans for an enterprise billing service.",
-                postedAt: "2026-10-30T14:30:00Z"
-            },
-            {
-                id: "opp-103",
-                title: "Machine Learning Model Evaluation Assistant",
-                type: "Virtual Internship",
-                department: "AI & Data Science",
-                location: "Remote",
-                duration: "2 Months",
-                stipend: "$300 / month",
-                status: "Active",
-                applicantsCount: 5,
-                skillsRequired: ["Python", "Pandas", "Scikit-Learn", "Model Evaluation Metrics"],
-                description: "Work on evaluating educational AI models, calculating precision/recall curves, curating benchmark evaluation sets, and documenting experimental findings.",
-                postedAt: "2026-11-02T09:15:00Z"
-            },
-            {
-                id: "opp-104",
-                title: "Frontend Dashboard UI Components (HTML/CSS/JS)",
-                type: "Freelance Project",
-                department: "Product Design",
-                location: "Remote",
-                duration: "2 Weeks",
-                stipend: "$350 Fixed Fee",
-                status: "Active",
-                applicantsCount: 3,
-                skillsRequired: ["Semantic HTML5", "Responsive CSS", "Vanilla JavaScript", "A11y"],
-                description: "Build clean, accessible analytics dashboard widgets following an established design token system. Strict compliance with WCAG accessibility guidelines required.",
-                postedAt: "2026-11-04T12:00:00Z"
-            }
-        ],
-        talentPool: [
-            {
-                id: "tal-1",
-                name: "Lujain Okour",
-                email: "student@example.com",
-                initials: "LO",
-                university: "Irbid National University",
-                major: "Data Science & Artificial Intelligence",
-                gpa: "3.88 / 4.0",
-                graduationYear: "2027",
-                topSkills: ["Python", "Algorithms", "Data Structures", "SQL Server", "AI Ethics"],
-                completedLessons: 12,
-                solvedTasks: 6,
-                portfolioProjects: [
-                    "Task Manager with Execution Limits",
-                    "Enterprise SQL Schema with 23 Tables",
-                    "Adaptive Learning Evaluation Methodology"
-                ],
-                bio: "Honor student in Data Science & AI with strong foundations in Python programming, automated test authoring, and relational database modeling.",
-                availability: "Available for Virtual Internship & Freelance",
-                preferredRole: "Junior AI / Backend Developer"
-            },
-            {
-                id: "tal-2",
-                name: "Omar Khaled",
-                email: "omar.k@example.com",
-                initials: "OK",
-                university: "Irbid National University",
-                major: "Computer Science",
-                gpa: "3.75 / 4.0",
-                graduationYear: "2027",
-                topSkills: ["SQL Server", "C# .NET", "Database Indexing", "Concurrency Control"],
-                completedLessons: 12,
-                solvedTasks: 5,
-                portfolioProjects: [
-                    "CourseHub Relational Database",
-                    "E-Commerce Inventory Manager"
-                ],
-                bio: "Passionate about database internals, high-concurrency transactions, and scalable backend services.",
-                availability: "Available for Freelance Projects",
-                preferredRole: "Database Developer"
-            },
-            {
-                id: "tal-3",
-                name: "Noor Al-Hassan",
-                email: "noor.h@example.com",
-                initials: "NH",
-                university: "Irbid National University",
-                major: "Software Engineering",
-                gpa: "3.82 / 4.0",
-                graduationYear: "2027",
-                topSkills: ["Python OOP", "Design Patterns", "FastAPI", "Unit Testing"],
-                completedLessons: 10,
-                solvedTasks: 6,
-                portfolioProjects: [
-                    "Design Patterns Interactive Catalog",
-                    "RESTful Bookings Microservice"
-                ],
-                bio: "Focused on clean code, software architecture, SOLID principles, and building maintainable web microservices.",
-                availability: "Available for Internship",
-                preferredRole: "Software Engineer Intern"
-            },
-            {
-                id: "tal-4",
-                name: "Zaid Ahmad",
-                email: "zaid.a@example.com",
-                initials: "ZA",
-                university: "Irbid National University",
-                major: "Artificial Intelligence",
-                gpa: "3.70 / 4.0",
-                graduationYear: "2026",
-                topSkills: ["Machine Learning", "Scikit-Learn", "Feature Engineering", "Data Analysis"],
-                completedLessons: 12,
-                solvedTasks: 6,
-                portfolioProjects: [
-                    "Educational Knowledge Tracing Model",
-                    "Predictive Student Retention Classifier"
-                ],
-                bio: "Data enthusiast with experience training machine learning baseline models and evaluating precision-recall trade-offs.",
-                availability: "Available for Part-time AI Work",
-                preferredRole: "Junior ML Engineer"
-            }
-        ],
-        applications: [
-            {
-                id: "app-301",
-                opportunityId: "opp-101",
-                opportunityTitle: "Python Backend & API Engineering Intern",
-                studentName: "Lujain Okour",
-                studentEmail: "student@example.com",
-                studentInitials: "LO",
-                university: "Irbid National University",
-                major: "Data Science & AI",
-                gpa: "3.88",
-                coverNote: "I have completed all three Python levels on CodeMentor AI, built a comprehensive Task Manager application in WebAssembly, and designed verified SQL Server databases. Eager to contribute to CloudPeak's engineering team.",
-                status: "Under Review",
-                appliedAt: "2026-11-04T11:20:00Z",
-                interviewDate: null,
-                meetingLink: null
-            },
-            {
-                id: "app-302",
-                opportunityId: "opp-102",
-                opportunityTitle: "Relational Database Schema Refactoring & Indexing",
-                studentName: "Omar Khaled",
-                studentEmail: "omar.k@example.com",
-                studentInitials: "OK",
-                university: "Irbid National University",
-                major: "Computer Science",
-                gpa: "3.75",
-                coverNote: "Strong command of T-SQL, foreign key integrity rules, composite keys, and dead-lock prevention with UPDLOCK. I can deliver this milestone ahead of deadline.",
-                status: "Accepted",
-                appliedAt: "2026-11-01T15:45:00Z",
-                interviewDate: "2026-11-03",
-                meetingLink: "https://meet.google.com/new"
-            },
-            {
-                id: "app-303",
-                opportunityId: "opp-103",
-                opportunityTitle: "Machine Learning Model Evaluation Assistant",
-                studentName: "Zaid Ahmad",
-                studentEmail: "zaid.a@example.com",
-                studentInitials: "ZA",
-                university: "Irbid National University",
-                major: "Artificial Intelligence",
-                gpa: "3.70",
-                coverNote: "Experienced in scikit-learn metrics, confusion matrix interpretation, and preventing data leakage across temporal splits. Excited about the research focus.",
-                status: "Interview Scheduled",
-                appliedAt: "2026-11-03T16:10:00Z",
-                interviewDate: "2026-11-10 at 02:00 PM",
-                meetingLink: "https://meet.google.com/cpk-eval-interview"
-            },
-            {
-                id: "app-304",
-                opportunityId: "opp-104",
-                opportunityTitle: "Frontend Dashboard UI Components (HTML/CSS/JS)",
-                studentName: "Noor Al-Hassan",
-                studentEmail: "noor.h@example.com",
-                studentInitials: "NH",
-                university: "Irbid National University",
-                major: "Software Engineering",
-                gpa: "3.82",
-                coverNote: "I build responsive, accessible web components with semantic HTML, fluid typography, and clean CSS variables. I can start immediately.",
-                status: "Under Review",
-                appliedAt: "2026-11-05T09:30:00Z",
-                interviewDate: null,
-                meetingLink: null
-            }
-        ],
-        messages: [
-            {
-                id: "msg-1",
-                studentEmail: "student@example.com",
-                studentName: "Lujain Okour",
-                studentInitials: "LO",
-                lastUpdated: "2026-11-05T14:30:00Z",
-                thread: [
-                    {
-                        sender: "company",
-                        text: "Hello Lujain! We thoroughly reviewed your application for the Python Backend Internship. Your coursework in Data Science and your practical project code look impressive.",
-                        time: "2026-11-05T10:00:00Z"
-                    },
-                    {
-                        sender: "student",
-                        text: "Thank you so much! I am very excited about the opportunity to collaborate with CloudPeak Innovations.",
-                        time: "2026-11-05T11:15:00Z"
-                    },
-                    {
-                        sender: "company",
-                        text: "Would you be available for a 20-minute introductory virtual interview next Tuesday around 11:00 AM via Google Meet?",
-                        time: "2026-11-05T14:30:00Z"
-                    }
-                ]
-            },
-            {
-                id: "msg-2",
-                studentEmail: "omar.k@example.com",
-                studentName: "Omar Khaled",
-                studentInitials: "OK",
-                lastUpdated: "2026-11-03T16:00:00Z",
-                thread: [
-                    {
-                        sender: "company",
-                        text: "Hi Omar, we have officially accepted your proposal for the Database Refactoring project. Welcome aboard!",
-                        time: "2026-11-03T15:30:00Z"
-                    },
-                    {
-                        sender: "student",
-                        text: "Thank you! I will review the schema specification and begin the first milestone today.",
-                        time: "2026-11-03T16:00:00Z"
-                    }
-                ]
-            }
-        ]
-    };
+            talentPool: [
+                talent("tal-1", "Demo Student (SAMPLE)", "student@example.com", "DS", "Sample major: Data Science", ["Python", "SQL"], "Fictional learner used for demonstrations.", "Sample role: Junior Developer"),
+                talent("tal-2", "Sample Student B (SAMPLE)", "sample-student-b@sample.invalid", "SB", "Sample major: Computer Science", ["SQL", "C#"], "Fictional learner interested in databases.", "Sample role: Database Developer"),
+                talent("tal-3", "Sample Student C (SAMPLE)", "sample-student-c@sample.invalid", "SC", "Sample major: Software Engineering", ["Python", "Testing"], "Fictional learner interested in clean code.", "Sample role: Software Engineer Intern"),
+                talent("tal-4", "Sample Student D (SAMPLE)", "sample-student-d@sample.invalid", "SD", "Sample major: Artificial Intelligence", ["Machine Learning", "Python"], "Fictional learner interested in ML.", "Sample role: Junior ML Engineer")
+            ],
+            applications: [
+                app("app-301", "opp-101", "Python Backend & API Engineering Intern", "Demo Student (SAMPLE)", "student@example.com", "DS", "Sample major: Data Science", "I completed the Python levels and would like backend practice.", "Under Review", "2026-11-04T11:20:00Z", null, null),
+                app("app-302", "opp-102", "Relational Database Schema Refactoring", "Sample Student B (SAMPLE)", "sample-student-b@sample.invalid", "SB", "Sample major: Computer Science", "I enjoy SQL and schema design.", "Accepted", "2026-11-01T15:45:00Z", "2026-11-03", "https://meet.example.com/sample-accepted"),
+                app("app-303", "opp-103", "Machine Learning Model Evaluation Assistant", "Sample Student D (SAMPLE)", "sample-student-d@sample.invalid", "SD", "Sample major: Artificial Intelligence", "I can compute precision and recall.", "Interview Scheduled", "2026-11-03T16:10:00Z", "2026-11-10 at 02:00 PM", "https://meet.example.com/sample-interview"),
+                app("app-304", "opp-104", "Frontend Dashboard UI Components", "Sample Student C (SAMPLE)", "sample-student-c@sample.invalid", "SC", "Sample major: Software Engineering", "I build accessible components.", "Under Review", "2026-11-05T09:30:00Z", null, null)
+            ],
+            messages: [
+                { id: "msg-1", sample: true, studentEmail: "student@example.com", studentName: "Demo Student (SAMPLE)", studentInitials: "DS", lastUpdated: "2026-11-05T14:30:00Z", thread: [
+                    { sender: "company", text: "SAMPLE message: thank you for applying to the Python Backend Internship.", time: "2026-11-05T10:00:00Z" },
+                    { sender: "student", text: "SAMPLE reply: thank you, I am interested.", time: "2026-11-05T11:15:00Z" },
+                    { sender: "company", text: "SAMPLE message: would a short video interview next week work for you?", time: "2026-11-05T14:30:00Z" }] },
+                { id: "msg-2", sample: true, studentEmail: "sample-student-b@sample.invalid", studentName: "Sample Student B (SAMPLE)", studentInitials: "SB", lastUpdated: "2026-11-03T16:00:00Z", thread: [
+                    { sender: "company", text: "SAMPLE message: your proposal for the database project was accepted.", time: "2026-11-03T15:30:00Z" },
+                    { sender: "student", text: "SAMPLE reply: thank you, I will start the first milestone.", time: "2026-11-03T16:00:00Z" }] }
+            ]
+        };
+    }
 
     function readStore() {
         let raw;
         try { raw = localStorage.getItem(STORE_KEY); }
         catch { throw new Error("Browser storage is unavailable. Your saved records have not been changed."); }
-        if (raw === null) return JSON.parse(JSON.stringify(defaultInitialData));
+        if (raw === null) return emptyData();
         let value;
         try { value = JSON.parse(raw); } catch { throw new Error("Saved company data could not be read. It has not been replaced."); }
         if (!value || typeof value !== "object" || !value.profile || typeof value.profile.name !== "string" || typeof value.profile.email !== "string" || !Array.isArray(value.opportunities) || !Array.isArray(value.talentPool) || !Array.isArray(value.applications) || !Array.isArray(value.messages)) {
@@ -367,7 +144,7 @@
     // ---- normalising both sources into one safe, whitelisted view ----
     const portalStage = a => a.status === "Interview Scheduled" ? "interview" : a.status === "Declined" ? "rejected" : a.status === "Accepted" ? (a.training?.review?.status === "Completed" ? "completed" : "accepted") : "applied";
     function consentedName(application) {
-        if (!application.linkedStudent) return "Portal demo applicant (not a real student)";
+        if (!application.linkedStudent) return application.sample ? String(application.studentName || "Sample applicant (SAMPLE)") : "Portal demo applicant (not a real student)";
         let students = [];
         try { students = window.platformStore?.getStudents() || []; } catch { students = []; }
         const student = students.find(s => s.email === String(application.studentEmail || "").toLowerCase());
@@ -391,7 +168,7 @@
             ...applications.filter(a => a.appliedAt).map(a => ({ at: a.appliedAt, type: "application", text: `Application received (${opportunities.find(o => o.id === a.opportunityId)?.title || "opportunity"})` })),
             ...data.messages.filter(m => isoOk(m.lastUpdated)).map(m => ({ at: m.lastUpdated, type: "message", text: `Conversation updated (${Array.isArray(m.thread) ? m.thread.length : 0} messages)` }))
         ];
-        return { id: portalId(p.email), sample: false, source: "Company portal in this browser", profile: { name: text(p.name), industry: text(p.industry), size: text(p.size), location: text(p.location), website: text(p.website), description: text(p.about) },
+        return { id: portalId(p.email), sample: data.sample === true, source: data.sample === true ? "SAMPLE company portal workspace" : "Company portal in this browser", profile: { name: text(p.name), industry: text(p.industry), size: text(p.size), location: text(p.location), website: text(p.website), description: text(p.about) },
             contact: { name: text(p.contactName) || "Not provided", email: text(p.email).toLowerCase() }, createdAt: isoOk(p.createdAt) ? p.createdAt : null,
             talentViews: Number.isInteger(data.talentViews) ? data.talentViews : 0, opportunities, events, record };
     }
@@ -530,6 +307,40 @@
             "sample-company-6": { verification: { status: "Unverified", notes: "", history: [] }, flag: null }
         };
     }
+    // ---- SAMPLE company portal workspace (CloudPeak) ----
+    function sampleCompanyStatus() {
+        adminSession();
+        const raw = localStorage.getItem(STORE_KEY);
+        if (raw === null) return { loaded: false, realWorkspace: false };
+        const data = readStore();
+        return { loaded: data.sample === true, realWorkspace: data.sample !== true };
+    }
+    function loadSampleCompany() {
+        adminSession();
+        if (localStorage.getItem(STORE_KEY) !== null) {
+            if (readStore().sample === true) return false;
+            throw new Error("A real company workspace is saved in this browser. Sample company data was not loaded and nothing was changed.");
+        }
+        writeStore(sampleCompanyData());
+        return true;
+    }
+    // Real records added on top of the sample workspace (student applications or messages, new
+    // opportunities) are lost with it, so removing them needs an explicit confirmation.
+    function removeSampleCompany(options = {}) {
+        adminSession();
+        if (localStorage.getItem(STORE_KEY) === null) return 0;
+        const data = readStore();
+        if (data.sample !== true) throw new Error("The saved company workspace is not sample data. Nothing was removed.");
+        const real = [...data.opportunities, ...data.applications, ...data.messages].filter(item => item.sample !== true).length;
+        if (real && options.includeReal !== true) {
+            const error = new Error(`${real} real record(s) were added to the sample company workspace (applications, messages or opportunities). Confirm to remove them with the sample data.`);
+            error.realRecords = real; throw error;
+        }
+        localStorage.removeItem(STORE_KEY);
+        try { const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null"); if (session?.email?.toLowerCase() === SAMPLE_EMAIL) localStorage.removeItem(SESSION_KEY); } catch { /* keep unreadable session data */ }
+        try { const d = readDirectory(); if (d.records[portalId(SAMPLE_EMAIL)]) { delete d.records[portalId(SAMPLE_EMAIL)]; writeDirectory(d); } } catch { /* the directory reports its own errors */ }
+        return 1 + real;
+    }
     function adminSampleStatus() { adminSession(); const d = readDirectory(); return { loaded: d.samples.length > 0, companies: d.samples.length }; }
     function adminLoadSample() {
         adminSession();
@@ -552,8 +363,10 @@
 
     // Public API
     window.companyStore = {
-        admin: Object.freeze({ companies: adminCompanies, summary: adminSummary, filter: adminFilter, setVerification: adminSetVerification, restore: adminRestore, flag: adminFlag, sampleStatus: adminSampleStatus, loadSample: adminLoadSample, removeSample: adminRemoveSample, VERIFICATION, FUNNEL, key: DIRECTORY_KEY }),
+        admin: Object.freeze({ companies: adminCompanies, summary: adminSummary, filter: adminFilter, setVerification: adminSetVerification, restore: adminRestore, flag: adminFlag, sampleStatus: adminSampleStatus, loadSample: adminLoadSample, removeSample: adminRemoveSample, sampleCompanyStatus, loadSampleCompany, removeSampleCompany, VERIFICATION, FUNNEL, key: DIRECTORY_KEY }),
         // Counts only: the admin directory shows how many published talent profiles the company opened.
+        // True when the saved portal workspace is the admin-loaded SAMPLE company.
+        isSampleWorkspace() { return localStorage.getItem(STORE_KEY) !== null && readStore().sample === true; },
         recordTalentView() {
             const data = readStore(); requireCompany(data);
             data.talentViews = (Number.isInteger(data.talentViews) ? data.talentViews : 0) + 1; writeStore(data); return data.talentViews;
@@ -571,7 +384,7 @@
                 skillsRequired: Array.isArray(item.skillsRequired) ? item.skillsRequired.filter(skill => typeof skill === "string") : [],
                 connectedApplications: data.applications.filter(application => application.linkedStudent === true && application.opportunityId === item.id).length
             }));
-            return { profile, sample: profile.email.toLowerCase() === "company@example.com", opportunities, applications: data.applications.length, connectedApplications: data.applications.filter(item => item.linkedStudent === true).length };
+            return { profile, sample: data.sample === true, opportunities, applications: data.applications.length, connectedApplications: data.applications.filter(item => item.linkedStudent === true).length };
         },
         // --- Session Management ---
         getCompanySession() {
@@ -587,7 +400,7 @@
             try {
                 localStorage.setItem(SESSION_KEY, JSON.stringify({
                     email: account.email.toLowerCase().trim(),
-                    name: account.name || "CloudPeak Innovations",
+                    name: account.name || "Company workspace",
                     role: "company",
                     isDemo: true,
                     loginTime: new Date().toISOString()
@@ -790,12 +603,6 @@
             threadObj.lastUpdated = new Date().toISOString();
             writeStore(store);
             return threadObj;
-        },
-
-        // Reset to initial demo state
-        resetToDefault() {
-            writeStore(defaultInitialData);
-            return defaultInitialData;
         }
     };
 })();

@@ -14,8 +14,10 @@
     function throws(action) { try { action(); return false; } catch { return true; } }
     async function settled() { for (let n=0; n<100; n++) { await wait(50); if (!frame.contentWindow.document.getElementById("login-submit")?.disabled && !frame.contentWindow.document.getElementById("signup-submit")?.disabled) break; } win=frame.contentWindow; doc=win.document; }
     const payload = '<img src="/audit-missing-image" onerror="window.__auditExecuted=true">';
+    // CloudPeak demo data exists only after an administrator loads the SAMPLE company workspace.
+    async function loadSampleCompany(){await load("pages/auth/company-login.html");const had=win.sessionStorage.getItem("codementor-admin-session");win.sessionStorage.setItem("codementor-admin-session",JSON.stringify({role:"admin",isDemo:true,signedInAt:Date.now()}));try{win.companyStore.admin.loadSampleCompany();}finally{if(had===null)win.sessionStorage.removeItem("codementor-admin-session");}}
     try {
-        testStorage.clear();
+        testStorage.clear(); await loadSampleCompany();
         await load("pages/company/company-messages.html");
         fill("company-chat-input", payload); submit("company-chat-form"); await wait(60);
         check("New company message appears immediately as text", doc.getElementById("company-chat-messages").textContent.includes(payload) && !doc.querySelector('#company-chat-messages img') && !win.__auditExecuted);
@@ -42,7 +44,7 @@
             check(role + ": storage failure is reported", throws(() => store.updateProfile({name: "Changed"})) && localStorage.getItem(key) === null);
             win.Storage.prototype.setItem = original;
         }
-        testStorage.clear();
+        testStorage.clear(); await loadSampleCompany();
         sessionStorage.setItem("codementor-admin-session", JSON.stringify({role:"admin",isDemo:true,signedInAt:Date.now()}));
         await load("pages/admin/admin-sessions.html");
         const sessions = win.adminSessionsStore;
@@ -74,6 +76,9 @@
         check("Changing a corrupt plan never replaces it", throws(() => win.subscriptionStore.returnToFree()) && win.cmStorage.getItem("codementor-demo-subscription") === "{broken");
         for (const role of ["company"]) {
             testStorage.clear(); await load(`pages/auth/${role}-login.html`);
+            fill("email", role + "@example.com"); fill("password", "DemoCompany123!"); submit(role + "-login-form"); await settled();
+            check(role + ": sample credentials are refused until an admin loads sample company data", localStorage.getItem(`codementor-${role}-session`) === null && doc.getElementById("login-message").textContent.includes("sample company data"));
+            await loadSampleCompany(); await load(`pages/auth/${role}-login.html`);
             fill("email", role + "@example.com"); fill("password", "WRONG"); submit(role + "-login-form"); await settled();
             check(role + ": sample email with wrong password is rejected", localStorage.getItem(`codementor-${role}-session`) === null && doc.getElementById("login-message").classList.contains("is-error"));
             fill("password", "DemoCompany123!"); submit(role + "-login-form"); await settled();

@@ -160,7 +160,7 @@ const route = value => new URL(routes[value] || value, appRoot).href;
         if (admin) topbar.append(el("span", "Frontend admin preview", "admin-preview-label"));
         else if (company) {
             const pill = a("", "company-profile.html", "account-pill"); const initials = el("span", "CP", "account-initials"); initials.id = "account-initials";
-            const name = el("span", companyAccount?.name || "CloudPeak Innovations"); name.id = "account-name";
+            const name = el("span", companyAccount?.name || "Company workspace"); name.id = "account-name";
             if (companyAccount?.name) initials.textContent = companyAccount.name.trim().split(/\s+/).slice(0, 2).map(word => Array.from(word)[0]).join("").toUpperCase();
             pill.append(initials, name); topbar.append(pill);
         } else {

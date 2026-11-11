@@ -115,7 +115,25 @@
         load.addEventListener("click", () => act(async () => { const n = api.loadSample(); if (!n) throw new Error("Sample companies were already loaded. Nothing was added."); }, "Six sample companies added."));
         const remove = el("button", "Remove sample data", "button button-outline"); remove.type = "button"; remove.disabled = !state.loaded;
         remove.addEventListener("click", () => act(async () => { const n = api.removeSample(); if (!n) throw new Error("No sample companies to remove."); }, "Sample companies removed. Other records were not changed."));
-        row.append(load, remove); section.append(row); return section;
+        row.append(load, remove); section.append(row);
+        // The company-portal workspace (CloudPeak) is separate: it is what company@example.com signs in to.
+        const portal = api.sampleCompanyStatus();
+        section.append(el("h3", "Sample company portal workspace"), el("p", "Loads the fictional CloudPeak Innovations (SAMPLE) workspace with sample opportunities, applicants and messages, so the sample company login on the company sign-in page works. It is loaded only when no real company is saved in this browser."));
+        section.append(el("p", portal.loaded ? "Loaded: the company portal currently shows the SAMPLE workspace." : portal.realWorkspace ? "A real company workspace is saved, so the sample cannot be loaded." : "Not loaded.", "overview-source-note"));
+        const portalRow = el("div", undefined, "overview-top-actions");
+        const loadPortal = el("button", "Load sample company data", "button button-primary"); loadPortal.type = "button"; loadPortal.id = "sample-company-load"; loadPortal.disabled = portal.realWorkspace;
+        loadPortal.addEventListener("click", () => act(async () => { if (!api.loadSampleCompany()) throw new Error("Sample company data was already loaded. Nothing was added."); }, "Sample company workspace loaded. Sign in with the sample company details on the company sign-in page."));
+        const removePortal = el("button", "Remove sample company data", "button button-outline"); removePortal.type = "button"; removePortal.id = "sample-company-remove"; removePortal.disabled = !portal.loaded;
+        removePortal.addEventListener("click", () => act(async () => {
+            try { api.removeSampleCompany(); }
+            catch (error) {
+                if (!error.realRecords) throw error;
+                if (!window.confirm(error.message)) throw new Error("Nothing was removed.");
+                api.removeSampleCompany({ includeReal: true });
+            }
+        }, "Sample company workspace removed."));
+        portalRow.append(loadPortal, removePortal); section.append(portalRow);
+        return section;
     }
     function render() {
         root.replaceChildren();
