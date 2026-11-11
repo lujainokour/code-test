@@ -42,12 +42,12 @@ try {
     Check 'Community requires student login' (Eval "location.pathname.endsWith('/auth/login.html')")
     Eval "document.getElementById('fill-demo').click();document.getElementById('login-form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 800
-    Check 'Non-members see channel directory with no private posts or composer' (Eval "document.querySelectorAll('#community-directory article').length===4 && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
-    Check 'Membership check denies direct entry' (Eval "(()=>{try{communityMembership.assertMember('questions');return false}catch{return true}})()")
-    Eval "document.querySelector('#community-directory button').click();document.getElementById('join-reason').value='I want to discuss lesson questions with my study group.';document.querySelector('#community-access form').requestSubmit();true" | Out-Null
+    Check 'Non-members see channel directory with no private posts or composer' (Eval "document.querySelectorAll('#community-directory article').length===5 && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
+    Check 'Membership check denies direct entry' (Eval "(()=>{try{communityMembership.assertMember('help');return false}catch{return true}})()")
+    Eval "[...document.querySelectorAll('#community-directory article')].find(a=>a.querySelector('h3').textContent==='Help').querySelector('button').click();document.getElementById('join-reason').value='I want to discuss lesson questions with my study group.';document.querySelector('#community-access form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 150
-    Check 'Pending request keeps discussions private' (Eval "communityMembership.state('questions')==='pending' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
-    Check 'Duplicate join request is rejected' (Eval "communityMembership.request('questions','Another request').then(()=>false,()=>true)")
+    Check 'Pending request keeps discussions private' (Eval "communityMembership.state('help')==='pending' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
+    Check 'Duplicate join request is rejected' (Eval "communityMembership.request('help','Another request').then(()=>false,()=>true)")
     Check 'Student cannot approve their own request' (Eval "communityMembership.decide(JSON.parse(localStorage.getItem(communityMembership.key)).requests[0].id,'approved').then(()=>false,()=>true)")
     $studentSocket = $socket
     $newTab=Cdp 'Target.createTarget' @{url='http://127.0.0.1:8876/pages/admin/admin-community.html'}
@@ -62,8 +62,8 @@ try {
     Eval "document.querySelector('#membership-requests button').click();true" | Out-Null
     Start-Sleep -Milliseconds 200
     $socket=$studentSocket
-    Check 'Approval opens discussion in student tab without reloading' (Eval "communityMembership.state('questions')==='approved' && !document.getElementById('community-composer').hidden && document.querySelectorAll('.community-post').length===1")
-    Eval "Array.from(document.querySelectorAll('#community-channels button')).find(b=>b.textContent==='Study notes').click();true" | Out-Null
+    Check 'Approval opens discussion in student tab without reloading' (Eval "communityMembership.state('help')==='approved' && !document.getElementById('community-composer').hidden && document.querySelectorAll('.community-post').length===0")
+    Eval "Array.from(document.querySelectorAll('#community-channels button')).find(b=>b.textContent.startsWith('All my channels')).click();[...document.querySelectorAll('#community-directory article')].find(a=>a.querySelector('h3').textContent==='General').querySelector('button').click();true" | Out-Null
     Check 'Approval for one channel does not unlock other channels' (Eval "document.getElementById('community-composer').hidden && document.querySelectorAll('.community-post').length===0 && !!document.getElementById('join-reason')")
     Eval "document.getElementById('join-reason').value='I want to exchange study notes.';document.querySelector('#community-access form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 150
@@ -72,28 +72,28 @@ try {
     Eval "document.querySelector('#membership-requests button:nth-child(2)').click();true" | Out-Null
     Start-Sleep -Milliseconds 150
     $socket=$studentSocket
-    Check 'Declined request stays locked and allows reapplication' (Eval "communityMembership.state('notes')==='rejected' && !!document.getElementById('join-reason') && document.getElementById('community-composer').hidden")
+    Check 'Declined request stays locked and allows reapplication' (Eval "communityMembership.state('general')==='rejected' && !!document.getElementById('join-reason') && document.getElementById('community-composer').hidden")
     Eval "document.getElementById('join-reason').value='Updated reason for joining notes.';document.querySelector('#community-access form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 150
     Eval "document.querySelector('#community-access button').click();true" | Out-Null
     Start-Sleep -Milliseconds 150
-    Check 'Pending request can be cancelled' (Eval "communityMembership.state('notes')==='cancelled'")
-    Eval "Array.from(document.querySelectorAll('#community-channels button')).find(b=>b.textContent==='Questions & help').click();document.getElementById('post-title').value='How do Python loops work?';document.getElementById('post-body').value='<img src=x onerror=alert(1)> Can someone explain iteration?';document.getElementById('community-composer').requestSubmit();true" | Out-Null
+    Check 'Pending request can be cancelled' (Eval "communityMembership.state('general')==='cancelled'")
+    Eval "Array.from(document.querySelectorAll('#community-channels button')).find(b=>b.textContent==='Help').click();document.getElementById('post-title').value='How do Python loops work?';document.getElementById('post-body').value='<img src=x onerror=alert(1)> Can someone explain iteration?';document.getElementById('community-composer').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 200
     Check 'Approved member publishes safely inside the channel' (Eval "document.querySelector('.community-post h3').textContent==='How do Python loops work?' && !document.querySelector('.community-post img')")
-    Eval "document.querySelector('.community-post-actions button:nth-child(2)').click();document.querySelector('.community-post textarea').value='Each iteration runs the loop body once.';document.querySelector('.community-post form').requestSubmit();true" | Out-Null
+    Eval "document.querySelector('.community-post-actions button:nth-child(3)').click();document.querySelector('.community-post textarea').value='Each iteration runs the loop body once.';document.querySelector('.community-post form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 150
     Check 'Approved member can reply' (Eval "document.querySelector('.community-reply-body').textContent.includes('iteration')")
-    Eval "document.querySelector('.community-post-actions button:nth-child(3)').click();true" | Out-Null
+    Eval "document.querySelector('.community-post-actions button:nth-child(4)').click();true" | Out-Null
     Start-Sleep -Milliseconds 150
     Open 'pages/services/community.html'
-    Check 'Membership and saved discussion persist after reload' (Eval "communityMembership.state('questions')==='approved' && document.querySelectorAll('.community-post').length===2")
+    Check 'Membership and saved discussion persist after reload' (Eval "communityMembership.state('help')==='approved' && document.querySelectorAll('.community-post').length===1 && document.querySelector('.community-post-actions button:nth-child(4)').getAttribute('aria-pressed')==='true'")
     Eval "document.getElementById('community-search').value='How do Python';document.getElementById('community-search').dispatchEvent(new Event('input'));true" | Out-Null
     Check 'Search only finds accessible posts' (Eval "document.querySelectorAll('.community-post').length===1")
     Eval "document.getElementById('community-search').value='';document.getElementById('community-search').dispatchEvent(new Event('input'));true" | Out-Null
     Eval "cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Other Student',email:'community-other@example.com',role:'student',isDemo:true}));true" | Out-Null
     Open 'pages/services/community.html'
-    Check 'Another student cannot inherit approved membership or saved posts' (Eval "communityMembership.state('questions')==='none' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
+    Check 'Another student cannot inherit approved membership or saved posts' (Eval "communityMembership.state('help')==='none' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
     Eval "cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Demo Student',email:'student@example.com',role:'student',isDemo:true}));true" | Out-Null
     Open 'pages/services/community.html'
     foreach($size in @(@{w=1440;h=1050},@{w=390;h=844})) {
@@ -112,12 +112,17 @@ try {
     Check 'Admin sees approved members separately' (Eval "document.querySelectorAll('#membership-requests article').length===1")
     Eval "document.querySelector('#membership-requests button').click();true" | Out-Null
     Start-Sleep -Milliseconds 150
+    Check 'Removing a member requires a reason' (Eval "communityMembership.requests().some(r=>r.status==='approved') && document.getElementById('membership-status').textContent.includes('reason')")
+    Eval "document.querySelector('#membership-requests textarea').value='Browser test removal reason';document.querySelector('#membership-requests button').click();true" | Out-Null
+    Start-Sleep -Milliseconds 150
+    Check 'Member removal is written to the audit log' (Eval "[...document.querySelectorAll('#audit-log li')].some(li=>li.textContent.includes('Member removed') && li.textContent.includes('Browser test removal reason'))")
+    Start-Sleep -Milliseconds 150
     $socket=$studentSocket
-    Check 'Removing membership immediately clears private content in another tab' (Eval "communityMembership.state('questions')==='revoked' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
+    Check 'Removing membership immediately clears private content in another tab' (Eval "communityMembership.state('help')==='revoked' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden")
     Eval "window.beforePosts=localStorage.getItem('codementor-community-v1');staleHelpful.click();true" | Out-Null
     Start-Sleep -Milliseconds 150
     Check 'Stale discussion actions cannot bypass revoked access' (Eval "window.beforePosts===localStorage.getItem('codementor-community-v1') && document.getElementById('community-status').textContent.includes('approval')")
-    Check 'Former member cannot enter directly after revocation' (Eval "(()=>{try{communityMembership.assertMember('questions');return false}catch{return true}})()")
+    Check 'Former member cannot enter directly after revocation' (Eval "(()=>{try{communityMembership.assertMember('help');return false}catch{return true}})()")
     Eval "localStorage.setItem(communityMembership.key,'broken-records');true" | Out-Null
     Open 'pages/services/community.html'
     Check 'Corrupt membership records fail closed without being overwritten' (Eval "localStorage.getItem(communityMembership.key)==='broken-records' && document.querySelectorAll('.community-post').length===0 && document.getElementById('community-composer').hidden && document.getElementById('community-status').textContent.includes('Access is locked')")
