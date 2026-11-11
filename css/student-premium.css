@@ -47,7 +47,7 @@
    --surface-alt #c2dde7, --line-color #8aafbd, --text-muted #405761.
    Green and amber are darker shades of the same tokens so small text keeps
    WCAG AA (>= 4.5:1) on all three blues. Other pages keep the :root values. */
-body.student-premium {
+body.student-premium, body.student-ui {
     --cm-page: var(--page-bg);
     --cm-surface: var(--surface-bg);
     --cm-surface-soft: var(--surface-alt);
@@ -335,6 +335,86 @@ dialog.lang-availability .button { margin: var(--cm-s1) var(--cm-s1) 0 0; }
     .lang-switch-list { position: fixed; left: 16px; right: 16px; top: 72px; width: auto; }
     .workspace-topbar .account-pill #account-name { display: none; }
 }
+
+/* 13. STUDENT UI — SHARED COMPONENTS ----------------------------------- */
+/* Opt-in with body.student-ui (every student page). Skins the existing class hooks only: no
+   ids, behaviour or layout grids change. Same original blue + burgundy as the Dashboard. */
+
+/* 13.1 Page header: eyebrow, title, one-line purpose */
+body.student-ui .workspace-main > .eyebrow, body.student-ui .services-main > .eyebrow { color: var(--cm-burgundy-700); font-size: var(--cm-text-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+body.student-ui .workspace-main > h1, body.student-ui .services-main > h1, body.student-ui .sp-page-title { font-size: clamp(28px, 3vw, 36px); line-height: 1.15; letter-spacing: -.01em; color: var(--cm-ink); }
+body.student-ui .workspace-intro { color: var(--cm-ink-2); max-width: 64ch; font-size: var(--cm-text-md); line-height: 1.55; }
+
+/* 13.2 Cards: large (section card) and small (stat/choice tile) */
+body.student-ui :is(.dashboard-card, .services-panel, .peer-panel, .module-section, .onboarding-sidebar) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-1); }
+body.student-ui :is(.dashboard-stat, .services-card, .choice-card, .roadmap-card) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: 14px; box-shadow: var(--cm-shadow-1); }
+body.student-ui .dashboard-sage { background: var(--cm-surface-soft); }
+body.student-ui .dashboard-stat h2 { color: var(--cm-burgundy-900); font-variant-numeric: tabular-nums; }
+body.student-ui .dashboard-stat > p:first-child { color: var(--cm-ink-3); font-size: var(--cm-text-xs); font-weight: 700; letter-spacing: .06em; }
+
+/* 13.3 Section titles */
+body.student-ui :is(.dashboard-card, .services-panel, .peer-panel, .module-section) > h2,
+body.student-ui .sp-section-title { font-size: var(--cm-text-lg); line-height: 1.25; margin-top: 0; color: var(--cm-ink); }
+
+/* 13.4 Buttons (tactile via the interaction kit; 44px touch targets) */
+body.student-ui .button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: var(--cm-radius-sm); font-weight: 600; }
+body.student-ui .button-primary { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
+body.student-ui .button-primary:hover { background: var(--cm-burgundy-900); border-color: var(--cm-burgundy-900); }
+body.student-ui .button-outline { background: var(--cm-surface); border: 1px solid var(--cm-line-strong); color: var(--cm-ink); }
+body.student-ui .button-outline:hover { border-color: var(--cm-burgundy-700); }
+body.student-ui .button:disabled, body.student-ui .button[aria-disabled="true"] { opacity: .6; cursor: not-allowed; }
+
+/* 13.5 Form fields */
+body.student-ui :is(.form-field, .peer-form, .preference-group, .preferences-panel, .content-editor, .profile-form, .chat-form) :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea:not(.code-editor):not(#code-editor)) {
+    min-height: 44px; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); background: #fff; color: var(--cm-ink); font: inherit; padding: 10px 12px; max-width: 100%;
+}
+body.student-ui :is(.form-field, .peer-form, .preference-group, .profile-form) label { font-weight: 600; color: var(--cm-ink); }
+body.student-ui :is(input, select, textarea, button, a, summary, [tabindex]):focus-visible { outline: none; box-shadow: var(--cm-focus); }
+body.student-ui :is(.field-help, .preference-help) { color: var(--cm-ink-2); font-size: var(--cm-text-sm); }
+body.student-ui .field-error, body.student-ui .form-message.is-error { color: #8a1c1c; }
+
+/* 13.6 Chips and badges */
+body.student-ui :is(.services-tag, .peer-status, .sp-chip, .status-chip) { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: var(--cm-radius-pill); font-size: var(--cm-text-xs); font-weight: 700; background: var(--cm-blue-100); color: var(--cm-ink-2); border: 0; }
+
+/* 13.7 Tabs */
+body.student-ui [role="tablist"] { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: var(--cm-radius-pill); background: var(--cm-surface-soft); }
+body.student-ui [role="tablist"] [role="tab"] { min-height: 40px; padding: 8px 16px; border: 0; border-radius: var(--cm-radius-pill); background: transparent; color: var(--cm-ink); font: inherit; font-weight: 600; cursor: pointer; }
+body.student-ui [role="tablist"] [role="tab"][aria-selected="true"] { background: var(--cm-burgundy-700); color: #fff; }
+
+/* 13.8 Lists and tables */
+body.student-ui main table { width: 100%; border-collapse: collapse; }
+body.student-ui main :is(th, td) { padding: 10px 12px; border-bottom: 1px solid var(--cm-line); text-align: left; vertical-align: top; }
+body.student-ui main th { font-size: var(--cm-text-xs); color: var(--cm-ink-3); text-transform: uppercase; letter-spacing: .05em; }
+
+/* 13.9 Progress bar (ring: .sp-ring, section 7) */
+body.student-ui main progress:not(.sp-progress) { appearance: none; -webkit-appearance: none; width: 100%; height: 10px; border: 0; border-radius: var(--cm-radius-pill); background: var(--cm-blue-100); overflow: hidden; }
+body.student-ui main progress:not(.sp-progress)::-webkit-progress-bar { background: var(--cm-blue-100); border-radius: var(--cm-radius-pill); }
+body.student-ui main progress:not(.sp-progress)::-webkit-progress-value { background: var(--cm-burgundy-700); border-radius: var(--cm-radius-pill); }
+body.student-ui main progress:not(.sp-progress)::-moz-progress-bar { background: var(--cm-burgundy-700); border-radius: var(--cm-radius-pill); }
+
+/* 13.10 Empty state, notice banner, footnotes, text links */
+body.student-ui :is(.peer-empty, .community-empty, .empty-state) { padding: var(--cm-s3); border: 1px dashed var(--cm-line-strong); border-radius: var(--cm-radius); background: var(--cm-surface-soft); color: var(--cm-ink-2); text-align: center; }
+body.student-ui :is(.services-notice, .mentor-demo-notice, .sp-notice) { padding: 12px 16px; border-radius: 12px; border: 1px solid var(--cm-line); border-left: 4px solid var(--cm-burgundy-700); background: var(--cm-surface-soft); color: var(--cm-ink); }
+body.student-ui :is(.dashboard-footnote, .services-storage-note, .peer-local-note) { color: var(--cm-ink-3); font-size: var(--cm-text-xs); }
+body.student-ui :is(.dashboard-text-link, .module-back) { color: var(--cm-burgundy-700); font-weight: 600; }
+
+/* 13.11 Dialog */
+body.student-ui dialog:is(.confirmation-dialog, .sp-dialog) { border: 0; border-radius: var(--cm-radius); padding: var(--cm-s3); background: var(--cm-surface); color: var(--cm-ink); box-shadow: var(--cm-shadow-2); max-width: min(520px, calc(100vw - 32px)); }
+body.student-ui dialog:is(.confirmation-dialog, .sp-dialog)::backdrop { background: rgb(29 20 22 / 40%); }
+
+/* 13.12 Roadmap nodes (learning path / module): completed, current, available, locked, placed-out */
+body.student-ui .sp-node-state { display: inline-flex; padding: 2px 8px; border-radius: var(--cm-radius-pill); font-size: 11px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; background: var(--cm-blue-100); color: var(--cm-ink-2); }
+body.student-ui [data-node-state="completed"] .sp-node-state { background: var(--cm-success-bg); color: var(--cm-success); }
+body.student-ui [data-node-state="current"] .sp-node-state { background: var(--cm-burgundy-700); color: #fff; }
+body.student-ui [data-node-state="placed-out"] .sp-node-state { background: var(--cm-amber-bg); color: var(--cm-amber); }
+body.student-ui [data-node-state="current"] { box-shadow: 0 0 0 2px var(--cm-burgundy-700), var(--cm-shadow-1); }
+body.student-ui [data-node-state="placed-out"] { border-style: dashed; }
+body.student-ui [data-node-state="locked"] { background: var(--cm-surface-soft); }
+
+/* 13.13 Layout rhythm and small screens */
+body.student-ui .workspace-main { min-width: 0; }
+body.student-ui main img, body.student-ui main pre, body.student-ui main table { max-width: 100%; }
+@media (max-width: 600px) { body.student-ui .workspace-main > h1, body.student-ui .services-main > h1 { font-size: var(--cm-text-xl); } }
 
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
