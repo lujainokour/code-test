@@ -11265,3 +11265,18 @@ a.site-brand > img { flex-shrink: 0; width: 44px; height: 44px; object-fit: cont
 
 /* Completion badge (local demo): honest disclaimer, also printed */
 .certificate-disclaimer { margin: 6px auto 0; max-width: 80%; font-size: 11px; letter-spacing: .04em; text-align: center; color: #5a3b3e; }
+
+/* Completion badge (local demo), PRINT ONLY: keep the headline on one line and every line
+   (recipient name, disclaimer, date, signature) inside the printed border, including long
+   names (they wrap within the badge and use a smaller size). Presentation only. */
+@media print {
+ .certificate-document .certificate-headline { font-size: 5.4cqw; letter-spacing: .12cqw; line-height: 1.05; white-space: nowrap; max-width: 100%; }
+ .certificate-document .certificate-subtitle { font-size: 2.1cqw; letter-spacing: .5cqw; margin: .2cqw 0 .8cqw; }
+ .certificate-document .certificate-presentation { margin-bottom: .3cqw; }
+ .certificate-document .certificate-recipient { max-width: 92%; font-size: 4.4cqw; line-height: 1.15; overflow-wrap: anywhere; }
+ .certificate-document .certificate-recipient.certificate-name-long { font-size: 3cqw; }
+ .certificate-document .certificate-python-badge { margin-top: .8cqw; }
+ .certificate-document .certificate-disclaimer { max-width: 90%; margin-top: .5cqw; font-size: 1cqw; line-height: 1.3; }
+ .certificate-document .certificate-preview-label { margin-top: .5cqw; }
+ .certificate-document-footer { min-height: 0; }
+}

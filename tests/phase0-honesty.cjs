@@ -57,4 +57,11 @@ check('The earned item is a "Completion badge (local demo)" and never presented 
     assert.match(fs.readFileSync('index.html', 'utf8'), /not a verifiable credential and is not\s+issued by a server/);
     for (const file of fs.readdirSync('pages/student').filter(f => f.endsWith('.html'))) assert.doesNotMatch(fs.readFileSync(`pages/student/${file}`, 'utf8'), /certificates\.html"[^>]*>\s*Certificates\s*</, file + ' nav label');
 });
+check('The printed completion badge keeps its headline on one line and long names inside the border', () => {
+    const css = fs.readFileSync('css/style.css', 'utf8');
+    const block = css.slice(css.lastIndexOf('/* Completion badge (local demo), PRINT ONLY'));
+    assert.match(block, /@media print \{[\s\S]*\.certificate-headline \{[^}]*white-space: nowrap/);
+    assert.match(block, /\.certificate-recipient \{[^}]*overflow-wrap: anywhere/);
+    assert.match(block, /\.certificate-recipient\.certificate-name-long \{ font-size: 3cqw; \}/);
+});
 console.log(`${passed} Phase 0 honesty checks passed.`);
