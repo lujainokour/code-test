@@ -1,0 +1,29 @@
+{
+  "notice": "Content extracted from active source; learner records are explicitly fictional academic fixtures.",
+  "files": [
+    {
+      "path": "js/language-catalog.js",
+      "sha256": "7e052d3aa0682f9ac5d1015438db4064dde0313974fd2b2631107464c0e969ac"
+    },
+    {
+      "path": "js/python-lessons.js",
+      "sha256": "9c380da43754f8024f6f03ec7f3a452e883a20c4660eb2d14777093af99acfb5"
+    },
+    {
+      "path": "js/python-curriculum.js",
+      "sha256": "01f93f700c527c3fb32661235e69d8387252b8c202843842b932c5fd112e7104"
+    },
+    {
+      "path": "js/placement-data.js",
+      "sha256": "f878a0937093dab0f2864d9e2a46137b64d56a0e638d572b6efd1362be5efe86"
+    },
+    {
+      "path": "js/learning-support.js",
+      "sha256": "f9271326f705450bc91a11b92f5b575b75b2a67a049c93856d7337f3bf14696e"
+    },
+    {
+      "path": "js/workspace.js",
+      "sha256": "c45554dc17f462b1d49eab15108654ed645d39049384bc14cdee40fc2e7ebbdc"
+    }
+  ]
+}

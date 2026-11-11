@@ -1,0 +1,66 @@
+{
+  "status": "SQL VERIFIED; DOCUMENTATION DOM VERIFIED; REAL BROWSER QA BLOCKED",
+  "counts": {
+    "tables": 23,
+    "columns": 169,
+    "primaryKeys": 23,
+    "foreignKeys": 37,
+    "relationships": 37,
+    "views": 3,
+    "functions": 2,
+    "procedures": 3,
+    "triggers": 20,
+    "indexes": 66
+  },
+  "databaseName": "CodeMentorAI_Phase3_Test_20261105_R3",
+  "serverVersion": "17.0.1000.7",
+  "realSqlServerExecutionVerified": true,
+  "transactionalSqlChecks": {
+    "passed": 102,
+    "failed": 0
+  },
+  "additionalSqlChecks": {
+    "passed": 9,
+    "failed": 0
+  },
+  "totalSqlChecks": {
+    "passed": 111,
+    "failed": 0
+  },
+  "documentationDomChecks": {
+    "passed": 28,
+    "failed": 0
+  },
+  "realBrowserVerified": false,
+  "browserBlocker": "CUA browser host unavailable; native browser access stopped because current Windows browser URL could not be confidently determined. No workaround attempted.",
+  "preservation": {
+    "status": "PASS",
+    "baselineFilesChecked": 714,
+    "changedOrMissing": [],
+    "frontendFilesChecked": 122,
+    "phase1ArchiveAndVerifiedZipFilesChecked": 87,
+    "scope": "New database/ and docs/database/ outputs; four inaccessible tmp/proposal/python-libs directories are not covered."
+  },
+  "submissionSha256": "e7c0a9a228bb5cd1f4f9c25a7ef7e9be124b854321311eceb7b99f7dcefb3b5f",
+  "documentationFiles": [
+    "database-data.js",
+    "database.css",
+    "database.html",
+    "database.js"
+  ],
+  "retainedTestDatabases": [
+    "CodeMentorAI_Phase3_Test_20261105",
+    "CodeMentorAI_Phase3_Test_20261105_R2",
+    "CodeMentorAI_Phase3_Test_20261105_R3"
+  ],
+  "limitations": [
+    "Real browser rendering, clipboard/download permissions, responsive visual layout and screen-reader behavior remain unverified.",
+    "Only SQL Server 2025 was executed; SQL Server 2019+ compatibility is a documented target, not separately tested.",
+    "The existing application remains browser-local; no backend authentication/authorization or server Python evaluator was implemented.",
+    "Seed learner outcomes are fictional SQL fixtures, not real Python runs or imported achievements.",
+    "Two composite evidence junctions deliberately carry constrained redundant version context; physical schema is not claimed to be strictly redundancy-free 3NF.",
+    "Earlier-level navigation authorization, full course-edition snapshots and all optional features remain separate backend/product scope.",
+    "Normal IDENTITY gaps can result from rollback tests. Earlier test databases were retained without cleanup.",
+    "Original-database hashes cover the final safety/concurrency run; no writes were issued to the original database during this task."
+  ]
+}

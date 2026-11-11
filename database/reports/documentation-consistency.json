@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "source": "Live SQL Server sys metadata versus independent authoring specification",
+  "counts": {
+    "tables": 23,
+    "columns": 169,
+    "primaryKeys": 23,
+    "foreignKeys": 37,
+    "relationships": 37,
+    "views": 3,
+    "functions": 2,
+    "procedures": 3,
+    "triggers": 20,
+    "indexes": 66
+  },
+  "sqlSha256": "e7c0a9a228bb5cd1f4f9c25a7ef7e9be124b854321311eceb7b99f7dcefb3b5f",
+  "checks": [
+    "All 23 tables/169 columns match types/nullability/IDENTITY",
+    "All 37 composite and single foreign keys match column order/targets",
+    "Every table appears once in explicit diagram layout",
+    "All constraints/indexes/triggers exported from the actual database",
+    "Displayed/downloaded SQL is byte-identical to submission.sql"
+  ]
+}

@@ -1,0 +1,2203 @@
+{
+  "tables": [
+    {
+      "name": "Users",
+      "group": "Identity",
+      "columns": [
+        {
+          "name": "UserId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "Email",
+          "type": "nvarchar(254)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "FullName",
+          "type": "nvarchar(160)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ReportedAge",
+          "type": "tinyint",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "AgeRecordedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "RoleCode",
+          "type": "varchar(10)",
+          "nullable": false,
+          "default": "'Student'",
+          "identity": false
+        },
+        {
+          "name": "AccountStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Enabled'",
+          "identity": false
+        },
+        {
+          "name": "ExternalAuthSubject",
+          "type": "nvarchar(256)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CreatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "UserId"
+      ],
+      "unique": [
+        [
+          "Email"
+        ]
+      ],
+      "checks": [
+        "RoleCode IN ('Student','Admin')",
+        "AccountStatus IN ('Enabled','Suspended')",
+        "Email = LOWER(LTRIM(RTRIM(Email))) COLLATE Latin1_General_100_BIN2 AND Email LIKE N'%_@_%._%' AND Email NOT LIKE N'% %'",
+        "LEN(LTRIM(RTRIM(FullName))) > 0",
+        "(ReportedAge IS NULL AND AgeRecordedAtUtc IS NULL) OR (ReportedAge IS NOT NULL AND ReportedAge BETWEEN 1 AND 120 AND AgeRecordedAtUtc IS NOT NULL)"
+      ],
+      "fks": []
+    },
+    {
+      "name": "Languages",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "LanguageId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "Slug",
+          "type": "varchar(40)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(80)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Description",
+          "type": "nvarchar(600)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ContentReadinessCode",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'ComingSoon'",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "LanguageId"
+      ],
+      "unique": [
+        [
+          "Slug"
+        ],
+        [
+          "Name"
+        ]
+      ],
+      "checks": [
+        "ContentReadinessCode IN ('Ready','ComingSoon')"
+      ],
+      "fks": []
+    },
+    {
+      "name": "StudentProfiles",
+      "group": "Identity",
+      "columns": [
+        {
+          "name": "UserId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PreferredLanguageId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ExperienceCode",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "LearningGoalCode",
+          "type": "varchar(30)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "UpdatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "UserId"
+      ],
+      "unique": [],
+      "checks": [
+        "ExperienceCode IN ('Beginner','SomeExperience','Experienced')",
+        "LearningGoalCode IN ('Foundations','Projects','Career')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "UserId"
+          ],
+          "parent": "Users",
+          "parentColumns": [
+            "UserId"
+          ],
+          "name": "FK_StudentProfiles_1_Users_UserId"
+        },
+        {
+          "columns": [
+            "PreferredLanguageId"
+          ],
+          "parent": "Languages",
+          "parentColumns": [
+            "LanguageId"
+          ],
+          "name": "FK_StudentProfiles_2_Languages_PreferredLanguageId"
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "CourseId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LanguageId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Slug",
+          "type": "varchar(80)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Description",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PublicationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Draft'",
+          "identity": false
+        },
+        {
+          "name": "CreatedByUserId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CreatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        },
+        {
+          "name": "ContentVersion",
+          "type": "rowversion",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "CourseId"
+      ],
+      "unique": [
+        [
+          "Slug"
+        ]
+      ],
+      "checks": [
+        "PublicationStatus IN ('Draft','Published','Archived')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LanguageId"
+          ],
+          "parent": "Languages",
+          "parentColumns": [
+            "LanguageId"
+          ],
+          "name": "FK_Courses_1_Languages_LanguageId"
+        },
+        {
+          "columns": [
+            "CreatedByUserId"
+          ],
+          "parent": "Users",
+          "parentColumns": [
+            "UserId"
+          ],
+          "name": "FK_Courses_2_Users_CreatedByUserId"
+        }
+      ]
+    },
+    {
+      "name": "Levels",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "LevelId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "CourseId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Description",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PublicationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Draft'",
+          "identity": false
+        },
+        {
+          "name": "CreatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "LevelId"
+      ],
+      "unique": [
+        [
+          "CourseId",
+          "SortOrder"
+        ]
+      ],
+      "checks": [
+        "SortOrder > 0",
+        "PublicationStatus IN ('Draft','Published','Archived')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "CourseId"
+          ],
+          "parent": "Courses",
+          "parentColumns": [
+            "CourseId"
+          ],
+          "name": "FK_Levels_1_Courses_CourseId"
+        }
+      ]
+    },
+    {
+      "name": "LevelObjectives",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "LevelId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ObjectiveNo",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ObjectiveText",
+          "type": "nvarchar(1000)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "LevelId",
+        "ObjectiveNo"
+      ],
+      "unique": [],
+      "checks": [
+        "ObjectiveNo > 0"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LevelId"
+          ],
+          "parent": "Levels",
+          "parentColumns": [
+            "LevelId"
+          ],
+          "name": "FK_LevelObjectives_1_Levels_LevelId"
+        }
+      ]
+    },
+    {
+      "name": "Topics",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "TopicId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LanguageId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ParentTopicId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Code",
+          "type": "varchar(80)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(160)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "TopicId"
+      ],
+      "unique": [
+        [
+          "LanguageId",
+          "Code"
+        ]
+      ],
+      "checks": [
+        "ParentTopicId IS NULL OR ParentTopicId <> TopicId"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LanguageId"
+          ],
+          "parent": "Languages",
+          "parentColumns": [
+            "LanguageId"
+          ],
+          "name": "FK_Topics_1_Languages_LanguageId"
+        },
+        {
+          "columns": [
+            "ParentTopicId"
+          ],
+          "parent": "Topics",
+          "parentColumns": [
+            "TopicId"
+          ],
+          "name": "FK_Topics_2_Topics_ParentTopicId"
+        }
+      ]
+    },
+    {
+      "name": "Lessons",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "LessonId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LevelId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TopicId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Slug",
+          "type": "varchar(80)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Summary",
+          "type": "nvarchar(1000)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Body",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ExampleCode",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PreparedOutput",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EstimatedMinutes",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PublicationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Draft'",
+          "identity": false
+        },
+        {
+          "name": "UpdatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "LessonId"
+      ],
+      "unique": [
+        [
+          "LevelId",
+          "Slug"
+        ],
+        [
+          "LevelId",
+          "SortOrder"
+        ]
+      ],
+      "checks": [
+        "EstimatedMinutes > 0",
+        "SortOrder > 0",
+        "PublicationStatus IN ('Draft','Published','Archived')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LevelId"
+          ],
+          "parent": "Levels",
+          "parentColumns": [
+            "LevelId"
+          ],
+          "name": "FK_Lessons_1_Levels_LevelId"
+        },
+        {
+          "columns": [
+            "TopicId"
+          ],
+          "parent": "Topics",
+          "parentColumns": [
+            "TopicId"
+          ],
+          "name": "FK_Lessons_2_Topics_TopicId"
+        }
+      ]
+    },
+    {
+      "name": "LessonResources",
+      "group": "Curriculum",
+      "columns": [
+        {
+          "name": "ResourceId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LessonId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Url",
+          "type": "nvarchar(2048)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ResourceType",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ResourceLanguage",
+          "type": "nvarchar(40)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "ResourceId"
+      ],
+      "unique": [
+        [
+          "LessonId",
+          "SortOrder"
+        ]
+      ],
+      "checks": [
+        "SortOrder > 0",
+        "ResourceType IN ('Video','Documentation','Other')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LessonId"
+          ],
+          "parent": "Lessons",
+          "parentColumns": [
+            "LessonId"
+          ],
+          "name": "FK_LessonResources_1_Lessons_LessonId"
+        }
+      ]
+    },
+    {
+      "name": "Assessments",
+      "group": "Assessments",
+      "columns": [
+        {
+          "name": "AssessmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LogicalCode",
+          "type": "varchar(100)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "VersionNo",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Kind",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ScopeCourseId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ScopeLevelId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ScopeLessonId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PassPercent",
+          "type": "decimal(5,2)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PublicationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Draft'",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "AssessmentId"
+      ],
+      "unique": [
+        [
+          "LogicalCode",
+          "VersionNo"
+        ]
+      ],
+      "checks": [
+        "VersionNo > 0",
+        "(Kind='Placement' AND ScopeCourseId IS NOT NULL AND ScopeLevelId IS NULL AND ScopeLessonId IS NULL AND PassPercent IS NULL) OR (Kind='LevelQuiz' AND ScopeCourseId IS NULL AND ScopeLevelId IS NOT NULL AND ScopeLessonId IS NULL AND PassPercent IS NOT NULL AND PassPercent BETWEEN 0 AND 100) OR (Kind='LessonCheck' AND ScopeCourseId IS NULL AND ScopeLevelId IS NULL AND ScopeLessonId IS NOT NULL AND PassPercent IS NOT NULL AND PassPercent=100)",
+        "PublicationStatus IN ('Draft','Published')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "ScopeCourseId"
+          ],
+          "parent": "Courses",
+          "parentColumns": [
+            "CourseId"
+          ],
+          "name": "FK_Assessments_1_Courses_ScopeCourseId"
+        },
+        {
+          "columns": [
+            "ScopeLevelId"
+          ],
+          "parent": "Levels",
+          "parentColumns": [
+            "LevelId"
+          ],
+          "name": "FK_Assessments_2_Levels_ScopeLevelId"
+        },
+        {
+          "columns": [
+            "ScopeLessonId"
+          ],
+          "parent": "Lessons",
+          "parentColumns": [
+            "LessonId"
+          ],
+          "name": "FK_Assessments_3_Lessons_ScopeLessonId"
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "group": "Assessments",
+      "columns": [
+        {
+          "name": "QuestionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "AssessmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TopicId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Prompt",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CodeSnippet",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Explanation",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "QuestionId"
+      ],
+      "unique": [
+        [
+          "AssessmentId",
+          "SortOrder"
+        ],
+        [
+          "AssessmentId",
+          "QuestionId"
+        ]
+      ],
+      "checks": [
+        "SortOrder > 0"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "AssessmentId"
+          ],
+          "parent": "Assessments",
+          "parentColumns": [
+            "AssessmentId"
+          ],
+          "name": "FK_Questions_1_Assessments_AssessmentId"
+        },
+        {
+          "columns": [
+            "TopicId"
+          ],
+          "parent": "Topics",
+          "parentColumns": [
+            "TopicId"
+          ],
+          "name": "FK_Questions_2_Topics_TopicId"
+        }
+      ]
+    },
+    {
+      "name": "QuestionOptions",
+      "group": "Assessments",
+      "columns": [
+        {
+          "name": "OptionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "QuestionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "OptionText",
+          "type": "nvarchar(1000)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "IsCorrect",
+          "type": "bit",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "OptionId"
+      ],
+      "unique": [
+        [
+          "QuestionId",
+          "SortOrder"
+        ],
+        [
+          "QuestionId",
+          "OptionId"
+        ]
+      ],
+      "checks": [
+        "SortOrder > 0"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "QuestionId"
+          ],
+          "parent": "Questions",
+          "parentColumns": [
+            "QuestionId"
+          ],
+          "name": "FK_QuestionOptions_1_Questions_QuestionId"
+        }
+      ]
+    },
+    {
+      "name": "AssessmentAttempts",
+      "group": "Assessments",
+      "columns": [
+        {
+          "name": "AttemptId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "UserId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "AssessmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Status",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'InProgress'",
+          "identity": false
+        },
+        {
+          "name": "CurrentQuestionNo",
+          "type": "smallint",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "StartedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        },
+        {
+          "name": "SubmittedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EvidenceOrigin",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": "'server'",
+          "identity": false
+        },
+        {
+          "name": "ImportedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "AttemptId"
+      ],
+      "unique": [
+        [
+          "AttemptId",
+          "AssessmentId"
+        ]
+      ],
+      "checks": [
+        "Status IN ('InProgress','Submitted','Cancelled')",
+        "CurrentQuestionNo IS NULL OR CurrentQuestionNo > 0",
+        "(Status='Submitted' AND (EvidenceOrigin='browser-import' OR SubmittedAtUtc IS NOT NULL) AND (SubmittedAtUtc IS NULL OR StartedAtUtc IS NULL OR SubmittedAtUtc >= StartedAtUtc)) OR (Status <> 'Submitted' AND SubmittedAtUtc IS NULL)",
+        "EvidenceOrigin IN ('server','academic-seed','browser-import')",
+        "EvidenceOrigin='browser-import' OR StartedAtUtc IS NOT NULL",
+        "(EvidenceOrigin='browser-import' AND ImportedAtUtc IS NOT NULL) OR (EvidenceOrigin<>'browser-import' AND ImportedAtUtc IS NULL)"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "UserId"
+          ],
+          "parent": "StudentProfiles",
+          "parentColumns": [
+            "UserId"
+          ],
+          "name": "FK_AssessmentAttempts_1_StudentProfiles_UserId"
+        },
+        {
+          "columns": [
+            "AssessmentId"
+          ],
+          "parent": "Assessments",
+          "parentColumns": [
+            "AssessmentId"
+          ],
+          "name": "FK_AssessmentAttempts_2_Assessments_AssessmentId"
+        }
+      ]
+    },
+    {
+      "name": "AttemptAnswers",
+      "group": "Assessments",
+      "columns": [
+        {
+          "name": "AttemptId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "QuestionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "AssessmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "OptionId",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ResponseKind",
+          "type": "varchar(8)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "AnsweredAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "AttemptId",
+        "QuestionId"
+      ],
+      "unique": [],
+      "checks": [
+        "(ResponseKind='option' AND OptionId IS NOT NULL) OR (ResponseKind='unsure' AND OptionId IS NULL)"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "AttemptId",
+            "AssessmentId"
+          ],
+          "parent": "AssessmentAttempts",
+          "parentColumns": [
+            "AttemptId",
+            "AssessmentId"
+          ],
+          "name": "FK_AttemptAnswers_1_Answer_AttemptVersion"
+        },
+        {
+          "columns": [
+            "AssessmentId",
+            "QuestionId"
+          ],
+          "parent": "Questions",
+          "parentColumns": [
+            "AssessmentId",
+            "QuestionId"
+          ],
+          "name": "FK_AttemptAnswers_2_Answer_QuestionVersion"
+        },
+        {
+          "columns": [
+            "QuestionId",
+            "OptionId"
+          ],
+          "parent": "QuestionOptions",
+          "parentColumns": [
+            "QuestionId",
+            "OptionId"
+          ],
+          "name": "FK_AttemptAnswers_3_Answer_QuestionOption"
+        }
+      ]
+    },
+    {
+      "name": "Enrollments",
+      "group": "Learning",
+      "columns": [
+        {
+          "name": "EnrollmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "StudentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CourseId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EnrolledAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        },
+        {
+          "name": "ParticipationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Active'",
+          "identity": false
+        },
+        {
+          "name": "EvidenceOrigin",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": "'server'",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "EnrollmentId"
+      ],
+      "unique": [
+        [
+          "StudentId",
+          "CourseId"
+        ]
+      ],
+      "checks": [
+        "ParticipationStatus IN ('Active','Paused','Completed')",
+        "EvidenceOrigin IN ('server','academic-seed','browser-import')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "StudentId"
+          ],
+          "parent": "StudentProfiles",
+          "parentColumns": [
+            "UserId"
+          ],
+          "name": "FK_Enrollments_1_StudentProfiles_StudentId"
+        },
+        {
+          "columns": [
+            "CourseId"
+          ],
+          "parent": "Courses",
+          "parentColumns": [
+            "CourseId"
+          ],
+          "name": "FK_Enrollments_2_Courses_CourseId"
+        }
+      ]
+    },
+    {
+      "name": "LessonCompletions",
+      "group": "Learning",
+      "columns": [
+        {
+          "name": "EnrollmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "LessonId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CompletedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CompletionMethod",
+          "type": "varchar(16)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EvidenceOrigin",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": "'server'",
+          "identity": false
+        },
+        {
+          "name": "ImportedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "EnrollmentId",
+        "LessonId"
+      ],
+      "unique": [],
+      "checks": [
+        "CompletionMethod IN ('manual','correct-answer','imported')",
+        "EvidenceOrigin IN ('server','academic-seed','browser-import')",
+        "(EvidenceOrigin='browser-import' AND CompletionMethod='imported' AND ImportedAtUtc IS NOT NULL) OR (EvidenceOrigin<>'browser-import' AND CompletionMethod<>'imported' AND ImportedAtUtc IS NULL AND CompletedAtUtc IS NOT NULL)"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "EnrollmentId"
+          ],
+          "parent": "Enrollments",
+          "parentColumns": [
+            "EnrollmentId"
+          ],
+          "name": "FK_LessonCompletions_1_Enrollments_EnrollmentId"
+        },
+        {
+          "columns": [
+            "LessonId"
+          ],
+          "parent": "Lessons",
+          "parentColumns": [
+            "LessonId"
+          ],
+          "name": "FK_LessonCompletions_2_Lessons_LessonId"
+        }
+      ]
+    },
+    {
+      "name": "CodingTasks",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "LevelId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TaskCode",
+          "type": "varchar(80)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "VersionNo",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TaskKind",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Title",
+          "type": "nvarchar(200)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Description",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "RequirementsText",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "StarterCode",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SampleInput",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SampleOutput",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ReferenceSolution",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SolutionExplanation",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "VerificationCode",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SortOrder",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "PublicationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Draft'",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "TaskId"
+      ],
+      "unique": [
+        [
+          "TaskCode",
+          "VersionNo"
+        ]
+      ],
+      "checks": [
+        "VersionNo > 0",
+        "SortOrder > 0",
+        "TaskKind IN ('Exercise','FinalProject')",
+        "PublicationStatus IN ('Draft','Published')"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "LevelId"
+          ],
+          "parent": "Levels",
+          "parentColumns": [
+            "LevelId"
+          ],
+          "name": "FK_CodingTasks_1_Levels_LevelId"
+        }
+      ]
+    },
+    {
+      "name": "CodingTaskTopics",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TopicId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "TaskId",
+        "TopicId"
+      ],
+      "unique": [],
+      "checks": [],
+      "fks": [
+        {
+          "columns": [
+            "TaskId"
+          ],
+          "parent": "CodingTasks",
+          "parentColumns": [
+            "TaskId"
+          ],
+          "name": "FK_CodingTaskTopics_1_CodingTasks_TaskId"
+        },
+        {
+          "columns": [
+            "TopicId"
+          ],
+          "parent": "Topics",
+          "parentColumns": [
+            "TopicId"
+          ],
+          "name": "FK_CodingTaskTopics_2_Topics_TopicId"
+        }
+      ]
+    },
+    {
+      "name": "TaskTestCases",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "TestCaseId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CaseNo",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "InputText",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ExpectedOutput",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "IsPublic",
+          "type": "bit",
+          "nullable": false,
+          "default": "1",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "TestCaseId"
+      ],
+      "unique": [
+        [
+          "TaskId",
+          "CaseNo"
+        ],
+        [
+          "TaskId",
+          "TestCaseId"
+        ]
+      ],
+      "checks": [
+        "CaseNo > 0"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "TaskId"
+          ],
+          "parent": "CodingTasks",
+          "parentColumns": [
+            "TaskId"
+          ],
+          "name": "FK_TaskTestCases_1_CodingTasks_TaskId"
+        }
+      ]
+    },
+    {
+      "name": "TaskHints",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "HintNo",
+          "type": "smallint",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "HintText",
+          "type": "nvarchar(2000)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "TaskId",
+        "HintNo"
+      ],
+      "unique": [],
+      "checks": [
+        "HintNo > 0"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "TaskId"
+          ],
+          "parent": "CodingTasks",
+          "parentColumns": [
+            "TaskId"
+          ],
+          "name": "FK_TaskHints_1_CodingTasks_TaskId"
+        }
+      ]
+    },
+    {
+      "name": "TaskWorkspaceState",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "EnrollmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "DraftCode",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "DraftInput",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "DraftUpdatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "HintsRevealedCount",
+          "type": "smallint",
+          "nullable": false,
+          "default": "0",
+          "identity": false
+        },
+        {
+          "name": "HasAttempted",
+          "type": "bit",
+          "nullable": false,
+          "default": "0",
+          "identity": false
+        },
+        {
+          "name": "SolutionViewed",
+          "type": "bit",
+          "nullable": false,
+          "default": "0",
+          "identity": false
+        },
+        {
+          "name": "StateUpdatedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": false,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        }
+      ],
+      "pk": [
+        "EnrollmentId",
+        "TaskId"
+      ],
+      "unique": [],
+      "checks": [
+        "HintsRevealedCount >= 0",
+        "SolutionViewed=0 OR HasAttempted=1"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "EnrollmentId"
+          ],
+          "parent": "Enrollments",
+          "parentColumns": [
+            "EnrollmentId"
+          ],
+          "name": "FK_TaskWorkspaceState_1_Enrollments_EnrollmentId"
+        },
+        {
+          "columns": [
+            "TaskId"
+          ],
+          "parent": "CodingTasks",
+          "parentColumns": [
+            "TaskId"
+          ],
+          "name": "FK_TaskWorkspaceState_2_CodingTasks_TaskId"
+        }
+      ]
+    },
+    {
+      "name": "CodeSubmissions",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "SubmissionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": true
+        },
+        {
+          "name": "EnrollmentId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "CodeText",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "SubmittedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": "SYSUTCDATETIME()",
+          "identity": false
+        },
+        {
+          "name": "EvaluationStatus",
+          "type": "varchar(12)",
+          "nullable": false,
+          "default": "'Pending'",
+          "identity": false
+        },
+        {
+          "name": "FinishedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EvaluationError",
+          "type": "nvarchar(2000)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ExecutionEnvironment",
+          "type": "nvarchar(100)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "RuntimeVersion",
+          "type": "nvarchar(80)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EvaluatorVersion",
+          "type": "nvarchar(80)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "EvidenceOrigin",
+          "type": "varchar(20)",
+          "nullable": false,
+          "default": "'server'",
+          "identity": false
+        },
+        {
+          "name": "ImportedAtUtc",
+          "type": "datetime2(3)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "SubmissionId"
+      ],
+      "unique": [
+        [
+          "SubmissionId",
+          "TaskId"
+        ]
+      ],
+      "checks": [
+        "EvaluationStatus IN ('Pending','Running','Completed','Error','Cancelled')",
+        "EvidenceOrigin IN ('server','academic-seed','browser-import')",
+        "EvidenceOrigin='browser-import' OR SubmittedAtUtc IS NOT NULL",
+        "(EvaluationStatus IN ('Pending','Running') AND FinishedAtUtc IS NULL) OR (EvaluationStatus IN ('Completed','Error','Cancelled') AND (EvidenceOrigin='browser-import' OR FinishedAtUtc IS NOT NULL) AND (FinishedAtUtc IS NULL OR SubmittedAtUtc IS NULL OR FinishedAtUtc >= SubmittedAtUtc))",
+        "(EvaluationStatus='Error' AND EvaluationError IS NOT NULL) OR (EvaluationStatus<>'Error' AND EvaluationError IS NULL)",
+        "(EvidenceOrigin='browser-import' AND ImportedAtUtc IS NOT NULL) OR (EvidenceOrigin<>'browser-import' AND ImportedAtUtc IS NULL)"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "EnrollmentId"
+          ],
+          "parent": "Enrollments",
+          "parentColumns": [
+            "EnrollmentId"
+          ],
+          "name": "FK_CodeSubmissions_1_Enrollments_EnrollmentId"
+        },
+        {
+          "columns": [
+            "TaskId"
+          ],
+          "parent": "CodingTasks",
+          "parentColumns": [
+            "TaskId"
+          ],
+          "name": "FK_CodeSubmissions_2_CodingTasks_TaskId"
+        }
+      ]
+    },
+    {
+      "name": "SubmissionTestResults",
+      "group": "Coding",
+      "columns": [
+        {
+          "name": "SubmissionId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TestCaseId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "TaskId",
+          "type": "int",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "Passed",
+          "type": "bit",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ActualOutput",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ErrorText",
+          "type": "nvarchar(2000)",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "RuntimeMs",
+          "type": "int",
+          "nullable": true,
+          "default": null,
+          "identity": false
+        },
+        {
+          "name": "ExecutionStatus",
+          "type": "varchar(16)",
+          "nullable": false,
+          "default": null,
+          "identity": false
+        }
+      ],
+      "pk": [
+        "SubmissionId",
+        "TestCaseId"
+      ],
+      "unique": [],
+      "checks": [
+        "RuntimeMs IS NULL OR RuntimeMs >= 0",
+        "(ExecutionStatus='Success' AND ErrorText IS NULL) OR (ExecutionStatus IN ('RuntimeError','Timeout') AND Passed=0 AND ErrorText IS NOT NULL)"
+      ],
+      "fks": [
+        {
+          "columns": [
+            "SubmissionId",
+            "TaskId"
+          ],
+          "parent": "CodeSubmissions",
+          "parentColumns": [
+            "SubmissionId",
+            "TaskId"
+          ],
+          "name": "FK_SubmissionTestResults_1_Result_SubmissionVersion"
+        },
+        {
+          "columns": [
+            "TaskId",
+            "TestCaseId"
+          ],
+          "parent": "TaskTestCases",
+          "parentColumns": [
+            "TaskId",
+            "TestCaseId"
+          ],
+          "name": "FK_SubmissionTestResults_2_Result_TestVersion"
+        }
+      ]
+    }
+  ],
+  "indexes": [
+    {
+      "name": "IX_StudentProfiles_PreferredLanguageId",
+      "table": "StudentProfiles",
+      "columns": [
+        "PreferredLanguageId"
+      ]
+    },
+    {
+      "name": "IX_Courses_LanguageId",
+      "table": "Courses",
+      "columns": [
+        "LanguageId"
+      ]
+    },
+    {
+      "name": "IX_Courses_CreatedByUserId",
+      "table": "Courses",
+      "columns": [
+        "CreatedByUserId"
+      ]
+    },
+    {
+      "name": "IX_Topics_ParentTopicId",
+      "table": "Topics",
+      "columns": [
+        "ParentTopicId"
+      ]
+    },
+    {
+      "name": "IX_Lessons_TopicId",
+      "table": "Lessons",
+      "columns": [
+        "TopicId"
+      ]
+    },
+    {
+      "name": "IX_Assessments_ScopeCourseId",
+      "table": "Assessments",
+      "columns": [
+        "ScopeCourseId"
+      ]
+    },
+    {
+      "name": "IX_Assessments_ScopeLevelId",
+      "table": "Assessments",
+      "columns": [
+        "ScopeLevelId"
+      ]
+    },
+    {
+      "name": "IX_Assessments_ScopeLessonId",
+      "table": "Assessments",
+      "columns": [
+        "ScopeLessonId"
+      ]
+    },
+    {
+      "name": "IX_Questions_TopicId",
+      "table": "Questions",
+      "columns": [
+        "TopicId"
+      ]
+    },
+    {
+      "name": "IX_AssessmentAttempts_UserId",
+      "table": "AssessmentAttempts",
+      "columns": [
+        "UserId"
+      ]
+    },
+    {
+      "name": "IX_AssessmentAttempts_AssessmentId",
+      "table": "AssessmentAttempts",
+      "columns": [
+        "AssessmentId"
+      ]
+    },
+    {
+      "name": "IX_AttemptAnswers_AttemptId_AssessmentId",
+      "table": "AttemptAnswers",
+      "columns": [
+        "AttemptId",
+        "AssessmentId"
+      ]
+    },
+    {
+      "name": "IX_AttemptAnswers_AssessmentId_QuestionId",
+      "table": "AttemptAnswers",
+      "columns": [
+        "AssessmentId",
+        "QuestionId"
+      ]
+    },
+    {
+      "name": "IX_AttemptAnswers_QuestionId_OptionId",
+      "table": "AttemptAnswers",
+      "columns": [
+        "QuestionId",
+        "OptionId"
+      ]
+    },
+    {
+      "name": "IX_Enrollments_CourseId",
+      "table": "Enrollments",
+      "columns": [
+        "CourseId"
+      ]
+    },
+    {
+      "name": "IX_LessonCompletions_LessonId",
+      "table": "LessonCompletions",
+      "columns": [
+        "LessonId"
+      ]
+    },
+    {
+      "name": "IX_CodingTasks_LevelId",
+      "table": "CodingTasks",
+      "columns": [
+        "LevelId"
+      ]
+    },
+    {
+      "name": "IX_CodingTaskTopics_TopicId",
+      "table": "CodingTaskTopics",
+      "columns": [
+        "TopicId"
+      ]
+    },
+    {
+      "name": "IX_TaskWorkspaceState_TaskId",
+      "table": "TaskWorkspaceState",
+      "columns": [
+        "TaskId"
+      ]
+    },
+    {
+      "name": "IX_CodeSubmissions_EnrollmentId",
+      "table": "CodeSubmissions",
+      "columns": [
+        "EnrollmentId"
+      ]
+    },
+    {
+      "name": "IX_CodeSubmissions_TaskId",
+      "table": "CodeSubmissions",
+      "columns": [
+        "TaskId"
+      ]
+    },
+    {
+      "name": "IX_SubmissionTestResults_SubmissionId_TaskId",
+      "table": "SubmissionTestResults",
+      "columns": [
+        "SubmissionId",
+        "TaskId"
+      ]
+    },
+    {
+      "name": "IX_SubmissionTestResults_TaskId_TestCaseId",
+      "table": "SubmissionTestResults",
+      "columns": [
+        "TaskId",
+        "TestCaseId"
+      ]
+    }
+  ]
+}

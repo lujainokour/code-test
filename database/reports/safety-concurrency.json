@@ -1,0 +1,169 @@
+{
+    "executedAtUtc":  "2026-11-05T02:58:01.9522794Z",
+    "passed":  9,
+    "failed":  0,
+    "results":  [
+                    {
+                        "name":  "All academic SQL examples executed including four JOIN types and disposable DDL",
+                        "passed":  true
+                    },
+                    {
+                        "name":  "DBCC CHECKCONSTRAINTS reports no violations",
+                        "passed":  true
+                    },
+                    {
+                        "name":  "Existing target rejected without mutation",
+                        "passed":  true,
+                        "expectedError":  51001,
+                        "actualError":  51001
+                    },
+                    {
+                        "name":  "Original database target forbidden",
+                        "passed":  true,
+                        "expectedError":  51000,
+                        "actualError":  51000
+                    },
+                    {
+                        "name":  "Assessment publication lock serializes grading-key changes",
+                        "passed":  true,
+                        "blockedUntilParentReleased":  true,
+                        "expectedError":  51117,
+                        "actualError":  51117
+                    },
+                    {
+                        "name":  "Submission lock serializes result insertion",
+                        "passed":  true,
+                        "blockedUntilParentReleased":  true,
+                        "expectedError":  51142,
+                        "actualError":  51142
+                    },
+                    {
+                        "name":  "Role lock serializes admin-profile rejection",
+                        "passed":  true,
+                        "blockedUntilParentReleased":  true,
+                        "expectedError":  51101,
+                        "actualError":  51101
+                    },
+                    {
+                        "name":  "Original schema/modules and table rows unchanged during safety checks",
+                        "passed":  true
+                    },
+                    {
+                        "name":  "Test schema/modules and table rows unchanged during safety/concurrency checks",
+                        "passed":  true
+                    }
+                ],
+    "originalBefore":  {
+                           "database":  "CodeMentorAI_Learning",
+                           "objectsSha256":  "9576A5F112FBC136FDCA392C602AAED706123BCB4269059F07FEF6C28A0C431E",
+                           "tableDataSha256":  {
+                                                   "dbo.AccountStatusAudit":  null,
+                                                   "dbo.AssessmentAttempts":  "791B7D72E137B4A12161F308F0D97740E56464FCC288A5A20F39C35464987C61",
+                                                   "dbo.Assessments":  "244DE52B068AAE29E54F3622861E5153210CE488752B8A39BFB1FA5AC501F66B",
+                                                   "dbo.AttemptAnswers":  "182835E0DBD0AE87B87D7DFF04495738E9656B3C15E25F61B4EFB88FD081833D",
+                                                   "dbo.CodingTasks":  "9C60670F29121472D9191374694D211C96F2868D3C64B3552851F253854D22B5",
+                                                   "dbo.Courses":  "94A14A8750B63CFB17D03138003EFB8D47CAD571990ED96F64C022C6F46BBE63",
+                                                   "dbo.Enrollments":  "94F30E3FC2EB9D4FAF9137D510EFED2736E681AFC44DF8A99F679124B53F9768",
+                                                   "dbo.Languages":  "0CF399218468145BEAE8EA407A764BEE21DBF6728739A577784D8C8059877AEA",
+                                                   "dbo.LessonProgress":  "8661C724855C51FC2DEBAE708ED1FAE3C7F6EBB16BB02C2D96B6A9FA0F3CE657",
+                                                   "dbo.LessonResources":  "2711696F15E76E0F542D361CF244F8C1D6BBD10CCDE3AEB03A8F5A4582145A7B",
+                                                   "dbo.Lessons":  "6D9E3F412501FA37863C4AE2B096161198E6CCFEE78E6AF1707494C1F9CFD69C",
+                                                   "dbo.Levels":  "0D1A9E1F62B6FC181C56169190A4A7BAAD06FF56CE948472E3726EF06412D485",
+                                                   "dbo.Projects":  "3379B0A526AF2F544C91ABC7D7731FB23994C008FBDC8596C966CCE3CA4EDADD",
+                                                   "dbo.ProjectSubmissions":  "CFC6A77B5FB411BFF9E1972C08D14E94D13BBE01A634C1F74F353A3CAF97D16C",
+                                                   "dbo.QuestionOptions":  "275B9EB1F924CB2D7119786770B90B5FF6FB3E21547D3C7AD9161DF67447FCBA",
+                                                   "dbo.Questions":  "088C5738E11CE0D681408EAAC58BE74AA36804BAC8E37164DC114EBA4A3E6A16",
+                                                   "dbo.Roles":  "F3C2CC56BE528CF0451CBE6AC439E5215890C9949280A12E7B40204F93BA6367",
+                                                   "dbo.StudentProfiles":  "FBAE26D284BDAACD760BD7650AACD0E013D83551F12AE87275B1C688B7AF2DB7",
+                                                   "dbo.StudentProjects":  "88C31385521061A5A10BE8E3CDD104559DE07A65398000C91488EDFF94973DC6",
+                                                   "dbo.TaskSubmissions":  "B6F5DB3627859AFE4805F4C1418AF4C03DDA49071A4D759AC4AF0898710FE556",
+                                                   "dbo.Users":  "DB63D1A5574EC0A1B4225734B337749A0421D0CA99C5D32A88D37D0FF4A414AF"
+                                               }
+                       },
+    "originalAfter":  {
+                          "database":  "CodeMentorAI_Learning",
+                          "objectsSha256":  "9576A5F112FBC136FDCA392C602AAED706123BCB4269059F07FEF6C28A0C431E",
+                          "tableDataSha256":  {
+                                                  "dbo.AccountStatusAudit":  null,
+                                                  "dbo.AssessmentAttempts":  "791B7D72E137B4A12161F308F0D97740E56464FCC288A5A20F39C35464987C61",
+                                                  "dbo.Assessments":  "244DE52B068AAE29E54F3622861E5153210CE488752B8A39BFB1FA5AC501F66B",
+                                                  "dbo.AttemptAnswers":  "182835E0DBD0AE87B87D7DFF04495738E9656B3C15E25F61B4EFB88FD081833D",
+                                                  "dbo.CodingTasks":  "9C60670F29121472D9191374694D211C96F2868D3C64B3552851F253854D22B5",
+                                                  "dbo.Courses":  "94A14A8750B63CFB17D03138003EFB8D47CAD571990ED96F64C022C6F46BBE63",
+                                                  "dbo.Enrollments":  "94F30E3FC2EB9D4FAF9137D510EFED2736E681AFC44DF8A99F679124B53F9768",
+                                                  "dbo.Languages":  "0CF399218468145BEAE8EA407A764BEE21DBF6728739A577784D8C8059877AEA",
+                                                  "dbo.LessonProgress":  "8661C724855C51FC2DEBAE708ED1FAE3C7F6EBB16BB02C2D96B6A9FA0F3CE657",
+                                                  "dbo.LessonResources":  "2711696F15E76E0F542D361CF244F8C1D6BBD10CCDE3AEB03A8F5A4582145A7B",
+                                                  "dbo.Lessons":  "6D9E3F412501FA37863C4AE2B096161198E6CCFEE78E6AF1707494C1F9CFD69C",
+                                                  "dbo.Levels":  "0D1A9E1F62B6FC181C56169190A4A7BAAD06FF56CE948472E3726EF06412D485",
+                                                  "dbo.Projects":  "3379B0A526AF2F544C91ABC7D7731FB23994C008FBDC8596C966CCE3CA4EDADD",
+                                                  "dbo.ProjectSubmissions":  "CFC6A77B5FB411BFF9E1972C08D14E94D13BBE01A634C1F74F353A3CAF97D16C",
+                                                  "dbo.QuestionOptions":  "275B9EB1F924CB2D7119786770B90B5FF6FB3E21547D3C7AD9161DF67447FCBA",
+                                                  "dbo.Questions":  "088C5738E11CE0D681408EAAC58BE74AA36804BAC8E37164DC114EBA4A3E6A16",
+                                                  "dbo.Roles":  "F3C2CC56BE528CF0451CBE6AC439E5215890C9949280A12E7B40204F93BA6367",
+                                                  "dbo.StudentProfiles":  "FBAE26D284BDAACD760BD7650AACD0E013D83551F12AE87275B1C688B7AF2DB7",
+                                                  "dbo.StudentProjects":  "88C31385521061A5A10BE8E3CDD104559DE07A65398000C91488EDFF94973DC6",
+                                                  "dbo.TaskSubmissions":  "B6F5DB3627859AFE4805F4C1418AF4C03DDA49071A4D759AC4AF0898710FE556",
+                                                  "dbo.Users":  "DB63D1A5574EC0A1B4225734B337749A0421D0CA99C5D32A88D37D0FF4A414AF"
+                                              }
+                      },
+    "testBefore":  {
+                       "database":  "CodeMentorAI_Phase3_Test_20261105_R3",
+                       "objectsSha256":  "BDA2721E969C193C54E378E2A35099E6234CA475F7FA3EF3177AA0718E1AA2B8",
+                       "tableDataSha256":  {
+                                               "dbo.AssessmentAttempts":  "D76948992A92887EB22BC482416D8EC2CD78114DC82CA93AF0DA9D6A3293C201",
+                                               "dbo.Assessments":  "F13E3DFF8EDA4797968590D54A9B2BBA922C121CF8A26C56BE8488A8DFD44455",
+                                               "dbo.AttemptAnswers":  "5E0B9F28216DA1DFD56049FE5A67ABE4735A1EBBD1DF9CB243BC786E5715FEBF",
+                                               "dbo.CodeSubmissions":  "95E1D46EB185C10D16B84304D1214CEDC1BC8C1D8CB613C442F820E2A6A34028",
+                                               "dbo.CodingTasks":  "5078018DCDEB39472C8888635437B3DAF42A083029F16AA60C1D2F161C39C405",
+                                               "dbo.CodingTaskTopics":  "F54206C6523F7D07879A03840620C03F70FAE83088E70BAE0C7CB639858436E6",
+                                               "dbo.Courses":  "D97143B9D9E808B07ED6ED1EBC89C7B0328F97BE90EDD8D3001917AFB59E3CAA",
+                                               "dbo.Enrollments":  "0931984763BC13CAFA5DEA4F23B05019EF1E70C84D2C318F63361CCA2F71CCDD",
+                                               "dbo.Languages":  "861FB57853A8372A10490BF76A4DB009619F5B27E143395CCBAB9A64026B9633",
+                                               "dbo.LessonCompletions":  "646FF9C80678D7487BF87CAA760657AB81B8D2F032BC6032F46D704DA52BE7C9",
+                                               "dbo.LessonResources":  "AA23836E9D25E60020707E96F3454264A173A5501C1486439D7CEF6E0AE7D4EF",
+                                               "dbo.Lessons":  "968CC391453A99BA95DFA92E0B204A060F27FD25BE2EC6D9383E2852AD0878F1",
+                                               "dbo.LevelObjectives":  "1A0D496BF13B4A9520C241410FB26D005D8246C1D6D6839D64B4AF632AD4F2DB",
+                                               "dbo.Levels":  "7C9B3C7BB858DA10FEFE234A0684E9A69CB0BB17153EC80EE6462E132544EDE6",
+                                               "dbo.QuestionOptions":  "4D1FCA23DBCF99CE9D4F4F29D6F79C7F789E98009FC1F341FC7F5BA582F0C484",
+                                               "dbo.Questions":  "DEE0EBF54BAD121BCFC10CDBF8277D9E705B4B38D4C31F140ED731C064DAB5EE",
+                                               "dbo.StudentProfiles":  "7327407302D93A102562AC680AA8BED72C20784D872268C213B60BE411F138C1",
+                                               "dbo.SubmissionTestResults":  "8F230BC088A2537BFB9ECAD99F426B35842F6186EB2C93D6DDBAF95C58662215",
+                                               "dbo.TaskHints":  "55068EA52E864D07BB7EE88CBA0749FA0A0926B37F51DDA48DE71D78A2CB18AB",
+                                               "dbo.TaskTestCases":  "B0DD4D376D31957455B84531407578CFEE5216E13BA0C9A71920A67BA4BA5F23",
+                                               "dbo.TaskWorkspaceState":  "438753B682CC4ED08F68B6CD76172D29AEC420F44DA9264E8E291FC963E74ACC",
+                                               "dbo.Topics":  "AB1DD854C1168F478E4487FBC5BD9136D05D584A38A0A07F31968935B2C2B78A",
+                                               "dbo.Users":  "9CF15C8FB71ED41F154B2CA69587661EBA418ED7110BA127766633CD22A4FAF1"
+                                           }
+                   },
+    "testAfter":  {
+                      "database":  "CodeMentorAI_Phase3_Test_20261105_R3",
+                      "objectsSha256":  "BDA2721E969C193C54E378E2A35099E6234CA475F7FA3EF3177AA0718E1AA2B8",
+                      "tableDataSha256":  {
+                                              "dbo.AssessmentAttempts":  "D76948992A92887EB22BC482416D8EC2CD78114DC82CA93AF0DA9D6A3293C201",
+                                              "dbo.Assessments":  "F13E3DFF8EDA4797968590D54A9B2BBA922C121CF8A26C56BE8488A8DFD44455",
+                                              "dbo.AttemptAnswers":  "5E0B9F28216DA1DFD56049FE5A67ABE4735A1EBBD1DF9CB243BC786E5715FEBF",
+                                              "dbo.CodeSubmissions":  "95E1D46EB185C10D16B84304D1214CEDC1BC8C1D8CB613C442F820E2A6A34028",
+                                              "dbo.CodingTasks":  "5078018DCDEB39472C8888635437B3DAF42A083029F16AA60C1D2F161C39C405",
+                                              "dbo.CodingTaskTopics":  "F54206C6523F7D07879A03840620C03F70FAE83088E70BAE0C7CB639858436E6",
+                                              "dbo.Courses":  "D97143B9D9E808B07ED6ED1EBC89C7B0328F97BE90EDD8D3001917AFB59E3CAA",
+                                              "dbo.Enrollments":  "0931984763BC13CAFA5DEA4F23B05019EF1E70C84D2C318F63361CCA2F71CCDD",
+                                              "dbo.Languages":  "861FB57853A8372A10490BF76A4DB009619F5B27E143395CCBAB9A64026B9633",
+                                              "dbo.LessonCompletions":  "646FF9C80678D7487BF87CAA760657AB81B8D2F032BC6032F46D704DA52BE7C9",
+                                              "dbo.LessonResources":  "AA23836E9D25E60020707E96F3454264A173A5501C1486439D7CEF6E0AE7D4EF",
+                                              "dbo.Lessons":  "968CC391453A99BA95DFA92E0B204A060F27FD25BE2EC6D9383E2852AD0878F1",
+                                              "dbo.LevelObjectives":  "1A0D496BF13B4A9520C241410FB26D005D8246C1D6D6839D64B4AF632AD4F2DB",
+                                              "dbo.Levels":  "7C9B3C7BB858DA10FEFE234A0684E9A69CB0BB17153EC80EE6462E132544EDE6",
+                                              "dbo.QuestionOptions":  "4D1FCA23DBCF99CE9D4F4F29D6F79C7F789E98009FC1F341FC7F5BA582F0C484",
+                                              "dbo.Questions":  "DEE0EBF54BAD121BCFC10CDBF8277D9E705B4B38D4C31F140ED731C064DAB5EE",
+                                              "dbo.StudentProfiles":  "7327407302D93A102562AC680AA8BED72C20784D872268C213B60BE411F138C1",
+                                              "dbo.SubmissionTestResults":  "8F230BC088A2537BFB9ECAD99F426B35842F6186EB2C93D6DDBAF95C58662215",
+                                              "dbo.TaskHints":  "55068EA52E864D07BB7EE88CBA0749FA0A0926B37F51DDA48DE71D78A2CB18AB",
+                                              "dbo.TaskTestCases":  "B0DD4D376D31957455B84531407578CFEE5216E13BA0C9A71920A67BA4BA5F23",
+                                              "dbo.TaskWorkspaceState":  "438753B682CC4ED08F68B6CD76172D29AEC420F44DA9264E8E291FC963E74ACC",
+                                              "dbo.Topics":  "AB1DD854C1168F478E4487FBC5BD9136D05D584A38A0A07F31968935B2C2B78A",
+                                              "dbo.Users":  "9CF15C8FB71ED41F154B2CA69587661EBA418ED7110BA127766633CD22A4FAF1"
+                                          }
+                  },
+    "scope":  "Hash comparison covers this safety/concurrency run; original database was not an implementation/design source. No original database writes were issued."
+}

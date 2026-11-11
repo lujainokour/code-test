@@ -1,0 +1,857 @@
+{
+    "database":  "CodeMentorAI_Phase3_Test_20261105_R3",
+    "executedAtUtc":  "2026-11-05T02:56:42.3206862Z",
+    "realSqlExecution":  true,
+    "failure":  null,
+    "resultSets":  [
+                       [
+                           {
+                               "AttemptId":  11,
+                               "UserId":  2,
+                               "AssessmentId":  1,
+                               "Status":  "Submitted",
+                               "EvidenceOrigin":  "server",
+                               "SubmittedAtUtc":  "\/Date(1793836602016)\/",
+                               "QuestionCount":  10,
+                               "CorrectCount":  0,
+                               "ScorePercent":  0.00
+                           }
+                       ],
+                       [
+                           {
+                               "SubmissionId":  5
+                           }
+                       ],
+                       [
+                           {
+                               "EnrollmentId":  9
+                           }
+                       ],
+                       [
+                           {
+                               "Id":  1,
+                               "Name":  "Exactly 23 application tables",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  2,
+                               "Name":  "23 primary keys",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  3,
+                               "Name":  "All constraints enabled and trusted",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  4,
+                               "Name":  "All 20 triggers enabled",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  5,
+                               "Name":  "37 declared foreign keys",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  6,
+                               "Name":  "Fictional seed has 13 languages",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  7,
+                               "Name":  "Source seed has 12 lessons",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  8,
+                               "Name":  "Source seed has six coding tasks",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  9,
+                               "Name":  "Assessment score derived correctly",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  10,
+                               "Name":  "Passed snapshot distinct from execution completion",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  11,
+                               "Name":  "Missing results are not failed cases",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  12,
+                               "Name":  "Timeout represented separately",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  13,
+                               "Name":  "Scalar function",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  14,
+                               "Name":  "Zero denominator returns unknown",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  15,
+                               "Name":  "Inline TVF reports derived summary",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  16,
+                               "Name":  "Administrator cannot have student profile",
+                               "Passed":  true,
+                               "ExpectedError":  51101,
+                               "ActualError":  51101,
+                               "Detail":  "StudentProfiles requires the Student role."
+                           },
+                           {
+                               "Id":  17,
+                               "Name":  "Multi-row profile insert rejects administrator atomically",
+                               "Passed":  true,
+                               "ExpectedError":  51101,
+                               "ActualError":  51101,
+                               "Detail":  "StudentProfiles requires the Student role."
+                           },
+                           {
+                               "Id":  18,
+                               "Name":  "Student with records cannot change to Admin",
+                               "Passed":  true,
+                               "ExpectedError":  51100,
+                               "ActualError":  51100,
+                               "Detail":  "A student-profile owner cannot become an administrator."
+                           },
+                           {
+                               "Id":  19,
+                               "Name":  "Admin enrollment rejected by student FK",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_Enrollments_1_StudentProfiles_StudentId\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.StudentProfiles\", column \u0027UserId\u0027."
+                           },
+                           {
+                               "Id":  20,
+                               "Name":  "Admin attempt rejected by student FK",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_AssessmentAttempts_1_StudentProfiles_UserId\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.StudentProfiles\", column \u0027UserId\u0027."
+                           },
+                           {
+                               "Id":  21,
+                               "Name":  "Duplicate enrollment rejected",
+                               "Passed":  true,
+                               "ExpectedError":  2627,
+                               "ActualError":  2627,
+                               "Detail":  "Violation of UNIQUE KEY constraint \u0027UQ_Enrollments_1\u0027. Cannot insert duplicate key in object \u0027dbo.Enrollments\u0027. The duplicate key value is (2, 1)."
+                           },
+                           {
+                               "Id":  22,
+                               "Name":  "Unknown course rejected",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_Enrollments_2_Courses_CourseId\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.Courses\", column \u0027CourseId\u0027."
+                           },
+                           {
+                               "Id":  23,
+                               "Name":  "Enrollment owner immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51109,
+                               "ActualError":  51109,
+                               "Detail":  "Enrollment identity and provenance are immutable."
+                           },
+                           {
+                               "Id":  24,
+                               "Name":  "Level cannot change course",
+                               "Passed":  true,
+                               "ExpectedError":  51103,
+                               "ActualError":  51103,
+                               "Detail":  "A level cannot be moved to another course."
+                           },
+                           {
+                               "Id":  25,
+                               "Name":  "Lesson cannot change level",
+                               "Passed":  true,
+                               "ExpectedError":  51107,
+                               "ActualError":  51107,
+                               "Detail":  "Lesson level/topic links are immutable."
+                           },
+                           {
+                               "Id":  26,
+                               "Name":  "Course language immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51102,
+                               "ActualError":  51102,
+                               "Detail":  "Course language is immutable; create a new course."
+                           },
+                           {
+                               "Id":  27,
+                               "Name":  "Cross-course completion rejected",
+                               "Passed":  true,
+                               "ExpectedError":  51111,
+                               "ActualError":  51111,
+                               "Detail":  "Completion requires an active enrollment in the lesson course."
+                           },
+                           {
+                               "Id":  28,
+                               "Name":  "Cross-course workspace rejected",
+                               "Passed":  true,
+                               "ExpectedError":  51133,
+                               "ActualError":  51133,
+                               "Detail":  "Workspace requires an active matching course enrollment and published task."
+                           },
+                           {
+                               "Id":  29,
+                               "Name":  "Cross-course submission rejected",
+                               "Passed":  true,
+                               "ExpectedError":  51139,
+                               "ActualError":  51139,
+                               "Detail":  "Submission requires active matching enrollment and a published task."
+                           },
+                           {
+                               "Id":  30,
+                               "Name":  "Paused enrollment cannot add learning",
+                               "Passed":  true,
+                               "ExpectedError":  51133,
+                               "ActualError":  51133,
+                               "Detail":  "Workspace requires an active matching course enrollment and published task."
+                           },
+                           {
+                               "Id":  31,
+                               "Name":  "Manual completion allowed without correct answer",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  32,
+                               "Name":  "Correct-answer completion requires evidence",
+                               "Passed":  true,
+                               "ExpectedError":  51112,
+                               "ActualError":  51112,
+                               "Detail":  "Correct-answer completion requires matching submitted correct-answer evidence."
+                           },
+                           {
+                               "Id":  33,
+                               "Name":  "Completion facts immutable",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The UPDATE statement conflicted with the CHECK constraint \"CK_LessonCompletions_3\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.LessonCompletions\"."
+                           },
+                           {
+                               "Id":  34,
+                               "Name":  "Imported completion preserves unknown time",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  35,
+                               "Name":  "Import cannot claim correct-answer completion",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_LessonCompletions_3\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.LessonCompletions\"."
+                           },
+                           {
+                               "Id":  36,
+                               "Name":  "Question from different assessment rejected",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_AttemptAnswers_2_Answer_QuestionVersion\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.Questions\"."
+                           },
+                           {
+                               "Id":  37,
+                               "Name":  "Spoofed attempt assessment rejected",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_AttemptAnswers_1_Answer_AttemptVersion\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.AssessmentAttempts\"."
+                           },
+                           {
+                               "Id":  38,
+                               "Name":  "Option from different question rejected",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_AttemptAnswers_3_Answer_QuestionOption\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.QuestionOptions\"."
+                           },
+                           {
+                               "Id":  39,
+                               "Name":  "Unsure is a real permitted response",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  40,
+                               "Name":  "Unsure cannot also select an option",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_AttemptAnswers_1\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.AttemptAnswers\"."
+                           },
+                           {
+                               "Id":  41,
+                               "Name":  "Duplicate conflicting answers rejected",
+                               "Passed":  true,
+                               "ExpectedError":  2627,
+                               "ActualError":  2627,
+                               "Detail":  "Violation of PRIMARY KEY constraint \u0027PK_AttemptAnswers\u0027. Cannot insert duplicate key in object \u0027dbo.AttemptAnswers\u0027. The duplicate key value is (9, 1)."
+                           },
+                           {
+                               "Id":  42,
+                               "Name":  "Incomplete attempt cannot submit",
+                               "Passed":  true,
+                               "ExpectedError":  51124,
+                               "ActualError":  51124,
+                               "Detail":  "Submission requires one response to every question; unsure is allowed."
+                           },
+                           {
+                               "Id":  43,
+                               "Name":  "All unsure answers may submit",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  44,
+                               "Name":  "Imported attempt preserves unknown start and submit times",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  45,
+                               "Name":  "Server attempt cannot omit start time",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_AssessmentAttempts_5\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.AssessmentAttempts\"."
+                           },
+                           {
+                               "Id":  46,
+                               "Name":  "Submitted answer update blocked",
+                               "Passed":  true,
+                               "ExpectedError":  51125,
+                               "ActualError":  51125,
+                               "Detail":  "Only in-progress answers can be changed."
+                           },
+                           {
+                               "Id":  47,
+                               "Name":  "Submitted answer delete blocked",
+                               "Passed":  true,
+                               "ExpectedError":  51125,
+                               "ActualError":  51125,
+                               "Detail":  "Only in-progress answers can be changed."
+                           },
+                           {
+                               "Id":  48,
+                               "Name":  "Submitted attempt immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51118,
+                               "ActualError":  51118,
+                               "Detail":  "Attempts cannot be deleted; terminal attempts are immutable."
+                           },
+                           {
+                               "Id":  49,
+                               "Name":  "Attempt starts only InProgress",
+                               "Passed":  true,
+                               "ExpectedError":  51119,
+                               "ActualError":  51119,
+                               "Detail":  "Attempts must start InProgress."
+                           },
+                           {
+                               "Id":  50,
+                               "Name":  "Level quiz requires completed lessons",
+                               "Passed":  true,
+                               "ExpectedError":  51123,
+                               "ActualError":  51123,
+                               "Detail":  "Complete the published lessons in the level before attempting its quiz."
+                           },
+                           {
+                               "Id":  51,
+                               "Name":  "Placement works before enrollment",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  52,
+                               "Name":  "Lesson attempt requires active enrollment",
+                               "Passed":  true,
+                               "ExpectedError":  51122,
+                               "ActualError":  51122,
+                               "Detail":  "Lesson and level attempts require active enrollment; placement may precede enrollment."
+                           },
+                           {
+                               "Id":  53,
+                               "Name":  "Published questions immutable multi-row",
+                               "Passed":  true,
+                               "ExpectedError":  51115,
+                               "ActualError":  51115,
+                               "Detail":  "Questions in published/attempted assessment versions are immutable."
+                           },
+                           {
+                               "Id":  54,
+                               "Name":  "Published answer keys immutable multi-row",
+                               "Passed":  true,
+                               "ExpectedError":  51117,
+                               "ActualError":  51117,
+                               "Detail":  "Options and grading keys in published/attempted versions are immutable."
+                           },
+                           {
+                               "Id":  55,
+                               "Name":  "Published options cannot be added",
+                               "Passed":  true,
+                               "ExpectedError":  51117,
+                               "ActualError":  51117,
+                               "Detail":  "Options and grading keys in published/attempted versions are immutable."
+                           },
+                           {
+                               "Id":  56,
+                               "Name":  "Published assessment cannot unpublish",
+                               "Passed":  true,
+                               "ExpectedError":  51113,
+                               "ActualError":  51113,
+                               "Detail":  "Published/attempted assessment versions are immutable; create a new version."
+                           },
+                           {
+                               "Id":  57,
+                               "Name":  "Publication rejects empty assessment",
+                               "Passed":  true,
+                               "ExpectedError":  51114,
+                               "ActualError":  51114,
+                               "Detail":  "Publication requires questions with at least two options and exactly one correct option each."
+                           },
+                           {
+                               "Id":  58,
+                               "Name":  "Publication rejects multiple correct options",
+                               "Passed":  true,
+                               "ExpectedError":  51114,
+                               "ActualError":  51114,
+                               "Detail":  "Publication requires questions with at least two options and exactly one correct option each."
+                           },
+                           {
+                               "Id":  59,
+                               "Name":  "Publication rejects no correct option",
+                               "Passed":  true,
+                               "ExpectedError":  51114,
+                               "ActualError":  51114,
+                               "Detail":  "Publication requires questions with at least two options and exactly one correct option each."
+                           },
+                           {
+                               "Id":  60,
+                               "Name":  "A new valid assessment version may publish",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  61,
+                               "Name":  "Duplicate logical assessment version rejected",
+                               "Passed":  true,
+                               "ExpectedError":  2627,
+                               "ActualError":  2627,
+                               "Detail":  "Violation of UNIQUE KEY constraint \u0027UQ_Assessments_1\u0027. Cannot insert duplicate key in object \u0027dbo.Assessments\u0027. The duplicate key value is (python-placement, 1)."
+                           },
+                           {
+                               "Id":  62,
+                               "Name":  "Assessment requires exactly one correct scope",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_Assessments_2\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.Assessments\"."
+                           },
+                           {
+                               "Id":  63,
+                               "Name":  "Level quiz requires nonnull pass mark",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_Assessments_2\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.Assessments\"."
+                           },
+                           {
+                               "Id":  64,
+                               "Name":  "Age cannot have a timestamp without an age",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The UPDATE statement conflicted with the CHECK constraint \"CK_Users_5\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.Users\"."
+                           },
+                           {
+                               "Id":  65,
+                               "Name":  "Published tasks immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51126,
+                               "ActualError":  51126,
+                               "Detail":  "Published/submitted coding tasks are immutable; create a new version."
+                           },
+                           {
+                               "Id":  66,
+                               "Name":  "Published test cases immutable multi-row",
+                               "Passed":  true,
+                               "ExpectedError":  51129,
+                               "ActualError":  51129,
+                               "Detail":  "Tests in published/submitted task versions are immutable."
+                           },
+                           {
+                               "Id":  67,
+                               "Name":  "Published test case cannot be deleted",
+                               "Passed":  true,
+                               "ExpectedError":  51129,
+                               "ActualError":  51129,
+                               "Detail":  "Tests in published/submitted task versions are immutable."
+                           },
+                           {
+                               "Id":  68,
+                               "Name":  "Published hints immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51130,
+                               "ActualError":  51130,
+                               "Detail":  "Hints in published task versions are immutable."
+                           },
+                           {
+                               "Id":  69,
+                               "Name":  "Published task concept links immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51131,
+                               "ActualError":  51131,
+                               "Detail":  "Concept links in published task versions are immutable."
+                           },
+                           {
+                               "Id":  70,
+                               "Name":  "Workspace draft may change independently",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  71,
+                               "Name":  "Hint count bounded by definitions",
+                               "Passed":  true,
+                               "ExpectedError":  51134,
+                               "ActualError":  51134,
+                               "Detail":  "Revealed hints cannot exceed available hints."
+                           },
+                           {
+                               "Id":  72,
+                               "Name":  "Solution gate requires attempted state",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The UPDATE statement conflicted with the CHECK constraint \"CK_TaskWorkspaceState_2\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.TaskWorkspaceState\"."
+                           },
+                           {
+                               "Id":  73,
+                               "Name":  "Submission procedure queues snapshot",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  74,
+                               "Name":  "Enrollment procedure creates explicit participation",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  75,
+                               "Name":  "Enrollment procedure rejects duplicate",
+                               "Passed":  true,
+                               "ExpectedError":  51202,
+                               "ActualError":  51202,
+                               "Detail":  "Student is already enrolled."
+                           },
+                           {
+                               "Id":  76,
+                               "Name":  "Submission cannot skip Running",
+                               "Passed":  true,
+                               "ExpectedError":  51138,
+                               "ActualError":  51138,
+                               "Detail":  "Invalid evaluation status transition."
+                           },
+                           {
+                               "Id":  77,
+                               "Name":  "Submitted code immutable before evaluation",
+                               "Passed":  true,
+                               "ExpectedError":  51137,
+                               "ActualError":  51137,
+                               "Detail":  "Submitted code, ownership, environment and provenance are immutable."
+                           },
+                           {
+                               "Id":  78,
+                               "Name":  "Submitted code trailing spaces protected",
+                               "Passed":  true,
+                               "ExpectedError":  51137,
+                               "ActualError":  51137,
+                               "Detail":  "Submitted code, ownership, environment and provenance are immutable."
+                           },
+                           {
+                               "Id":  79,
+                               "Name":  "Imported submission preserves unknown occurrence times",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  80,
+                               "Name":  "Server submission cannot omit occurrence time",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the CHECK constraint \"CK_CodeSubmissions_3\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.CodeSubmissions\"."
+                           },
+                           {
+                               "Id":  81,
+                               "Name":  "Pending submission can cancel",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  82,
+                               "Name":  "Terminal submission immutable",
+                               "Passed":  true,
+                               "ExpectedError":  51135,
+                               "ActualError":  51135,
+                               "Detail":  "Submissions are append-only; terminal evaluations are immutable."
+                           },
+                           {
+                               "Id":  83,
+                               "Name":  "No-results evaluation cannot complete",
+                               "Passed":  true,
+                               "ExpectedError":  51140,
+                               "ActualError":  51140,
+                               "Detail":  "Completed means successful execution with a failed test or all tests passed; runtime errors require Error."
+                           },
+                           {
+                               "Id":  84,
+                               "Name":  "Terminal status requires finished timestamp",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The UPDATE statement conflicted with the CHECK constraint \"CK_CodeSubmissions_4\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.CodeSubmissions\"."
+                           },
+                           {
+                               "Id":  85,
+                               "Name":  "Wrong task test cannot attach to submission",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_SubmissionTestResults_2_Result_TestVersion\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.TaskTestCases\"."
+                           },
+                           {
+                               "Id":  86,
+                               "Name":  "Spoofed result task rejected",
+                               "Passed":  true,
+                               "ExpectedError":  547,
+                               "ActualError":  547,
+                               "Detail":  "The INSERT statement conflicted with the FOREIGN KEY constraint \"FK_SubmissionTestResults_1_Result_SubmissionVersion\". The conflict occurred in database \"CodeMentorAI_Phase3_Test_20261105_R3\", table \"dbo.CodeSubmissions\"."
+                           },
+                           {
+                               "Id":  87,
+                               "Name":  "Pending cannot receive case results",
+                               "Passed":  true,
+                               "ExpectedError":  51142,
+                               "ActualError":  51142,
+                               "Detail":  "Record executed cases only while evaluation is Running."
+                           },
+                           {
+                               "Id":  88,
+                               "Name":  "Wrong output cannot be marked passed",
+                               "Passed":  true,
+                               "ExpectedError":  51143,
+                               "ActualError":  51143,
+                               "Detail":  "Passing output must exactly match the expected output; evaluator must also verify assertions."
+                           },
+                           {
+                               "Id":  89,
+                               "Name":  "Partial passing tests cannot imply completion",
+                               "Passed":  true,
+                               "ExpectedError":  51140,
+                               "ActualError":  51140,
+                               "Detail":  "Completed means successful execution with a failed test or all tests passed; runtime errors require Error."
+                           },
+                           {
+                               "Id":  90,
+                               "Name":  "All executed tests may complete as passed",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  91,
+                               "Name":  "First failed test can complete execution",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  92,
+                               "Name":  "Runtime error cannot be Completed",
+                               "Passed":  true,
+                               "ExpectedError":  51140,
+                               "ActualError":  51140,
+                               "Detail":  "Completed means successful execution with a failed test or all tests passed; runtime errors require Error."
+                           },
+                           {
+                               "Id":  93,
+                               "Name":  "Runtime error may finalize Error",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  94,
+                               "Name":  "Case results cannot be altered",
+                               "Passed":  true,
+                               "ExpectedError":  51141,
+                               "ActualError":  51141,
+                               "Detail":  "Executed case results are immutable."
+                           },
+                           {
+                               "Id":  95,
+                               "Name":  "Multi-row completions accepted for matching course",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  96,
+                               "Name":  "Multi-row invalid workspace batch rejected",
+                               "Passed":  true,
+                               "ExpectedError":  51133,
+                               "ActualError":  51133,
+                               "Detail":  "Workspace requires an active matching course enrollment and published task."
+                           },
+                           {
+                               "Id":  97,
+                               "Name":  "INNER JOIN example",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  98,
+                               "Name":  "LEFT JOIN example",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  99,
+                               "Name":  "RIGHT JOIN example",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  100,
+                               "Name":  "FULL OUTER JOIN example",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  101,
+                               "Name":  "GROUP BY HAVING with subquery",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           },
+                           {
+                               "Id":  102,
+                               "Name":  "All required aggregate functions",
+                               "Passed":  true,
+                               "ExpectedError":  null,
+                               "ActualError":  null,
+                               "Detail":  "OK"
+                           }
+                       ],
+                       [
+                           {
+                               "TotalChecks":  102,
+                               "PassedChecks":  102,
+                               "FailedChecks":  0,
+                               "Preservation":  "All 23 table row hashes preserved; identity gaps expected"
+                           }
+                       ]
+                   ]
+}

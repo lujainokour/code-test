@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "baselineFilesChecked": 714,
+  "changedOrMissing": [],
+  "frontendFilesChecked": 122,
+  "phase1ArchiveAndVerifiedZipFilesChecked": 87,
+  "scope": "New database/ and docs/database/ outputs; four inaccessible tmp/proposal/python-libs directories are not covered."
+}

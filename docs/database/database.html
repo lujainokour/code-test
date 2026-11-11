@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="color-scheme" content="light dark">
+ <title>CodeMentor AI · Database atlas</title>
+ <link rel="stylesheet" href="database.css">
+ <script src="database-data.js" defer></script>
+ <script src="database.js" defer></script>
+</head>
+<body>
+ <a class="skip-link" href="#main">Skip to documentation</a>
+ <header class="masthead"><a class="brand" href="database.html"><span class="brand-mark" aria-hidden="true">CM</span><span>CodeMentor <b>AI</b><small>ENGINEERING / DATABASE ATLAS</small></span></a><span class="phase">PHASE 03 <span aria-hidden="true">↗</span></span></header>
+ <main id="main">
+  <div class="intro"><div><p class="eyebrow">THE RELATIONAL CORE</p><h1>Learning, connected.</h1><p class="lead">Explore the structure behind a learning journey.<br>Accounts, curriculum, assessments and code — one consistent model.</p></div><div class="verification"><span class="status-dot" aria-hidden="true"></span><b>SQL Server verified</b><span id="test-status"></span><small id="database-name"></small></div></div>
+  <div id="stats" class="stats" aria-label="Database object counts"></div>
+  <div class="workspace">
+   <nav class="tabbar" role="tablist" aria-label="Database documentation">
+    <button id="tab-erd" role="tab" aria-selected="true" aria-controls="panel-erd" tabindex="0" data-tab="erd">01 <span>ER Diagram</span></button>
+    <button id="tab-schema" role="tab" aria-selected="false" aria-controls="panel-schema" tabindex="-1" data-tab="schema">02 <span>Schema Diagram</span></button>
+    <button id="tab-tables" role="tab" aria-selected="false" aria-controls="panel-tables" tabindex="-1" data-tab="tables">03 <span>Tables</span></button>
+    <button id="tab-sql" role="tab" aria-selected="false" aria-controls="panel-sql" tabindex="-1" data-tab="sql">04 <span>SQL Script</span></button>
+    <button id="tab-rules" role="tab" aria-selected="false" aria-controls="panel-rules" tabindex="-1" data-tab="rules">05 <span>Rules</span></button>
+   </nav>
+   <div class="workbody">
+    <aside class="sidebar"><label for="table-search">FIND A TABLE</label><input id="table-search" type="search" placeholder="Name or purpose…" autocomplete="off"><div class="sidebar-title"><span>23 CORE TABLES</span><button id="clear-selection" type="button">Clear</button></div><div id="table-nav"></div><p class="sidebar-note">Select a table to trace its relationships.<br><span class="key">PK</span> primary key · <span class="key">FK</span> foreign key · <span class="key">UQ</span> unique key<br>Badges mark key membership; composite keys are listed in full in Tables.</p></aside>
+    <div class="content">
+     <div id="diagram-tools" class="toolbar"><div class="toolbar-copy"><b id="diagram-title">Entity relationships</b><small id="diagram-description">Crow’s Foot · select a table to follow its connections</small></div><div class="controls"><label><input id="show-labels" type="checkbox"> Link names</label><label for="link-filter" class="sr-only">Relationship visibility</label><select id="link-filter"><option value="all">All relationships</option><option value="hide-hubs">Hide high-connectivity links</option><option value="selected">Selected table only</option></select><button id="zoom-out" aria-label="Zoom out">−</button><output id="zoom-level" aria-live="polite">Fit</output><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-fit">Fit</button></div></div>
+     <section id="panel-erd" role="tabpanel" aria-labelledby="tab-erd" tabindex="0"><div class="diagram-scroll"><svg id="erd-svg" role="group" aria-labelledby="erd-svg-title erd-svg-desc"><title id="erd-svg-title">CodeMentor AI entity relationship diagram</title><desc id="erd-svg-desc">All 23 tables, 37 foreign keys, and Crow's Foot optionality. Focus table cards and press Enter or Space to select.</desc></svg></div></section>
+     <section id="panel-schema" role="tabpanel" aria-labelledby="tab-schema" tabindex="0" hidden><div class="diagram-scroll"><svg id="schema-svg" role="group" aria-labelledby="schema-svg-title schema-svg-desc"><title id="schema-svg-title">CodeMentor AI physical schema diagram</title><desc id="schema-svg-desc">Every column with its SQL Server type and key indicators. Composite relationship lines connect each matching column pair.</desc></svg></div></section>
+     <section id="panel-tables" role="tabpanel" aria-labelledby="tab-tables" tabindex="0" hidden><div class="panel-heading"><p class="eyebrow">THE DATA DICTIONARY</p><h2>Every field has a purpose.</h2><p>Physical types, keys, constraints and the rules that protect them.</p></div><div id="dictionary"></div></section>
+     <section id="panel-sql" role="tabpanel" aria-labelledby="tab-sql" tabindex="0" hidden><div class="panel-heading"><p class="eyebrow">THE VERIFIED IMPLEMENTATION</p><h2>One source of truth.</h2><p>Standalone T-SQL for SSMS. Change <code>@DatabaseName</code> to an unused name starting with <code>CodeMentorAI_Phase3_</code>. Existing targets fail safely.</p><div class="sql-actions"><button id="copy-sql">Copy SQL</button><button id="download-sql">Download .sql</button></div><p id="sql-status" role="status"></p></div><pre id="sql-code" tabindex="0" aria-label="Standalone SQL Server submission"></pre></section>
+     <section id="panel-rules" role="tabpanel" aria-labelledby="tab-rules" tabindex="0" hidden><div class="panel-heading"><p class="eyebrow">INTEGRITY BY DESIGN</p><h2>The rules behind the lines.</h2><p>Database guarantees, explicit tradeoffs and future integration boundaries.</p></div><div id="rules"></div></section>
+     <div id="diagram-legend" class="diagram-legend"><span><b>||</b> exactly one</span><span><b>○|</b> zero or one</span><span><b>○&lt;</b> zero or many</span><span id="relationship-count">37 FK relationships</span></div>
+     <div id="selection-details" class="selection-details" aria-live="polite"><b>The whole picture</b><p>Six layout columns keep curriculum and evidence separate. Zoom in for detail, or choose a table from the index.</p></div>
+    </div>
+   </div>
+  </div>
+  <footer><span>CodeMentor AI / Phase 3 database documentation</span><span>23 tables. Essential scope only.</span><a href="../../database/ARABIC-STUDY-GUIDE.md">دليل المناقشة بالعربية ↗</a></footer>
+ </main>
+ <noscript>This documentation needs JavaScript. The standalone SQL and Arabic guide are available in the database directory.</noscript>
+</body>
+</html>

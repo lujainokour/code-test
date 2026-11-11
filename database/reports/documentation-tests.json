@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "method": "LinkeDOM DOM emulation + static validation, NOT a real browser render",
+  "browserVerified": false,
+  "browserBlocker": "CUA browser host unavailable; native browser access stopped because current Windows browser URL could not be confidently determined. No workaround attempted.",
+  "passed": 28,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Exactly four documentation files",
+      "passed": true
+    },
+    {
+      "name": "No inline scripts, CSS or event attributes",
+      "passed": true
+    },
+    {
+      "name": "Five accessible tabs and labelled panels",
+      "passed": true
+    },
+    {
+      "name": "Both diagrams render 23 distinct table nodes",
+      "passed": true
+    },
+    {
+      "name": "Every FK has an ER relationship and correct Crow markers",
+      "passed": true
+    },
+    {
+      "name": "All 169 column names render in schema diagram",
+      "passed": true
+    },
+    {
+      "name": "Each composite FK column pair has a separate schema line",
+      "passed": true
+    },
+    {
+      "name": "Diagram cards never overlap",
+      "passed": true
+    },
+    {
+      "name": "Schema lines terminate at matching FK columns, including self-reference",
+      "passed": true
+    },
+    {
+      "name": "Full table dictionary and SQL Server IDENTITY indicators",
+      "passed": true
+    },
+    {
+      "name": "SQL text exactly matches standalone bytes",
+      "passed": true
+    },
+    {
+      "name": "Table selection highlights and dims",
+      "passed": true
+    },
+    {
+      "name": "Keyboard Enter selects a table",
+      "passed": true
+    },
+    {
+      "name": "Keyboard Space selects a table",
+      "passed": true
+    },
+    {
+      "name": "Clear selection restores all nodes",
+      "passed": true
+    },
+    {
+      "name": "Relationship labels toggle",
+      "passed": true
+    },
+    {
+      "name": "High-connectivity link filter hides hubs",
+      "passed": true
+    },
+    {
+      "name": "Selected-only filter isolates selected relationships",
+      "passed": true
+    },
+    {
+      "name": "Search filters table navigation and dictionary",
+      "passed": true
+    },
+    {
+      "name": "Arrow-key tabs activate and move focus",
+      "passed": true
+    },
+    {
+      "name": "Home and End keys reach first and last tab",
+      "passed": true
+    },
+    {
+      "name": "Zoom in/out and Fit change SVG sizing",
+      "passed": true
+    },
+    {
+      "name": "All five tab buttons show the matching panel",
+      "passed": true
+    },
+    {
+      "name": "Rules and boundaries come from one data source",
+      "passed": true
+    },
+    {
+      "name": "SQL copy uses exact verified text",
+      "passed": true
+    },
+    {
+      "name": "SQL download requests the correct artifact",
+      "passed": true
+    },
+    {
+      "name": "Responsive, system dark and reduced-motion CSS included",
+      "passed": true
+    },
+    {
+      "name": "Downloaded blob is byte-identical to submission.sql",
+      "passed": true
+    }
+  ]
+}
