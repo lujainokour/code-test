@@ -214,8 +214,8 @@ signupForm.addEventListener("submit", async function (event) {
     }
 
     /*
-       Temporary frontend demo identity only.
-       No password is stored.
+       Persistent browser-local account (js/student-account.js).
+       Only a salt and PBKDF2 hash are stored, never the password.
     */
     try {
         const previousText = window.cmStorage.getItem("codementor-demo-session");
@@ -224,7 +224,7 @@ signupForm.addEventListener("submit", async function (event) {
             throw new Error("Invalid existing identity");
         }
         if (previous && previous.email.toLowerCase() !== email) {
-            showMessage("A different demo profile is active in this tab. Log out before starting another profile. Existing records were kept.", true);
+            showMessage("A different student account is signed in on this browser. Log out before starting another profile. Existing records were kept.", true);
             return;
         }
         submitButton.disabled = true;

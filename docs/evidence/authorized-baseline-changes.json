@@ -1,0 +1,11 @@
+{
+  "purpose": "Files from docs/phase2-protected-baseline.json that a later, explicitly requested part was authorised to change. tests/placement-store.cjs still requires every other protected file to be byte-identical (LF-normalised).",
+  "changes": [
+    { "file": "js/student-account.js", "part": "Part 1", "reason": "Add changePassword and resetLocalAccount; lock callbacks made async." },
+    { "file": "js/signup.js", "part": "Part 1", "reason": "Comment and message no longer call the persistent local account temporary." },
+    { "file": "pages/auth/signup.html", "part": "Part 1", "reason": "Account storage explanation rewritten (signup.html:198 finding)." },
+    { "file": "pages/auth/change-password.html", "part": "Part 1", "reason": "Page now really changes the local password; loads student-account.js." },
+    { "file": "pages/auth/forgot-password.html", "part": "Part 1", "reason": "Simulation replaced by honest local reset with typed confirmation." },
+    { "file": "pages/auth/reset-password.html", "part": "Part 1", "reason": "Old simulated reset link page now explains no links are sent." }
+  ]
+}

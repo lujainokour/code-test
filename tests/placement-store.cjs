@@ -79,5 +79,8 @@ const protectedFiles = JSON.parse(fs.readFileSync('docs/phase2-protected-baselin
 // sha256 = raw bytes of the original CRLF/mixed working copy; sha256Lf = the same content with CRLF->LF,
 // derived only after the raw hash was confirmed. Clean clones check out LF (.gitattributes).
 const lfHash = file => crypto.createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex');
-check('Mentor, backend execution/grading and account files remain untouched', protectedFiles.every(entry => lfHash(entry.file) === entry.sha256Lf));
+// Later parts may change a protected file only when it is listed, with a reason, in the authorised list.
+const authorised = JSON.parse(fs.readFileSync('docs/evidence/authorized-baseline-changes.json', 'utf8')).changes;
+check('Every authorised change names a protected file, a part and a reason', authorised.every(change => protectedFiles.some(entry => entry.file === change.file) && /^Part \d$/.test(change.part) && change.reason.length > 10));
+check('Mentor, backend execution/grading and account files remain untouched unless explicitly authorised', protectedFiles.filter(entry => !authorised.some(change => change.file === entry.file)).every(entry => lfHash(entry.file) === entry.sha256Lf));
 console.log(`${checks} placement storage, UI and completion-isolation checks passed.`);
