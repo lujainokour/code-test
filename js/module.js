@@ -18,6 +18,8 @@
                 info.append(node('h3', `${index + 1}. ${lesson.title}`), node('p', lesson.intro), node('span', `About ${lesson.minutes} minutes`));
                 const link = node('a', progress.lessons.includes(lesson.id) ? 'Review' : 'Start');
                 link.className = 'button button-outline'; link.href = `lesson.html?lesson=${lesson.id}`; link.dataset.lessonLink = lesson.id;
+                // Styling hook only: completed / current (first unfinished) / available.
+                item.dataset.nodeState = progress.lessons.includes(lesson.id) ? 'completed' : level.lessons.findIndex(l => !progress.lessons.includes(l.id)) === index ? 'current' : 'available';
                 item.append(info, link); lists[0].append(item);
             });
             level.tasks.forEach(id => {
@@ -25,6 +27,7 @@
                 info.append(node('h3', taskNames[id]), node('p', `Run your ${course.name} solution and pass all automated checks.`));
                 const link = node('a', progress.tasks.includes(id) ? 'Review passed task' : 'Practise');
                 link.className = 'button button-outline'; link.href = `workspace.html?task=${id}`; link.dataset.taskLink = id;
+                item.dataset.nodeState = progress.tasks.includes(id) ? 'completed' : 'available';
                 item.append(info, link); lists[1].append(item);
             });
             const goals = document.querySelector('.module-aside .roadmap-requirements'); goals.replaceChildren();

@@ -1,1 +1,8 @@
-{ "pages": [] }
+{
+  "pages": [
+    "learning-path",
+    "module",
+    "lesson",
+    "level-assessment"
+  ]
+}

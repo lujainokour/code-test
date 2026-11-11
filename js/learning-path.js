@@ -23,6 +23,9 @@
                 const done = course.completed(level, progress), out = course.placedOut(level, progress), entitled = window.subscriptionStore.canAccessLevel(level.id), open = course.available(level, progress) && entitled;
                 card.classList.toggle('roadmap-locked', !open);
                 card.classList.toggle('roadmap-placed-out', out);
+                // Styling hook only (roadmap node states); no behaviour depends on it.
+                let current = null; try { current = course.current(progress).id; } catch { current = null; }
+                card.dataset.nodeState = done ? 'completed' : out ? 'placed-out' : !open ? 'locked' : level.id === current ? 'current' : 'available';
                 card.querySelector('.eyebrow').textContent = `LEVEL ${level.id} / ${done ? 'COMPLETED' : out ? 'PLACED OUT — NOT COMPLETED' : open ? 'AVAILABLE' : 'LOCKED'}`;
                 const old = card.querySelector('a, button');
                 const action = document.createElement(open || !entitled ? 'a' : 'button'); action.className = 'button button-outline';

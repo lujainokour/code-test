@@ -416,6 +416,48 @@ body.student-ui .workspace-main { min-width: 0; }
 body.student-ui main img, body.student-ui main pre, body.student-ui main table { max-width: 100%; }
 @media (max-width: 600px) { body.student-ui .workspace-main > h1, body.student-ui .services-main > h1 { font-size: var(--cm-text-xl); } }
 
+/* 14. PAGE GROUP — LEARNING PATH, MODULE, LESSON, LEVEL ASSESSMENT ------ */
+/* 14.1 Learning path roadmap: node states from data-node-state (styling hook only) */
+body.student-ui .roadmap-card { position: relative; transition: transform .2s var(--cm-ease), box-shadow .2s var(--cm-ease); }
+body.student-ui .roadmap-card .roadmap-number { border-radius: 50%; font-variant-numeric: tabular-nums; }
+body.student-ui .roadmap-card[data-node-state="completed"] { border-left: 4px solid var(--cm-success); }
+body.student-ui .roadmap-card[data-node-state="completed"] .roadmap-number { background: var(--cm-success-bg); color: var(--cm-success); }
+body.student-ui .roadmap-card[data-node-state="current"] { border-color: var(--cm-burgundy-700); box-shadow: 0 0 0 2px var(--cm-burgundy-700), var(--cm-shadow-2); }
+body.student-ui .roadmap-card[data-node-state="current"] .roadmap-number { background: var(--cm-burgundy-700); color: #fff; }
+body.student-ui .roadmap-card[data-node-state="current"] .button { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
+body.student-ui .roadmap-card[data-node-state="locked"] { background: var(--cm-surface-soft); box-shadow: none; }
+body.student-ui .roadmap-card[data-node-state="placed-out"] { border-style: dashed; border-color: var(--cm-amber); background: repeating-linear-gradient(135deg, var(--cm-surface), var(--cm-surface) 10px, var(--cm-amber-bg) 10px, var(--cm-amber-bg) 20px); }
+body.student-ui .roadmap-card[data-node-state="placed-out"] .roadmap-number { background: var(--cm-amber-bg); color: var(--cm-amber); }
+body.student-ui .roadmap-card .eyebrow { color: var(--cm-ink-2); }
+body.student-ui .roadmap-card[data-node-state="completed"] .eyebrow { color: var(--cm-success); }
+body.student-ui .roadmap-card[data-node-state="current"] .eyebrow { color: var(--cm-burgundy-700); }
+body.student-ui .roadmap-card[data-node-state="placed-out"] .eyebrow { color: var(--cm-amber); }
+
+/* 14.2 Module lesson/task lists: completed / current / available markers */
+body.student-ui .module-activities > li[data-node-state] { position: relative; padding-left: 40px; }
+body.student-ui .module-activities > li[data-node-state]::before { content: ""; position: absolute; left: 4px; top: 22px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--cm-line); background: var(--cm-surface); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+body.student-ui .module-activities > li[data-node-state="completed"]::before { content: "✓"; border-color: var(--cm-success); background: var(--cm-success-bg); color: var(--cm-success); }
+body.student-ui .module-activities > li[data-node-state="current"]::before { border-color: var(--cm-burgundy-700); background: var(--cm-burgundy-700); box-shadow: inset 0 0 0 4px var(--cm-surface); }
+body.student-ui .module-activities > li[data-node-state="current"] .button { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
+
+/* 14.3 Lesson: comfortable reading, sticky level progress, distinct check block */
+body.student-ui #lesson-main :is(#lesson-explanation, #lesson-intro, #topic-objectives) { max-width: 70ch; }
+body.student-ui #lesson-main #lesson-explanation :is(p, li) { font-size: 17px; line-height: 1.75; color: var(--cm-ink); }
+body.student-ui #lesson-main .question-code, body.student-ui #lesson-main #lesson-code { border-radius: 12px; }
+body.student-ui #lesson-main #topic-exercise-input { block-size: 96px; min-height: 0; resize: vertical; }
+body.student-ui #lesson-main .dashboard-card:has(#knowledge-form) { border-left: 4px solid var(--cm-burgundy-700); }
+body.student-ui #lesson-main .question-options label { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); background: #fff; cursor: pointer; }
+body.student-ui #lesson-main .question-options label:has(input:checked) { border-color: var(--cm-burgundy-700); box-shadow: inset 0 0 0 1px var(--cm-burgundy-700); }
+body.student-ui #lesson-main .lesson-next-panel { border-top: 4px solid var(--cm-burgundy-700); }
+@media (min-width: 1101px) { body.student-ui #lesson-main .module-aside { position: sticky; top: 88px; align-self: start; } }
+
+/* 14.4 Level assessment: one card per question, large answer targets */
+body.student-ui #level-assessment-form fieldset { margin: 0 0 var(--cm-s2); padding: var(--cm-s2) var(--cm-s3); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); background: var(--cm-surface); }
+body.student-ui #level-assessment-form legend { font-weight: 700; padding: 0 6px; }
+body.student-ui #level-assessment-form label { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 8px 12px; margin: 6px 0; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); background: #fff; cursor: pointer; }
+body.student-ui #level-assessment-form label:has(input:checked) { border-color: var(--cm-burgundy-700); box-shadow: inset 0 0 0 1px var(--cm-burgundy-700); }
+body.student-ui #assessment-result { font-weight: 650; }
+
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     .sp-skeleton, .week-bar, .badge-card.is-earned::after, .cm-toast { animation: none !important; }

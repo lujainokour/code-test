@@ -17,7 +17,10 @@ $routes = [ordered]@{
     'requests'='requests.html'; 'messages'='messages.html'; 'local-portfolio'='local-portfolio.html'; 'mentor'='mentor.html'; 'mentor-studio'='mentor-studio.html'
     'project'='project.html'; 'project-evaluation'='project-evaluation.html'
 }
+# powershell -File passes a comma list as one string: split it.
+$Pages = @($Pages | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 if (!$Pages.Count) { $Pages = @($routes.Keys) }
+$unknown = @($Pages | Where-Object { !$routes.Contains($_) }); if ($unknown.Count) { throw ('Unknown pages: ' + ($unknown -join ', ')) }
 $profile = Join-Path $env:TEMP ('cm-student-pages-' + [guid]::NewGuid().ToString('N'))
 $server = Start-Process powershell -ArgumentList @('-NoProfile','-ExecutionPolicy','Bypass','-File',(Join-Path $root 'start-server.ps1'),'-Port','8881') -WindowStyle Hidden -PassThru
 $chrome = Start-Process 'C:\Program Files\Google\Chrome\Application\chrome.exe' -ArgumentList @('--headless','--disable-gpu','--remote-allow-origins=*','--no-first-run','--remote-debugging-port=0',('--user-data-dir=' + $profile),'about:blank') -WindowStyle Hidden -PassThru
