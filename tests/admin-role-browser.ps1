@@ -71,7 +71,7 @@ try {
     Check 'Legacy booking fragment selects platform history' (Eval "location.hash==='#platform-bookings'")
     Check 'Student history receives status and meeting link' (Eval "[...document.querySelectorAll('#platform-bookings a')].some(a=>a.href==='https://meet.example.com/admin-room') && document.getElementById('platform-bookings').textContent.includes('Confirmed')")
     Open 'pages/admin/admin-session-students.html'
-    Check 'Confirmed student appears in follow-up' (Eval "adminSessionsStore.getStudents().some(s=>s.linkedStudent&&s.email==='student@example.com') && document.getElementById('teacher-students-list').textContent.includes('Lujain Okour')")
+    Check 'Confirmed student appears in follow-up' (Eval "adminSessionsStore.getStudents().some(s=>s.linkedStudent&&s.email==='student@example.com') && document.getElementById('teacher-students-list').textContent.includes('Demo Student (SAMPLE)')")
     Open 'pages/admin/admin-peer-mentoring.html'
     Check 'Admin has student tutor and booking oversight' (Eval "document.getElementById('admin-mentoring-monitor').textContent.includes('Student session bookings') && document.getElementById('peer-workspace')")
     Check 'Review queue is not seeded automatically' (Eval "peerMentoringStore.applications().length===0")

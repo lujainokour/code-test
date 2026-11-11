@@ -29,7 +29,7 @@ try {
     function Check($name,$pass){$script:checks+=@{name=$name;passed=[bool]$pass};Write-Output "$pass : $name";if(!$pass){throw $name}}
     function Go($path){Cdp 'Page.navigate' @{url=('http://127.0.0.1:8893/'+$path)}|Out-Null;Start-Sleep -Milliseconds 400}
     Go 'index.html'
-    Eval "cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Lujain Okour',email:'layout@example.com',role:'student',isDemo:true}));cmStorage.setItem('codementor-demo-onboarding',JSON.stringify({language:'python',experience:'beginner',goal:'foundations'}));cmStorage.setItem('codementor-demo-learning',JSON.stringify({version:1,lessons:['variables','data-types'],tasks:[],assessments:{}}));true"|Out-Null
+    Eval "cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Demo Student (SAMPLE)',email:'layout@example.com',role:'student',isDemo:true}));cmStorage.setItem('codementor-demo-onboarding',JSON.stringify({language:'python',experience:'beginner',goal:'foundations'}));cmStorage.setItem('codementor-demo-learning',JSON.stringify({version:1,lessons:['variables','data-types'],tasks:[],assessments:{}}));true"|Out-Null
     Go 'pages/student/dashboard.html'
     Eval "document.querySelector('#cm-user-guide[open] .cm-guide-skip')?.click();true"|Out-Null
     Start-Sleep -Milliseconds 100

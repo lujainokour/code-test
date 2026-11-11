@@ -55,7 +55,7 @@ try {
     Open 'pages/services/peer-mentoring.html'
     Eval "document.getElementById('fill-demo').click();document.getElementById('login-form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 700
-    Check 'Successful sign in returns to requested service with student identity' (Eval "location.pathname.endsWith('/services/peer-mentoring.html') && document.body.classList.contains('shell-active') && document.getElementById('account-name').textContent==='Lujain Okour'")
+    Check 'Successful sign in returns to requested service with student identity' (Eval "location.pathname.endsWith('/services/peer-mentoring.html') && document.body.classList.contains('shell-active') && document.getElementById('account-name').textContent==='Demo Student (SAMPLE)'")
     Open 'index.html'
     Check 'Signed in cards open their own services' (Eval "[...document.querySelectorAll('[data-service-target]')].every(a=>a.href.endsWith(a.dataset.serviceTarget)&&a.querySelector('.service-access-note').textContent==='Open service')")
     Open 'pages/services/peer-mentoring.html'

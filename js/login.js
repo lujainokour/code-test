@@ -136,7 +136,7 @@ loginForm.addEventListener("submit", async function (event) {
     submitButton.disabled = true;
     try {
         signedInProfile = email === demoEmail && password === demoPassword
-            ? { name: "Lujain Okour", email: demoEmail, role: "student", isDemo: true }
+            ? { name: "Demo Student (SAMPLE)", email: demoEmail, role: "student", isDemo: true }
             : await window.studentAccount.authenticate(email, password);
     } catch (error) { showMessage(error.message, true); return; }
     finally { submitButton.disabled = false; }

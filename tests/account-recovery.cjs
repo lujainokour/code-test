@@ -236,5 +236,11 @@ function changePasswordPage(localStorage, ownerRef) {
         assert.ok(!/does not verify or change your password/.test(change));
         assert.ok(change.indexOf('student-account.js') < change.indexOf('change-password.js'));
     });
+    await check('The sample student account uses a fictional, labelled display name', async () => {
+        const login = fs.readFileSync('js/login.js', 'utf8');
+        assert.ok(login.includes('{ name: "Demo Student (SAMPLE)", email: demoEmail, role: "student", isDemo: true }'));
+        for (const file of ['js/login.js', 'js/admin-sessions-store.js', 'js/company-store.js', 'js/peer-mentoring-store.js'])
+            assert.ok(!/Lujain|Okour/.test(fs.readFileSync(file, 'utf8')), file + ' contains no real name for the sample account');
+    });
     console.log(`${count} account checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });

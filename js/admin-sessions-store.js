@@ -78,9 +78,9 @@
         bookings: [
             {
                 id: "bk-201",
-                studentName: "Lujain Okour",
+                studentName: "Demo Student (SAMPLE)",
                 studentEmail: "student@example.com",
-                studentInitials: "LO",
+                studentInitials: "DS",
                 sessionTitle: "Python Data Structures & Advanced Algorithms",
                 requestedDate: "2026-11-08",
                 requestedTime: "02:00 PM - 03:30 PM",
@@ -132,9 +132,9 @@
         students: [
             {
                 id: "std-1",
-                name: "Lujain Okour",
+                name: "Demo Student (SAMPLE)",
                 email: "student@example.com",
-                initials: "LO",
+                initials: "DS",
                 enrolledCourse: "Python & Algorithms Mentorship",
                 sessionsCompleted: 5,
                 lastSessionDate: "2026-11-02",

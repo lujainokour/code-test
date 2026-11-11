@@ -65,6 +65,11 @@
       "file": "pages/auth/company-signup.html",
       "part": "Part 4",
       "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; neutral placeholder."
+    },
+    {
+      "file": "js/login.js",
+      "part": "Part 1",
+      "reason": "Follow-up fix 2: sample student display name changed from a real name to Demo Student (SAMPLE)."
     }
   ]
 }
