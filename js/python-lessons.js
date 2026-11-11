@@ -73,7 +73,8 @@ window.pythonLessons = [
     }
 ];
 
-/* Curated external references for Level 01 lessons. No storage writes. */
+/* Curated external references for the original Level 01 lessons. No storage writes.
+   Link/topic verification and playback limits: PYTHON-SOURCES-NOTES.md. */
 (() => {
     const video = (title, id, language = "Arabic") => ({ title, url: `https://www.youtube.com/watch?v=${id}`, type: "Video", language });
     const docs = (title, path) => ({ title: `Python documentation: ${title}`, url: `https://docs.python.org/3/${path}`, type: "Documentation", language: "English" });

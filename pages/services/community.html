@@ -1,36 +1,35 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../js/theme.js"></script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student Community | CodeMentor AI</title>
+<title>Community | CodeMentor AI</title>
+<script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script><script src="../../js/access-guard.js"></script><script src="../../js/theme.js"></script>
 <link rel="icon" href="../../assets/images/Burgundy CMA cherry monogram logo.png" type="image/png">
-<link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script><script src="../../js/main.js" defer></script>
-<script src="../../js/student-services-data.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/student-services.js" defer></script>
+<link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/community.css">
+<script src="../../js/language-catalog.js" defer></script><script src="../../js/workspace-shell.js" defer></script><script src="../../js/main.js" defer></script><script src="../../js/community-membership.js" defer></script><script src="../../js/community.js" defer></script>
 </head>
 <body class="services-page" data-service-page="community">
 <a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header services-header">
-    <script src="../../js/theme.js"></script><nav class="container navbar" aria-label="Main navigation">
-<a class="logo brand-logo" href="../../index.html"><img src="../../assets/images/Burgundy CMA cherry monogram logo.png" width="48" height="48" alt=""><span>CodeMentor <span class="brand-ai">AI</span></span></a>
-<button class="menu-toggle" type="button" aria-label="Open navigation" aria-controls="navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-<div class="navigation" id="navigation"><a href="../../index.html">Home</a><a href="../../pages/services/community.html">Community</a><a href="../../pages/services/peer-mentoring.html">Mentoring</a><a href="../../pages/services/showcase.html">Showcase</a><a href="../../pages/services/freelance-services.html">Services</a><div class="nav-actions"><a class="button button-outline" href="../../pages/student/dashboard.html">Workspace</a></div></div>
-</nav></header>
+<header class="site-header services-header"><nav class="container navbar" aria-label="Main navigation"><a class="logo" href="../../index.html">CodeMentor AI</a><a class="button button-outline" href="../student/dashboard.html">Workspace</a></nav></header>
 <main id="main" class="container services-main">
-<div class="services-heading"><p class="eyebrow">CODEMENTOR AI / Student Community</p><h1>Learn together. Share what you discover.</h1><p>A place for students to exchange knowledge, ask thoughtful questions and celebrate small wins.</p></div>
-<div id="service-content"><div class="services-grid">
-<article class="services-card"><p class="eyebrow">01 / EXCHANGE</p><h2>Share what you know.</h2><p>Discuss Python, C# and C++ concepts, explain your approach and learn from different ways of thinking.</p></article>
-<article class="services-card"><p class="eyebrow">02 / SUPPORT</p><h2>Ask with context.</h2><p>Describe what you tried, share a small example and ask for hints. Help others understand rather than complete assessed work for them.</p></article>
-<article class="services-card"><p class="eyebrow">03 / CELEBRATE</p><h2>Make progress visible.</h2><p>Share project ideas, lessons learned and milestones. Only share work and information you have permission to publish.</p></article>
+<section class="community-hero"><div><p class="eyebrow">YOUR PEOPLE. YOUR SPACE.</p><h1>Learn better,<br>together.</h1><p>Find your study community. Request to join a private channel, then discuss with approved members.</p></div><a class="button community-create" href="#community-directory">Explore communities</a></section>
+<div class="community-layout">
+<aside class="community-sidebar"><p class="eyebrow">PRIVATE CHANNELS</p><nav id="community-channels" aria-label="Discussion channels"></nav><div class="community-sidebar-note"><span aria-hidden="true">{ }</span><h2>A space for your group.</h2><p>Each channel has its own membership. An administrator reviews every request.</p></div></aside>
+<section class="community-feed" aria-label="Community discussions">
+<div id="community-directory" class="community-directory-grid"></div><section id="community-access" class="community-panel" hidden></section>
+<form hidden id="community-composer" class="community-panel"><div class="community-panel-heading"><h2>What's on your mind?</h2><span class="community-badge">NEW DISCUSSION</span></div>
+<label for="post-channel">Channel</label><select id="post-channel" name="channel"></select>
+<label for="post-title">Discussion title</label><input id="post-title" name="title" required maxlength="140" placeholder="Give your discussion a clear title" dir="auto">
+<label for="post-body">Your post</label><textarea id="post-body" name="body" required maxlength="5000" rows="4" placeholder="Share your question, notes, code or project…" dir="auto"></textarea>
+<div class="community-composer-footer"><span>Make it helpful. Keep it kind.</span><button class="button button-primary" type="submit">Publish post</button></div></form>
+<div class="community-toolbar" hidden><label class="community-search" for="community-search">Search discussions<input type="search" id="community-search" placeholder="Search a topic or keyword…"></label><label for="community-sort">Sort by<select id="community-sort"><option value="newest">Newest first</option><option value="active">Most replies</option><option value="unanswered">Unanswered</option></select></label></div>
+<p id="community-status" role="status" aria-live="polite"></p>
+<div class="community-feed-heading"><h2 id="community-feed-title">All discussions</h2><span id="community-count"></span></div>
+<div id="community-posts"></div>
+</section>
+<aside class="community-info"><section class="community-panel"><p class="eyebrow">MEMBERS ONLY</p><h2>Request. Join.<br>Discuss.</h2><p>Channel discussions open after an administrator approves your request. Membership in one channel does not unlock the others.</p><a href="../student/learning-path.html">Continue learning &rarr;</a></section><section class="community-panel"><h2>Before you post</h2><ul><li>Include what you tried.</li><li>Explain ideas in your own words.</li><li>Give constructive feedback.</li><li>Keep personal details private.</li></ul></section><p class="community-storage-note">Local preview: posts and replies are saved in this browser and shared between its tabs. They are not synced to other devices.</p></aside>
 </div>
-<section class="services-panel" aria-labelledby="discord-title"><h2 id="discord-title">Our future Discord space</h2><p class="services-notice">The Discord invitation link has not been added yet. There is no connected or active community available through this demo.</p><p>When a verified invitation is provided, it will appear here. Never share passwords, private account details or payment information.</p><span class="services-tag">Discord link: not added yet</span></section>
-<section class="services-panel"><h2>A good place to learn together</h2><ul><li>Be respectful and welcome beginners.</li><li>Keep discussions focused and explain your reasoning.</li><li>Credit other people's work and protect personal information.</li></ul><p>This page explains the intended community. Posting and discussions are not connected.</p><a class="button button-outline" href="../../pages/services/showcase.html">Explore Student Showcase</a></section></div>
-<noscript><p class="services-notice">Enable JavaScript to browse demo profiles, use forms or load a learning report.</p></noscript>
+<noscript><p class="services-notice">Enable JavaScript and sign in to use the community.</p></noscript>
 </main>
-<footer class="services-footer"><div class="container"><a href="../../index.html" class="logo">CodeMentor AI</a><p>Frontend demo · Learn with clarity.</p><nav aria-label="Footer navigation"><a href="../../index.html#contact">Contact</a><a href="../../pages/services/community.html">Community</a><a href="../../pages/student/progress.html">My progress</a></nav></div></footer>
+<footer class="services-footer"><div class="container"><a href="../../index.html" class="logo">CodeMentor AI</a><p>Learn with clarity. Grow together.</p></div></footer>
 </body></html>
-
-
-

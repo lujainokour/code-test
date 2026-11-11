@@ -136,6 +136,79 @@
     });
 })();
 
+/* Language cards stay visible without JavaScript and enter once on arrival. */
+(() => {
+    const grid = document.querySelector("#modules .hc-languages");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    if (!grid || reduced.matches || !("IntersectionObserver" in window)) return;
+    const cards = [...grid.children];
+    const observer = new IntersectionObserver(entries => {
+        if (!entries.some(entry => entry.isIntersecting)) return;
+        if (!grid.contains(document.activeElement)) cards.forEach(card => card.classList.add("language-enter"));
+        observer.disconnect();
+    }, { threshold: 0.12 });
+    observer.observe(grid);
+    grid.addEventListener("focusin", () => {
+        observer.disconnect();
+        cards.forEach(card => card.classList.remove("language-enter"));
+    });
+})();
+
+/* Play visible cherries one at a time, repeating in card order. */
+(() => {
+    const videos = [...document.querySelectorAll(".service-cherry-video")];
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const visible = new Set();
+    let active = null;
+    let nextIndex = 0;
+    function sync() {
+        if (active && (reduced.matches || document.hidden || !visible.has(active))) {
+            active.pause();
+            if (!visible.has(active)) active = null;
+        }
+        if (reduced.matches || document.hidden) return;
+        if (!active) {
+            for (let offset = 0; offset < videos.length; offset++) {
+                const index = (nextIndex + offset) % videos.length;
+                if (!visible.has(videos[index])) continue;
+                active = videos[index];
+                active.currentTime = 0;
+                nextIndex = (index + 1) % videos.length;
+                break;
+            }
+        }
+        if (active) active.play().catch(() => {});
+    }
+    videos.forEach(video => {
+        video.muted = true;
+        video.loop = false;
+        video.pause();
+        video.defaultPlaybackRate = 0.75;
+        video.playbackRate = 0.75;
+        video.addEventListener("ended", () => {
+            if (active !== video) return;
+            video.pause();
+            active = null;
+            sync();
+        });
+    });
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) visible.add(entry.target);
+                else visible.delete(entry.target);
+            });
+            sync();
+        }, { threshold: 0.1 });
+        videos.forEach(video => observer.observe(video));
+    } else {
+        videos.forEach(video => visible.add(video));
+        sync();
+    }
+    reduced.addEventListener("change", sync);
+    document.addEventListener("visibilitychange", sync);
+})();
+
 /* Four service cards only. Visible by default; one finite entry, no hidden JS state. */
 (() => {
     const section = document.getElementById("student-services");

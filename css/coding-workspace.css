@@ -1,0 +1,32 @@
+/* The learning steps sit outside the two-column task/editor work area. */
+.shell-active #coding-main { display: block; width: 100%; max-width: 1320px; margin-inline: auto; padding: 28px; }
+#coding-main > .student-journey { margin-bottom: 22px; }
+#coding-main .coding-work-area { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(0, 1.4fr); gap: 22px; align-items: start; }
+#coding-main .coding-work-area > * { min-width: 0; align-self: start; }
+#coding-main .coding-task-panel, #coding-main .coding-editor-panel { padding: 24px; border-radius: 14px; }
+#coding-main .coding-task-panel h1 { font-size: clamp(24px, 2.3vw, 32px); line-height: 1.2; margin-bottom: 14px; }
+#coding-main .coding-task-panel > .eyebrow { font-size: 10px; margin: 18px 0 12px; }
+#coding-main .coding-task-panel h2 { font-size: 18px; margin-top: 24px; }
+.coding-level-back { color: var(--muted); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+#coding-main .coding-task-panel .lesson-output { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.8; }
+#coding-main .coding-editor-header { flex-wrap: wrap; gap: 10px 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.coding-editor-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.coding-language { padding: 4px 10px; background: var(--sage); border-radius: 6px; font-size: 11px; }
+#coding-main .coding-save-status { font-size: 11px; color: var(--muted); }
+#coding-main .code-editor { min-height: 390px; padding: 20px; background: #260204; color: #daeaf0; border: 1px solid var(--border); font: 14px/1.8 Consolas, monospace; }
+#coding-main .coding-toolbar { justify-content: flex-start; gap: 8px; margin-top: 18px; padding-block: 16px; border-block: 1px solid var(--border); }
+#coding-main .coding-toolbar .button { flex: 1 1 auto; min-height: 42px; padding: 10px 13px; font-size: 12px; }
+#coding-main .button-primary { background: var(--action-bg); color: var(--action-text); border-color: var(--action-bg); }
+#coding-main .button-outline { background: transparent; color: var(--primary); border-color: var(--border); }
+#coding-main .button-outline:hover { background: var(--sage); }
+#coding-main .coding-output-panel { margin-top: 18px; padding: 18px; border-radius: 10px; }
+#coding-main .coding-output-panel h2 { font-size: 16px; }
+#coding-main #open-code-review { display: inline-block; margin-top: 14px; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+#coding-main .coding-completion-help, #coding-main .task-support { padding: 16px; margin-block: 18px; border: 1px solid var(--border); border-radius: 10px; background: transparent; }
+#coding-main :is(.coding-completion-help, .task-support) > summary { cursor: pointer; font-size: 13px; font-weight: 700; }
+#coding-main :is(.coding-completion-help, .task-support) > p { font-size: 12px; color: var(--muted); line-height: 1.8; margin-block: 14px 0; }
+#coding-main .task-support .button { margin-top: 14px; }
+#coding-main .task-support #solution-help { margin-top: 16px; }
+#coding-main [hidden] { display: none !important; }
+@media (max-width: 1100px) { #coding-main .coding-work-area { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .shell-active #coding-main { padding: 18px 16px; } #coding-main .coding-task-panel, #coding-main .coding-editor-panel { padding: 20px 16px; } #coding-main .code-editor { padding: 14px; min-height: 320px; font-size: 13px; } #coding-main .coding-toolbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } #coding-main .coding-toolbar .button { min-width: 0; padding-inline: 8px; } }

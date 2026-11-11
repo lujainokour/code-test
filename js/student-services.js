@@ -22,7 +22,8 @@
     }
     function person(studentId) { return data.students.find(student => student.id === studentId); }
     function publicProfile(studentId) { return `../services/student-public-profile.html?id=${encodeURIComponent(studentId)}`; }
-    const { session, readRecords, save } = window.studentServicesStore;
+    const { session, requestSession, readRecords, save, updateDraftStatus, incomingRequests, updateRequestStatus, publishedDrafts } = window.studentServicesStore;
+    try { data.services.push(...publishedDrafts()); } catch { /* Private or corrupt drafts never prevent the public sample catalogue from loading. */ }
     function field(form, label, name, options = {}) {
         const wrap = el("div", undefined, "form-field");
         const input = document.createElement(options.tag || "input");
@@ -41,8 +42,13 @@
     function message(form) { const node = el("p", "", "form-message"); node.setAttribute("role", "status"); node.setAttribute("aria-live", "polite"); form.append(node); return node; }
     function result(node, value, error = false) { node.textContent = value; node.classList.toggle("is-error", error); }
     function requireOwner(host) {
-        try { return session().email; } catch (error) {
+        try { return session().email.trim().toLowerCase(); } catch (error) {
             host.append(note(error.message), link("Sign in to the demo", "../auth/login.html")); return null;
+        }
+    }
+    function requireRequester(host) {
+        try { return requestSession(); } catch (error) {
+            host.append(note(error.message), link("Student sign in", "../auth/login.html"), link("Company sign in", "../auth/company-login.html")); return null;
         }
     }
     function filters(items, makeCard, includeSkill = false) {
@@ -63,7 +69,7 @@
         function render() {
             const search = query.value.trim().toLowerCase();
             const matches = items.filter(item => {
-                const owner = item.studentId ? person(item.studentId).name : item.name;
+                const owner = item.studentId ? person(item.studentId)?.name || "" : item.providerName || item.name || "";
                 const haystack = [owner, item.title, item.topic, item.bio, item.description, ...item.skills, ...(item.learning || [])].join(" ").toLowerCase();
                 return haystack.includes(search) && (language.value === "all" || item.language === language.value || item.learning?.includes(language.value)) && (!skill || skill.value === "all" || item.skills.includes(skill.value));
             });
@@ -81,11 +87,12 @@
         node.append(el("p", "SAMPLE DATA", "eyebrow"), el("h2", title), el("p", subtitle, "services-meta"), el("p", description), tags(skills)); return node;
     }
     function mentoring() {
+        if (window.peerMentoringUI) { window.peerMentoringUI.catalogue(root, data.mentors.filter(item => item.platformSession)); return; }
         root.append(note("Paid peer sessions are a proposed service. All providers, prices and appointments below are demo data. Eligibility is a sample admin approval, not a result of completing a learning path."));
         filters(data.mentors.filter(item => item.demoAdminApproved === true), item => {
             const student = person(item.studentId);
-            const node = card(item.topic, `${student.name} · ${item.language}`, item.description, item.skills);
-            node.append(el("p", `${item.duration} minutes · ${item.price} ${item.currency} (demo price)`, "services-price"), el("p", "Demo admin-approved peer mentor", "services-meta"), link("View session & request a demo booking", `../services/mentoring-details.html?id=${item.id}`, "button button-primary")); return node;
+            const node = card(item.topic, `${student?.name || item.providerName} · ${item.language}`, item.description, item.skills);
+            node.append(el("p", `${item.duration} minutes · ${item.price} ${item.currency} (demo price)`, "services-price"), el("p", item.platformSession ? "Platform session · local booking" : "Demo admin-approved peer mentor", "services-meta"), link("View session & request a demo booking", `../services/mentoring-details.html?id=${encodeURIComponent(item.id)}`, "button button-primary")); return node;
         });
     }
     function slotsFor(mentor) {
@@ -95,8 +102,10 @@
         });
     }
     function mentoringDetails() {
+        if (id?.startsWith("peer-") && window.peerMentoringUI) { window.peerMentoringUI.details(root, id); return; }
         const item = data.mentors.find(mentor => mentor.id === id && mentor.demoAdminApproved === true);
         if (!item) { root.append(note("Session not found. Choose a session from Peer Mentoring."), link("Browse sessions", "../services/peer-mentoring.html")); return; }
+        if (item.platformSession) { platformSessionDetails(item); return; }
         const student = person(item.studentId);
         const detail = card(item.topic, `${student.name} · ${item.language}`, item.description, item.skills);
         detail.append(el("p", `${item.duration} minutes · ${item.price} ${item.currency} (demo price)`, "services-price"), note("Demo admin-approved eligibility. Completion of a course alone does not establish teaching eligibility."), link("View public student profile", publicProfile(student.id)));
@@ -125,8 +134,31 @@
             } catch (error) { result(status, error.message || "Local storage is unavailable. Nothing was sent.", true); }
         }); host.append(form);
     }
+    function platformSessionDetails(item) {
+        root.append(card(item.topic, `${item.providerName} · ${item.language}`, item.description, item.skills), note("Choose a published platform appointment. Requests and admin decisions are shared between tabs on this browser. No payment is collected and no meeting link is generated."));
+        const host = el("section", undefined, "services-panel"); host.append(el("h2", "Request a platform booking")); root.append(host);
+        const owner = requireOwner(host); if (!owner) return;
+        const form = el("form");
+        const select = field(form, "Available appointment (your browser's local time)", "booking-slot", { tag: "select" });
+        const refresh = () => {
+            select.replaceChildren(); option(select, "Choose an available appointment", "");
+            window.adminSessionsStore.getAvailableSlots(item.sessionId).forEach(slot => option(select, `${slot.date} · ${slot.time}`, slot.id));
+        }; refresh();
+        form.append(el("p", `${item.duration} minutes · ${item.price} ${item.currency}. Time zone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}.`, "field-help"));
+        const notes = field(form, "What would you like help with?", "booking-notes", { tag: "textarea", maxLength: 1000 });
+        const submit = el("button", "Request booking", "button button-primary"); submit.type = "submit"; form.append(submit);
+        const status = message(form); form.append(link("Track my bookings", "../student/requests.html?view=student#platform-bookings"));
+        form.addEventListener("submit", async event => {
+            event.preventDefault(); if (submit.disabled || !form.reportValidity()) return;
+            submit.disabled = true;
+            try { await window.adminSessionsStore.requestBooking(item.sessionId, select.value, notes.value.trim(), owner); result(status, "Booking requested. An administrator can accept or decline it from the booking dashboard in this browser."); notes.value = ""; }
+            catch (error) { result(status, error.message, true); }
+            finally { refresh(); submit.disabled = false; }
+        });
+        host.append(form);
+    }
     function showcase() {
-        root.append(note("These are fictional public demo profiles and project concepts. Private account details, age and email are never imported here."));
+        root.append(note("Browse fictional samples and student profiles explicitly published to this browser's directory. Private account details, age and email are not displayed."));
         filters(data.students, item => {
             const node = card(item.name, `Learning ${item.learning.join(" & ")}`, item.bio, item.skills);
             node.prepend(el("div", item.initials, "services-avatar"));
@@ -137,7 +169,7 @@
         const student = data.students.find(item => item.id === id);
         if (!student) { root.append(note("Public student profile not found."), link("Browse showcase", "../services/showcase.html")); return; }
         const node = card(student.name, `Learning ${student.learning.join(" & ")}`, student.bio, student.skills);
-        node.prepend(el("div", student.initials, "services-avatar")); root.append(node, note("Fictional demo profile. Public display data is separate from private account information."));
+        node.prepend(el("div", student.initials, "services-avatar")); root.append(node, note(student.localPublished ? "Student-published local profile. Projects and skills are self-reported, not independently verified." : "Fictional demo profile. Public display data is separate from private account information."));
         const projects = el("section", undefined, "services-panel"); projects.append(el("h2", "Projects"));
         student.projects.forEach(project => projects.append(el("h3", project.title), el("p", project.description)));
         projects.append(el("h2", "Work links"));
@@ -149,86 +181,221 @@
         }); root.append(projects);
     }
     function freelance() {
-        root.append(note("Students offer programming services here. This is a sample catalogue, with illustrative prices and delivery times. Requests are local simulations; no payment or delivery takes place."), link("Create my local service draft", "../services/service-draft.html", "button button-primary"));
+        root.append(note("Browse student offers, compare skills and portfolio examples, then prepare a request. Requests and provider decisions are shared between tabs in this browser. No payment or delivery is arranged automatically."), link("Create my local service draft", "../services/service-draft.html", "button button-primary"), link("Company sign in", "../auth/company-login.html"));
         filters(data.services, item => {
-            const student = person(item.studentId);
-            const node = card(item.title, `${student.name} · ${item.language}`, item.description, item.skills);
-            node.append(el("p", `From ${item.price} ${item.currency} · ${item.days} days (demo estimates)`, "services-price"), link("View service & make a demo request", `../services/service-details.html?id=${item.id}`, "button button-primary")); return node;
-        });
+            const student = item.studentId ? person(item.studentId) : null;
+            const providerName = student?.name || item.providerName || "Student provider";
+            const node = card(item.title, `${providerName} - ${item.language}`, item.description, item.skills);
+            const project = student?.projects?.[0]?.title || item.portfolioProject;
+            if (project) node.append(el("p", `Portfolio example: ${project}`, "services-meta"));
+            if (student) node.append(link("View student profile", publicProfile(student.id)));
+            node.append(el("p", `From ${item.price} ${item.currency} - ${item.days} days (sample estimate)`, "services-price"), link("View service and request a quote", `../services/service-details.html?id=${encodeURIComponent(item.id)}`, "button button-primary"));
+            return node;
+        }, true);
     }
     function serviceDetails() {
         const item = data.services.find(service => service.id === id);
         if (!item) { root.append(note("Service not found. Local drafts are private and are not published here."), link("Browse student services", "../services/freelance-services.html")); return; }
-        const student = person(item.studentId);
-        const detail = card(item.title, `${student.name} · ${item.language}`, item.description, item.skills);
-        detail.append(el("p", `Starting at ${item.price} ${item.currency} · ${item.days} days (demo estimates)`, "services-price"), el("h3", "Example deliverables"), tags(item.deliverables), link("View student's public profile", publicProfile(student.id)));
-        root.append(detail, note("Demo request only. It stays in this browser tab and is not sent to another person. No payment, agreement, delivery or availability is confirmed."));
-        const host = el("section", undefined, "services-panel"); host.append(el("h2", "Describe your demo request")); root.append(host);
-        const owner = requireOwner(host); if (!owner) return;
+        const student = item.studentId ? person(item.studentId) : null;
+        const providerName = student?.name || item.providerName || "Student provider";
+        const detail = card(item.title, `${providerName} - ${item.language}`, item.description, item.skills);
+        detail.append(el("p", `Starting at ${item.price} ${item.currency} - ${item.days} days (sample estimate)`, "services-price"));
+        if (item.deliverables?.length) detail.append(el("h3", "Example deliverables"), tags(item.deliverables));
+        if (item.portfolioProject) detail.append(el("h3", "Portfolio example"), el("p", item.portfolioProject));
+        if (student) detail.append(link("View student's public profile", publicProfile(student.id)));
+        root.append(detail, note("Requests are shared with the provider's inbox in this browser. No external notification or payment is sent; scope and delivery must be agreed."));
+        const host = el("section", undefined, "services-panel"); host.append(el("h2", "Request a quote"), el("p", "Share the project scope and your preferred budget and timeline.")); root.append(host);
+        const requester = requireRequester(host); if (!requester) return;
         const form = el("form"); form.noValidate = true;
-        const brief = field(form, "Project brief (do not include sensitive information)", "service-brief", { tag: "textarea", maxLength: 1200 });
-        const submit = el("button", "Save demo service request", "button button-primary"); submit.type = "submit"; form.append(submit);
+        const brief = field(form, "Project scope (do not include sensitive information)", "service-brief", { tag: "textarea", maxLength: 1200 });
+        const budget = field(form, "Budget in JOD (optional estimate)", "service-budget", { type: "number", min: 0, max: 10000, step: "0.01" }); budget.required = false;
+        const targetDays = field(form, "Preferred delivery time in days (optional)", "service-target-days", { type: "number", min: 1, max: 180, step: "1" }); targetDays.required = false;
+        const submit = el("button", "Save request locally", "button button-primary"); submit.type = "submit"; form.append(submit);
         const status = message(form);
-        const historyLink = link("View my local requests", "../student/requests.html"); historyLink.hidden = true; form.append(historyLink);
+        const historyLink = link("Track this request", "../student/requests.html"); historyLink.hidden = true; form.append(historyLink);
         form.addEventListener("submit", event => {
             event.preventDefault();
             if (submit.disabled) return;
             if (!form.reportValidity()) { result(status, "Describe what you would like the service to cover.", true); return; }
             try {
-                const record = save("request", { serviceId: item.id, brief: brief.value.trim(), status: "local-simulation" }, owner);
+                const record = save("request", { serviceId: item.id, brief: brief.value.trim(), requesterRole: requester.role, requesterName: requester.name, recipientEmail: item.ownerEmail, budget: budget.value === "" ? undefined : Number(budget.value), targetDays: targetDays.value === "" ? undefined : Number(targetDays.value), workflowStatus: "New", status: "local-simulation" }, requester.email);
                 historyLink.href = `../student/requests.html#request-${encodeURIComponent(record.id)}`; historyLink.hidden = false;
-                result(status, "Demo request saved in this tab only. It was not sent to the student. No payment or delivery has been arranged.");
+                result(status, "Request saved in this browser for " + requester.name + ". The provider can review it in their request inbox in this browser. No payment or delivery has been arranged.");
                 submit.disabled = true;
-            } catch (error) { result(status, error.message || "Local storage is unavailable. Nothing was sent.", true); }
+            } catch (error) { result(status, error.message || "The request could not be saved. Nothing was sent.", true); }
         }); host.append(form);
     }
     function drafts() {
-        root.append(note("Create a private local draft of a service you could offer. It is not published or sent to anyone. Do not include contact details or sensitive information."));
+        root.append(note("Build a service draft with your skills and a portfolio example. Drafts stay private until you choose to publish them to this browser's demo catalogue."));
         const owner = requireOwner(root); if (!owner) return;
         const form = el("form", undefined, "services-panel"); form.noValidate = true;
         const title = field(form, "Service title", "draft-title", { maxLength: 80 });
         const language = field(form, "Programming language", "draft-language", { tag: "select" }); languages.forEach(value => option(language, value, value));
         const description = field(form, "What will you offer?", "draft-description", { tag: "textarea", maxLength: 1000 });
         const skills = field(form, "Relevant skills (separate with commas)", "draft-skills", { maxLength: 200 });
+        const portfolio = field(form, "Portfolio project example (optional)", "draft-portfolio", { maxLength: 180 }); portfolio.required = false;
         const price = field(form, "Starting price (JOD, demo estimate)", "draft-price", { type: "number", min: 0.01, max: 10000, step: "0.01" });
         const days = field(form, "Estimated delivery (days)", "draft-days", { type: "number", min: 1, max: 180, step: "1" });
-        const submit = el("button", "Save local draft", "button button-primary"); submit.type = "submit"; form.append(submit);
+        const submit = el("button", "Save private draft", "button button-primary"); submit.type = "submit"; form.append(submit);
         const status = message(form);
         const list = el("section", undefined, "services-panel");
         function render() {
-            list.replaceChildren(el("h2", "My local drafts"));
+            list.replaceChildren(el("h2", "My services"));
             const records = readRecords("draft").records.filter(record => record.owner === owner);
             if (!records.length) list.append(el("p", "No saved service drafts yet."));
             records.forEach(record => {
-                const node = card(record.title, `${record.language} · Private local draft`, record.description, record.skills.split(",").map(value => value.trim()).filter(Boolean));
-                node.append(el("p", `From ${record.price} JOD · ${record.days} days (your estimate)`)); list.append(node);
+                const node = card(record.title, `${record.language} - ${record.status === "published" ? "Published in this browser demo" : "Private draft"}`, record.description, record.skills.split(",").map(value => value.trim()).filter(Boolean));
+                if (record.portfolioProject) node.append(el("p", `Portfolio example: ${record.portfolioProject}`, "services-meta"));
+                node.append(el("p", `From ${record.price} JOD - ${record.days} days (your estimate)`));
+                const toggle = el("button", record.status === "published" ? "Unpublish from demo catalogue" : "Publish to demo catalogue", "button button-outline"); toggle.type = "button";
+                toggle.addEventListener("click", () => {
+                    try {
+                        updateDraftStatus(record.id, record.status === "published" ? "draft" : "published", owner);
+                        render();
+                        result(status, record.status === "published" ? "Service returned to private drafts." : "Service published in this browser's demo catalogue. It is not available on other devices.");
+                    } catch (error) { result(status, error.message, true); }
+                });
+                node.append(toggle); list.append(node);
             });
         }
         form.addEventListener("submit", event => {
             event.preventDefault(); if (!form.reportValidity()) { result(status, "Complete all fields with a valid price and delivery time.", true); return; }
             try {
-                save("draft", { title: title.value.trim(), language: language.value, description: description.value.trim(), skills: skills.value.trim(), price: Number(price.value), days: Number(days.value), status: "draft" }, owner);
-                form.reset(); render(); result(status, "Draft saved privately in this tab. It has not been published.");
+                const profile = session();
+                save("draft", { title: title.value.trim(), language: language.value, description: description.value.trim(), skills: skills.value.trim(), portfolioProject: portfolio.value.trim(), providerName: profile.name, price: Number(price.value), days: Number(days.value), status: "draft" }, owner);
+                form.reset(); render(); result(status, "Private draft saved. Publish it when you are ready to show it in the local demo catalogue.");
             } catch (error) { result(status, error.message || "The draft could not be saved. Existing records have not been changed.", true); }
         }); root.append(form, list);
         try { render(); } catch (error) { result(status, error.message, true); }
     }
     function history() {
+        let selectedHistoryPanel = "platform-bookings";
+        if (location.hash === "#instructor-bookings") window.history.replaceState(null, "", "#platform-bookings");
+        function emptyState(section, title, description, label, href) {
+            const empty = el("div", undefined, "request-empty");
+            const icon = el("span", "↗", "request-empty-icon"); icon.setAttribute("aria-hidden", "true");
+            empty.append(icon, el("h3", title), el("p", description));
+            if (label && href) empty.append(link(label, href));
+            section.append(empty);
+        }
+        function arrangePanels() {
+            const categories = [["platform-bookings", "Platform sessions"], ["booking-history", "Peer sessions"], ["request-history", "Service requests"], ["incoming-service-requests", "Provider inbox"]];
+            const tabs = el("div", undefined, "request-tabs"); tabs.setAttribute("role", "tablist"); tabs.setAttribute("aria-label", "Request categories");
+            const panels = categories.map(([id]) => document.getElementById(id));
+            let target;
+            try { target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch { /* Ignore malformed fragments. */ }
+            const targetPanel = target?.closest(".services-panel");
+            if (targetPanel && panels.includes(targetPanel)) selectedHistoryPanel = targetPanel.id;
+            function activate(id, updateAddress = false) {
+                selectedHistoryPanel = id;
+                panels.forEach(panel => { panel.hidden = panel.id !== id; });
+                [...tabs.children].forEach(button => {
+                    const active = button.getAttribute("aria-controls") === id;
+                    button.setAttribute("aria-selected", String(active)); button.tabIndex = active ? 0 : -1;
+                });
+                if (updateAddress) window.history.replaceState(null, "", `#${id}`);
+            }
+            categories.forEach(([id, label], index) => {
+                const panel = panels[index]; panel.classList.add("request-tab-panel"); panel.setAttribute("role", "tabpanel"); panel.setAttribute("aria-labelledby", `${id}-tab`); panel.tabIndex = 0;
+                const button = el("button", label); button.type = "button"; button.id = `${id}-tab`; button.setAttribute("role", "tab"); button.setAttribute("aria-controls", id);
+                const count = el("span", String(panel.querySelectorAll(".request-record").length), "request-tab-count");
+                button.append(count); button.addEventListener("click", () => activate(id, true));
+                button.addEventListener("keydown", event => {
+                    let next;
+                    if (event.key === "ArrowRight") next = (index + 1) % categories.length;
+                    if (event.key === "ArrowLeft") next = (index + categories.length - 1) % categories.length;
+                    if (event.key === "Home") next = 0;
+                    if (event.key === "End") next = categories.length - 1;
+                    if (next !== undefined) { event.preventDefault(); tabs.children[next].click(); tabs.children[next].focus(); }
+                }); tabs.append(button);
+            });
+            root.insertBefore(tabs, panels[0]); activate(selectedHistoryPanel);
+        }
+        const company = window.companyStore?.getCompanySession?.();
+        const requestedView = new URLSearchParams(location.search).get("view");
+        if (company && company.role === "company" && company.isDemo === true && requestedView !== "student") {
+            root.append(note("Track requests created by this company in the current browser. Provider status changes appear here; no external notifications are sent."));
+            root.append(link("Switch to student request inbox", "../student/requests.html?view=student"));
+            const section = el("section", undefined, "services-panel");
+            section.append(el("h2", "Company service requests")); root.append(section);
+            try {
+                const records = window.studentServicesStore.ownRecords("request", company.email).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+                if (!records.length) section.append(el("p", "No saved service requests for this company yet."), link("Browse student services", "../services/freelance-services.html"));
+                records.forEach(record => {
+                    const item = data.services.find(value => value.id === record.serviceId);
+                    const article = el("article", undefined, "services-card request-record"); article.id = `request-${record.id}`;
+                    article.append(el("p", record.workflowStatus || "New", "services-tag"), el("h3", item ? item.title : "Saved request - listing no longer available"));
+                    const created = new Date(record.createdAt);
+                    article.append(el("p", `Saved ${Number.isFinite(created.getTime()) ? created.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "date unavailable"}`), el("p", `Reference: ${record.id}`), el("p", `Your brief: ${record.brief}`, "request-text"));
+                    if (record.budget !== undefined) article.append(el("p", `Indicative budget: ${record.budget} JOD`));
+                    if (record.targetDays !== undefined) article.append(el("p", `Preferred timeline: ${record.targetDays} days`));
+                    if (item) article.append(link("Open listing", `../services/service-details.html?id=${encodeURIComponent(item.id)}`));
+                    section.append(article);
+                });
+            } catch { section.append(note("Saved requests could not be read. They have not been changed.")); }
+            window.addEventListener("storage", event => { if (["codementor-demo-service-requests", "codementor-demo-service-drafts", "codementor-company-session"].includes(event.key)) location.reload(); });
+            return;
+        }
         function render() {
-            root.replaceChildren(note("Private records for the active student demo session in this tab only. Local simulation — not sent, confirmed, paid or booked with another person."));
+            const toolbar = el("div", undefined, "requests-toolbar");
+            toolbar.append(el("p", "Records are saved in this browser. Administrator and provider updates appear here; no payment is collected or external notification sent."));
+            const toolbarActions = el("div", undefined, "requests-toolbar-actions"); toolbar.append(toolbarActions); root.replaceChildren(toolbar);
             let owner;
             try { owner = session().email; } catch (error) { root.append(note(error.message), link("Sign in to the demo", "../auth/login.html")); return; }
-            root.append(link("View my private service drafts", "../services/service-draft.html"));
-            [["booking", "My local booking requests"], ["request", "My local service requests"]].forEach(([type, title]) => {
+            toolbarActions.append(link("My service drafts", "../services/service-draft.html", "requests-text-link"));
+            if (company && company.isDemo === true) toolbarActions.append(link("Company tracker", "../student/requests.html?view=company", "requests-text-link"));
+            const bookings = el("section", undefined, "services-panel"); bookings.id = "platform-bookings"; bookings.append(el("h2", "My platform bookings")); root.append(bookings);
+            try {
+                const records = window.adminSessionsStore?.getStudentBookings(owner) || [];
+                if (!records.length) emptyState(bookings, "Your next conversation starts here", "Find a platform session that matches your topic. Your booking and its status will appear here.", "Explore mentoring sessions", "../services/peer-mentoring.html");
+                records.forEach(record => {
+                    const article = el("article", undefined, "services-card request-record");
+                    article.append(el("h3", record.sessionTitle), el("p", record.status, "services-tag"), el("p", `${record.requestedDate} · ${record.requestedTime}`), el("p", `${record.price} ${record.currency}`), el("p", record.notes, "request-text"));
+                    if (record.reason) article.append(el("p", "Administrator note: " + record.reason));
+                    if (record.status === "Confirmed" && record.meetingUrl) {
+                        try { const meeting = new URL(record.meetingUrl); if (meeting.protocol === "https:") { const a = link("Join scheduled meeting", meeting.href); a.target = "_blank"; a.rel = "noopener"; article.append(a); } } catch {}
+                    }
+                    if (["Pending", "Confirmed"].includes(record.status)) {
+                        const cancel = el("button", "Cancel booking", "button button-outline"); cancel.type = "button";
+                        cancel.onclick = async () => { try { await window.adminSessionsStore.cancelStudentBooking(record.id, owner); render(); } catch (error) { bookings.append(note(error.message)); } }; article.append(cancel);
+                    }
+                    bookings.append(article);
+                });
+            } catch (error) { bookings.append(note(error.message)); }
+            const incoming = el("section", undefined, "services-panel"); incoming.id = "incoming-service-requests"; incoming.append(el("h2", "Requests for my published services")); root.append(incoming);
+            try {
+                const inbox = incomingRequests(owner);
+                if (!inbox.length) emptyState(incoming, "No requests to review yet", "Requests for services you publish will appear here. You can review each brief and update its status.", "Manage my service drafts", "../services/service-draft.html");
+                inbox.forEach(record => {
+                    const item = data.services.find(value => value.id === record.serviceId);
+                    const article = el("article", undefined, "services-card request-record");
+                    article.append(el("p", record.workflowStatus || "New", "services-tag"), el("h3", item ? item.title : "Request for a service listing"), el("p", "From: " + (record.requesterName || "Demo requester")), el("p", "Project brief: " + record.brief, "request-text"));
+                    if (record.budget !== undefined) article.append(el("p", "Indicative budget: " + record.budget + " JOD"));
+                    if (record.targetDays !== undefined) article.append(el("p", "Preferred timeline: " + record.targetDays + " days"));
+                    const actions = el("div", undefined, "service-request-actions");
+                    [["In discussion", "Start discussion"], ["Accepted", "Accept"], ["Declined", "Decline"], ["Completed", "Mark complete"]].forEach(([statusValue, label]) => {
+                        const button = el("button", label, "button button-outline"); button.type = "button";
+                        button.addEventListener("click", () => {
+                            try { updateRequestStatus(record.id, statusValue, owner, record.workflowStatus || "New"); render(); }
+                            catch (error) { incoming.append(note(error.message)); }
+                        }); button.disabled = !window.studentServicesStore.requestTransitions[record.workflowStatus || "New"]?.includes(statusValue); actions.append(button);
+                    });
+                    article.append(note("Status changes appear in the requester's tracker in this browser. No external notification is sent."), actions); incoming.append(article);
+                });
+            } catch { incoming.append(note("Incoming requests could not be read. Existing records have not been changed.")); }
+            [["booking", "My peer mentoring requests"], ["request", "My service requests"]].forEach(([type, title]) => {
                 const section = el("section", undefined, "services-panel"); section.id = `${type}-history`; section.append(el("h2", title)); root.append(section);
+                const peerCount = type === "booking" ? (window.peerMentoringUI?.learnerBookings(section) || 0) : 0;
                 try {
                     const records = window.studentServicesStore.ownRecords(type, owner).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
-                    if (!records.length) { section.append(el("p", "No saved requests of this type for your current demo account."), link(type === "booking" ? "Browse peer sessions" : "Browse student services", type === "booking" ? "../services/peer-mentoring.html" : "../services/freelance-services.html")); return; }
+                    if (!records.length && !peerCount) {
+                        emptyState(section, type === "booking" ? "A little guidance can go a long way" : "No service requests yet", type === "booking" ? "Explore peer sessions and save a request when you find the right topic. Peer requests are local simulations." : "Find a student service and describe what you need. Track your outgoing requests and provider updates here.", type === "booking" ? "Explore peer sessions" : "Explore student services", type === "booking" ? "../services/peer-mentoring.html" : "../services/freelance-services.html"); return;
+                    }
                     records.forEach(record => {
                         const item = type === "booking" ? data.mentors.find(value => value.id === record.mentorId) : data.services.find(value => value.id === record.serviceId);
                         const provider = item ? person(item.studentId) : null;
                         const article = el("article", undefined, "services-card request-record"); article.id = `${type}-${record.id}`;
-                        article.append(el("h3", item ? (item.topic || item.title) : "Saved request — listing no longer available"), el("p", "Local simulation · Not sent or confirmed", "services-tag"));
+                        article.append(el("h3", item ? (item.topic || item.title) : "Saved request — listing no longer available"), el("p", type === "request" ? (record.workflowStatus || "New") : "Local peer booking simulation", "services-tag"));
                         const date = el("time", new Date(record.createdAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })); date.dateTime = record.createdAt;
                         const created = el("p", "Created: "); created.append(date); article.append(created);
                         article.append(el("p", `Reference: ${record.id}`), el("p", `Saved listing ID: ${type === "booking" ? record.mentorId : record.serviceId}`));
@@ -243,9 +410,13 @@
                     });
                 } catch { section.append(note("These saved requests could not be read. They have not been deleted or replaced. Other readable sections remain available.")); }
             });
+            arrangePanels();
             try { const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (target && root.contains(target)) target.scrollIntoView({ block: "start" }); } catch { /* An invalid fragment never changes records. */ }
         }
         render(); window.addEventListener("pageshow", event => { if (event.persisted) render(); });
+        window.addEventListener("hashchange", render);
+        window.addEventListener("peer-mentoring-refresh", render);
+        window.addEventListener("storage", event => { if (["codementor-peer-mentoring-v1", "codementor-teacher-store-v1", "codementor-demo-service-requests", "codementor-demo-service-drafts", "codementor-profile-v1"].includes(event.key)) render(); });
     }
     const pages = { mentoring, "mentoring-details": mentoringDetails, showcase, profile, freelance, "service-details": serviceDetails, drafts, history };
     try { pages[page]?.(); } catch { root.append(note("This page could not load its demo data. Existing browser records have not been changed.")); }

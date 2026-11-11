@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Company Registration | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/auth-video.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/demo-account.js" defer></script><script src="../../js/company-auth.js" defer></script>
+</head>
+<body class="auth-page signup-page">
+    <main class="auth-layout">
+        <section class="auth-story signup-visual" aria-label="CodeMentor AI">
+            <a href="../../index.html" class="logo">CodeMentor AI</a>
+            <div class="signup-illustration">
+                <div class="auth-video-media">
+                    <video class="auth-student-video" autoplay muted loop playsinline preload="metadata" poster="../../assets/images/student-coding-poster.jpg" aria-label="An animated team collaborating on software">
+                        <source src="../../assets/videos/student-coding.mp4" type="video/mp4">
+                        <img src="../../assets/images/student-coding-poster.jpg" alt="Company team recruitment">
+                    </video>
+                    <button class="auth-video-toggle" type="button" aria-label="Pause animation">Pause animation</button>
+                </div>
+            </div>
+        </section>
+        <section class="auth-panel" aria-labelledby="signup-title">
+            <a href="../../index.html" class="auth-back">
+                <span aria-hidden="true">←</span> Back to home
+            </a>
+
+            <div class="auth-form-container">
+                <p class="eyebrow">JOIN AS AN EMPLOYER</p>
+                <h1 id="signup-title">Connect with university software talent.</h1>
+
+                <p class="auth-intro">
+                    Post remote internships, find motivated student developers, and commission milestone projects directly through CodeMentor AI.
+                </p>
+
+                <form id="company-signup-form" autocomplete="on" novalidate>
+                    <div class="form-field">
+                        <label for="company-name">Company / Organization name</label>
+                        <input
+                            type="text"
+                            id="company-name"
+                            name="companyName"
+                            placeholder="e.g. CloudPeak Innovations"
+                            required
+                            maxlength="90"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="industry">Industry / Technology Sector</label>
+                        <input
+                            type="text"
+                            id="industry"
+                            name="industry"
+                            placeholder="e.g. Cloud Infrastructure, AI & FinTech"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="email">Work / Corporate email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="recruitment@company.com"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-field">
+                            <label for="location">Location / City</label>
+                            <input
+                                type="text"
+                                id="location"
+                                name="location"
+                                placeholder="e.g. Amman, Jordan"
+                                value="Amman, Jordan"
+                            >
+                        </div>
+
+                        <div class="form-field">
+                            <label for="size">Company size</label>
+                            <select id="size" name="size">
+                                <option value="1-10 employees">Startup (1-10)</option>
+                                <option value="11-50 employees" selected>Growth (11-50)</option>
+                                <option value="51-200 employees">Midsize (51-200)</option>
+                                <option value="200+ employees">Enterprise (200+)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="website">Website URL</label>
+                        <input
+                            type="url"
+                            id="website"
+                            name="website"
+                            placeholder="https://company.example.com"
+                        >
+                    </div>
+
+                    <div class="form-field">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a secure password"
+                            autocomplete="new-password"
+                            minlength="12"
+                            required
+                        >
+                    </div>
+
+                    <p
+                        class="form-message"
+                        id="signup-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                    <button
+                        type="submit"
+                        class="button button-primary auth-submit"
+                        id="signup-submit"
+                    >
+                        Create Company Account
+                    </button>
+                </form><p class="auth-intro">Local prototype only. This browser keeps one profile per workspace. Sample bookings and candidates remain demonstration data.</p>
+
+                <p class="auth-switch">
+                    Already have a company account?
+                    <a href="company-login.html">Sign in here</a>
+                </p>
+
+                
+            </div>
+
+            <p class="auth-panel-footer">
+                © CodeMentor AI · Talent Matching & Virtual Internships.
+            </p>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/admin-login.html"><style>body{display:none!important}</style></noscript>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Enrolled Students & Progress | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/admin-sessions-store.js" defer></script>
+    <script src="../../js/admin-sessions-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page admin-page">
+    <a href="#teacher-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Built and managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Built and managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="teacher-main">
+<p class="services-notice">Platform sessions are managed by administrators. Student bookings and decisions are connected within this browser; no payment or external notification is sent. Sample records are labeled separately.</p>
+            <p class="eyebrow">STUDENT MONITORING</p>
+            <h1>Your mentored students.</h1>
+
+            <p class="workspace-intro">
+                Track learning progress, review past consultations, and record private pedagogical notes on each learner's strengths and areas for growth.
+            </p>
+
+            <section aria-labelledby="students-list-title" style="margin-top: 32px;">
+                <h2 id="students-list-title" class="lesson-small-heading">Active student roster</h2>
+                <div id="teacher-students-list" class="teacher-students-grid">
+                    <!-- Populated dynamically by admin-sessions-workspace.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Progress Note Modal Dialog -->
+    <dialog id="add-note-modal" class="teacher-dialog">
+        <div class="teacher-dialog-content">
+            <div class="teacher-dialog-header">
+                <h2>Add Progress Note for <span id="note-student-name">Student</span></h2>
+                <button type="button" class="teacher-dialog-close" id="close-note-modal" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="add-note-form" novalidate>
+                <div class="form-field">
+                    <label for="note-text">Progress observations & recommended practice</label>
+                    <textarea id="note-text" name="noteText" rows="4" placeholder="e.g. Completed recursive search session successfully. Student needs more practice with base-case definitions in task #3..." required></textarea>
+                    <p class="field-help">This note will be saved into the student's mentorship record.</p>
+                </div>
+
+                <div class="teacher-dialog-actions">
+                    <button type="button" class="button button-outline" onclick="document.getElementById('add-note-modal').close()">Cancel</button>
+                    <button type="submit" class="button button-primary">Save Note</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>

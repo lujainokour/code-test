@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Postings & Opportunities | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page company-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="company-main">
+            <p class="eyebrow">HIRING & INTERNSHIPS</p>
+            <h1>Postings & project opportunities.</h1>
+
+            <p class="workspace-intro">
+                Publish remote virtual internships, practical capstone opportunities, and milestone-based freelance contracts to university computer science and AI students.
+            </p>
+
+            <div class="teacher-action-bar">
+                <button type="button" class="button button-primary" id="open-post-modal">
+                    + Post Opportunity
+                </button>
+                <a href="company-applications.html" class="button button-outline">
+                    Review Incoming Applications
+                </a>
+                <a href="company-talent.html" class="button button-outline">
+                    Explore Student Talent Directory
+                </a>
+            </div>
+
+            <div class="teacher-filter-bar" style="margin-top: 32px;">
+                <button type="button" class="teacher-filter-btn active" data-job-filter="all">All Opportunities</button>
+                <button type="button" class="teacher-filter-btn" data-job-filter="internship">Virtual Internships</button>
+                <button type="button" class="teacher-filter-btn" data-job-filter="freelance">Freelance Milestones</button>
+            </div>
+
+            <section aria-labelledby="postings-heading" style="margin-top: 20px;">
+                <h2 id="postings-heading" class="admin-visually-hidden">Opportunities List</h2>
+                <div id="company-jobs-list" class="company-jobs-grid">
+                    <!-- Populated dynamically by company-workspace.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Post Opportunity Modal Dialog -->
+    <dialog id="post-job-modal" class="teacher-dialog">
+        <div class="teacher-dialog-content">
+            <div class="teacher-dialog-header">
+                <h2>Publish a new opportunity</h2>
+                <button type="button" class="teacher-dialog-close" id="close-post-modal" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="post-job-form" novalidate>
+                <div class="form-field">
+                    <label for="job-title">Opportunity title</label>
+                    <input type="text" id="job-title" name="title" placeholder="e.g. Python Backend & Data Pipeline Intern" required maxlength="100">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-field">
+                        <label for="job-type">Opportunity format</label>
+                        <select id="job-type" name="type" required>
+                            <option value="Virtual Internship" selected>Virtual Internship (Mentored)</option>
+                            <option value="Freelance Project">Freelance Project (Milestone-based)</option>
+                            <option value="Junior Role">Junior / Part-time Position</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="job-dept">Department / Team</label>
+                        <input type="text" id="job-dept" name="department" placeholder="e.g. Core Engineering / AI" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="form-field">
+                        <label for="job-loc">Location</label>
+                        <select id="job-loc" name="location">
+                            <option value="Remote" selected>Remote (Virtual)</option>
+                            <option value="Hybrid (Amman)">Hybrid (Amman, Jordan)</option>
+                            <option value="On-site">On-site</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="job-duration">Duration</label>
+                        <input type="text" id="job-duration" name="duration" placeholder="e.g. 3 Months / 4 Weeks" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="job-stipend">Compensation / Budget</label>
+                        <input type="text" id="job-stipend" name="stipend" placeholder="e.g. $350 / month" required>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="job-skills">Required coding skills (comma separated)</label>
+                    <input type="text" id="job-skills" name="skills" placeholder="e.g. Python, SQL Server, OOP, REST APIs" required>
+                </div>
+
+                <div class="form-field">
+                    <label for="job-desc">Detailed scope & student learning deliverables</label>
+                    <textarea id="job-desc" name="description" rows="4" placeholder="Detail the technical tasks, project milestones, code review cycle, and mentorship provided..." required></textarea>
+                </div>
+
+                <div class="teacher-dialog-actions">
+                    <button type="button" class="button button-outline" onclick="document.getElementById('post-job-modal').close()">Cancel</button>
+                    <button type="submit" class="button button-primary">Publish to Students</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>

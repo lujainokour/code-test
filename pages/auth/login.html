@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +12,8 @@
     <link rel="stylesheet" href="../../css/style.css">
     <script src="../../js/language-catalog.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/auth-video.js" defer></script>
+    <script src="../../js/student-account.js" defer></script>
     <script src="../../js/login.js" defer></script>
 </head>
 <body class="auth-page login-page">
@@ -17,7 +21,13 @@
         <section class="auth-story auth-visual" aria-labelledby="story-title">
             <a href="../../index.html" class="logo">CodeMentor AI</a>
             <div class="auth-visual-content">
-                <img src="../../assets/images/codementor-learning.png" width="1122" height="1402" alt="A laptop for learning Python, C# and C++, with a notebook and burgundy cherries on an ice-blue desk.">
+                <div class="auth-video-media">
+                    <video class="auth-student-video" autoplay muted loop playsinline preload="metadata" poster="../../assets/images/student-coding-poster.jpg" aria-label="An animated student learning to code on a laptop">
+                        <source src="../../assets/videos/student-coding.mp4" type="video/mp4">
+                        <img src="../../assets/images/student-coding-poster.jpg" alt="An animated student learning to code on a laptop">
+                    </video>
+                    <button class="auth-video-toggle" type="button" aria-label="Pause animation">Pause animation</button>
+                </div>
                 <h1 id="story-title">One line. A new possibility.</h1>
                 <p>Make room for your next coding breakthrough.</p>
             </div>
@@ -109,12 +119,24 @@
                     <a href="../../pages/auth/signup.html">Create an account</a>
                 </p>
 
+
+
+                <p class="auth-switch">
+                    Hiring talent?
+                    <a href="company-login.html">Company Login</a>
+                </p>
+
+                <p class="auth-switch">
+                    Managing CodeMentor AI?
+                    <a href="admin-login.html">Admin Login</a>
+                </p>
+
                 <aside class="demo-account" aria-labelledby="demo-title">
                     <h3 id="demo-title">Demo only · Student preview</h3>
 
                     <p>
                         Use the sample details below to try the student flow.
-                        This version does not authenticate real accounts.
+                        Accounts created here can sign in again on this browser. Cross-device sign-in and password recovery are not connected.
                     </p>
 
                     <dl class="demo-credentials">

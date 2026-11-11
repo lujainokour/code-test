@@ -1,0 +1,45 @@
+/* Shared workspace spacing and footer; the public marketing footer stays separate. */
+.shell-active .workspace-body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+.shell-active .workspace-body > main { flex: 1 0 auto; width: 100%; min-width: 0; }
+.shell-active .workspace-body > .workspace-app-footer { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 18px 32px; width: calc(100% - 56px); max-width: 1264px; margin: 28px auto 0; padding: 20px 0 24px; border-top: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.workspace-footer-identity { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 20px; }
+.workspace-footer-name { color: var(--primary); font-weight: 700; }
+.workspace-footer-caption { font-size: 11px; }
+.workspace-app-footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+.workspace-app-footer nav a { padding-block: 5px; }
+.workspace-app-footer nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+[data-service-page="history"] .services-heading { margin-bottom: 24px; max-width: 760px; }
+[data-service-page="history"] .services-heading h1 { font-size: clamp(28px, 3vw, 40px); letter-spacing: -1px; margin-bottom: 12px; }
+[data-service-page="history"] .services-heading > p:last-child { font-size: 15px; line-height: 1.7; }
+.requests-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding-block: 4px 22px; }
+.requests-toolbar p { margin: 0; max-width: 660px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.requests-toolbar-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.requests-toolbar-actions a { font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.request-tabs { display: flex; gap: 6px; flex-wrap: wrap; padding: 6px; margin-bottom: 22px; border: 1px solid var(--border); background: var(--card); border-radius: 12px; }
+.request-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; flex: 1; min-height: 46px; padding: 10px 14px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.request-tabs button:hover { background: var(--sage); }
+.request-tabs button[aria-selected="true"] { background: var(--action-bg); color: var(--action-text); }
+.request-tab-count { display: grid; place-items: center; min-width: 21px; height: 21px; padding-inline: 5px; border: 1px solid currentColor; border-radius: 6px; font-size: 10px; opacity: .8; }
+[data-service-page="history"] .request-tab-panel { padding: 26px; margin: 0; border-radius: 16px; scroll-margin-top: 92px; }
+[data-service-page="history"] .request-tab-panel[hidden] { display: none; }
+[data-service-page="history"] .request-tab-panel > h2 { margin: 0 0 22px; padding-bottom: 18px; border-bottom: 1px solid var(--border); font-size: 21px; line-height: 1.4; letter-spacing: -.4px; }
+.request-empty { display: flex; flex-direction: column; align-items: center; padding: 36px 20px 42px; text-align: center; }
+.request-empty-icon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 18px; border: 1px solid var(--border); border-radius: 16px; background: var(--sage); color: var(--muted); font-size: 25px; }
+.request-empty h3 { margin: 0 0 10px; font-size: 21px; letter-spacing: -.3px; }
+.request-empty p { max-width: 430px; margin: 0 0 22px; color: var(--muted); font-size: 14px; line-height: 1.75; }
+.request-empty .button { min-height: 44px; font-size: 12px; }
+[data-service-page="history"] .request-record { gap: 12px; margin-top: 16px; border-radius: 12px; padding: 22px; }
+[data-service-page="history"] .request-record h3 { font-size: 20px; line-height: 1.4; }
+[data-service-page="history"] .request-record p { overflow-wrap: anywhere; font-size: 13px; }
+@media (max-width: 650px) {
+    .shell-active .workspace-body > .workspace-app-footer { width: calc(100% - 32px); margin-top: 16px; padding-block: 18px 24px; align-items: flex-start; flex-direction: column; gap: 12px; }
+    .workspace-footer-identity { flex-direction: column; gap: 3px; }
+    .workspace-app-footer nav { gap: 22px; }
+    .request-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .request-tabs button { white-space: normal; padding: 10px 8px; font-size: 12px; gap: 6px; }
+    [data-service-page="history"] .request-tab-panel { padding: 20px 16px; }
+    .request-empty { padding: 28px 0; }
+    .request-empty h3 { font-size: 19px; }
+    .request-empty p { font-size: 13px; }
+}
+@media print { .workspace-app-footer { display: none !important; } }

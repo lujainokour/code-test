@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/admin-login.html"><style>body{display:none!important}</style></noscript>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Platform Sessions | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/admin-sessions-store.js" defer></script>
+    <script src="../../js/admin-sessions-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page admin-page">
+    <a href="#teacher-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Built and managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Built and managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="teacher-main">
+<p class="services-notice">Platform sessions are managed by administrators. Student bookings and decisions are connected within this browser; no payment or external notification is sent. Sample records are labeled separately.</p>
+            <p class="eyebrow">CURRICULUM & SESSIONS</p>
+            <h1>Manage platform sessions.</h1>
+
+            <p class="workspace-intro">
+                Create structured 1-on-1 mentoring offerings, project consultations, and group code-review sessions for students.
+            </p>
+
+            <div class="teacher-action-bar">
+                <button type="button" class="button button-primary" id="open-create-modal">
+                    + Create New Session
+                </button>
+                <a href="admin-schedule.html" class="button button-outline">
+                    Edit Availability Calendar
+                </a>
+                <a href="admin-bookings.html" class="button button-outline">
+                    View Student Bookings
+                </a>
+            </div>
+
+            <section aria-labelledby="sessions-list-heading" style="margin-top: 36px;">
+                <div class="teacher-section-header">
+                    <h2 id="sessions-list-heading" class="lesson-small-heading">Active session offerings</h2>
+                    <span class="dashboard-footnote">Active sessions with available appointments can be requested from Student-led Sessions.</span>
+                </div>
+
+                <div id="teacher-sessions-list" class="teacher-sessions-grid">
+                    <!-- Populated dynamically by admin-sessions-workspace.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Create Session Modal Dialog -->
+    <dialog id="create-session-modal" class="teacher-dialog">
+        <div class="teacher-dialog-content">
+            <div class="teacher-dialog-header">
+                <h2>Create a new platform session</h2>
+                <button type="button" class="teacher-dialog-close" id="close-create-modal" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="create-session-form" novalidate>
+                <div class="form-field">
+                    <label for="sess-title">Session title</label>
+                    <input type="text" id="sess-title" name="title" placeholder="e.g. Dynamic Programming & Recursion Deep Dive" required maxlength="90">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-field">
+                        <label for="sess-subject">Subject area</label>
+                        <select id="sess-subject" name="subject" required>
+                            <option value="Python Programming">Python Programming</option>
+                            <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
+                            <option value="SQL & Relational Databases">SQL & Database Systems</option>
+                            <option value="Object-Oriented Programming (OOP)">OOP & Software Architecture</option>
+                            <option value="Machine Learning Fundamentals">Machine Learning & Data Science</option>
+                            <option value="C++ Programming">C++ Programming</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="sess-level">Difficulty level</label>
+                        <select id="sess-level" name="level">
+                            <option value="Beginner">Beginner (Foundations)</option>
+                            <option value="Intermediate" selected>Intermediate (Core Topics)</option>
+                            <option value="Advanced">Advanced (Mastery & Capstone)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                    <div class="form-field">
+                        <label for="sess-type">Session format</label>
+                        <select id="sess-type" name="type">
+                            <option value="1-on-1 Mentoring">1-on-1 Mentoring</option>
+                            <option value="Small Group Workshop">Small Group Workshop</option>
+                            <option value="Code Review Consultation">Code Review</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="sess-duration">Duration (minutes)</label>
+                        <select id="sess-duration" name="duration">
+                            <option value="30">30 minutes</option>
+                            <option value="60" selected>60 minutes</option>
+                            <option value="90">90 minutes</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="sess-price">Fee (USD)</label>
+                        <input type="number" id="sess-price" name="price" min="0" max="250" value="25" required>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="sess-description">Description & learning outcomes</label>
+                    <textarea id="sess-description" name="description" rows="3" placeholder="Explain what students will learn, prerequisites, and what hands-on exercises will be covered..." required></textarea>
+                </div>
+
+                <div class="teacher-dialog-actions">
+                    <button type="button" class="button button-outline" onclick="document.getElementById('create-session-modal').close()">Cancel</button>
+                    <button type="submit" class="button button-primary">Publish Session</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>

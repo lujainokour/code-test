@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Messages & Interviews | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page company-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="company-main">
+            <p class="eyebrow">DIRECT COMMUNICATION</p>
+            <h1>Candidate communication & interview threads.</h1>
+
+            <p class="workspace-intro">
+                Communicate directly with student applicants, coordinate technical interview schedules, and discuss internship milestone deliverables.
+            </p>
+
+            <div class="company-chat-layout" style="margin-top: 28px;">
+                <aside class="company-chat-sidebar">
+                    <div class="company-chat-sidebar-header">
+                        <h2 style="font-size: 16px; margin: 0;">Conversations</h2>
+                    </div>
+                    <div id="company-threads-list" class="company-threads-container">
+                        <!-- Populated dynamically by company-workspace.js -->
+                    </div>
+                </aside>
+
+                <section class="company-chat-main">
+                    <div class="company-chat-header">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div>
+                                <h2 id="chat-student-name" style="margin: 0; font-size: 18px;">Student Candidate</h2>
+                                <span class="teacher-badge badge-active" style="font-size: 10px; margin-top: 2px;">Applicant · Direct Communication</span>
+                            </div>
+                        </div>
+                        <a href="https://meet.google.com/new" target="_blank" rel="noopener" class="button button-outline" style="font-size: 12.5px;">
+                            📹 Start Video Call
+                        </a>
+                    </div>
+
+                    <div id="company-chat-messages" class="company-chat-messages-box">
+                        <!-- Populated dynamically by company-workspace.js -->
+                    </div>
+
+                    <form id="company-chat-form" class="company-chat-input-bar">
+                        <input type="text" id="company-chat-input" placeholder="Type an interview message or proposal for this candidate..." required autocomplete="off">
+                        <button type="submit" class="button button-primary">Send</button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

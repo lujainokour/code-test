@@ -1,3 +1,12 @@
+const requestedServicePage = window.cmAccess?.returnTarget(new URLSearchParams(location.search).get("next"));
+if (requestedServicePage) {
+    const login = document.querySelector('a[href$="/login.html"]');
+    if (login) {
+        const url = new URL(login.href);
+        url.searchParams.set("next", requestedServicePage);
+        login.href = url.href;
+    }
+}
 const signupForm = document.getElementById("signup-form");
 
 const nameInput = document.getElementById("full-name");
@@ -14,6 +23,64 @@ const confirmError = document.getElementById("confirm-error");
 
 const signupMessage = document.getElementById("signup-message");
 const submitButton = document.getElementById("signup-submit");
+
+/* Generate locally with browser cryptography; never persist the suggestion. */
+const suggestionPanel = document.getElementById("password-suggestion");
+const suggestionText = document.getElementById("suggested-password");
+const suggestionStatus = document.getElementById("password-suggestion-status");
+const useSuggestionButton = document.getElementById("use-suggested-password");
+
+function refreshPasswordSuggestion() {
+    if (!window.crypto?.getRandomValues) return;
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    const bytes = window.crypto.getRandomValues(new Uint8Array(20));
+    // A 64-character alphabet divides the 256 possible byte values evenly.
+    suggestionText.textContent = Array.from(bytes, value => alphabet[value & 63]).join("");
+    closePasswordSuggestion();
+    suggestionStatus.textContent = "";
+}
+
+refreshPasswordSuggestion();
+
+function closePasswordSuggestion() {
+    suggestionPanel.hidden = true;
+    passwordInput.setAttribute("aria-expanded", "false");
+}
+
+function openPasswordSuggestion() {
+    if (!suggestionText.textContent) return;
+    suggestionPanel.hidden = false;
+    passwordInput.setAttribute("aria-expanded", "true");
+}
+
+passwordInput.addEventListener("focus", openPasswordSuggestion);
+passwordInput.addEventListener("click", openPasswordSuggestion);
+
+document.addEventListener("pointerdown", function (event) {
+    if (!passwordInput.parentElement.contains(event.target)) closePasswordSuggestion();
+});
+
+document.addEventListener("focusin", function (event) {
+    if (!passwordInput.parentElement.contains(event.target)) closePasswordSuggestion();
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && !suggestionPanel.hidden) {
+        event.preventDefault();
+        passwordInput.focus();
+        closePasswordSuggestion();
+    }
+});
+
+useSuggestionButton.addEventListener("click", function () {
+    passwordInput.value = suggestionText.textContent;
+    confirmInput.value = suggestionText.textContent;
+    passwordInput.dispatchEvent(new Event("input", { bubbles: true }));
+    confirmInput.dispatchEvent(new Event("input", { bubbles: true }));
+    suggestionStatus.textContent = "Strong password added to both fields.";
+    passwordInput.focus();
+    closePasswordSuggestion();
+});
 
 function setFieldError(input, errorElement, message) {
     errorElement.textContent = message;
@@ -67,8 +134,9 @@ passwordInput.addEventListener("input", function () {
     setFieldError(confirmInput, confirmError, "");
 });
 
-signupForm.addEventListener("submit", function (event) {
+signupForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+    if (submitButton.disabled) return;
 
     if (submitButton.disabled) {
         return;
@@ -150,7 +218,7 @@ signupForm.addEventListener("submit", function (event) {
        No password is stored.
     */
     try {
-        const previousText = sessionStorage.getItem("codementor-demo-session");
+        const previousText = window.cmStorage.getItem("codementor-demo-session");
         const previous = previousText === null ? null : JSON.parse(previousText);
         if (previous !== null && (!previous || typeof previous.name !== "string" || typeof previous.email !== "string" || previous.role !== "student" || previous.isDemo !== true)) {
             throw new Error("Invalid existing identity");
@@ -159,22 +227,24 @@ signupForm.addEventListener("submit", function (event) {
             showMessage("A different demo profile is active in this tab. Log out before starting another profile. Existing records were kept.", true);
             return;
         }
-        sessionStorage.setItem(
+        submitButton.disabled = true;
+        const account = await window.studentAccount.register({ name, email, age }, password);
+        if (window.cmStorage.getItem("codementor-demo-session") !== previousText) throw new Error("The active account changed while registering. Your new local account was saved; log out and sign in to it before continuing.");
+        window.cmStorage.setItem(
             "codementor-demo-session",
             JSON.stringify({
                 ...(previous || {}),
-                name: name,
-                email: email,
-                age: age,
+                ...account,
                 role: "student",
                 isDemo: true
             })
         );
 
         /* Preserve saved onboarding, learning and admin content records. */
-    } catch {
+    } catch (error) {
+        submitButton.disabled = false;
         showMessage(
-            "Your demo profile could not be saved. Storage may be unavailable or existing account data may be invalid. Existing records were kept.",
+            error.message || "Your profile could not be saved. Existing records were kept.",
             true
         );
         return;
@@ -183,13 +253,14 @@ signupForm.addEventListener("submit", function (event) {
     signupForm.reset();
 
     submitButton.disabled = true;
-    submitButton.textContent = "Opening onboarding…";
+    submitButton.textContent = requestedServicePage ? "Opening service…" : "Opening onboarding…";
 
-    window.location.href = "../student/onboarding.html";
+    window.location.href = requestedServicePage || "../student/onboarding.html";
 });
 
 /* Restore the button when returning with the browser Back button */
 window.addEventListener("pageshow", function () {
     submitButton.disabled = false;
-    submitButton.textContent = "Continue to onboarding";
+    submitButton.textContent = requestedServicePage ? "Create account and continue" : "Continue to onboarding";
+    refreshPasswordSuggestion();
 });

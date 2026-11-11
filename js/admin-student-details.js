@@ -78,6 +78,8 @@
         ? "This sample account is suspended. Restoring access would allow the student to use the platform again."
         : "This sample account is enabled. Suspending access would prevent the student from using the platform.";
 
+    if (student.registered) accessDescription.textContent = isSuspended ? "This local student account is suspended. Restoring it allows sign-in and access to its saved work again." : "This registered local student account is enabled. Suspending it blocks sign-in and its existing workspace pages in this browser.";
+
     accountAction.textContent = isSuspended
         ? "Restore account access"
         : "Suspend account access";

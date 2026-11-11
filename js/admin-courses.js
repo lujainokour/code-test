@@ -35,7 +35,7 @@
 
     // Adapt local drafts for display without changing either storage contract.
     try {
-        const raw = sessionStorage.getItem("codementor-demo-admin-course-drafts");
+        const raw = window.cmStorage.getItem("codementor-demo-admin-course-drafts");
         const stored = raw === null ? { version: 1, courses: [] } : JSON.parse(raw);
         if (stored?.version !== 1 || !Array.isArray(stored.courses) || !stored.courses.every(course =>
             course && typeof course.id === "string" && typeof course.title === "string" &&

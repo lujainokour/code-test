@@ -1,0 +1,117 @@
+/* Welcome guide: all styles stay inside its dialog or launcher. */
+.cm-guide-launcher {
+    display: flex; align-items: center; gap: 9px; width: 100%; min-height: 40px;
+    border: 0; background: transparent; color: inherit; text-align: left;
+    font: inherit; cursor: pointer;
+}
+.cm-guide-launcher svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.cm-guide {
+    --guide-paper: #f8fbfc; --guide-ice: #d5e9f0; --guide-text: #243b45;
+    --guide-muted: #4b6571; --guide-wine: #70151c; --guide-line: #b3cdd7;
+    --guide-pin: #fff; --guide-tip: #eaf3f6;
+    width: min(1080px, calc(100vw - 48px)); max-width: none;
+    max-height: min(850px, calc(100dvh - 48px)); padding: 0; margin: auto;
+    border: 1px solid var(--guide-line); border-radius: 24px;
+    background: var(--guide-paper); color: var(--guide-text);
+    box-shadow: 0 32px 100px rgb(8 24 34 / 30%);
+    font-family: Arial, sans-serif; line-height: 1.55; overflow: auto;
+    scrollbar-width: thin;
+}
+.cm-guide::backdrop { background: rgb(13 29 37 / 65%); backdrop-filter: blur(7px); }
+.cm-guide[open] { animation: cm-guide-enter 220ms ease-out; }
+.cm-guide button, .cm-guide a { -webkit-tap-highlight-color: transparent; }
+.cm-guide :is(button, a):focus-visible { outline: 3px solid var(--guide-wine); outline-offset: 4px; }
+.cm-guide-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 18px 26px; border-bottom: 1px solid var(--guide-line);
+}
+.cm-guide-brand { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; color: var(--guide-wine); }
+.cm-guide-brand > svg { width: 32px; height: 32px; }
+.cm-guide-brand small { display: block; color: var(--guide-muted); font-size: 9px; letter-spacing: 1.8px; font-weight: 600; margin-top: 1px; }
+.cm-guide-close { border: 1px solid var(--guide-line); border-radius: 50%; width: 38px; height: 38px; background: transparent; color: var(--guide-text); font-size: 26px; line-height: 1; cursor: pointer; }
+.cm-guide-close:hover { background: var(--guide-tip); }
+.cm-guide-layout { display: grid; grid-template-columns: 1fr 1fr; }
+.cm-guide-map { position: relative; display: flex; flex-direction: column; padding: 30px 32px 18px; background: var(--guide-ice); overflow: hidden; }
+.cm-guide .cm-guide-kicker { margin: 0 0 12px; color: var(--guide-muted); font-size: 10px; letter-spacing: 1.6px; line-height: 1.6; font-weight: 700; }
+.cm-guide .cm-guide-map h2 { font-family: inherit; font-size: clamp(30px, 3vw, 40px); line-height: 1.12; font-weight: 700; letter-spacing: -1.4px; margin: 0; color: var(--guide-text); }
+.cm-guide-map h2 em { color: var(--guide-wine); font-style: normal; }
+.cm-guide-road { position: relative; flex: 1; min-height: 370px; margin-top: 16px; }
+.cm-guide-road-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cm-guide-road-art path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cm-guide-road-shadow { stroke: rgb(36 59 69 / 14%); stroke-width: 43px; transform: translateY(5px); }
+.cm-guide-road-fill { stroke: var(--guide-wine); stroke-width: 36px; }
+.cm-guide-road-dashes { stroke: #e6d6d9; stroke-width: 1.7px; stroke-dasharray: 7 9; }
+.cm-guide-stops { list-style: none; padding: 0; margin: 0; position: absolute; inset: 0; }
+.cm-guide-stops > li { position: absolute; left: var(--stop-x); top: var(--stop-y); transform: translate(-50%, -78%); }
+.cm-guide-stop { display: flex; flex-direction: column; align-items: center; position: relative; padding: 0; border: 0; background: none; color: var(--guide-text); cursor: pointer; }
+.cm-guide-pin { display: grid; place-items: center; width: 52px; height: 52px; border: 2px solid var(--guide-wine); border-radius: 50% 50% 50% 8px; transform: rotate(-45deg); background: var(--guide-pin); box-shadow: -3px 5px 0 rgb(36 59 69 / 12%); transition: background 180ms, transform 180ms; }
+.cm-guide-pin svg { width: 24px; height: 24px; transform: rotate(45deg); }
+.cm-guide-stop.is-current .cm-guide-pin { background: var(--guide-wine); color: #fff; outline: 5px solid var(--guide-pin); transform: rotate(-45deg) scale(1.08); }
+.cm-guide-stop:hover .cm-guide-pin { transform: rotate(-45deg) translate(2px, -2px); }
+.cm-guide-stop-label { position: absolute; top: 64px; white-space: nowrap; padding: 3px 8px; background: var(--guide-ice); border-radius: 6px; font-size: 12px; }
+.cm-guide-stop-label b { color: var(--guide-wine); font-size: 10px; margin-right: 4px; }
+.cm-guide-map-note { margin: 6px 0 0; color: var(--guide-muted); font-size: 11px; }
+.cm-guide-content { display: flex; flex-direction: column; min-width: 0; padding: 28px 34px 24px; }
+.cm-guide-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--guide-muted); font-size: 12px; }
+.cm-guide-role { color: var(--guide-wine); font-weight: 700; }
+.cm-guide-count { letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+.cm-guide-progress { height: 3px; background: var(--guide-line); margin-top: 14px; border-radius: 4px; overflow: hidden; }
+.cm-guide-progress span { display: block; height: 100%; background: var(--guide-wine); transition: width 200ms ease; }
+.cm-guide-copy { flex: 1; padding-top: 25px; }
+.cm-guide-step-icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: var(--guide-tip); color: var(--guide-wine); margin-bottom: 20px; }
+.cm-guide-step-icon svg { width: 28px; height: 28px; }
+.cm-guide .cm-guide-content h3 { font-family: inherit; font-size: clamp(27px, 2.6vw, 34px); font-weight: 700; line-height: 1.13; letter-spacing: -1px; margin: 0 0 16px; color: var(--guide-text); }
+.cm-guide-description { color: var(--guide-muted); font-size: 14px; margin: 0 0 23px; }
+.cm-guide-action-label { color: var(--guide-text); font-size: 10px; letter-spacing: 1.5px; font-weight: 700; margin: 0 0 10px; }
+.cm-guide-actions { padding: 0; margin: 0 0 20px; list-style: none; counter-reset: guide-actions; }
+.cm-guide-actions li { display: flex; gap: 10px; align-items: baseline; font-size: 13px; margin-block: 8px; color: var(--guide-text); }
+.cm-guide-actions li::before { counter-increment: guide-actions; content: counter(guide-actions, decimal-leading-zero); color: var(--guide-wine); font-size: 10px; font-weight: 700; }
+.cm-guide-tip { background: var(--guide-tip); color: var(--guide-muted); border-left: 2px solid var(--guide-line); font-size: 12px; padding: 10px 12px; margin: 0 0 20px; }
+.cm-guide-destination { align-self: flex-start; color: var(--guide-wine); font-size: 13px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding-block: 5px; }
+.cm-guide-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 20px; margin-top: 16px; border-top: 1px solid var(--guide-line); }
+.cm-guide-controls button { min-height: 44px; padding: 10px 18px; border-radius: 9px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.cm-guide-previous { border: 0; background: transparent; color: var(--guide-muted); }
+.cm-guide-previous:disabled { opacity: .4; cursor: default; }
+.cm-guide-next { border: 1px solid transparent; background: var(--guide-wine); color: #fff; }
+.cm-guide-next:hover { filter: brightness(1.12); }
+.cm-guide-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 13px 26px; border-top: 1px solid var(--guide-line); color: var(--guide-muted); font-size: 11px; }
+.cm-guide-skip { min-height: 36px; border: 0; background: transparent; color: var(--guide-wine); font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
+html[data-theme="dark"] .cm-guide { --guide-paper: #19222d; --guide-ice: #222e3b; --guide-text: #e6f0f5; --guide-muted: #a9bac8; --guide-wine: #a8d5e5; --guide-line: #425666; --guide-pin: #19222d; --guide-tip: #222e3b; }
+html[data-theme="dark"] .cm-guide-road-fill { stroke: #7d2438; }
+html[data-theme="dark"] .cm-guide-stop.is-current .cm-guide-pin { color: #19222d; }
+html[data-theme="dark"] .cm-guide-next { background: #a93450; }
+@keyframes cm-guide-enter { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (max-width: 720px) {
+    .cm-guide { width: calc(100vw - 24px); max-height: calc(100dvh - 24px); border-radius: 18px; }
+    .cm-guide-header { padding: 14px 18px; }
+    .cm-guide-brand { font-size: 14px; }
+    .cm-guide-brand small { font-size: 8px; }
+    .cm-guide-layout { grid-template-columns: 1fr; }
+    .cm-guide-map { padding: 18px 22px 15px; }
+    .cm-guide .cm-guide-map > .cm-guide-kicker { font-size: 8px; margin-bottom: 6px; }
+    .cm-guide .cm-guide-map h2 { font-size: 26px; line-height: 1.1; }
+    .cm-guide-map h2 br { display: none; }
+    .cm-guide-road { flex: none; min-height: 0; height: 64px; margin-top: 18px; }
+    .cm-guide-road-art, .cm-guide-map-note { display: none; }
+    .cm-guide-stops { display: flex; justify-content: space-between; align-items: flex-start; }
+    .cm-guide-stops::before { content: ""; position: absolute; height: 1px; top: 18px; left: 24px; right: 24px; background: var(--guide-line); }
+    .cm-guide-stops > li { position: relative; top: auto; left: auto; transform: none; width: 20%; display: flex; justify-content: center; }
+    .cm-guide-pin { width: 34px; height: 34px; border-radius: 50%; transform: none; box-shadow: none; }
+    .cm-guide-pin svg { width: 17px; height: 17px; transform: none; }
+    .cm-guide-stop.is-current .cm-guide-pin, .cm-guide-stop:hover .cm-guide-pin { transform: none; }
+    .cm-guide-stop-label { top: 42px; font-size: 9px; padding: 0; }
+    .cm-guide-stop-label b { display: none; }
+    .cm-guide-content { padding: 20px 22px; }
+    .cm-guide-copy { padding-top: 20px; }
+    .cm-guide-step-icon { display: none; }
+    .cm-guide .cm-guide-content h3 { font-size: 28px; }
+    .cm-guide-description { font-size: 13px; margin-bottom: 18px; }
+    .cm-guide-actions { margin-bottom: 16px; }
+    .cm-guide-actions li { font-size: 12px; }
+    .cm-guide-tip { margin-bottom: 12px; }
+    .cm-guide-controls { padding-top: 14px; margin-top: 12px; }
+    .cm-guide-footer { padding: 10px 18px; }
+    .cm-guide-footer > span { max-width: 180px; font-size: 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .cm-guide[open] { animation: none; } .cm-guide-progress span, .cm-guide-pin { transition: none; } }
+@media print { .cm-guide, .cm-guide-launcher { display: none !important; } }

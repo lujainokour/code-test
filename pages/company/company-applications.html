@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Candidate Applications | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page company-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="company-main">
+            <p class="eyebrow">RECRUITMENT PIPELINE</p>
+            <h1>Student applications & evaluations.</h1>
+
+            <p class="workspace-intro">
+                Review pitches and resumes submitted by student developers, schedule remote technical interviews, and accept top talent into your virtual internship programs.
+            </p>
+
+            <div class="teacher-filter-bar" style="margin-top: 24px;">
+                <button type="button" class="teacher-filter-btn active" data-app-filter="all">All Applications</button>
+                <button type="button" class="teacher-filter-btn" data-app-filter="under-review">Under Review</button>
+                <button type="button" class="teacher-filter-btn" data-app-filter="interview-scheduled">Interviews Scheduled</button>
+                <button type="button" class="teacher-filter-btn" data-app-filter="accepted">Accepted Candidates</button>
+            </div>
+
+            <section aria-labelledby="applications-list-heading" style="margin-top: 24px;">
+                <h2 id="applications-list-heading" class="admin-visually-hidden">Applications List</h2>
+                <div id="company-apps-list" class="company-apps-grid">
+                    <!-- Populated dynamically by company-workspace.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Schedule Interview Modal Dialog -->
+    <dialog id="schedule-interview-modal" class="teacher-dialog">
+        <div class="teacher-dialog-content">
+            <div class="teacher-dialog-header">
+                <h2>Schedule Interview with <span id="interview-candidate-name">Candidate</span></h2>
+                <button type="button" class="teacher-dialog-close" id="close-interview-modal" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="schedule-interview-form" novalidate>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-field">
+                        <label for="interview-date">Interview date</label>
+                        <input type="date" id="interview-date" name="date" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="interview-time">Time & timezone</label>
+                        <input type="text" id="interview-time" name="time" placeholder="e.g. 11:00 AM (Jordan Time)" required>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="interview-link">Google Meet / Video Conference Link</label>
+                    <input type="url" id="interview-link" name="link" value="https://meet.google.com/cpk-live-interview" required>
+                </div>
+
+                <div class="teacher-dialog-actions">
+                    <button type="button" class="button button-outline" onclick="document.getElementById('schedule-interview-modal').close()">Cancel</button>
+                    <button type="submit" class="button button-primary">Confirm & Notify Candidate</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>

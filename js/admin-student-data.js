@@ -1,7 +1,7 @@
 (() => {
     const storageKey = "codementor-demo-admin-account-status";
 
-    const students = [
+    const baseStudents = [
         {
             id: "demo-001",
             name: "Maya Hassan",
@@ -44,8 +44,14 @@
         }
     ];
 
+    let registryError = "";
+    let registered = [];
+    try { registered = window.platformStore?.getStudents() || []; } catch (error) { registryError = error.message; }
+    const students = [...baseStudents.filter(s => !registered.some(r => r.email === s.email)), ...registered.map(s => ({id: s.id, name: s.name, email: s.email, learningPath: "Local student profile", languageId: "python", currentLevel: "See student learning records", status: s.status, lastActivity: s.createdAt.slice(0,10), registered: true}))];
+
     function readStatuses() {
-        const stored = sessionStorage.getItem(storageKey);
+        if (registryError) throw new Error(registryError);
+        const stored = window.cmStorage.getItem(storageKey);
 
         if (stored === null) {
             return {};
@@ -81,7 +87,7 @@
         window.adminStudentData = Object.freeze(
             students.map(student => Object.freeze({
                 ...student,
-                status: statuses[student.id] ?? student.status
+                status: student.registered ? window.platformStore.getStudents().find(s => s.id === student.id).status : statuses[student.id] ?? student.status
             }))
         );
     }
@@ -114,9 +120,13 @@
             }
 
             const statuses = readStatuses();
+            if (student.registered) {
+                window.platformStore.setStatus(id, status);
+                publishStudents(statuses); loadError = ""; return;
+            }
             statuses[id] = status;
 
-            sessionStorage.setItem(
+            window.cmStorage.setItem(
                 storageKey,
                 JSON.stringify(statuses)
             );

@@ -62,6 +62,10 @@
         actionButton.textContent = isSuspended
             ? "Restore sample account"
             : "Suspend sample account";
+        if (student.registered) {
+            document.getElementById("access-action-description").textContent = "This changes access to the registered student account throughout this browser's local workspaces.";
+            actionButton.textContent = isSuspended ? "Restore student access" : "Suspend student access";
+        }
 
         document.getElementById("access-back-link").href =
             `../admin/admin-student-details.html?id=${encodeURIComponent(student.id)}`;
@@ -111,6 +115,10 @@
             `${student.name}'s sample account will be marked as ` +
             `${pendingStatus} in this browser tab. ` +
             "No real account access will change.";
+        if (student.registered) {
+            confirmTitle.textContent = restoring ? "Restore student access?" : "Suspend student access?";
+            confirmDescription.textContent = `${student.name}'s local account will be ${pendingStatus}. Suspension blocks sign-in and existing student workspaces in this browser. Saved records are kept.`;
+        }
 
         confirmButton.textContent = restoring
             ? "Confirm restore"
@@ -134,8 +142,7 @@
             renderStudent();
 
             showMessage(
-                `Sample account status saved as ${student.status}. ` +
-                "Real account access was not changed."
+                student.registered ? `Student access is now ${student.status} in this browser. Saved records were kept.` : `Sample account status saved as ${student.status}. Real account access was not changed.`
             );
         } catch {
             showMessage(

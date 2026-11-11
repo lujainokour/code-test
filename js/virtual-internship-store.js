@@ -33,7 +33,7 @@
     function read() {
         let data;
         try {
-            const raw = sessionStorage.getItem(key);
+            const raw = window.cmStorage.getItem(key);
             data = raw === null ? { version: 1, records: [] } : JSON.parse(raw);
         } catch { throw new Error("Internship storage could not be read. Existing data has not been changed."); }
         if (!object(data) || data.version !== 1 || !Array.isArray(data.records) || !data.records.every(valid) || new Set(data.records.map(record => record.owner)).size !== data.records.length) {
@@ -58,7 +58,7 @@
         const initial = previous || { owner, projectId, createdAt: now, tasks: Object.fromEntries(tasks.map(task => [task.id, "To Do"])), submission: null, showInPortfolio: false };
         const next = { ...initial, ...patch, owner, projectId, updatedAt: now };
         if (!valid(next)) throw new Error("Check the internship values. Nothing was saved.");
-        sessionStorage.setItem(key, JSON.stringify({ ...data, records: previous ? data.records.map(record => record.owner === owner ? next : record) : [...data.records, next] }));
+        window.cmStorage.setItem(key, JSON.stringify({ ...data, records: previous ? data.records.map(record => record.owner === owner ? next : record) : [...data.records, next] }));
         return next;
     }
     window.virtualInternshipStore = Object.freeze({ tasks, states, githubUrl, own, update, session });

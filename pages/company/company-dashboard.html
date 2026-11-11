@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f6fa">
+    <title>Company Dashboard | CodeMentor AI</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+<body class="workspace-page company-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+    <aside class="workspace-sidebar" id="workspace-sidebar"></aside>
+    <div class="workspace-body">
+        <header class="workspace-topbar"></header>
+        <main class="workspace-main company-dashboard" id="company-main">
+            <section class="company-dashboard-hero" aria-labelledby="company-greeting">
+                <div class="company-dashboard-hero-copy">
+                    <p class="eyebrow">COMPANY WORKSPACE <span class="company-live-indicator">HIRING HUB</span></p>
+                    <h1 id="company-greeting">Welcome back, CloudPeak Innovations.</h1>
+                    <p class="workspace-intro">Find exceptional emerging talent, manage your hiring pipeline, and turn promising applications into great teams.</p>
+                    <div class="company-dashboard-actions">
+                        <a href="company-jobs.html" class="button button-primary"><span aria-hidden="true">+</span> Post an opportunity</a>
+                        <a href="company-talent.html" class="button button-outline">Explore student talent <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </div>
+                <div class="company-hero-mark" aria-hidden="true"><span>CM</span><i></i><i></i><i></i></div>
+            </section>
+
+            <section class="company-overview-section" aria-labelledby="company-stats-title">
+                <div class="company-section-heading">
+                    <div><p class="eyebrow">AT A GLANCE</p><h2 id="company-stats-title" class="lesson-small-heading">Recruitment overview</h2></div>
+                    <a href="company-applications.html" class="dashboard-text-link">Open hiring pipeline <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div class="admin-stat-grid" id="company-stat-grid"></div>
+            </section>
+
+            <div class="dashboard-grid company-dashboard-grid">
+                <div class="dashboard-primary-col">
+                    <section aria-labelledby="active-postings-title" class="teacher-section company-content-section">
+                        <div class="teacher-section-header">
+                            <div><p class="eyebrow">OPPORTUNITIES</p><h2 id="active-postings-title" class="lesson-small-heading">Active postings</h2></div>
+                            <a href="company-jobs.html" class="dashboard-text-link">Manage postings <span aria-hidden="true">&rarr;</span></a>
+                        </div>
+                        <div id="company-active-jobs" class="company-cards-container"></div>
+                    </section>
+
+                    <section aria-labelledby="talent-spotlight-title" class="teacher-section company-content-section company-spotlight-section">
+                        <div class="teacher-section-header">
+                            <div><p class="eyebrow">DISCOVER</p><h2 id="talent-spotlight-title" class="lesson-small-heading">Student talent spotlight</h2></div>
+                            <a href="company-talent.html" class="dashboard-text-link">Talent directory <span aria-hidden="true">&rarr;</span></a>
+                        </div>
+                        <p class="dashboard-footnote company-section-description">Verified university learners with completed projects and practical skills evidence.</p>
+                        <div id="company-talent-preview" class="company-talent-grid-mini"></div>
+                    </section>
+                </div>
+
+                <div class="dashboard-secondary-col company-sidebar-content">
+                    <section aria-labelledby="recent-apps-title" class="dashboard-card company-panel">
+                        <p class="eyebrow">APPLICATIONS QUEUE</p>
+                        <h2 id="recent-apps-title">Recent applicants</h2>
+                        <p class="company-panel-description">Students who submitted pitches for your published opportunities.</p>
+                        <div id="company-recent-apps"></div>
+                        <div class="company-panel-footer"><a href="company-applications.html" class="dashboard-text-link">View all applications <span aria-hidden="true">&rarr;</span></a></div>
+                    </section>
+
+                    <section class="dashboard-card company-assurance-card">
+                        <span class="company-assurance-icon" aria-hidden="true">&check;</span>
+                        <p class="eyebrow">HIRING ASSURANCE</p>
+                        <h2>Evidence you can trust</h2>
+                        <p>Review candidates with a clearer picture of their practical skills, completed coursework, and project experience.</p>
+                        <ul>
+                            <li>Connect directly with candidates.</li>
+                            <li>Coordinate interviews and conversations.</li>
+                            <li>Track progress on milestone projects.</li>
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

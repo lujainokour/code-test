@@ -25,7 +25,7 @@
     const languageLabels = window.languageCatalog.labels;
 
     function readDrafts() {
-        const raw = sessionStorage.getItem(
+        const raw = window.cmStorage.getItem(
             "codementor-demo-admin-course-drafts"
         );
 

@@ -1,0 +1,1683 @@
+{
+  "date": "2026-11-09",
+  "files": [
+    {
+      "path": "index.html",
+      "sha256": "5ed2b3a27c1a9ab0ca55785715dbf7a480ec1f931a3f782d28dde5de56248d58"
+    },
+    {
+      "path": "dashboard.html",
+      "sha256": "6369c11ff73d7854370de76751078d1ec758a882f4681c9e0ad5a996eeec944b"
+    },
+    {
+      "path": "teacher-dashboard.html",
+      "sha256": "98b46d08de90054afb810871b4fd7f5b70e6b84389ec9436acf1a4ceff28b46d"
+    },
+    {
+      "path": "company-dashboard.html",
+      "sha256": "b19488a6b3a1f8ba0aaff0e77370d0d601b728afc94466231b4292e76fff9a75"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d30f8ed21186d218781bc74dc94fbfb038eb70d6239257b3ff518ee8cc3226b3"
+    },
+    {
+      "path": "js/admin-account-access.js",
+      "sha256": "566905e936fb7af637d63a584d1249ff28f3a736e711ac92db868f8f59ada5bf"
+    },
+    {
+      "path": "js/admin-analytics.js",
+      "sha256": "61aa22f8a6acb73bc81d70abab1e009bd216374a05443e3e064d002c90ffad1e"
+    },
+    {
+      "path": "js/admin-course-content.js",
+      "sha256": "d3c2213854ec9465de11b905613ab692e075f6e9cd67fd5096134e5363e1337a"
+    },
+    {
+      "path": "js/admin-course-create.js",
+      "sha256": "caa79ed4c1c2a91a8f9a6a601e66c9c3f5670fb46ddbc47b0ab8badca4a2c57e"
+    },
+    {
+      "path": "js/admin-course-data.js",
+      "sha256": "3f2d2fb831b91f46a6cb146718c8df2b6f82e7f6dbc43b31168015f977d64569"
+    },
+    {
+      "path": "js/admin-courses.js",
+      "sha256": "4cbd57028896ee84213993c4ed85135eee4b1cfd6ba80c2c3fefcc5a83cdbc52"
+    },
+    {
+      "path": "js/admin-level-content.js",
+      "sha256": "cec413a44f16b83c2f2a60c6f4c284a073d71729f0aad80efe82cb3365430b0b"
+    },
+    {
+      "path": "js/admin-level-create.js",
+      "sha256": "735b9b398ddf9fa4044ab9c8df45a17f6f68a278d6a38dc86d114ee1c26f34ab"
+    },
+    {
+      "path": "js/admin-student-data.js",
+      "sha256": "e77d4589814ba24a15967664119bbdef5cfd493c59d2804cb9e7a63697a5e378"
+    },
+    {
+      "path": "js/admin-student-details.js",
+      "sha256": "9f530b7ffe925cec82fcf59a263c03ca41b43ae34d5af6a234828db13accb6cd"
+    },
+    {
+      "path": "js/admin-students.js",
+      "sha256": "0a3a0912a45a8bcbbe3f6ebf5fb1dbc1f55c02a1ebb7b85d5733a70ded909e7d"
+    },
+    {
+      "path": "js/admin-workspace.js",
+      "sha256": "4a1717cd787441126f3d3776e539fe0259075139af3a479396864e2e7e3488c4"
+    },
+    {
+      "path": "js/auth-video.js",
+      "sha256": "986a6f4daf1da27cf233181640afd0f5c3ec9810182a6b90c4fe1b980425d502"
+    },
+    {
+      "path": "js/certificates.js",
+      "sha256": "406f80aac6f45004c35199cdb1506973e95ad02bef9963070446d9d5bc364a7f"
+    },
+    {
+      "path": "js/change-password.js",
+      "sha256": "07b1b0d835646ea28fbcfe5dbb9fd35e7e498a7f92376e34fd20571d0d0c9ebc"
+    },
+    {
+      "path": "js/cm-home.js",
+      "sha256": "e20b8d641409e14bcad26a18256fadae132b091296197468ba5860fe6d2ad302"
+    },
+    {
+      "path": "js/code-review.js",
+      "sha256": "9bf183d61c84fc240542455d081ae297bb3111ee21e83f256f928314210b1eb8"
+    },
+    {
+      "path": "js/community.js",
+      "sha256": "1e66cf63fa7695086e81d71f51187e86da89deecfbeb3b9774731ae849e98daf"
+    },
+    {
+      "path": "js/company-auth.js",
+      "sha256": "9c1b94e7e1dc84e68aea483950ca79a9a6d8fe3453e08af131a96a8b22cfc4d8"
+    },
+    {
+      "path": "js/company-store.js",
+      "sha256": "b545e75cc6d459357a36961f712931f16926d2d949f6ffe700fcab76353ad137"
+    },
+    {
+      "path": "js/company-workspace.js",
+      "sha256": "ad75a8f965c50a80a36d8de42f26f8fa8d705364ffc025ace7071aaded173eb8"
+    },
+    {
+      "path": "js/course-content-store.js",
+      "sha256": "2368036f98e68a7d1c07b71fe84305f815d64d5630e86aa1de8dcf733a986d7a"
+    },
+    {
+      "path": "js/dashboard.js",
+      "sha256": "903c17436e0d742a015e8d51556bdce21d0d8594fc726b28406bf68ae1efa3ca"
+    },
+    {
+      "path": "js/demo-account.js",
+      "sha256": "89e364964a22d6993f6e0deccc15d7d416b0c0e87dfda5aaeb61c787cd07ddbe"
+    },
+    {
+      "path": "js/hero-background.js",
+      "sha256": "28fa85d55fbcc9e8109f50df24748bf515c3bb344884c9f0a48f530a59be356e"
+    },
+    {
+      "path": "js/home-effects.js",
+      "sha256": "41a0b681a10bee56cafdbca1b34697cc255ed7656d28e437dc32fd8614a634b5"
+    },
+    {
+      "path": "js/language-catalog.js",
+      "sha256": "7e052d3aa0682f9ac5d1015438db4064dde0313974fd2b2631107464c0e969ac"
+    },
+    {
+      "path": "js/languages.js",
+      "sha256": "6e1704173e810f40da27d087a8a432137a9f788a99bfc076eaf582fd966a3570"
+    },
+    {
+      "path": "js/learning-context.js",
+      "sha256": "8940b793f66295b7c8df280ba540d2f64bbe6217939ebbb7eccc8f9381a69353"
+    },
+    {
+      "path": "js/learning-path.js",
+      "sha256": "3858da1bed5e8bdff3b49d44a55d73fd0dc0c2a19f65b4a8e98ab2a1b6bd3d92"
+    },
+    {
+      "path": "js/learning-report.js",
+      "sha256": "b7c718da3ee589f7d13de66f0f55af6581ae8b4be630c70430024614722deb42"
+    },
+    {
+      "path": "js/learning-storage.js",
+      "sha256": "88bcc5b1f20aa1e832cb4fc9a77db5f7d2350623d46962b550d12f25c0a405ce"
+    },
+    {
+      "path": "js/learning-support.js",
+      "sha256": "6bb0db7b0e5b518b27e8fa033f43f5a2901613089d40feabd058e12b5ff67315"
+    },
+    {
+      "path": "js/lesson-content.js",
+      "sha256": "984329e5fc8fbd9733de87e8aec140324e9e55c1fa3f566ae4ceb05caa5f9736"
+    },
+    {
+      "path": "js/lesson.js",
+      "sha256": "1fa8256ff9dfa260672e3eb693f1938410afaf5a550d5f38f15a4a8dacff08da"
+    },
+    {
+      "path": "js/level-assessment.js",
+      "sha256": "91c4d78133156e7c271c6a7fad1d428759f8109a00ff65329d5daba770c44aeb"
+    },
+    {
+      "path": "js/level-challenges.js",
+      "sha256": "64a6336bdc2799064719f9f1e85526c5c19c042813cae1dd84b542cbf46eab64"
+    },
+    {
+      "path": "js/login.js",
+      "sha256": "2b958d1095fdf7b0f9794155d8df839d5ca11d9fc3757d223324aab5e7024d1d"
+    },
+    {
+      "path": "js/main.js",
+      "sha256": "5408eccaadf9548391c2b28bb78143a36867adb6220ff830b68c8d25a79a1255"
+    },
+    {
+      "path": "js/mentor.js",
+      "sha256": "c8466aab029badabacaad3223f934dbf30249908693b8ce907ec28ef2206f24b"
+    },
+    {
+      "path": "js/module-challenge.js",
+      "sha256": "f59621afee4b5d45f44a2c9c4657079b59661f527dfb8de489c16bec9b491674"
+    },
+    {
+      "path": "js/module.js",
+      "sha256": "cf0453b4fdbb5b10f35d16b92d5fc9ac3f4f6c5bcdf6850261a2ab80f7f9b51c"
+    },
+    {
+      "path": "js/onboarding.js",
+      "sha256": "569f6579e1c3d49d506db7ea318cbcb4ae7eb3a192ee920f2299e1b87e4adaf1"
+    },
+    {
+      "path": "js/password-recovery.js",
+      "sha256": "13bf32100d2c0db5cc0d6b5606ac1aab221aa045be8a2dd5c44562441b860a33"
+    },
+    {
+      "path": "js/placement-data.js",
+      "sha256": "f878a0937093dab0f2864d9e2a46137b64d56a0e638d572b6efd1362be5efe86"
+    },
+    {
+      "path": "js/placement-intro.js",
+      "sha256": "a6a049cc3e447c2991aa99eb4c7723345b6d6578d3315c3b0084c9e54ef27222"
+    },
+    {
+      "path": "js/placement-question.js",
+      "sha256": "fbb7ff1c82a4e114f2f5db690f74ad724413c592d3840ba3edb1d8aaabb5ba6d"
+    },
+    {
+      "path": "js/placement-results.js",
+      "sha256": "5231365a82d51b92b9e23ea24915c48aac2279b072962a2f46c084f74859585f"
+    },
+    {
+      "path": "js/placement-review.js",
+      "sha256": "ee32bb11d58d9e451e7a2c0f332c05e931153c58cbd5e740524bb1f8f02363e5"
+    },
+    {
+      "path": "js/platform-store.js",
+      "sha256": "3c2758395e8dbd30952c75d12b68011ac0ace2c748f18d664a7ec7301e374f40"
+    },
+    {
+      "path": "js/portfolio-publishing.js",
+      "sha256": "086a7361c5b265beef1e2d34079bea8b56a38992d435a19a1151ee6805eb47c4"
+    },
+    {
+      "path": "js/practice.js",
+      "sha256": "1b5518a73b90cb2f27aad87cbcf81804315dc84ab14e39854433fe23e1925d81"
+    },
+    {
+      "path": "js/profile.js",
+      "sha256": "67e95b65b66bd4e8af398044575b437c0195845ac4bd64ea03145ab773508415"
+    },
+    {
+      "path": "js/progress.js",
+      "sha256": "c0d2927e813d03e3c01298c06444ee71c24f06dfa6e86da871f5346e4ceee4ca"
+    },
+    {
+      "path": "js/project-evaluation.js",
+      "sha256": "3b0fa97044548260ca337f5eb344c055a1037cf49500552e49241c425a57e6ed"
+    },
+    {
+      "path": "js/project.js",
+      "sha256": "574b71adbf0e7750fb4d749ef0ff1ced1dd920ed2552e6cd175e6ea940992610"
+    },
+    {
+      "path": "js/python-curriculum.js",
+      "sha256": "9923597c9d696358a5563bb24fdfb825375d5baad88aacd91c30737373232895"
+    },
+    {
+      "path": "js/python-extension.js",
+      "sha256": "c6f732121eabdff96dfadfa40a79cbf7759da4eb4fcdc2d3d63d65cbdb871733"
+    },
+    {
+      "path": "js/python-lessons.js",
+      "sha256": "9c380da43754f8024f6f03ec7f3a452e883a20c4660eb2d14777093af99acfb5"
+    },
+    {
+      "path": "js/python-runner.js",
+      "sha256": "311108102c4e9dc2c87d66cf7ba7b7dcd6ece8c29d78215315ec2f5c28a33da4"
+    },
+    {
+      "path": "js/python-worker.js",
+      "sha256": "7e7900827dcf93cf63ddc5b07f85f61031d4a62652771485f74c81614304c364"
+    },
+    {
+      "path": "js/signup.js",
+      "sha256": "2f36e585437a9389e80a96cccdb2847b8e5aef6ca54a184952fb5b023ca542b1"
+    },
+    {
+      "path": "js/skill-analysis.js",
+      "sha256": "d5cf2e29d4c9b5176da1fd36cda4863a850c56075087dca3f1025071c5c4074a"
+    },
+    {
+      "path": "js/student-career.js",
+      "sha256": "b7d9b25ef03c3442bc246a266bee97f6a565984ad8877d9bb8d5207876d698ae"
+    },
+    {
+      "path": "js/student-services-data.js",
+      "sha256": "6e9c773ac926a975b58be67f63d68f9165516c9fb393ae3ac5653d354541a91a"
+    },
+    {
+      "path": "js/student-services-store.js",
+      "sha256": "04e7ef2d9b82afdf7b39b7fab086846f140afe94531f52ae6278486df22ad92d"
+    },
+    {
+      "path": "js/student-services.js",
+      "sha256": "2db49d43699f3540cf1544ad0f0dede1cd0d341fae162079e980b207bb17c46d"
+    },
+    {
+      "path": "js/student-workspace.js",
+      "sha256": "efcf5ea023411825fca37b2f5cb98560f0fd5e3bc8973e5b23f378d50f6dbced"
+    },
+    {
+      "path": "js/subscription-page.js",
+      "sha256": "8679463f008b797edbd174b7a2186177aa7f90983d5765fc4de1f985f99f97db"
+    },
+    {
+      "path": "js/subscription-store.js",
+      "sha256": "aedcabe80b869ce38c79423c3b202bab18b77406b8fcde476f9259c6287ecc8e"
+    },
+    {
+      "path": "js/teacher-auth.js",
+      "sha256": "90391c3777334f16c48a50380301a5b98754eec45dc5b86e391cf34b85d1067b"
+    },
+    {
+      "path": "js/teacher-store.js",
+      "sha256": "62cd6cac55846a72a53eb6281fb31438681308ba54d8c29ea7b1edc8bd1b0c76"
+    },
+    {
+      "path": "js/teacher-workspace.js",
+      "sha256": "ef5cfe708633d87b5bf973a3223b60ea8e460c8955c8aba8794a83791d21ec25"
+    },
+    {
+      "path": "js/theme.js",
+      "sha256": "10e3f9b2958a8771924710cdb07c2c3aff93dd43017ea67a78de1d5399191e48"
+    },
+    {
+      "path": "js/user-guide.js",
+      "sha256": "bad259067742d42665be9c379038f176888d16fcbc4296cc7591ced54dd238cb"
+    },
+    {
+      "path": "js/virtual-internship-store.js",
+      "sha256": "87b875607a044df5b0c4971ffa2ba62f7f637d19a8aa4b486b7a40ea4f642098"
+    },
+    {
+      "path": "js/virtual-internship.js",
+      "sha256": "5c61f788fd3818467e6f7db2b2e629a1bdf2e80cc3aef54501958529334eb07f"
+    },
+    {
+      "path": "js/workspace-completion.js",
+      "sha256": "c398f406b57c14f635770823d1c2bb076e40a299c4bf23ffaf334dc7e735e83f"
+    },
+    {
+      "path": "js/workspace-shell.js",
+      "sha256": "7a817a9503111e6ec3a0f65a20253ed6a6e45013a2eebe68f3a23bc4562c5a71"
+    },
+    {
+      "path": "js/workspace-support.js",
+      "sha256": "296240d5dff49470fb36dfa920ebdd2007aac37cf67ab3b9dba1db00a43884f0"
+    },
+    {
+      "path": "js/workspace.js",
+      "sha256": "fbcc6e92197d7e768f5f80e7fbd4361171972f9d609637c6de1d410b051d0775"
+    },
+    {
+      "path": "css/style.css",
+      "sha256": "ed97c6c16a2d544f7a68b96232e529554de6dfa4023258a9152e055e7162734c"
+    },
+    {
+      "path": "css/user-guide.css",
+      "sha256": "a829b50574e5d9aa1abcb2e0405c378266b263a7a4fbd10a3fe4f83a1c7507a3"
+    },
+    {
+      "path": "pages/admin/admin-account-access.html",
+      "sha256": "df1b30f4f06915770a3bdc225929436010059b22a991cd5868c836ade598b10e"
+    },
+    {
+      "path": "pages/admin/admin-analytics.html",
+      "sha256": "f5b449abd8335ebcabb0eaa2d25e841f975157663b030f9cb1e24c2443fb3f2c"
+    },
+    {
+      "path": "pages/admin/admin-course-content.html",
+      "sha256": "76bd58839df54fb2f2771ae3ec49c7ec1ab4a36a142af656daa225a789ef9eca"
+    },
+    {
+      "path": "pages/admin/admin-course-create.html",
+      "sha256": "f2da988c2ab65dbef99324c10d94f4a443dfe309a2d711bcfcf522b7ba5af122"
+    },
+    {
+      "path": "pages/admin/admin-courses.html",
+      "sha256": "867954ba46d2dbd6b220a3f5e79e0e1b895f2a03e408557aaa9bc68c627833d0"
+    },
+    {
+      "path": "pages/admin/admin-dashboard.html",
+      "sha256": "aaf31e6d65699d504ba2f4740ae609a97cdb733d90aa45b4da6635d8668bdffe"
+    },
+    {
+      "path": "pages/admin/admin-level-content.html",
+      "sha256": "288d80ff3c79442f02a53c58348e7bf455a64de00f9b180140a3b3c78804951c"
+    },
+    {
+      "path": "pages/admin/admin-level-create.html",
+      "sha256": "be22558fae286b5006440af5b43ffd62d680ca5cf79e090a12e27498dae2840c"
+    },
+    {
+      "path": "pages/admin/admin-student-details.html",
+      "sha256": "4019e2aa24657e3e50de7d43fd0a328d2e5b258648e6dcc4c5f4bef812c9a0ae"
+    },
+    {
+      "path": "pages/admin/admin-students.html",
+      "sha256": "fb1c74fa78d7f7745eea3eae7e48878849c341fec4adf7c45874187cd58fa585"
+    },
+    {
+      "path": "pages/auth/admin-login.html",
+      "sha256": "6948fe7755c41864dd7f3d0141e424d02cece0d7227d79651100dba1b15f98d7"
+    },
+    {
+      "path": "pages/auth/change-password.html",
+      "sha256": "a74a9d74879d25c818130409da171956ee6ce3e4ac25296a847ebc72690d7e9d"
+    },
+    {
+      "path": "pages/auth/company-login.html",
+      "sha256": "e3a6224d5181c924ef8d83e8e09253c74d2f77bc108578a228e2b4c5fa69c28e"
+    },
+    {
+      "path": "pages/auth/company-signup.html",
+      "sha256": "0c60b544c511e7950aa45c4b34298983712c810b503f3e35bbdd2b690f600673"
+    },
+    {
+      "path": "pages/auth/forgot-password.html",
+      "sha256": "4b50c808bfe77865c9c770be673d6f4b2ddf774c2acb3c434848b0a2770327cb"
+    },
+    {
+      "path": "pages/auth/login.html",
+      "sha256": "3e3fa04a2c780a460369baee0b7f124f7570b214aba44e8722c1e1dd1d1722aa"
+    },
+    {
+      "path": "pages/auth/reset-password.html",
+      "sha256": "5c151ca0d0d342aca080722ae87ede9f35771dc0e10cba9a6b88362b67568dd8"
+    },
+    {
+      "path": "pages/auth/signup.html",
+      "sha256": "319e4969daf90d23c78fd834e33176731449ccda6c137ff333a25306d277becf"
+    },
+    {
+      "path": "pages/auth/teacher-login.html",
+      "sha256": "84adb7ca0616983b08cf38efc98eef1b78421e946b4a693f0943bb478f496ce3"
+    },
+    {
+      "path": "pages/auth/teacher-signup.html",
+      "sha256": "452da04a1b25210bd96b30e26e583fff653db094db4697cb527faabf54debd55"
+    },
+    {
+      "path": "pages/company/company-applications.html",
+      "sha256": "6d40d855b71ec7106405b3c301bba00fafdb6fbe20f8ea6ec08b6b95dd4a6818"
+    },
+    {
+      "path": "pages/company/company-dashboard.html",
+      "sha256": "3905c3660a8924f3ba8d668fbe095f9baea2a09138902ec472025a9eb861082d"
+    },
+    {
+      "path": "pages/company/company-jobs.html",
+      "sha256": "772c8a86cbd2f8f7d88ebf3e7ca014fa5d372f4be32b92d6870a9a892014d27e"
+    },
+    {
+      "path": "pages/company/company-messages.html",
+      "sha256": "55694c82cf8daaabad3aac19740c2a149e4b2847f17dc3d964a5813a23c460da"
+    },
+    {
+      "path": "pages/company/company-profile.html",
+      "sha256": "3835ad50dcaa4e22085957ccf8020dd7d2420ae1e497323b42dfd69753048adb"
+    },
+    {
+      "path": "pages/company/company-talent.html",
+      "sha256": "269f350d79c79f8078946b94ca5dd9e0652dec5422b2b53176e32cbdd61789be"
+    },
+    {
+      "path": "pages/public/course.html",
+      "sha256": "16363997521e3b223025f772e99616cc87cb11332768b36e604e263ab1d4b5ee"
+    },
+    {
+      "path": "pages/public/demo.html",
+      "sha256": "388b905ff1a374326bc4314b23e63d5d1b6639f9f57ec8fb52c0dc28e36deb6c"
+    },
+    {
+      "path": "pages/public/languages.html",
+      "sha256": "f6c7e0926700481be3f2687480709d239602bd717fe82a2327426fac7d0315bd"
+    },
+    {
+      "path": "pages/services/community.html",
+      "sha256": "d13d990020c5aef542ed13c4d3d05c8459e3f286c7cd8e9a69b8de773bfb47e8"
+    },
+    {
+      "path": "pages/services/freelance-services.html",
+      "sha256": "3fcf187646448ecea36ec0a4befe89cfe13c1b3a11e5bdbcd0effc27431e36bf"
+    },
+    {
+      "path": "pages/services/mentoring-details.html",
+      "sha256": "7b165267f60552e185fa9b04720d9828de0e4b8ce386fe1ffe7be9677155dde0"
+    },
+    {
+      "path": "pages/services/peer-mentoring.html",
+      "sha256": "5ff9fdf069d9ee71b43a756280696396049a0dc3879d2b31a9b3ada9628dba2e"
+    },
+    {
+      "path": "pages/services/service-details.html",
+      "sha256": "77eb1fedde5a1748c268c9a12efb92ac2fbf9fc716a2182445d09663911799f9"
+    },
+    {
+      "path": "pages/services/service-draft.html",
+      "sha256": "70a87d7379c4a2bd02570bd26b8bfe5df58b8ea4466ed841ef58ea4e9170794a"
+    },
+    {
+      "path": "pages/services/showcase.html",
+      "sha256": "fbb7620083c9c3270e69c078b540fdd7a002193a304bd3d3bcd5a843ba93bde4"
+    },
+    {
+      "path": "pages/services/student-public-profile.html",
+      "sha256": "2de67d32557867896ab55970247cc270d1c502bc602e55c6969803f5e9f5ed1e"
+    },
+    {
+      "path": "pages/student/career.html",
+      "sha256": "df95527e11ba2067bfc7a5109536f715a211854d9f0868d79359cfae98d3ee1f"
+    },
+    {
+      "path": "pages/student/certificates.html",
+      "sha256": "9581864606b1aea6dbeb7b7e069596b1c8e445c6c8a1301110b1df1446bae81f"
+    },
+    {
+      "path": "pages/student/code-review.html",
+      "sha256": "f914f8feb6db730d41aa50a762ff755438f1cddbd1c8ca8660ae39956bb6e259"
+    },
+    {
+      "path": "pages/student/dashboard.html",
+      "sha256": "1ac42682e31eaeae96b51c4803d2bab7ace5335e0c1b4dac6cd40691a06ea11a"
+    },
+    {
+      "path": "pages/student/learning-path.html",
+      "sha256": "d51d72d0492c618d9a1f622264b06b842348040c45f6f749eda67a535a5cb544"
+    },
+    {
+      "path": "pages/student/learning-report.html",
+      "sha256": "b695d8f132cb60039f647543be00ff9b8f23c25710f97c3a5f672da61ba1ef59"
+    },
+    {
+      "path": "pages/student/lesson.html",
+      "sha256": "adb95621178cfa1e049e2ef38391d82654dc4d4ce874bf05830d2e995253a393"
+    },
+    {
+      "path": "pages/student/level-assessment.html",
+      "sha256": "fdfeafe4732ca634d1a07a47e883e3009ea59ad597296c9ffe530d01ab87282a"
+    },
+    {
+      "path": "pages/student/local-portfolio.html",
+      "sha256": "2fb3c89aff7a3f5d5a3e51a810ca4f7fba245d10882b5a2da5e01e06756b1575"
+    },
+    {
+      "path": "pages/student/mentor.html",
+      "sha256": "32c5b0b30d8ed55245ba7261cc9450d5974c3eee6d9cb70bb71505e3063c03c6"
+    },
+    {
+      "path": "pages/student/messages.html",
+      "sha256": "0e2843ff80eea305cecd77a4458651910834c228483c0d3a627498fc676fdc3e"
+    },
+    {
+      "path": "pages/student/module.html",
+      "sha256": "4fee8aca1a17311062e167bf321fcff2e37aeb08dc44de9fb202a30394a3762b"
+    },
+    {
+      "path": "pages/student/onboarding.html",
+      "sha256": "fa3ef9e2ef2e2129b0f7c447323ec6ba48c32652317974401306c089a44900f0"
+    },
+    {
+      "path": "pages/student/placement-intro.html",
+      "sha256": "7270c5b44a391c262857d8f6aa508cfd2c4d3c2a30033d40070a5d9abc5c03a6"
+    },
+    {
+      "path": "pages/student/placement-question.html",
+      "sha256": "486d8b28aa9fc2838fe4ef1f3288ea8839a8cedc65c3badbc387a7a1be5e5be5"
+    },
+    {
+      "path": "pages/student/placement-results.html",
+      "sha256": "0272db764aa58b2689c1372bcc5b051f8e98a4e1a9e990e698540325198304a8"
+    },
+    {
+      "path": "pages/student/placement-review.html",
+      "sha256": "83c4bb5fa68d30f44271a6a2010cdf01d9c006976dc74601cb4d554010506112"
+    },
+    {
+      "path": "pages/student/practice.html",
+      "sha256": "de0800f16bfb4a45aff848cc81493a863a47cf547a30fdcfd835a49d3ebbf72d"
+    },
+    {
+      "path": "pages/student/profile.html",
+      "sha256": "035fbd04af72fa86b932b6aa87d583fa6589dab16b6dc86530c7e27e909aa972"
+    },
+    {
+      "path": "pages/student/progress.html",
+      "sha256": "f7ab402fa77df04e3e4fa86d2d28f3b464397e69d366abafd57bddb396827989"
+    },
+    {
+      "path": "pages/student/project-evaluation.html",
+      "sha256": "a00608c3e078bbca6340a6dccdafb63e8e964d80d7608c58afffe567cb38ab53"
+    },
+    {
+      "path": "pages/student/project.html",
+      "sha256": "905bc9755615ce9b4b0ac2387689cc2d2cd08de10029b1f775fcd4f23f5d5c37"
+    },
+    {
+      "path": "pages/student/requests.html",
+      "sha256": "ac1f8513eb44653679db9aa74cc61e1f38e27f06617a25565c6b9b434897d2dd"
+    },
+    {
+      "path": "pages/student/skill-analysis.html",
+      "sha256": "a2c500dd8eb2da57d966efc430ae06a7f642da383014a83b332cc6e1f18557b2"
+    },
+    {
+      "path": "pages/student/subscription.html",
+      "sha256": "9838f64841b7aba6889e79dd704a105ba02b25af26e1bb8572c86af9e024513a"
+    },
+    {
+      "path": "pages/student/virtual-internship.html",
+      "sha256": "939f288b4f0bfed46bba91c6a532fc45f402f8de0e12b77e14505f4bffde6dfa"
+    },
+    {
+      "path": "pages/student/workspace.html",
+      "sha256": "37b3f2f738d1693299bd3d143f313895c63ea013d26a2ab60896a6cf6c4b4dea"
+    },
+    {
+      "path": "pages/teacher/teacher-bookings.html",
+      "sha256": "c7727c0185aa143c604ed901940f492560145f88251eec83f7a45a08ca3dcc32"
+    },
+    {
+      "path": "pages/teacher/teacher-dashboard.html",
+      "sha256": "b191a67b6ce701c64ee44c73983f361382fcda0c344f7bb8fbd316edcbfe5f79"
+    },
+    {
+      "path": "pages/teacher/teacher-profile.html",
+      "sha256": "570548a06c1c80a4653158393eef0924412c0c8ea8bc372155589617f8782b4a"
+    },
+    {
+      "path": "pages/teacher/teacher-schedule.html",
+      "sha256": "f0a239e44aac4210bf0de2d06e51200792c018890ad01444124b44995f8b4218"
+    },
+    {
+      "path": "pages/teacher/teacher-sessions.html",
+      "sha256": "bd2d2f8a0b5df62396973503d7dafda308e0be7f3c8d15c866bc7a30e82af799"
+    },
+    {
+      "path": "pages/teacher/teacher-students.html",
+      "sha256": "8466a357d104e3c4627695a9aff78ea1383c61da5e8d6572a680d9594d9943ab"
+    },
+    {
+      "path": "assets/images/Burgundy CMA cherry monogram logo.png",
+      "sha256": "3446c8a989c39296c442b51eb8cf04c6533065b504f2f17dd9d114e0ec435f0c"
+    },
+    {
+      "path": "assets/images/codementor-learning.png",
+      "sha256": "e12a2a7733965297f8fd178b1a10525d4d1a10e939ae32137d766ee4a0bd27d5"
+    },
+    {
+      "path": "assets/images/signup-workspace.png",
+      "sha256": "7bba5aa6bf600f53e611d46877141b111c6a917108566a1d884142f8d6f64654"
+    },
+    {
+      "path": "assets/images/student-coding-poster.jpg",
+      "sha256": "af134023ba8aca316996b97807f261b1f18d35b468b7b76c69d599ab97dbc9b6"
+    },
+    {
+      "path": "assets/videos/cherry-alpha.webm",
+      "sha256": "dc8bbb836b8b4f3a558aaca8573df9d7fce873c9b0f27637b84835f700ff7362"
+    },
+    {
+      "path": "assets/videos/hero_editor_logos.mp4",
+      "sha256": "93b44815a02cec67db0800f1344ad826553ea0be80157b99976f147dac9759ce"
+    },
+    {
+      "path": "assets/videos/student-coding.mp4",
+      "sha256": "f16e36c33e0c6a54bb26e78c7f697dbd7234c32feecb414b9d28504d1a3632fd"
+    },
+    {
+      "path": "vendor/pyodide/LICENSE",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+    },
+    {
+      "path": "vendor/pyodide/pyodide-lock.json",
+      "sha256": "bb75898cd30da9530e25a9cb7336755db7c3cc85ddd0e3da20ae794a589b3972"
+    },
+    {
+      "path": "vendor/pyodide/pyodide.asm.js",
+      "sha256": "0ea527c5d589df084d79f306ddc9f99f1f67bb7d6529008c10d1a324a1a6dc22"
+    },
+    {
+      "path": "vendor/pyodide/pyodide.asm.wasm",
+      "sha256": "abf462b9236af720a276be5a9db980aa31871972a323525abd33c1978cf844ce"
+    },
+    {
+      "path": "vendor/pyodide/pyodide.js",
+      "sha256": "2068fc5f28b13fc31193b0075d55a1000312c47897f7efb0051d028496f4a731"
+    },
+    {
+      "path": "vendor/pyodide/PYTHON-LICENSE",
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    {
+      "path": "vendor/pyodide/python_stdlib.zip",
+      "sha256": "cad21b7df47ac3d6efe8d97f0654feec8a51b089046100e9d21fba5954700a21"
+    },
+    {
+      "path": "database/ARABIC-STUDY-GUIDE.md",
+      "sha256": "e571c6cf80997b091b54a710d3ffa95dc60edcfb2089e4acea6c7fd8d1a9fb30"
+    },
+    {
+      "path": "database/FINAL-VERIFICATION.md",
+      "sha256": "e1a34ce012b54c3da741f7cc8353aca56e71fcc1e06ee9dc9c2f5cf249cc24a8"
+    },
+    {
+      "path": "database/README.md",
+      "sha256": "eb40c80a57d1f0e3a078d416f0a6f4e6fe4de7e545d399a326320b044f5e17a9"
+    },
+    {
+      "path": "database/reports/academic-examples.log",
+      "sha256": "ce3f4b4f0c21ed6b3690a96ecb22fd72e0d420424ce727ca1eb98726367a20a4"
+    },
+    {
+      "path": "database/reports/documentation-consistency.json",
+      "sha256": "8b6f449db59f4c0bbc78960d845eca65b5e69009b026007e6fa2dcda8f8b7cea"
+    },
+    {
+      "path": "database/reports/documentation-tests.json",
+      "sha256": "80e08d1945d6d5a278fedd44cb56235d262dd8b81c9f78b78b5323c3600c4db7"
+    },
+    {
+      "path": "database/reports/existing-target-rejection.log",
+      "sha256": "703bc2c223f4815c979bda3c7efb820f03b9133f14f8aecd22bca8bf5bfc48e2"
+    },
+    {
+      "path": "database/reports/final-verification.json",
+      "sha256": "f37a0d5068ce25f5729c883321f34bcdc7535cadac054c8de5d145be193614cb"
+    },
+    {
+      "path": "database/reports/install-20261105.log",
+      "sha256": "0f100485d0adb0164458aa640e883061ce40a2267b15c9b354bbd7c718027d15"
+    },
+    {
+      "path": "database/reports/preservation-baseline.json",
+      "sha256": "235dd34eeff7fecf341499f9f893b58ec231dcdfabf107b5f16dc8fb05d6f02c"
+    },
+    {
+      "path": "database/reports/preservation-verification.json",
+      "sha256": "063bcb25b9f795e3864c242c95e6629e6c6d62a83a2c991ac7a17dd643126494"
+    },
+    {
+      "path": "database/reports/safety-concurrency.json",
+      "sha256": "6925902ee615f15f155abad6940a4d854282fe4b48c3d7d80f75aafd886e8bfc"
+    },
+    {
+      "path": "database/reports/schema-metadata.json",
+      "sha256": "6873f4c0049d705cde7f09b4691cc428036db073f37cb0380f78c30379e47227"
+    },
+    {
+      "path": "database/reports/seed-sources.json",
+      "sha256": "cb2b1eee9a9970e2acb952515a472389c7e4565d2c2f161bb18dfa54cb3a52d1"
+    },
+    {
+      "path": "database/reports/sql-verification.json",
+      "sha256": "b052f554c465559ec0f152f3fac36658e2e7d53e381e88647bb1d049fa16454b"
+    },
+    {
+      "path": "database/schema-authoring.json",
+      "sha256": "1c5979211e5466d784212ea50335c9fe0b50d338e23b9571d16575ff9a7b639b"
+    },
+    {
+      "path": "database/tools/build-documentation.cjs",
+      "sha256": "81eff97e2324a151a5b589540142ad4cbd6b6a2dc3776ed5d41bd33ac9a3b1fd"
+    },
+    {
+      "path": "database/tools/build-phase3.cjs",
+      "sha256": "6ddc4a92ba2e81852d254071fbf3afb9366e3fb0649ed602fa40d005a49d46a4"
+    },
+    {
+      "path": "database/tools/build-seed.cjs",
+      "sha256": "34a4d2989302415cc831846e5d2942eb578c15351982ea089e70bccb89aecac1"
+    },
+    {
+      "path": "database/tools/build-study-guide.cjs",
+      "sha256": "cde5c7d7e0cee1dba4772e460605e049f555275a698755a06960c04650a43732"
+    },
+    {
+      "path": "database/tools/build-verification.cjs",
+      "sha256": "5d2b927489e4503bcf85ddff808fd9087cd9f91425a9e2f41e27314e61806d14"
+    },
+    {
+      "path": "database/tools/final-audit.cjs",
+      "sha256": "79661b5a6847c661999689ec55f199f32530255a08a592f4f6c6e267f766d87c"
+    },
+    {
+      "path": "database/tools/restore-sql.cjs",
+      "sha256": "e78b135cb466af56108bc74e9694d11b862eeeea0b43f0a6614a08da0e235f65"
+    },
+    {
+      "path": "database/tools/run-phase3.ps1",
+      "sha256": "1edce0f296e897901d71754d75e5dd0327450e81e6ff54300a9692fbc55fc018"
+    },
+    {
+      "path": "database/tools/test-documentation.cjs",
+      "sha256": "d0542e8647d18de14e0ef0c796d0b308901d60a12147dc6027ee2e158f3bca21"
+    },
+    {
+      "path": "database/tools/test-safety-concurrency.ps1",
+      "sha256": "ea6ffadd31eb9cf4412c707e3d15b31b2ab4b1a96c52377c144d9eb20dbc625d"
+    },
+    {
+      "path": "tests/access-regressions.html",
+      "sha256": "c85f22ec4db1866638f1ca2e2fc0669efc3b95d0acf30894d14ef9449abadfd6"
+    },
+    {
+      "path": "tests/access-regressions.js",
+      "sha256": "b3897e5560b5c95d8cc7def4c1f167fbf3a5c08f6a88192cd2567bfe19432959"
+    },
+    {
+      "path": "tests/approved-fixes.ps1",
+      "sha256": "e513980db95151aa3d2d2146e11ff14dd9760a1cd4ce4dcc127b7eeaad5d7485"
+    },
+    {
+      "path": "tests/audit-regressions.html",
+      "sha256": "ea4bfcc2e3148f041b2d27cf503b55a05e2aa34c4a3b0b67670cdfdb8696c098"
+    },
+    {
+      "path": "tests/audit-regressions.js",
+      "sha256": "e0eaf8fa64b4eea579cf8399264e3538cf416abca871b65e91f377f2bbbbb76c"
+    },
+    {
+      "path": "tests/auth-layout-check.ps1",
+      "sha256": "9c46b227861135546324121bc6d7f56504aea0c70d9efebc915163169abe669a"
+    },
+    {
+      "path": "tests/browser-smoke.html",
+      "sha256": "f4909694992481a96300a528f942bbe6b0ef94844532c20af4d6e6324966a779"
+    },
+    {
+      "path": "tests/browser-smoke.js",
+      "sha256": "130969607261716d86d12ae31e213c4f8dbf7b65c5a95a21140a3191f646f89f"
+    },
+    {
+      "path": "tests/capture-fixes.ps1",
+      "sha256": "e56508eee44dea5d04b99f465ddc8f9d9e556deae9ee178e2cc170e7a908e35d"
+    },
+    {
+      "path": "tests/CdpSocket.cs",
+      "sha256": "8d5d2ceac3b489ec97d46c413ff0e774c2aae768e627049be1bc1e974199dc8e"
+    },
+    {
+      "path": "tests/certificates.ps1",
+      "sha256": "efbbab2cedc3c48af1c95fe623298496da8fe03517d19a5c351f30935e0a56d7"
+    },
+    {
+      "path": "tests/complete-workflows.html",
+      "sha256": "c79ccdc60dc7eeef4ec2224451cd922dc94607d417a07c6cc5fd8a459e4617bc"
+    },
+    {
+      "path": "tests/complete-workflows.js",
+      "sha256": "f3e962b2b0bcf152d2f2de7bcaa046c952bf88ff37a0ac612edf45c180da5035"
+    },
+    {
+      "path": "tests/connected-flows.html",
+      "sha256": "6af994b6c03a18c4235baf330123789498d468cfb81e8fc3364945b6fe067b41"
+    },
+    {
+      "path": "tests/connected-flows.js",
+      "sha256": "2690d329aaa2f2b101efe630a1dee3e4d91423785b12d38a28b78f7e68fec92e"
+    },
+    {
+      "path": "tests/content-phase.html",
+      "sha256": "6cc7a32801bc0ca0cfe61f2f91dddac404f6fefdabbe1fa4f6e0863364bc54ed"
+    },
+    {
+      "path": "tests/content-phase.js",
+      "sha256": "6682c61016f27f75a911fd7e94d91fcc534378f43326519d0d22c360ae8f6584"
+    },
+    {
+      "path": "tests/dark-palette.ps1",
+      "sha256": "b30c430682703309224fc1d3db9e881d5b714c3311178d5ec744f6bc6f698b98"
+    },
+    {
+      "path": "tests/dashboard-layout.ps1",
+      "sha256": "aeb95a1b17eb9a5b78830124422234f0a2527c0fb4724ea44957ed6bbb8889a8"
+    },
+    {
+      "path": "tests/footer-visual.ps1",
+      "sha256": "f05584543aeffa2ad3fede85edd7bffa52b37c12c05d33974a1629aac0d55c26"
+    },
+    {
+      "path": "tests/hero-restore-check.ps1",
+      "sha256": "bbbff5be0f528fb4254587a2185b8adca64e9808416c390b045655bc09b1b0ea"
+    },
+    {
+      "path": "tests/integration-audit.html",
+      "sha256": "92cda2e68433c6a617cbcb530d0bb1fa2610b7872ba5ae8b0d154181637ae791"
+    },
+    {
+      "path": "tests/integration-audit.js",
+      "sha256": "4493c31c71850d4ccb80685136408bf9bc8b624a4dfe5a4db32fa9b66e669a7b"
+    },
+    {
+      "path": "tests/kahoot-challenge.ps1",
+      "sha256": "7ad6682ecfcd7a2569065901fa535d4cec9e6d55accc3822cc9fc1d2b1cad223"
+    },
+    {
+      "path": "tests/language-phase.html",
+      "sha256": "be5162ba1a0e9928fce54d2ec5e31d60001f0471fc4aa860bc65f18b12f66811"
+    },
+    {
+      "path": "tests/language-phase.js",
+      "sha256": "b4ed291ccd4ed0d731fa928eefee319a144cebf0ab0b22b57e287385f6a9d73b"
+    },
+    {
+      "path": "tests/learning-support.ps1",
+      "sha256": "cdfff5ef5ef18bebcd7c49b3bde1f3edbcf837bb0fc660cdf166234c5aa63486"
+    },
+    {
+      "path": "tests/learning-upgrade.ps1",
+      "sha256": "2daaa6a1809f4aa1fdcd8e2f804519edc3615ee6fcdb3ae8b336b00ce076f0f8"
+    },
+    {
+      "path": "tests/mentor-isolation.html",
+      "sha256": "ad3425f36fc84761557045536caee504cc00b02beacddbe719d4ae7046f00721"
+    },
+    {
+      "path": "tests/mentor-isolation.js",
+      "sha256": "abfb008ef84998e76a21c4f66ef1356649f068856663d3c98b9edce585ecbc4e"
+    },
+    {
+      "path": "tests/navigation-phase.html",
+      "sha256": "1cbc89e84593642ffc2914a3adac575624f307cda14472c326cdc65d4a24d9f4"
+    },
+    {
+      "path": "tests/navigation-phase.js",
+      "sha256": "5e450ba1671064d59783fe358d2240a3d1196d11dc730fff7bdf58d4a41d1d3b"
+    },
+    {
+      "path": "tests/original-pages-phase.html",
+      "sha256": "5f4d75b4381af157d625cd1c07fcf18bd11140e52ab3634b164fbc1f6c4fd2fe"
+    },
+    {
+      "path": "tests/original-pages-phase.js",
+      "sha256": "5647d7cf859d1c919c7ac99cb3fa3889990eb2b53d87ef7a5b3ee1a82856c752"
+    },
+    {
+      "path": "tests/page-routes.js",
+      "sha256": "7c02f1afe740010d8b4d6c0872d46217f3791c31fa0f48e3b200f9599b7fc1be"
+    },
+    {
+      "path": "tests/python-sources.html",
+      "sha256": "d3d295eea9e56c9fd17ff75917e03610a9fb7a2d8e35280d70c1cd23141b1418"
+    },
+    {
+      "path": "tests/python-sources.js",
+      "sha256": "9f671035f15ce4c88b7bf8de4c92516fc4d89549426974a68be656af4eaed278"
+    },
+    {
+      "path": "tests/reference-audit.js",
+      "sha256": "55665c939a9e40551987b04d7288d9b149d94efc2d556731eb03d897081b9716"
+    },
+    {
+      "path": "tests/requests-dashboard.html",
+      "sha256": "d19b6414024cd5d51c0abdf6572d91ea817c4d9178c6e26387887ec18fc16ecd"
+    },
+    {
+      "path": "tests/requests-dashboard.js",
+      "sha256": "c62bf7e709ea5a7a5a8e25ab759404f6a1ba1e0619d211d93d8eca6ea6f3c08d"
+    },
+    {
+      "path": "tests/review-layout.html",
+      "sha256": "441908c537b4b8ec69da0ea892d9d4f409ea862b3cdd9d427db03545bdd14f1a"
+    },
+    {
+      "path": "tests/review-layout.js",
+      "sha256": "7e204b59d8d5269f89ad4fa731c9652a9b82a36765a2ed2ee7cfdcc9561262e0"
+    },
+    {
+      "path": "tests/serve.ps1",
+      "sha256": "a6ded94b95afeacd11713704479ed713fb2c60e3f8ac1592784bb7ad18bfa435"
+    },
+    {
+      "path": "tests/services-arrival.ps1",
+      "sha256": "692d3fc60f043b946da0489d066766c9883873fc647ca5f105b072c04dd50ec1"
+    },
+    {
+      "path": "tests/services-input.ps1",
+      "sha256": "0c50a08b391f76f7585f0bb004384fc87c3c964625fa287ea16dc90a2ecaabc5"
+    },
+    {
+      "path": "tests/services-visual.html",
+      "sha256": "eaa6677a74910e18f5f82d0ed7029b81a54d305d85594df6fa0e55f7f9ba99c1"
+    },
+    {
+      "path": "tests/services-visual.js",
+      "sha256": "ebdb150b57aa167561e811c723a73938aaaaad335deb414f445883d9a0e200e9"
+    },
+    {
+      "path": "tests/site-audit.html",
+      "sha256": "91fe612f51b1a5b9f3f2ccdc6764784850410b0da9b11f08de476ed534408906"
+    },
+    {
+      "path": "tests/site-audit.ps1",
+      "sha256": "e9bdb1df9063fcfe438ec8f9246b75542392fa092296f49879c4e0def38d519a"
+    },
+    {
+      "path": "tests/site-fixes.ps1",
+      "sha256": "243baae634a568c3b4fcd2a86daefb36d32cf11d4dc9cc2ed8d826255e3c7978"
+    },
+    {
+      "path": "tests/stability-audit.html",
+      "sha256": "7ca5752cec9dafab7a32a0dc1a8a4c5ca94ddf76a0047e198507db6e484c79c1"
+    },
+    {
+      "path": "tests/stability-audit.js",
+      "sha256": "709013963dbe8e228d0c2f9d4537db2dae53796063e0212ae818e240f687bf83"
+    },
+    {
+      "path": "tests/stability-powershell.ps1",
+      "sha256": "5556ec8a59296e35f6c66c50b3567d3cbf968f02c1ef81c628a87ee583b5ce89"
+    },
+    {
+      "path": "tests/submission-completion.ps1",
+      "sha256": "d86ab73a7874738865a5da4429ffdd008166298d69a1d1d8d5725bc6ef3996bd"
+    },
+    {
+      "path": "tests/theme-input.ps1",
+      "sha256": "e874978e9eb32f8c08b0b152ebb2875f5d555e25c9bfbf14bb4cc5df969c533d"
+    },
+    {
+      "path": "tests/theme-smoke.html",
+      "sha256": "65b75e7c9a56df6c83dcbf537c5a57cdfafd83ba370578af145899faf2d51416"
+    },
+    {
+      "path": "tests/theme-smoke.js",
+      "sha256": "6adcaa7c9ccf25c6fc4dc3cb2498c64d883115b9534f54a63462e5cf961c1e67"
+    },
+    {
+      "path": "tests/user-guide.ps1",
+      "sha256": "f1396d934686af618881fc1598691f02ea05cc2e259c780af4577bad89db328e"
+    },
+    {
+      "path": "tests/verify-structure.ps1",
+      "sha256": "54bf214fb52d8af29bb35f3853ff82b9f2937907c12e6aeb485919c09ea6e1cc"
+    },
+    {
+      "path": "tests/virtual-internship.html",
+      "sha256": "29564b491ecc8d1ad6ad98e3cad79af116a4030b4382581872e0ddd82e449f8b"
+    },
+    {
+      "path": "tests/virtual-internship.js",
+      "sha256": "8b61810b9abab1cf96d627de91ea0842cc0feae445bdccfc4792be697c4f6e52"
+    },
+    {
+      "path": "docs/access-fixes-2026-11-08-harness-results.json",
+      "sha256": "1a393b1d42994a864049f5dbbfe3f73c73ba5639781ea3106813eb48d678e2f5"
+    },
+    {
+      "path": "docs/access-fixes-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/access-fixes-2026-11-08-reference-results.json",
+      "sha256": "1068f887993aeaaccfb3cfa2a0a25b2b270535def9fdc7359d23ce44782d5bfd"
+    },
+    {
+      "path": "docs/audit-2026-11-06-harness-results.json",
+      "sha256": "cc9629230399b62cbde51f69cb74c83e9e600c21568b31b95bbae47b8d8597f4"
+    },
+    {
+      "path": "docs/audit-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/audit-2026-11-06-reference-results.json",
+      "sha256": "1ad3c01ebedabf4cf8dbaad1b233501d4e5f66890f7eadf220c11d7c214ae64d"
+    },
+    {
+      "path": "docs/AUDIT-2026-11-06.md",
+      "sha256": "813424bba2fac9288287123f254ed81177486471ba466cd0095179b24161e2a4"
+    },
+    {
+      "path": "docs/audit-browser-2026-11-06.json",
+      "sha256": "c2605d9966ee1feea1357ddd9e7f79054265f1459938e5022e0e7952bc6a106c"
+    },
+    {
+      "path": "docs/audit-static-2026-11-06.json",
+      "sha256": "c5358410ea82cfa803f29e6fbdccf319a18aad0d7d5ef60c33c964ade383fef4"
+    },
+    {
+      "path": "docs/auth-fix-harness-results.json",
+      "sha256": "98119f133ce2f0a833fabb5da886988238b62143578a45d67c4ee2f8282350ac"
+    },
+    {
+      "path": "docs/auth-fix-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/auth-fix-reference-results.json",
+      "sha256": "8d286c55d5c1e2a19b45e36a03e9e5e3fb5d3338bfc77cdbf72d77da855c2d1b"
+    },
+    {
+      "path": "docs/auth-layout-results.json",
+      "sha256": "a68c1cff41854f409b0fee13851ef6e21b27ed3035bb14cea0def2cb06b9ab20"
+    },
+    {
+      "path": "docs/certificate-results.json",
+      "sha256": "268b10ae3f874f46bdc604ef2f7fbde8f587df666513be911d12b63adcf6897d"
+    },
+    {
+      "path": "docs/check-progress.ps1",
+      "sha256": "71b47d1eca3ced18fb39795198ab9a66e83564eda7bd70ba821aaaa76e0f6af1"
+    },
+    {
+      "path": "docs/connected-all-2026-11-06-harness-results.json",
+      "sha256": "2159d249dc28f633a615d3fe7e4ab90151038e98d1d99b2a99e3fa3264d1cc31"
+    },
+    {
+      "path": "docs/connected-all-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/connected-all-2026-11-06-reference-results.json",
+      "sha256": "29996b603ba9293c795487755011a43a5cf033f01ea2da9e67081f08977f715c"
+    },
+    {
+      "path": "docs/connected-compat-2026-11-06-harness-results.json",
+      "sha256": "d2afe6088419fc5b1d8bbdff6484714d7767b7e4728ac5a3da03f3c135c8fd9b"
+    },
+    {
+      "path": "docs/connected-compat-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/connected-compat-2026-11-06-reference-results.json",
+      "sha256": "29996b603ba9293c795487755011a43a5cf033f01ea2da9e67081f08977f715c"
+    },
+    {
+      "path": "docs/connected-final-2026-11-06-harness-results.json",
+      "sha256": "7613212edfc0ac25c49de8acc009a89f0d3bb7fbf04588de6c7e3dec691f9990"
+    },
+    {
+      "path": "docs/connected-final-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/connected-final-2026-11-06-reference-results.json",
+      "sha256": "29996b603ba9293c795487755011a43a5cf033f01ea2da9e67081f08977f715c"
+    },
+    {
+      "path": "docs/connected-first-harness-results.json",
+      "sha256": "32e12c70938ed1dddea419d945504027bc44be0599339b13adf3d046302d543c"
+    },
+    {
+      "path": "docs/connected-first-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/connected-first-reference-results.json",
+      "sha256": "29996b603ba9293c795487755011a43a5cf033f01ea2da9e67081f08977f715c"
+    },
+    {
+      "path": "docs/CONNECTED-WORKFLOWS.md",
+      "sha256": "a316625f1b5b33b752e498c0afff99009fb90a33f635021803244129292ae29c"
+    },
+    {
+      "path": "docs/DARK-PALETTE-NOTES.md",
+      "sha256": "2bcd07352c7d617d8f7a62cffdd71d043464d4f433387a2961254fc79fe14341"
+    },
+    {
+      "path": "docs/dark-palette-results.json",
+      "sha256": "a5b331e29ccb40799757e147f65457b305d0961ffcddf47c6f23ff9ee9a2877c"
+    },
+    {
+      "path": "docs/dashboard-layout-results.json",
+      "sha256": "f681be0802e1e913f3dff3859f26f53d28b04460a87225f43361cc3710cb92ad"
+    },
+    {
+      "path": "docs/database/database-data.js",
+      "sha256": "ad41cee5c8ec634136e598a12f839f15cf472a0699c25f08f3741213c50f3253"
+    },
+    {
+      "path": "docs/database/database.css",
+      "sha256": "e442146fc36933dcb7289ff9722bc20bc879f123e7d5962a1cc72693375f3188"
+    },
+    {
+      "path": "docs/database/database.html",
+      "sha256": "9d2b47143c05d987c3e474318c5b74ad63a304c12d2ddc2e2eba2f2aa0a9c370"
+    },
+    {
+      "path": "docs/database/database.js",
+      "sha256": "d10b42b8c571cc8d13eef2c8d2f6732239b108af7ebbd5af376e8b4a3b0c3fc8"
+    },
+    {
+      "path": "docs/DATABASE-CLEANUP-PHASE1.md",
+      "sha256": "0052267ba3ed93986ae1ba1cc7fcfe7b7c471ebf606ff61cdfeedaac50e78dd5"
+    },
+    {
+      "path": "docs/DATABASE-PHASE2-ANALYSIS.md",
+      "sha256": "c8612213352129eb99525ae8e5eaff86b71d419cebc4fc532c42f0cc84fc5ceb"
+    },
+    {
+      "path": "docs/database-phase2-evidence.json",
+      "sha256": "479055367043dd5347d2be5bf074190e61ee4d7ea8aaa36ee37b3b4a711031d9"
+    },
+    {
+      "path": "docs/database-phase2-proposed-tables.json",
+      "sha256": "3448c258b8a448dfb089d697be9d4347554e805eab109802bd52ce957acaf598"
+    },
+    {
+      "path": "docs/delivery-harness-results.json",
+      "sha256": "061ada39bebd1e4b1475ff88f8c96b747c755315e0ed1c278d06e88a349c9ee1"
+    },
+    {
+      "path": "docs/delivery-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/delivery-reference-results.json",
+      "sha256": "30598175af8ae161c1e474e8e75560489d3536c89112e470ca485c43a61a7939"
+    },
+    {
+      "path": "docs/delivery-static-results.json",
+      "sha256": "7dedd48e11f94f47845a231fdd3b8e5f485c050c242870c50f7d7cbe742aa674"
+    },
+    {
+      "path": "docs/DELIVERY.md",
+      "sha256": "54429d0b785ebeebe1a7738a4385a0acf9c2661ba1c878df25fa5b3c1d0c2906"
+    },
+    {
+      "path": "docs/final-fixes-2026-11-08-harness-results.json",
+      "sha256": "1af6f5ced875cceec9d7f36622eafb83c14277efe4ab0c7b9940ceec2cb3c7e5"
+    },
+    {
+      "path": "docs/final-fixes-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/final-fixes-2026-11-08-reference-results.json",
+      "sha256": "1068f887993aeaaccfb3cfa2a0a25b2b270535def9fdc7359d23ce44782d5bfd"
+    },
+    {
+      "path": "docs/fixes-2026-11-06-harness-results.json",
+      "sha256": "2d5b76372fd9372393e4e092c0d98057d12b4e089cad718bfcb1e318d877cc57"
+    },
+    {
+      "path": "docs/fixes-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/fixes-2026-11-06-reference-results.json",
+      "sha256": "7bb3aae3d18b054ff9980cf5f059e68c12d27d9437dfdae4588cab30c5973e8f"
+    },
+    {
+      "path": "docs/FIXES-2026-11-06.md",
+      "sha256": "e1de11f6bc71a7698ea788116861e168588962f34e29e39df6f94a36092ba867"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-delivery-results.json",
+      "sha256": "431f90e691920b08e243cdd91d9f1c26e94c49e3024ec61562370eb511015f92"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-design-results.json",
+      "sha256": "3b01172877e3320435b4e676ab32046b8571de00aa5ff168f29c82ab7a904798"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-final-results.json",
+      "sha256": "7dc460b90dabe4ad1d8f08883ba3eb58ba42062bbdc8b16272291a7ce2978d8f"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-harness-results.json",
+      "sha256": "4ced2fc1d8df27f3bc3754edeae8f3c2b9b5710dd2b89f07f37dafcd051ae3d0"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-reference-results.json",
+      "sha256": "1068f887993aeaaccfb3cfa2a0a25b2b270535def9fdc7359d23ce44782d5bfd"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-sql-results.json",
+      "sha256": "52d1f5a55f86382bd62dc28ff26fe7fe5a172a7a4886df33debb8b46ffaccb04"
+    },
+    {
+      "path": "docs/fixes-2026-11-08-supplemental.json",
+      "sha256": "f68b26c4c775dfbf29c7f8fdc2bc63ee89d157645bbd1ce49988ef4c21c0eb8a"
+    },
+    {
+      "path": "docs/FIXES-2026-11-08.md",
+      "sha256": "4ad242199a4bdd9774c6675b52de9d3318f1ce758e3caa32ac48939bfa45b36d"
+    },
+    {
+      "path": "docs/fixes-final-2026-11-06-harness-results.json",
+      "sha256": "d2afe6088419fc5b1d8bbdff6484714d7767b7e4728ac5a3da03f3c135c8fd9b"
+    },
+    {
+      "path": "docs/fixes-final-2026-11-06-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/fixes-final-2026-11-06-reference-results.json",
+      "sha256": "7bb3aae3d18b054ff9980cf5f059e68c12d27d9437dfdae4588cab30c5973e8f"
+    },
+    {
+      "path": "docs/footer-visual-results.json",
+      "sha256": "0343a432f880b402bbe5abefdafd8670294baef7023d8dfd3a42f7e95ea667b4"
+    },
+    {
+      "path": "docs/FRONTEND-STABILITY-AUDIT-2026-11-04.md",
+      "sha256": "4da2b08fab6b497cd8a60212c506438db27457a44ac2ee4e3ea8e8b4a7cdab43"
+    },
+    {
+      "path": "docs/frontend-stability-results-2026-11-04.json",
+      "sha256": "6922cafc68aa0ab3101280c9a17e4d430373a5c40484aa300ef6c6d7a4d78db9"
+    },
+    {
+      "path": "docs/IMPLEMENTATION-NOTES.md",
+      "sha256": "3d5b8721e6c2e6d8cc0e8d38deea09e21f0990d236a72ee83d73fd88efdd8397"
+    },
+    {
+      "path": "docs/kahoot-challenge-results.json",
+      "sha256": "6c48a22bc62453b9083aa42612ae6d7d3f6b5e7d9457080fba5401c564ef94f6"
+    },
+    {
+      "path": "docs/KAHOOT-CHALLENGES.md",
+      "sha256": "0c17e1fd30278f60ffe6b2e27fd310a34072b726ada3819bb245fe4482f82fdf"
+    },
+    {
+      "path": "docs/latest-results.json",
+      "sha256": "93942f8ebfba16c77736f145b64467ba715c96bb782db7b6ff64b2d36e522fd1"
+    },
+    {
+      "path": "docs/learning-support-results.json",
+      "sha256": "31a8002db2627c17cd8199bddf72e7ebabb2324b8bfb19c79b3733c38d7de409"
+    },
+    {
+      "path": "docs/learning-upgrade-results.json",
+      "sha256": "32febf4c6516fd602e52ef2470b3b1454896067ae22be1b6ef31ac5911214afe"
+    },
+    {
+      "path": "docs/LEARNING-UPGRADE.md",
+      "sha256": "91e509fb2ca446e7bdb22c889e29a843f6b69e126aa7b415eb554f49147e779e"
+    },
+    {
+      "path": "docs/navbar-harness-results.json",
+      "sha256": "3cc39fd5bd08efeaafaadaf775337b0b0ea4cbfd5b504a6d115a5a3b51eb10a1"
+    },
+    {
+      "path": "docs/navbar-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/navbar-reference-results.json",
+      "sha256": "8d286c55d5c1e2a19b45e36a03e9e5e3fb5d3338bfc77cdbf72d77da855c2d1b"
+    },
+    {
+      "path": "docs/page-routes.json",
+      "sha256": "2dab9819ed043bb07b73dc4282b2521e0637c5c0663030970e9b06d180adb945"
+    },
+    {
+      "path": "docs/previews-FOOTER-VISUAL-NOTES.md",
+      "sha256": "c3713d3b71c5c121e882b6d381eccf66e005680ed81061f82b0eec91cc718cba"
+    },
+    {
+      "path": "docs/previews-SERVICES-VISUAL-NOTES.md",
+      "sha256": "e7b4a6e40eff5245523f1f31e03e5cd3d97f659b8532fcdf8ed15cb6b175085f"
+    },
+    {
+      "path": "docs/PROJECT-REVIEW-2026-11-08.md",
+      "sha256": "5b8d59e362d9bcba58532c76ea8cbfbcb3ab53dee5bb22fc19c5f9f125645919"
+    },
+    {
+      "path": "docs/PYTHON-SOURCES-NOTES.md",
+      "sha256": "2fa4ae46314e20bcef1147ae2c2b8388dc8bcbe3b946d55d223ce04881802fbe"
+    },
+    {
+      "path": "docs/python-sources-results.json",
+      "sha256": "3e1bd0b8e6e8911dbc8bf6c03a07529c113432a9feb5d6c52db48a3b72a72998"
+    },
+    {
+      "path": "docs/REORGANIZATION.md",
+      "sha256": "39a62da4f84db406e61d2456864fa92118bf8b7e6d155f9ee0cf99f297686994"
+    },
+    {
+      "path": "docs/review-2026-11-08-harness-results.json",
+      "sha256": "2b8b9f485d237cfdd14bef9eb9fffbe0b08c5f297c3f54402ebd56422432a667"
+    },
+    {
+      "path": "docs/review-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/review-2026-11-08-reference-results.json",
+      "sha256": "29996b603ba9293c795487755011a43a5cf033f01ea2da9e67081f08977f715c"
+    },
+    {
+      "path": "docs/review-2026-11-08-static.json",
+      "sha256": "74f9b07ef543f4c905d520dcb0b1cb8e5704bd12619e55fde6ac84517f062018"
+    },
+    {
+      "path": "docs/review-2026-11-08-supplemental.json",
+      "sha256": "bb89399ea5a5edfa5abdd62994a03390e6fb48020f1fca4d4699d0bfc6785968"
+    },
+    {
+      "path": "docs/services-arrival-results.json",
+      "sha256": "d1e0a125926af251feaab55683eea87442be16557c69ee6bf584831211ec3b01"
+    },
+    {
+      "path": "docs/services-input-results.json",
+      "sha256": "1c31a649e00bb7ed418b65678674625bd2c8c338115c0f6f9d17e54265e1f870"
+    },
+    {
+      "path": "docs/services-visual-results.json",
+      "sha256": "97c3f62b854581326402178549db93637335beb278ef3e7ad06b38e95513167a"
+    },
+    {
+      "path": "docs/signup-visual-harness-results.json",
+      "sha256": "16b2cb9b533d09453baba064c016b578a2d10c0f38a108c53c34969ed7c08a04"
+    },
+    {
+      "path": "docs/signup-visual-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/signup-visual-reference-results.json",
+      "sha256": "78c330667ac2084cf1737e52872536fa30f7ce1e45e3308e3c6a9350b6effe81"
+    },
+    {
+      "path": "docs/site-audit-results.json",
+      "sha256": "8f72ef681fa016425fe243e9ba75a49bd6befd792cc2ec27a4e9c061c8c6198b"
+    },
+    {
+      "path": "docs/site-fixes-results.json",
+      "sha256": "601fa351ef52ea3f3b1a7707d7ea407dafb44a3040c2ac9427f0f5783c8d360d"
+    },
+    {
+      "path": "docs/structure-harness-results.json",
+      "sha256": "12d715e7ac3307f3418dc97ff91ded3560ad786abf73c6d7dc6e41f5aef5571d"
+    },
+    {
+      "path": "docs/structure-js-errors.json",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "docs/structure-reference-results.json",
+      "sha256": "0077fcb37b6f1f525ef390a0840bcadd46921341ef6c0c82a16cb76000de99d9"
+    },
+    {
+      "path": "docs/structure-static-results.json",
+      "sha256": "3d87a6def23def4b56b248e139ac0cf7ce37fa2d1601fc8e744d15c985e0a9fb"
+    },
+    {
+      "path": "docs/submission-completion-results.json",
+      "sha256": "1025045ba8ae0e0240410f91bf5af082178c6da36a49f6896d356205f68f93df"
+    },
+    {
+      "path": "docs/tests-RESULTS.md",
+      "sha256": "b0ef43f9488977d87b1ba2832c78b02900bec702a7bcd2e085ce04c479599e85"
+    },
+    {
+      "path": "docs/theme-input-results.json",
+      "sha256": "88a4e3d2a49e80fca7e7bfd4c5d8dedf92aed2ce4b5e2e7b3b05b3c80cb8859e"
+    },
+    {
+      "path": "docs/THEME-NOTES.md",
+      "sha256": "bf4d2ab0038a800e36dfab992b74afbed7a83b250fc8646052e28bf49f174992"
+    },
+    {
+      "path": "docs/theme-regression-results.json",
+      "sha256": "be2014840706d78159c695edf62b4405efde378c78bb04a4d6cd74467ece8f99"
+    },
+    {
+      "path": "docs/theme-results.json",
+      "sha256": "999c93a93ebf806b60eb026f5b052f6865ec32ce86af6d3ae1eba0be58a5eea6"
+    },
+    {
+      "path": "docs/user-guide-results.json",
+      "sha256": "60ab6f2ba1712d837557d82d5fe7d3e3829e4c574a858f9da6e76bfae3bf2299"
+    },
+    {
+      "path": "docs/USER-GUIDE.md",
+      "sha256": "ead81a6ebb4d877e73aca8e4eeb4b729c4c08feae6978c105deccea6c961aadb"
+    },
+    {
+      "path": "docs/verified-fixes-2026-11-08-harness-results.json",
+      "sha256": "004de32188332e45ebfd0c394b76b1fd197b38c60c894b1431444e15e2fcd068"
+    },
+    {
+      "path": "docs/verified-fixes-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/verified-fixes-2026-11-08-reference-results.json",
+      "sha256": "ce6fe5c831e99254448e2e35886d6b0ed7ccae2f4b1a4b7bca1d3c87b61f0bbf"
+    },
+    {
+      "path": "docs/virtual-internship-results.json",
+      "sha256": "4bcec61b11aac4cddfb8d37d3e44fcadb85f1871cbcf809b1c81fabce6ccacad"
+    },
+    {
+      "path": "docs/workflow-final-2026-11-08-harness-results.json",
+      "sha256": "663eb7d7bbf7f67543a58f792ef1da2943ceee89c0b2197daef57cccf50d52bb"
+    },
+    {
+      "path": "docs/workflow-final-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/workflow-final-2026-11-08-reference-results.json",
+      "sha256": "ce6fe5c831e99254448e2e35886d6b0ed7ccae2f4b1a4b7bca1d3c87b61f0bbf"
+    },
+    {
+      "path": "docs/workflow-fixes-2026-11-08-harness-results.json",
+      "sha256": "9f5678abd3fe0124ecb3320571a36c150fb4de70095a6a7a0926012269aaae6b"
+    },
+    {
+      "path": "docs/workflow-fixes-2026-11-08-js-errors.json",
+      "sha256": "285386bcbda5b2338822b19266a2b90c6d87e9da18401f9148c69e469c11bcb7"
+    },
+    {
+      "path": "docs/workflow-fixes-2026-11-08-reference-results.json",
+      "sha256": "1068f887993aeaaccfb3cfa2a0a25b2b270535def9fdc7359d23ce44782d5bfd"
+    },
+    {
+      "path": "docs/WORKFLOWS-AND-USER-MAP.md",
+      "sha256": "c173a5600ce6a01dfc9533c4c1cbc0fad8d2858360bde864ab4d658bf510f37a"
+    },
+    {
+      "path": "tools/finalize-fixes.cjs",
+      "sha256": "5bc02eb2a59b26b33b4ff6ed24c80aace48fef67e4a77109e0d99a8fe91d5faa"
+    },
+    {
+      "path": "tools/package-delivery.cjs",
+      "sha256": "eaaa49b355a65630b612762477704c07ec127af3265e37a7e16c8b45329e7aa3"
+    },
+    {
+      "path": "js/student-journey.js",
+      "sha256": "ed201330a3c2eb984645a02e148c4e44dee55e230742957aa971c7b22a17e671"
+    },
+    {
+      "path": "css/student-journey.css",
+      "sha256": "d0ee97a88900ce3a5fa1ef617380fb5f385ca93ec7013645ee9c5c674d439281"
+    },
+    {
+      "path": "tests/student-journey-browser.ps1",
+      "sha256": "1dfbf3148942691ad88d69190f271e1d29b36df6966780078b2963c2d6645501"
+    },
+    {
+      "path": "docs/STUDENT-JOURNEY.md",
+      "sha256": "bdc34ba3b9597cd0914f9b231fa5d24f35d7db1933e433f5ebcd252ce065430b"
+    },
+    {
+      "path": "css/workspace-layout.css",
+      "sha256": "1d69f7f3dd6651eeb3e1c99dfa9710ecbd1bdb03986fd793511c83fad6c0ece5"
+    },
+    {
+      "path": "tests/requests-layout-browser.ps1",
+      "sha256": "261512218fd7d513fe6f6ffbff4c9d093ba512f15e257dee40ccd52255cb2c58"
+    },
+    {
+      "path": "js/access-guard.js",
+      "sha256": "0dcab920e1b2ed4f8adf12a2c6d74b9b9206e74ea2820e8a61f35535068bfcc4"
+    },
+    {
+      "path": "js/student-account.js",
+      "sha256": "e51608071b7fdd6a62293a512625bb691b4e48dda84460bcf50a008a63fbe92b"
+    },
+    {
+      "path": "js/peer-mentoring-store.js",
+      "sha256": "39480a6850e86c23a65ee0434775adaa6a7edc0ffcd9cda9f3cf7974c0fc1173"
+    },
+    {
+      "path": "js/peer-mentoring-ui.js",
+      "sha256": "df8b5f420f116d13f152434cccf68ae4f8ca4313be5bbcfd239b5a2cd97bb30c"
+    },
+    {
+      "path": "css/peer-mentoring.css",
+      "sha256": "4f6093958b3d87ee6629c7197de4a35990e5fb343bf99074cf2946c88c578b39"
+    },
+    {
+      "path": "pages/student/mentor-studio.html",
+      "sha256": "716fd55f1e4d66f0febefc41f1b7084f7d288475c9ff9bc3a5c1d087e2198423"
+    },
+    {
+      "path": "pages/admin/admin-peer-mentoring.html",
+      "sha256": "db622891f6120ad47eb2f5b756b8abd16ffca149cfbc6418af56f78dbda76040"
+    },
+    {
+      "path": "tests/peer-mentoring-store.cjs",
+      "sha256": "5091c676b87b732c75ba7506deeb542e35b1ea19ee38b4b4b0cdfc1ae7970ada"
+    },
+    {
+      "path": "tests/peer-mentoring-browser.ps1",
+      "sha256": "83b4a501408f47f65c6de41dd228791642e05e2edcc2d997ff9d6a531e7c2ea8"
+    },
+    {
+      "path": "docs/PEER-TEACHING-WORKFLOW.md",
+      "sha256": "0089dc4d75cc83809fed8d04574fcb03116189d3e32fed30a359165480eed510"
+    },
+    {
+      "path": "css/progress-page.css",
+      "sha256": "fc84382afdfefcc496f450ebaa659348342d1648e71fa05dd7875d041137ea5e"
+    },
+    {
+      "path": "tests/progress-layout-browser.ps1",
+      "sha256": "1265d0565be77cc2375869ca3c8f012fa653169cdfb52fdcdee4aa9b16e353bc"
+    },
+    {
+      "path": "css/coding-workspace.css",
+      "sha256": "8fe080c820c93ac2a387ecac11928cf1f6fb4daacb1b60493711709392b67fd1"
+    },
+    {
+      "path": "tests/coding-layout-browser.ps1",
+      "sha256": "bca2efdcd4fdbf8fb5c3568237657a961b4f99405f38182edff9cbd1972a0f97"
+    },
+    {
+      "path": "css/lesson-navigation.css",
+      "sha256": "a3c6d9dfef65de300fe4f006b6097bd903ba50045bd461589d800ccdfe754a4b"
+    },
+    {
+      "path": "tests/lesson-next-browser.ps1",
+      "sha256": "25b0ab52d0cfebfc39095fb074f6d4f7d84d637cefbc1e208c86bc617729487f"
+    },
+    {
+      "path": "js/admin-overview.js",
+      "sha256": "0a969cebc8fb16427307dc99e53546f0805464dbc994a1340f10e95a79ab0497"
+    },
+    {
+      "path": "css/admin-overview.css",
+      "sha256": "d9621e29f8fd70f4a2ea084874dfa178053c1c8ea2d56bf34071c09d0305b414"
+    },
+    {
+      "path": "tests/admin-overview-browser.ps1",
+      "sha256": "ff8d35d2f3b228c6c31ce35d107a98a817fee28e4bddf7b26dec455e1bfa378d"
+    },
+    {
+      "path": "pages/admin/admin-companies.html",
+      "sha256": "40e62a7cd39a79a7c2d6dc4564de2433cf48a15781f4671b1c1cfe304710c7d6"
+    },
+    {
+      "path": "js/admin-companies.js",
+      "sha256": "ac792ba07d60bb88f7582b891fe25872ba36552b54d0c4f3527c90042bb038c3"
+    },
+    {
+      "path": "tests/admin-companies-browser.ps1",
+      "sha256": "daa54843a26da604ef3249fc3dc42ec96ac74b9b5992af8d150ef33256b6b1cf"
+    },
+    {
+      "path": "css/community.css",
+      "sha256": "f54953fe5f42226de4a77f2984154fd5a0e132a7b8c1608253e0bdc25cdf025c"
+    },
+    {
+      "path": "tests/community-browser.ps1",
+      "sha256": "17dc5a7d33d0a2e8611da5dd41528ad357c287b0006ca1405591fe1e9aa71e5c"
+    },
+    {
+      "path": "docs/community-1440-light.png",
+      "sha256": "41ea2e4e6c9af94c41a3e21ab25812924aa31cb23a301a83ec1c2a4d6c225330"
+    },
+    {
+      "path": "docs/community-1440-dark.png",
+      "sha256": "1d124a06cbdaa4c811f1542abcf8bec5e12311702c8cc329c570f54eb8b43d98"
+    },
+    {
+      "path": "docs/community-390-light.png",
+      "sha256": "8c62d5870bd102cf19756fd238366760421bbf8ca4f4ad0fedd3b488ab9491b2"
+    },
+    {
+      "path": "docs/community-390-dark.png",
+      "sha256": "01c6b6b1976c4996f8e86656515a1a2acfa20a7efdbf141ccd2f3b085b132c26"
+    },
+    {
+      "path": "pages/admin/admin-community.html",
+      "sha256": "b6cf9d9ca1761fc171a15d7c6ad4e281f1b6e8d862c8fc9883ac265455b9941d"
+    },
+    {
+      "path": "js/community-membership.js",
+      "sha256": "0adc65e8f1ce464cd02e731097baa0d7564a9def7ad4b3414fe4c6cfe4aa68dc"
+    },
+    {
+      "path": "js/admin-community.js",
+      "sha256": "3b1531ce90c410b31d4fb20a319230dd0def773668e5d9188b00309555b42a0d"
+    }
+  ],
+  "preservedExtras": [
+    {
+      "path": "SOURCES.md",
+      "sha256": "09655b9bf8b7bf85d54eacf2b4f3d36d94dd3b309906e89f652497f4006a7516"
+    },
+    {
+      "path": "start-server.ps1",
+      "sha256": "6f2fa632397e6fa5d8515c3776f41acafb2573d123ef10eab77f42b688ed4d90"
+    }
+  ]
+}

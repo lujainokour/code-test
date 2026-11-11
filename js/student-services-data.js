@@ -1,4 +1,4 @@
-/* Public demo records only. Never derive these records from private account data. */
+/* Sample records plus explicitly consented public snapshots. Private account fields stay separate. */
 (() => {
     const students = [
         { id: "demo-maya", name: "Maya Haddad", initials: "MH", language: "Python", learning: ["Python", "C++"], skills: ["Python", "Functions", "Data handling"], bio: "Sample student profile exploring small tools that make everyday tasks easier.", projects: [{ title: "Study planner", description: "Demo portfolio concept: a console planner for study sessions." }], links: [] },
@@ -15,5 +15,7 @@
         { id: "demo-console", studentId: "demo-omar", language: "C#", title: "A C# console application prototype", description: "A sample offer to prototype a small console workflow with a simple menu and clear code structure.", skills: ["C#", "OOP", "Console apps"], price: 40, days: 5, deliverables: ["Console application source", "Setup notes"], currency: "JOD" },
         { id: "demo-algorithm", studentId: "demo-nour", language: "C++", title: "Explain and review a C++ algorithm", description: "A sample offer to annotate an algorithm and explain its approach. No assessed coursework will be completed on someone else's behalf.", skills: ["C++", "Algorithms"], price: 20, days: 2, deliverables: ["Annotated code review", "Explanation notes"], currency: "JOD" }
     ];
+    try { students.push(...(window.platformStore?.publishedStudents() || [])); } catch { /* Keep public sample listings available; publishing reports errors. */ }
+    try { mentors.push(...(window.adminSessionsStore?.getPublicSessions() || [])); } catch { /* Damaged instructor records never replace existing data. */ }
     window.studentServicesData = { students, mentors, services };
 })();

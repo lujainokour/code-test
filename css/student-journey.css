@@ -1,0 +1,11 @@
+.student-journey { margin-bottom: 30px; padding: 20px 22px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+.student-journey-context { margin: 0 0 14px; font-size: 11px; font-weight: 700; letter-spacing: .7px; color: var(--muted); }
+.student-journey nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.student-journey nav a { display: flex; gap: 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 700; }
+.student-journey nav a span { opacity: .7; font-size: 11px; }
+.student-journey nav a[aria-current="step"] { background: var(--action-bg); border-color: var(--action-bg); color: var(--action-text); }
+.student-journey-help { margin: 14px 0 0; font-size: 12px; color: var(--muted); }
+.student-journey-help a { text-decoration: underline; text-underline-offset: 3px; }
+.dashboard-secondary summary { cursor: pointer; font-size: 19px; font-weight: 700; }
+.dashboard-secondary[open] summary { margin-bottom: 18px; }
+@media (max-width: 650px) { .student-journey { padding: 16px; } .student-journey nav { grid-template-columns: repeat(2, minmax(0, 1fr)); } .student-journey nav a { font-size: 12px; padding: 10px; } }

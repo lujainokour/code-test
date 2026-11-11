@@ -3,7 +3,7 @@
     const resetPage = document.body.dataset.recovery === "reset";
     function say(text, error = false) { message.textContent = text; message.classList.toggle("is-error", error); }
     function read() {
-        const raw = sessionStorage.getItem(key); if (raw === null) return null;
+        const raw = window.cmStorage.getItem(key); if (raw === null) return null;
         const value = JSON.parse(raw);
         if (!value || value.version !== 1 || typeof value.email !== "string" || !value.email.trim() || typeof value.nonce !== "string" || !value.nonce || !Number.isFinite(value.createdAt) || !["prepared", "completed"].includes(value.status)) throw new Error("Invalid saved recovery data");
         return value;
@@ -28,7 +28,7 @@
                 if (password.value.length < 12 || !password.value.trim()) { say("Use at least 12 characters for the new password.", true); password.focus(); return; }
                 if (password.value !== confirm.value) { say("Passwords do not match.", true); confirm.focus(); return; }
                 // Never store the password, change sample credentials, or claim to reset an account.
-                sessionStorage.setItem(key, JSON.stringify({ ...record, status: "completed", completedAt: Date.now() }));
+                window.cmStorage.setItem(key, JSON.stringify({ ...record, status: "completed", completedAt: Date.now() }));
                 form.reset(); form.querySelector("fieldset").disabled = true;
                 say("Password reset simulation completed. No real password or account was changed, and no password was stored. Sample sign-in credentials remain unchanged.");
             } else {
@@ -36,7 +36,7 @@
                 const email = document.getElementById("recovery-email").value.trim();
                 if (!email || document.getElementById("recovery-email").validity.typeMismatch) { say("Enter a valid email address.", true); return; }
                 const record = { version: 1, email, nonce: crypto.randomUUID(), createdAt: Date.now(), status: "prepared" };
-                sessionStorage.setItem(key, JSON.stringify(record));
+                window.cmStorage.setItem(key, JSON.stringify(record));
                 say("Local reset simulation prepared. No email was sent and no real account was checked. This demo link works in this tab for 20 minutes.");
                 const host = document.getElementById("recovery-next"); host.replaceChildren();
                 const link = document.createElement("a"); link.className = "button button-outline"; link.href = `../auth/reset-password.html?demo=${encodeURIComponent(record.nonce)}`; link.textContent = "Open local reset simulation"; host.append(link);

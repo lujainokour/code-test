@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Profile &amp; Brand | CodeMentor AI</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+<body class="workspace-page company-page company-profile-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+    <aside class="workspace-sidebar" id="workspace-sidebar"></aside>
+    <div class="workspace-body">
+        <header class="workspace-topbar"></header>
+        <main class="workspace-main company-profile-main" id="company-main">
+            <header class="company-profile-heading">
+                <div>
+                    <p class="eyebrow">ORGANIZATION SETTINGS <span class="company-profile-heading-mark">PROFILE</span></p>
+                    <h1>Company profile &amp; public branding</h1>
+                    <p class="workspace-intro">Shape how your company appears to emerging engineers. Keep your details current so candidates know who they will be working with.</p>
+                </div>
+                <div class="company-profile-avatar" aria-hidden="true">CM<span></span></div>
+            </header>
+
+            <div id="company-profile-status" class="admin-message company-profile-status" role="status" aria-live="polite"></div>
+
+            <div class="company-profile-layout">
+                <form id="company-profile-form" class="company-profile-form">
+                    <section class="company-profile-section" aria-labelledby="company-details-title">
+                        <div class="company-profile-section-heading"><span class="company-profile-step">01</span><div><h2 id="company-details-title">Company details</h2><p>Basic information candidates use to get to know your organization.</p></div></div>
+                        <div class="company-profile-fields">
+                            <div class="company-profile-field"><label for="comp-name">Company name</label><input type="text" id="comp-name" required placeholder="e.g. CloudPeak Innovations"></div>
+                            <div class="company-profile-field"><label for="comp-industry">Industry / sector</label><input type="text" id="comp-industry" required placeholder="e.g. Cloud Computing &amp; FinTech"></div>
+                            <div class="company-profile-field"><label for="comp-email">Primary work email</label><input type="email" id="comp-email" readonly aria-describedby="company-email-note"><small id="company-email-note">Your account identifier cannot be changed.</small></div>
+                            <div class="company-profile-field"><label for="comp-phone">Direct phone</label><input type="tel" id="comp-phone" placeholder="+962 6 500 0000"></div>
+                            <div class="company-profile-field"><label for="comp-loc">Headquarters / location</label><input type="text" id="comp-loc" placeholder="e.g. Amman, Jordan"></div>
+                            <div class="company-profile-field"><label for="comp-web">Company website</label><input type="url" id="comp-web" placeholder="https://example.com"></div>
+                            <div class="company-profile-field"><label for="comp-size">Company size</label><select id="comp-size"><option value="1-10 employees">1 to 10 employees - Early startup</option><option value="11-50 employees">11 to 50 employees - Growth stage</option><option value="50-100 employees">50 to 100 employees - Established</option><option value="100-500 employees">100 to 500 employees - Mid-enterprise</option><option value="500+ employees">500+ employees - Enterprise</option></select></div>
+                        </div>
+                    </section>
+
+                    <section class="company-profile-section" aria-labelledby="company-culture-title">
+                        <div class="company-profile-section-heading"><span class="company-profile-step">02</span><div><h2 id="company-culture-title">About your company</h2><p>Share your mission and what it is like to build with your team.</p></div></div>
+                        <div class="company-profile-field"><label for="comp-about">Company &amp; engineering culture</label><textarea id="comp-about" rows="5" placeholder="Tell students about your mission, your team, and the problems you are solving..."></textarea></div>
+                    </section>
+
+                    <section class="company-profile-section company-profile-stack-section" aria-labelledby="company-stack-title">
+                        <div class="company-profile-section-heading"><span class="company-profile-step">03</span><div><h2 id="company-stack-title">Technology &amp; skills</h2><p>These tags help students match their skills with your opportunities.</p></div></div>
+                        <div id="comp-stack-container" class="company-profile-stack-list" aria-label="Selected technologies"></div>
+                        <div class="company-profile-add-stack"><label class="admin-visually-hidden" for="new-tech-input">Add a technology or skill</label><input type="text" id="new-tech-input" placeholder="Add a language, tool, or skill"><button type="button" id="btn-add-tech" class="button button-outline"><span aria-hidden="true">+</span> Add skill</button></div>
+                    </section>
+
+                    <footer class="company-profile-form-footer">
+                        <p>Your profile appears alongside your active opportunities.</p>
+                        <div class="company-profile-form-actions"><a href="company-dashboard.html" class="button button-outline">Cancel</a><button type="submit" class="button button-primary">Save company profile</button></div>
+                    </footer>
+                </form>
+
+                <aside class="company-profile-aside" aria-label="Profile information">
+                    <div class="company-profile-preview-card">
+                        <p class="eyebrow">PUBLIC PROFILE</p>
+                        <div class="company-profile-preview-brand"><span class="company-profile-preview-logo">CM</span><div><strong id="company-preview-name">CloudPeak Innovations</strong><span>Company profile</span></div></div>
+                        <div class="company-profile-preview-rule"></div>
+                        <p class="company-profile-preview-note">Your company details and technology stack help candidates understand your team before they apply.</p>
+                        <div class="company-profile-preview-tags"><span>Company details</span><span>Team culture</span><span>Tech stack</span></div>
+                    </div>
+                    <div class="company-profile-tip"><span class="company-profile-tip-icon" aria-hidden="true">i</span><div><strong>Keep it current</strong><p>Clear contact details and a thoughtful company introduction help set expectations with candidates.</p></div></div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

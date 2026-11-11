@@ -11,8 +11,26 @@ const passwordToggle = document.getElementById("password-toggle");
 const fillDemoButton = document.getElementById("fill-demo");
 
 /* Public sample credentials for the frontend demo only */
-const demoEmail = "student@example.com";
-const demoPassword = "DemoStudent123!";
+const adminLogin = document.body.dataset.loginRole === "admin";
+const demoEmail = adminLogin ? "admin@example.com" : "student@example.com";
+const demoPassword = adminLogin ? "DemoAdmin123!" : "DemoStudent123!";
+const requestedPage = !adminLogin && window.cmAccess?.returnTarget(new URLSearchParams(location.search).get("next"));
+if (requestedPage) {
+    const serviceNames = {
+        "community.html": "Student Community",
+        "peer-mentoring.html": "Student-led Sessions",
+        "showcase.html": "Student Showcase",
+        "freelance-services.html": "Student Freelance Services"
+    };
+    const serviceName = serviceNames[new URL(requestedPage).pathname.split("/").pop()];
+    showMessage(serviceName ? "Sign in to continue to " + serviceName + "." : "Sign in with a student account to continue to the requested page.");
+    const signup = document.querySelector('a[href$="/signup.html"]');
+    if (signup) {
+        const url = new URL(signup.href);
+        url.searchParams.set("next", requestedPage);
+        signup.href = url.href;
+    }
+}
 
 function setFieldError(input, errorElement, message) {
     errorElement.textContent = message;
@@ -57,8 +75,9 @@ passwordInput.addEventListener("input", function () {
     showMessage("");
 });
 
-loginForm.addEventListener("submit", function (event) {
+loginForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+    if (submitButton.disabled) return;
 
     emailInput.value = emailInput.value.trim();
 
@@ -92,7 +111,7 @@ loginForm.addEventListener("submit", function (event) {
         return;
     }
 
-    if (email !== demoEmail || password !== demoPassword) {
+    if (adminLogin && (email !== demoEmail || password !== demoPassword)) {
         showMessage(
             "This frontend demo accepts the sample account shown below.",
             true
@@ -101,28 +120,50 @@ loginForm.addEventListener("submit", function (event) {
         return;
     }
 
+    if (adminLogin) {
+        // Frontend preview only; real admin authorization requires a backend.
+        try { sessionStorage.setItem("codementor-admin-session", JSON.stringify({ role: "admin", isDemo: true, signedInAt: Date.now() })); }
+        catch { showMessage("Admin preview session could not be saved. Check browser storage.", true); return; }
+        submitButton.disabled = true;
+        submitButton.textContent = "Opening admin preview…";
+        const requestedAdmin = new URLSearchParams(location.search).get("next");
+        window.location.href = /^pages\/admin\/admin-[a-z0-9-]+\.html$/.test(requestedAdmin || "") ? "../admin/" + requestedAdmin.split("/").pop() : "../admin/admin-dashboard.html";
+        return;
+    }
+    try { window.platformStore?.assertAccess(email); }
+    catch (error) { showMessage(error.message, true); return; }
+    let signedInProfile;
+    submitButton.disabled = true;
+    try {
+        signedInProfile = email === demoEmail && password === demoPassword
+            ? { name: "Lujain Okour", email: demoEmail, role: "student", isDemo: true }
+            : await window.studentAccount.authenticate(email, password);
+    } catch (error) { showMessage(error.message, true); return; }
+    finally { submitButton.disabled = false; }
+
     /*
        Save demo identity only.
        This is not a real authentication session.
        Never save the password in browser storage.
     */
     try {
-        const previousText = sessionStorage.getItem("codementor-demo-session");
+        const previousText = window.cmStorage.getItem("codementor-demo-session");
         const previous = previousText === null ? null : JSON.parse(previousText);
         if (previous !== null && (!previous || typeof previous.name !== "string" || typeof previous.email !== "string" || previous.role !== "student" || previous.isDemo !== true)) {
             showMessage("Existing demo account data could not be read. It has not been replaced.", true);
             return;
         }
-        if (previous && previous.email.toLowerCase() !== demoEmail) {
-            showMessage("A different demo profile is active. Log out from the student workspace before using the sample account. Your records have been kept.", true);
+        if (previous && previous.email.toLowerCase() !== email) {
+            showMessage("A different student profile is active. Log out before signing in to another account. Your records have been kept.", true);
             return;
         }
-        sessionStorage.setItem(
+        window.cmStorage.setItem(
             "codementor-demo-session",
             JSON.stringify({
                 ...(previous || {}),
-                name: previous?.name || "Lujain Okour",
-                email: demoEmail,
+                ...signedInProfile,
+                name: previous?.name || signedInProfile.name,
+                email: email,
                 role: "student",
                 isDemo: true
             })
@@ -139,5 +180,18 @@ loginForm.addEventListener("submit", function (event) {
     submitButton.disabled = true;
     submitButton.textContent = "Opening demo…";
 
-    window.location.href = "../student/onboarding.html";
+    if (requestedPage) {
+        window.location.href = requestedPage;
+        return;
+    }
+
+    try {
+        const saved = window.cmStorage.getItem("codementor-demo-onboarding");
+        const preferences = saved === null ? null : JSON.parse(saved);
+        window.location.href = preferences && typeof preferences.language === "string"
+            ? "../student/dashboard.html"
+            : "../student/onboarding.html";
+    } catch {
+        window.location.href = "../student/profile.html";
+    }
 });

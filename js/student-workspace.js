@@ -36,7 +36,7 @@
 
     function loadProfile() {
         try {
-            const saved = sessionStorage.getItem(
+            const saved = window.cmStorage.getItem(
                 "codementor-demo-session"
             );
 
@@ -132,7 +132,7 @@
     if (logoutButton) {
         logoutButton.addEventListener("click", function () {
             try {
-                sessionStorage.removeItem("codementor-demo-session");
+                window.cmStorage.removeItem("codementor-demo-session");
             } catch {
                 showWorkspaceMessage(
                     "Couldn’t clear the demo session. Try again."

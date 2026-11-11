@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,53 +12,24 @@
     <link rel="stylesheet" href="../../css/style.css">
     <script src="../../js/language-catalog.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/auth-video.js" defer></script>
+    <script src="../../js/student-account.js" defer></script>
     <script src="../../js/signup.js" defer></script>
 </head>
-<body class="auth-page">
+<body class="auth-page signup-page">
     <main class="auth-layout">
-        <section class="auth-story" aria-labelledby="story-title">
+        <section class="auth-story signup-visual" aria-label="CodeMentor AI">
             <a href="../../index.html" class="logo">CodeMentor AI</a>
-
-            <div class="auth-story-content">
-                <p class="eyebrow">START YOUR JOURNEY</p>
-
-                <h1 id="story-title">
-                    Your first line opens a new possibility.
-                </h1>
-
-                <p>
-                    Build your Python skills through clear lessons,
-                    practical challenges and contextual mentor guidance.
-                </p>
-
-                <div class="auth-code">
-                    <div class="auth-code-header">
-                        <span>signup_example.py</span>
-                        <span>Python</span>
-                    </div>
-
-                    <pre><code>student_name = "Lujain Okour"
-learning_track = "Python"
-
-print("Ready to start learning!")</code></pre>
-
-                    <div class="auth-code-output">
-                        → Ready to start learning!
-                    </div>
+            <div class="signup-illustration">
+                <div class="auth-video-media">
+                    <video class="auth-student-video" autoplay muted loop playsinline preload="metadata" poster="../../assets/images/student-coding-poster.jpg" aria-label="An animated student learning to code on a laptop">
+                        <source src="../../assets/videos/student-coding.mp4" type="video/mp4">
+                        <img src="../../assets/images/student-coding-poster.jpg" alt="An animated student learning to code on a laptop">
+                    </video>
+                    <button class="auth-video-toggle" type="button" aria-label="Pause animation">Pause animation</button>
                 </div>
-
-                <h2>Build your coding confidence.</h2>
-                <p>
-                    Start with foundations and work toward a project
-                    you can call your own.
-                </p>
             </div>
-
-            <p class="auth-story-footer">
-                CodeMentor AI · Your personal coding mentor.
-            </p>
         </section>
-
         <section class="auth-panel" aria-labelledby="signup-title">
             <a href="../../index.html" class="auth-back">
                 <span aria-hidden="true">←</span> Back to home
@@ -70,7 +43,7 @@ print("Ready to start learning!")</code></pre>
                     Enter your details, then choose your learning preferences.
                 </p>
 
-                <form id="signup-form" novalidate>
+                <form id="signup-form" autocomplete="on" novalidate>
                     <div class="form-field">
                         <label for="full-name">Full name</label>
 
@@ -122,8 +95,13 @@ print("Ready to start learning!")</code></pre>
                                 name="password"
                                 placeholder="Create a password"
                                 autocomplete="new-password"
+                                autocapitalize="none"
+                                spellcheck="false"
                                 minlength="12"
                                 aria-describedby="password-help password-error"
+                                aria-controls="password-suggestion"
+                                aria-haspopup="dialog"
+                                aria-expanded="false"
                                 required
                             >
 
@@ -137,11 +115,20 @@ print("Ready to start learning!")</code></pre>
                             >
                                 Show
                             </button>
+                            <div class="password-suggestion" id="password-suggestion" role="dialog" aria-label="Suggested strong password" hidden>
+                                <div class="password-suggestion-details">
+                                    <span class="password-suggestion-label">Suggested strong password</span>
+                                    <code id="suggested-password"></code>
+                                </div>
+                                <button type="button" class="button button-outline" id="use-suggested-password">Use password</button>
+                            </div>
                         </div>
 
                         <p class="field-help" id="password-help">
-                            Use at least 12 characters. A memorable passphrase works well.
+                            Use at least 12 characters. Select this field for a strong password suggestion.
                         </p>
+
+                        <p class="field-help" id="password-suggestion-status" role="status" aria-live="polite"></p>
 
                         <p class="field-error" id="password-error"></p>
                     </div>
@@ -156,6 +143,9 @@ print("Ready to start learning!")</code></pre>
                                 name="confirmPassword"
                                 placeholder="Re-enter your password"
                                 autocomplete="new-password"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                minlength="12"
                                 aria-describedby="confirm-error"
                                 required
                             >
@@ -190,6 +180,13 @@ print("Ready to start learning!")</code></pre>
                         Continue to onboarding
                     </button>
                 </form>
+
+                
+
+                <p class="auth-switch">
+                    Hiring student talent?
+                    <a href="company-signup.html">Register as a Company</a>
+                </p>
 
                 <p class="auth-switch">
                     Already have an account?

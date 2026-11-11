@@ -18,7 +18,7 @@
             (value.resources === undefined || (Array.isArray(value.resources) && value.resources.every(validResource)));
     }
     function readContent() {
-        const raw = sessionStorage.getItem(contentKey);
+        const raw = window.cmStorage.getItem(contentKey);
         if (raw === null) return { version: 1, courses: {} };
         const data = JSON.parse(raw);
         if (!object(data) || data.version !== 1 || !object(data.courses) || !Object.values(data.courses).every(course =>
@@ -30,7 +30,7 @@
         return data;
     }
     function readCourses() {
-        const raw = sessionStorage.getItem(draftsKey);
+        const raw = window.cmStorage.getItem(draftsKey);
         const data = raw === null ? { version: 1, courses: [] } : JSON.parse(raw);
         if (!object(data) || data.version !== 1 || !Array.isArray(data.courses) || !data.courses.every(course =>
             object(course) && text(course.id) && text(course.title) && typeof course.description === "string" && text(course.language) &&
@@ -55,7 +55,7 @@
         const lessons = previous ? current.lessons.map(lesson => lesson.id === lessonId ? next : lesson) : [...current.lessons, next];
         const levels = data.courses[courseId].levels.map(level => level.id === levelId ? { ...level, lessons } : level);
         const updated = { ...data, courses: { ...data.courses, [courseId]: { ...data.courses[courseId], levels } } };
-        sessionStorage.setItem(contentKey, JSON.stringify(updated));
+        window.cmStorage.setItem(contentKey, JSON.stringify(updated));
         return next;
     }
     window.courseContentStore = Object.freeze({ readContent, readCourses, context, updateLesson, externalUrl, validResource });

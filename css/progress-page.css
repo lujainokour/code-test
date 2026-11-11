@@ -1,0 +1,27 @@
+#progress-main > h1 { font-size: clamp(29px, 3vw, 40px); line-height: 1.2; margin-bottom: 12px; }
+#progress-main > .workspace-intro { max-width: 760px; font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
+#progress-main .dashboard-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
+#progress-main .dashboard-stat { padding: 22px; border-radius: 12px; }
+#progress-main .dashboard-stat > p { font-size: 10px; letter-spacing: .7px; }
+#progress-main .dashboard-stat h2 { font-size: 25px; margin-bottom: 0; }
+#progress-main .dashboard-card { padding: 26px; border-radius: 14px; margin-top: 0; }
+#progress-main .dashboard-card h2 { font-size: 23px; line-height: 1.35; margin-bottom: 16px; }
+#progress-main .dashboard-card > p { font-size: 14px; line-height: 1.8; color: var(--muted); }
+#progress-main .progress-next-step { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 28px; margin-bottom: 20px; border-left: 4px solid var(--brand-accent); }
+#progress-main .progress-next-step h2 { margin: 0; grid-column: 1; }
+#progress-main .progress-next-step p { margin: 0; grid-column: 1; }
+#progress-main #next-step-link { grid-column: 2; grid-row: 1 / 3; }
+#progress-main .button-primary { background: var(--action-bg); color: var(--action-text); border-color: var(--action-bg); }
+#progress-main .button-outline { background: transparent; color: var(--primary); border-color: var(--border); }
+#progress-main .button-outline:hover { background: var(--sage); }
+#progress-main .progress-content-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+#progress-main .progress-content-grid > * { min-width: 0; }
+#progress-main .completed-activities { margin-bottom: 0; }
+#progress-main .completed-activities li { padding-block: 14px; }
+.progress-tools { margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--border); }
+.progress-report-link { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; margin-bottom: 20px; }
+.progress-report-link h2 { font-size: 21px; margin-bottom: 8px; }
+.progress-report-link p { font-size: 13px; color: var(--muted); max-width: 620px; margin: 0; line-height: 1.8; }
+.progress-insights-link { display: inline-block; font-size: 13px; margin-top: 20px; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 800px) { #progress-main .progress-content-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { #progress-main .dashboard-stats { grid-template-columns: minmax(0, 1fr); gap: 12px; } #progress-main .dashboard-stat { padding: 18px; } #progress-main .dashboard-card { padding: 22px 18px; } #progress-main .progress-next-step { grid-template-columns: minmax(0, 1fr); gap: 12px; } #progress-main #next-step-link { grid-column: 1; grid-row: auto; } .progress-report-link > .button { width: 100%; } }

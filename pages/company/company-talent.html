@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Talent Directory | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/company-store.js" defer></script>
+    <script src="../../js/company-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page company-page">
+    <a href="#company-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="company-main">
+            <p class="eyebrow">TALENT SCOUTING</p>
+            <h1>Student talent directory.</h1>
+
+            <p class="workspace-intro">
+                Explore sample candidates and student-published local profiles. Review their project links and contact their local inbox. Published skills are self-reported, not independently verified.
+            </p>
+
+            <div class="company-search-filters">
+                <div class="form-field" style="flex: 2; min-width: 240px; margin-bottom: 0;">
+                    <label for="talent-search" class="admin-visually-hidden">Search students</label>
+                    <input type="search" id="talent-search" placeholder="Search by student name, major, or specific skill (e.g. Python, SQL)...">
+                </div>
+
+                <div class="form-field" style="flex: 1; min-width: 180px; margin-bottom: 0;">
+                    <label for="talent-skill-filter" class="admin-visually-hidden">Filter by skill</label>
+                    <select id="talent-skill-filter">
+                        <option value="all">All Verified Skills</option>
+                        <option value="Python">Python</option>
+                        <option value="SQL">SQL Server / Databases</option>
+                        <option value="Algorithms">Data Structures & Algorithms</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                    </select>
+                </div>
+            </div>
+
+            <section aria-labelledby="talent-directory-heading" style="margin-top: 32px;">
+                <h2 id="talent-directory-heading" class="admin-visually-hidden">Student Candidates</h2>
+                <div id="company-talent-list" class="company-talent-grid">
+                    <!-- Populated dynamically by company-workspace.js -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Contact / Invite Talent Modal Dialog -->
+    <dialog id="invite-talent-modal" class="teacher-dialog">
+        <div class="teacher-dialog-content">
+            <div class="teacher-dialog-header">
+                <h2>Direct Message / Interview Invite for <span id="invite-student-name">Student</span></h2>
+                <button type="button" class="teacher-dialog-close" id="close-invite-modal" aria-label="Close dialog">×</button>
+            </div>
+
+            <form id="invite-talent-form" novalidate>
+                <div class="form-field">
+                    <label for="invite-message-text">Message / Interview proposal</label>
+                    <textarea id="invite-message-text" rows="4" placeholder="Hello! We reviewed your Python & database accomplishments on CodeMentor AI and would love to discuss a virtual internship opportunity with our engineering team..." required></textarea>
+                    <p class="field-help">Your message will be delivered to the student and a conversation thread will open in Messages.</p>
+                </div>
+
+                <div class="teacher-dialog-actions">
+                    <button type="button" class="button button-outline" onclick="document.getElementById('invite-talent-modal').close()">Cancel</button>
+                    <button type="submit" class="button button-primary">Send Invitation</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+</body>
+</html>

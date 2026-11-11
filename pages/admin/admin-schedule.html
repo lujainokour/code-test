@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/admin-login.html"><style>body{display:none!important}</style></noscript>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Availability & Pricing | CodeMentor AI</title>
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/admin-sessions-store.js" defer></script>
+    <script src="../../js/admin-sessions-workspace.js" defer></script>
+</head>
+
+<body class="workspace-page admin-page">
+    <a href="#teacher-main" class="skip-link">Skip to content</a>
+
+    <aside class="workspace-sidebar" id="workspace-sidebar">
+        <!-- Built and managed dynamically by workspace-shell.js -->
+    </aside>
+
+    <div class="workspace-body">
+        <header class="workspace-topbar">
+            <!-- Built and managed dynamically by workspace-shell.js -->
+        </header>
+
+        <main class="workspace-main" id="teacher-main">
+<p class="services-notice">Platform sessions are managed by administrators. Student bookings and decisions are connected within this browser; no payment or external notification is sent. Sample records are labeled separately.</p>
+            <p class="eyebrow">SCHEDULING & RATES</p>
+            <h1>Availability and session pricing.</h1>
+
+            <p class="workspace-intro">
+                Define the platform session calendar, configure available booking slots, and set your default session hourly rate.
+            </p>
+
+            <form id="teacher-schedule-form" class="teacher-form-shell">
+                <div class="dashboard-grid">
+                    <div class="dashboard-primary-col">
+                        <section class="dashboard-card" aria-labelledby="weekly-calendar-heading">
+                            <p class="eyebrow">WEEKLY HOURS</p>
+                            <h2 id="weekly-calendar-heading" style="font-size: 22px; margin-bottom: 6px;">Available Teaching Days & Time Slots</h2>
+                            <p style="font-size: 13px; margin-bottom: 22px;">
+                                Check the days platform sessions are available and manage your available time windows. Students can only book within these windows.
+                            </p>
+
+                            <div id="schedule-days-container" class="teacher-days-list">
+                                <!-- Populated dynamically by admin-sessions-workspace.js -->
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="dashboard-secondary-col">
+                        <section class="dashboard-card" aria-labelledby="pricing-config-heading">
+                            <p class="eyebrow">RATES & PLATFORM</p>
+                            <h2 id="pricing-config-heading" style="font-size: 20px; margin-bottom: 14px;">Consultation Settings</h2>
+
+                            <div class="form-field">
+                                <label for="default-rate">Base hourly rate (USD)</label>
+                                <input type="number" id="default-rate" name="defaultRate" min="0" max="250" value="25" required>
+                                <p class="field-help">Default price applied when creating new 60-minute sessions.</p>
+                            </div>
+
+                            <div class="form-field" style="margin-top: 18px;">
+                                <label for="meeting-platform">Preferred video platform</label>
+                                <select id="meeting-platform" name="meetingPlatform">
+                                    <option value="Google Meet">Google Meet (Recommended)</option>
+                                    <option value="Zoom">Zoom</option>
+                                    <option value="Microsoft Teams">Microsoft Teams</option>
+                                </select>
+                            </div>
+
+                            <p class="field-help">Every booking requires an administrator decision and a meeting link before confirmation.</p>
+
+                            <p id="schedule-status" class="form-message" role="status" aria-live="polite" style="margin-top: 18px;"></p>
+
+                            <div style="margin-top: 24px;">
+                                <button type="submit" class="button button-primary" style="width: 100%;">
+                                    Save Availability & Rates
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

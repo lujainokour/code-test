@@ -35,7 +35,7 @@
     }
 
     function readDrafts() {
-        const raw = sessionStorage.getItem(draftKey);
+        const raw = window.cmStorage.getItem(draftKey);
 
         if (raw === null) return [];
 
@@ -244,7 +244,7 @@
                 }
             };
 
-            sessionStorage.setItem(contentKey, JSON.stringify(updated));
+            window.cmStorage.setItem(contentKey, JSON.stringify(updated));
         } catch {
             message.textContent =
                 "The level could not be saved. Existing data was left unchanged. Please try again.";

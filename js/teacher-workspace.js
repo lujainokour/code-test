@@ -1,0 +1,1 @@
+/* The standalone instructor role is retired. Use the guarded administration workspace. */
