@@ -116,10 +116,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests/language-switch-browse
 
 ## Python learning path
 
-The student dashboard shows **Continue where you left off**, a 7-day activity chart and a streak
-computed only from times already saved with lesson checks, task runs, quizzes and placement
-(lesson completions have no saved time and are not counted), and achievements earned from real
-work only (placed-out levels never count). In the coding workspace, **Explain the error**,
+The student **Dashboard** shows one next action (Continue), four KPI tiles (lessons, coding tasks,
+current streak, active days this month), a level progress ring, a 7-day activity chart and the
+last five activities, all computed only from saved records and times (lesson completions have no
+saved time and are not counted in time-based views; learning hours are not tracked). **My progress**
+holds the badge gallery (rules in one list in `js/progress-insights.js`; placed-out levels never
+count), learning insights, a visual level roadmap, the placement panel and booking/request counts.
+A compact language switcher in the top bar changes a Ready language in one click; Coming soon
+languages open an availability panel. See [the redesign notes](docs/DASHBOARD-REDESIGN.md).
+In the coding workspace, **Explain the error**,
 **Give me a hint** and **Review my code** prefill the study assistant with your code and the last
 failing test; replies are still prepared hints, not live AI.
 
