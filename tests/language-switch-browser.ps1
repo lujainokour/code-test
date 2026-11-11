@@ -41,12 +41,12 @@ try {
     Open 'index.html'
     Eval "localStorage.clear();sessionStorage.clear();cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Language A',email:'language-a@example.com',role:'student',isDemo:true}));cmStorage.setItem('codementor-demo-onboarding',JSON.stringify({language:'python',experience:'beginner',goal:'foundations'}));cmStorage.setItem('codementor-demo-learning',JSON.stringify({version:1,lessons:['variables'],tasks:['student-profile'],assessments:{}}));sessionStorage.setItem('original-python',cmStorage.getItem('codementor-demo-learning'));true" | Out-Null
     Open 'pages/student/dashboard.html'
-    Check 'Language selector lists every catalog entry and its readiness' (Eval "document.querySelectorAll('#my-language option').length===languageCatalog.entries.length && document.querySelector('#my-language option[value=javascript]').textContent.includes('Ready') && document.querySelector('#my-language option[value=rust]').textContent.includes('Coming soon')")
-    Eval "document.getElementById('my-language').value='javascript';document.querySelector('.language-choice button').click();true" | Out-Null
+    Check 'Language switcher lists every catalog entry and its readiness' (Eval "document.querySelectorAll('.workspace-topbar [role=option]').length===languageCatalog.entries.length && document.querySelector('.workspace-topbar [role=option][data-language=javascript]').textContent.includes('Ready') && document.querySelector('.workspace-topbar [role=option][data-language=rust]').textContent.includes('Coming soon')")
+    Eval "document.querySelector('.workspace-topbar .lang-switch-button').click();document.querySelector('.workspace-topbar [role=option][data-language=javascript]').click();true" | Out-Null
     Start-Sleep -Milliseconds 750
     Check 'Selecting JavaScript switches the dashboard and starts separate progress' (Eval "cmStorage.activeLanguage()==='javascript' && pythonCurriculum.id==='javascript' && pythonCurriculum.levels.length===3 && document.getElementById('selected-language').textContent==='JavaScript' && cmStorage.getItem('codementor-demo-learning')===null")
     Open 'pages/student/learning-path.html'
-    Check 'JavaScript roadmap uses three levels and the shared selector' (Eval "document.getElementById('track-title').textContent==='JavaScript · 3 levels' && !!document.getElementById('my-language') && document.querySelector('#roadmap-list h2').textContent==='JavaScript Foundations'")
+    Check 'JavaScript roadmap uses three levels and the shared switcher' (Eval "document.getElementById('track-title').textContent==='JavaScript · 3 levels' && !!document.querySelector('.workspace-topbar .lang-switch') && document.querySelector('#roadmap-list h2').textContent==='JavaScript Foundations'")
     Open 'pages/student/lesson.html?lesson=variables'
     # Use the completion control so the check does not depend on option-name markup.
     Eval "document.getElementById('complete-lesson').click();true" | Out-Null
@@ -102,11 +102,13 @@ try {
     Open 'pages/student/dashboard.html'
     Check 'Returning to Python preserves original progress byte for byte' (Eval "cmStorage.getItem('codementor-demo-learning')===sessionStorage.getItem('original-python') && pythonCurriculum.levels.length===6")
     Eval "cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Language B',email:'language-b@example.com',role:'student',isDemo:true}));true" | Out-Null
-    Eval "document.getElementById('my-language').value='javascript';document.querySelector('.language-choice button').click();true" | Out-Null
-    Check 'A stale selector cannot save a choice for another account' (Eval "cmStorage.getItem('codementor-demo-language')===null && document.querySelector('.language-choice .form-message').textContent.includes('account changed')")
+    Eval "document.querySelector('.workspace-topbar .lang-switch-button').click();document.querySelector('.workspace-topbar [role=option][data-language=javascript]').click();true" | Out-Null
+    Check 'A stale switcher cannot save a choice for another account' (Eval "cmStorage.getItem('codementor-demo-language')===null && document.querySelector('.workspace-topbar .lang-switch-message').textContent.includes('account changed')")
     Open 'pages/student/dashboard.html'
     Check 'Account B has separate language and progress' (Eval "cmStorage.activeLanguage()==='python' && cmStorage.getItem('codementor-demo-learning')===null")
-    Eval "document.getElementById('my-language').value='rust';document.querySelector('.language-choice button').click();true" | Out-Null
+    Eval "document.querySelector('.workspace-topbar .lang-switch-button').click();document.querySelector('.workspace-topbar [role=option][data-language=rust]').click();true" | Out-Null
+    Check 'Coming-soon languages open availability details and are never made active from the switcher' (Eval "cmStorage.activeLanguage()==='python' && !!document.querySelector('dialog.lang-availability[open]')")
+    Eval "learningLanguage.select('rust','language-b@example.com');location.reload();true" | Out-Null
     Start-Sleep -Milliseconds 750
     Check 'Coming-soon selection shows honest availability instead of Python content' (Eval "document.querySelector('main h1').textContent==='Rust: coming soon' && !document.getElementById('code-editor') && !window.activeCurriculum")
     Eval "[...document.querySelectorAll('main button')].find(b=>b.textContent==='Notify me on this device').click();true" | Out-Null
