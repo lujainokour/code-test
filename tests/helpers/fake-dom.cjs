@@ -4,7 +4,7 @@ function makeDocument({ selects = [] } = {}) {
     function el(tag = 'div') {
         const handlers = {}, attrs = {}, classes = new Set();
         const e = {
-            tagName: String(tag).toUpperCase(), children: [], parent: null, _text: '', hidden: false, disabled: false, value: '', dataset: {}, style: {}, type: '', id: '', open: false, checked: false,
+            tagName: String(tag).toUpperCase(), children: [], parent: null, _text: '', hidden: false, disabled: false, value: '', dataset: {}, style: { setProperty(k, v) { this[k] = v; } }, type: '', id: '', open: false, checked: false,
             get textContent() { return this.children.length ? this.children.map(c => c.textContent).join('') : this._text; },
             set textContent(v) { this.children = []; this._text = String(v); },
             get options() { return this.children.filter(c => c.tagName === 'OPTION'); },
@@ -14,6 +14,10 @@ function makeDocument({ selects = [] } = {}) {
             setAttribute(n, v) { attrs[n] = String(v); }, getAttribute(n) { return attrs[n] ?? null; }, removeAttribute(n) { delete attrs[n]; },
             append(...nodes) { for (const n of nodes) { if (typeof n === 'string') { const t = el('#text'); t._text = n; this.children.push(t); continue; } if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = this; this.children.push(n); if (n.id) ids.set(n.id, n); } },
             replaceChildren(...nodes) { this.children.forEach(c => { c.parent = null; }); this.children = []; this.append(...nodes); },
+            before(...nodes) { const p = this.parent; if (!p) return; const i = p.children.indexOf(this); for (const n of nodes) { if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = p; if (n.id) ids.set(n.id, n); } p.children.splice(i, 0, ...nodes); },
+            after(...nodes) { const p = this.parent; if (!p) return; const i = p.children.indexOf(this); for (const n of nodes) { if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = p; if (n.id) ids.set(n.id, n); } p.children.splice(p.children.indexOf(this) + 1, 0, ...nodes); },
+            replaceWith(n) { this.before(n); this.remove(); },
+            get firstElementChild() { return this.children[0] || null; },
             remove() { if (this.parent) { this.parent.children = this.parent.children.filter(c => c !== this); this.parent = null; } },
             addEventListener(t, fn) { (handlers[t] ||= []).push(fn); },
             async fire(t, extra = {}) { for (const fn of handlers[t] || []) await fn({ type: t, preventDefault() {}, currentTarget: e, target: e, ...extra }); },
@@ -37,8 +41,11 @@ function makeDocument({ selects = [] } = {}) {
     }
     function query(root, sel) { const parts = sel.split(','); return walk(root).filter(n => parts.some(p => matches(n, p))); }
     const body = el('body');
+    const docHandlers = {};
     const document = {
-        body,
+        body, title: 'Dashboard | CodeMentor AI', readyState: 'complete', head: el('head'),
+        addEventListener(t, fn) { (docHandlers[t] ||= []).push(fn); }, fire(t, e = {}) { for (const fn of docHandlers[t] || []) fn({ type: t, target: body, ...e }); },
+        createTreeWalker: () => ({ nextNode: () => false }), createElementNS: (ns, tag) => el(tag),
         createElement: tag => el(tag),
         createTextNode: text => { const t = el('#text'); t._text = String(text); return t; },
         getElementById(id) { if (ids.has(id) && ids.get(id).isConnected) return ids.get(id); const found = walk(body).find(n => n.id === id); if (found) return found; if (!ids.has(id)) { const n = el(selects.includes(id) ? 'select' : 'div'); n.id = id; ids.set(id, n); body.append(n); } return ids.get(id); },
