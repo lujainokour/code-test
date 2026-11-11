@@ -1,162 +1,202 @@
 [
   {
     "file": "js/admin-account-access.js",
-    "sha256": "566905e936fb7af637d63a584d1249ff28f3a736e711ac92db868f8f59ada5bf"
+    "sha256": "566905e936fb7af637d63a584d1249ff28f3a736e711ac92db868f8f59ada5bf",
+    "sha256Lf": "103d6e91573fe0b191db1f8cb2aabb6106f39dc66589e1ded890012b8c64bca9"
   },
   {
     "file": "js/admin-mentoring-monitor.js",
-    "sha256": "e0fce5975ddd01ce86afb7f9ad5d27812d11ab40752c9e5d0fa513263a71a4af"
+    "sha256": "e0fce5975ddd01ce86afb7f9ad5d27812d11ab40752c9e5d0fa513263a71a4af",
+    "sha256Lf": "e0fce5975ddd01ce86afb7f9ad5d27812d11ab40752c9e5d0fa513263a71a4af"
   },
   {
     "file": "js/admin-sessions-workspace.js",
-    "sha256": "3d051c166e71128f710053cc60611d888775fcb1b425267b02cbee73b5e40b73"
+    "sha256": "3d051c166e71128f710053cc60611d888775fcb1b425267b02cbee73b5e40b73",
+    "sha256Lf": "3d051c166e71128f710053cc60611d888775fcb1b425267b02cbee73b5e40b73"
   },
   {
     "file": "js/admin-workspace.js",
-    "sha256": "4a1717cd787441126f3d3776e539fe0259075139af3a479396864e2e7e3488c4"
+    "sha256": "4a1717cd787441126f3d3776e539fe0259075139af3a479396864e2e7e3488c4",
+    "sha256Lf": "f49e4f28db41a1663d9820db87da5e2482fca1cafbfc6efe26e2a95a5815c98b"
   },
   {
     "file": "js/auth-video.js",
-    "sha256": "986a6f4daf1da27cf233181640afd0f5c3ec9810182a6b90c4fe1b980425d502"
+    "sha256": "986a6f4daf1da27cf233181640afd0f5c3ec9810182a6b90c4fe1b980425d502",
+    "sha256Lf": "986a6f4daf1da27cf233181640afd0f5c3ec9810182a6b90c4fe1b980425d502"
   },
   {
     "file": "js/certificates.js",
-    "sha256": "497240ce229e8c6ece4d7f3cb4cb9de0db72864f67a4cc200e6397a419234315"
+    "sha256": "497240ce229e8c6ece4d7f3cb4cb9de0db72864f67a4cc200e6397a419234315",
+    "sha256Lf": "497240ce229e8c6ece4d7f3cb4cb9de0db72864f67a4cc200e6397a419234315"
   },
   {
     "file": "js/code-review.js",
-    "sha256": "c0ee3a586436c66e7aaf0e0cb0edd1d2817802ed659b439094413b8f0b267448"
+    "sha256": "c0ee3a586436c66e7aaf0e0cb0edd1d2817802ed659b439094413b8f0b267448",
+    "sha256Lf": "fecbf4f532d8d09a2a0f30b107126143b2c475cdcd0b5c57cc3684614520c21b"
   },
   {
     "file": "js/company-auth.js",
-    "sha256": "9c1b94e7e1dc84e68aea483950ca79a9a6d8fe3453e08af131a96a8b22cfc4d8"
+    "sha256": "9c1b94e7e1dc84e68aea483950ca79a9a6d8fe3453e08af131a96a8b22cfc4d8",
+    "sha256Lf": "a5208d7934fe60be5704e6fd2bae4dee435ba6a1ae4aa072a31c09bf052a4c80"
   },
   {
     "file": "js/company-workspace.js",
-    "sha256": "ad75a8f965c50a80a36d8de42f26f8fa8d705364ffc025ace7071aaded173eb8"
+    "sha256": "ad75a8f965c50a80a36d8de42f26f8fa8d705364ffc025ace7071aaded173eb8",
+    "sha256Lf": "ad75a8f965c50a80a36d8de42f26f8fa8d705364ffc025ace7071aaded173eb8"
   },
   {
     "file": "js/demo-account.js",
-    "sha256": "0a421e7874cde5d566ca504ccadb1232e789f67c345f415becdbb66a42f4fd6e"
+    "sha256": "0a421e7874cde5d566ca504ccadb1232e789f67c345f415becdbb66a42f4fd6e",
+    "sha256Lf": "0a421e7874cde5d566ca504ccadb1232e789f67c345f415becdbb66a42f4fd6e"
   },
   {
     "file": "js/javascript-runner.js",
-    "sha256": "fd6bcc51d20c388cf677d81730ffaf719b0cb88528e68da8b1eb67174ab34655"
+    "sha256": "fd6bcc51d20c388cf677d81730ffaf719b0cb88528e68da8b1eb67174ab34655",
+    "sha256Lf": "fd6bcc51d20c388cf677d81730ffaf719b0cb88528e68da8b1eb67174ab34655"
   },
   {
     "file": "js/javascript-worker.js",
-    "sha256": "290cfca69f946a5016c87e3ba0f341eb3ad32bbcd7a565e455ef7658e228f949"
+    "sha256": "290cfca69f946a5016c87e3ba0f341eb3ad32bbcd7a565e455ef7658e228f949",
+    "sha256Lf": "290cfca69f946a5016c87e3ba0f341eb3ad32bbcd7a565e455ef7658e228f949"
   },
   {
     "file": "js/login.js",
-    "sha256": "f7f57be345848000871585e868e387b5b57e3c981796ae71ce573ef36e724e76"
+    "sha256": "f7f57be345848000871585e868e387b5b57e3c981796ae71ce573ef36e724e76",
+    "sha256Lf": "bf757106949f6d8c1a58f4742a143b57528d9629004845ef51fd4a9561343374"
   },
   {
     "file": "js/mentor.js",
-    "sha256": "83408637f4cb9e84ab025d823786b0b243fb0e7f39fc66961158082c9a5e1ca5"
+    "sha256": "83408637f4cb9e84ab025d823786b0b243fb0e7f39fc66961158082c9a5e1ca5",
+    "sha256Lf": "35e60a5ca607cd85911654fe0322cb4a5a38e7ec2cd6b67783db6024d374c020"
   },
   {
     "file": "js/peer-mentoring-store.js",
-    "sha256": "eba92845ad748a347a4a8b725cb8006501af488d7deb11192c33cd0604c7fd8c"
+    "sha256": "eba92845ad748a347a4a8b725cb8006501af488d7deb11192c33cd0604c7fd8c",
+    "sha256Lf": "eba92845ad748a347a4a8b725cb8006501af488d7deb11192c33cd0604c7fd8c"
   },
   {
     "file": "js/peer-mentoring-ui.js",
-    "sha256": "d326fc09602e786872bced106e5c565e883e1d581f4e2152f6d9609aa745fb71"
+    "sha256": "d326fc09602e786872bced106e5c565e883e1d581f4e2152f6d9609aa745fb71",
+    "sha256Lf": "d326fc09602e786872bced106e5c565e883e1d581f4e2152f6d9609aa745fb71"
   },
   {
     "file": "js/platform-store.js",
-    "sha256": "c93fad59bcf9170e4c41bf1fee6ec49362d982919ee20b4b87f84180aa57ae17"
+    "sha256": "c93fad59bcf9170e4c41bf1fee6ec49362d982919ee20b4b87f84180aa57ae17",
+    "sha256Lf": "c93fad59bcf9170e4c41bf1fee6ec49362d982919ee20b4b87f84180aa57ae17"
   },
   {
     "file": "js/python-runner.js",
-    "sha256": "311108102c4e9dc2c87d66cf7ba7b7dcd6ece8c29d78215315ec2f5c28a33da4"
+    "sha256": "311108102c4e9dc2c87d66cf7ba7b7dcd6ece8c29d78215315ec2f5c28a33da4",
+    "sha256Lf": "311108102c4e9dc2c87d66cf7ba7b7dcd6ece8c29d78215315ec2f5c28a33da4"
   },
   {
     "file": "js/python-worker.js",
-    "sha256": "7e7900827dcf93cf63ddc5b07f85f61031d4a62652771485f74c81614304c364"
+    "sha256": "7e7900827dcf93cf63ddc5b07f85f61031d4a62652771485f74c81614304c364",
+    "sha256Lf": "7e7900827dcf93cf63ddc5b07f85f61031d4a62652771485f74c81614304c364"
   },
   {
     "file": "js/signup.js",
-    "sha256": "6153c81ed33edbb6cb53900e3e89bb6130c16de53392289ab7fa379b22156370"
+    "sha256": "6153c81ed33edbb6cb53900e3e89bb6130c16de53392289ab7fa379b22156370",
+    "sha256Lf": "e0711f3d9c2777d1fa23da5a3e92fdf11e567f04dece2dee086900f16498bf02"
   },
   {
     "file": "js/student-account.js",
-    "sha256": "e51608071b7fdd6a62293a512625bb691b4e48dda84460bcf50a008a63fbe92b"
+    "sha256": "e51608071b7fdd6a62293a512625bb691b4e48dda84460bcf50a008a63fbe92b",
+    "sha256Lf": "e51608071b7fdd6a62293a512625bb691b4e48dda84460bcf50a008a63fbe92b"
   },
   {
     "file": "js/student-workspace.js",
-    "sha256": "efcf5ea023411825fca37b2f5cb98560f0fd5e3bc8973e5b23f378d50f6dbced"
+    "sha256": "efcf5ea023411825fca37b2f5cb98560f0fd5e3bc8973e5b23f378d50f6dbced",
+    "sha256Lf": "c4cff20f415529e97d0068887e739bf51ef46f639d52bc1fe803fc0703b3b91d"
   },
   {
     "file": "js/teacher-auth.js",
-    "sha256": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775"
+    "sha256": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775",
+    "sha256Lf": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775"
   },
   {
     "file": "js/teacher-workspace.js",
-    "sha256": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775"
+    "sha256": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775",
+    "sha256Lf": "e409239af98569a2d70c42173bb3304f1044e77dabe81c42896b554daf8ff775"
   },
   {
     "file": "js/workspace-completion.js",
-    "sha256": "9344f05af44a8e28bcfdd98532dd8fc3cf833e4b067998a1496fe97ed634ff82"
+    "sha256": "9344f05af44a8e28bcfdd98532dd8fc3cf833e4b067998a1496fe97ed634ff82",
+    "sha256Lf": "9344f05af44a8e28bcfdd98532dd8fc3cf833e4b067998a1496fe97ed634ff82"
   },
   {
     "file": "js/workspace-shell.js",
-    "sha256": "535cc5651bb0a7f607203e18b8d94409959b4f00c6a7ffaeb3d0ba90b4538129"
+    "sha256": "535cc5651bb0a7f607203e18b8d94409959b4f00c6a7ffaeb3d0ba90b4538129",
+    "sha256Lf": "32289f23c0cf2a1b67532a18ce6b61663d2cbdfe8877f6f876e8240b17397b0f"
   },
   {
     "file": "js/workspace-support.js",
-    "sha256": "296240d5dff49470fb36dfa920ebdd2007aac37cf67ab3b9dba1db00a43884f0"
+    "sha256": "296240d5dff49470fb36dfa920ebdd2007aac37cf67ab3b9dba1db00a43884f0",
+    "sha256Lf": "296240d5dff49470fb36dfa920ebdd2007aac37cf67ab3b9dba1db00a43884f0"
   },
   {
     "file": "js/workspace.js",
-    "sha256": "90ab0c6c86ad79c941abcfb616923a8dbd3efc4a61548b531e1fac2fbe6e3317"
+    "sha256": "90ab0c6c86ad79c941abcfb616923a8dbd3efc4a61548b531e1fac2fbe6e3317",
+    "sha256Lf": "91c26e49dd398e5b2306c1195ec18e31d9fb9a6a81980c6ff3febf6ba0761600"
   },
   {
     "file": "pages/auth/admin-login.html",
-    "sha256": "233fe8782b3744924cede2852ed369db791b4f657246fccd62ef8f6d5c678432"
+    "sha256": "233fe8782b3744924cede2852ed369db791b4f657246fccd62ef8f6d5c678432",
+    "sha256Lf": "cfdad8a28305436c864fc6d5e98b94a3bf4fa30469debe0d0d52a6cbebaedb3a"
   },
   {
     "file": "pages/auth/change-password.html",
-    "sha256": "a327079f46b52df04850c58e64f16916893e5c7b5fc4f7a4b5b4caa2599ce85a"
+    "sha256": "a327079f46b52df04850c58e64f16916893e5c7b5fc4f7a4b5b4caa2599ce85a",
+    "sha256Lf": "5203d8a942325b836e8e30eee8531630da288016ad75847091bad324ab3f1706"
   },
   {
     "file": "pages/auth/company-login.html",
-    "sha256": "536955851ca294e1f2dd778a297fe405db210f39709e843f25a98334d43f589d"
+    "sha256": "536955851ca294e1f2dd778a297fe405db210f39709e843f25a98334d43f589d",
+    "sha256Lf": "536955851ca294e1f2dd778a297fe405db210f39709e843f25a98334d43f589d"
   },
   {
     "file": "pages/auth/company-signup.html",
-    "sha256": "6db267fe2237c6e424b2d1515bc8fe86fc12577debfe63cf2da6e4516cf872aa"
+    "sha256": "6db267fe2237c6e424b2d1515bc8fe86fc12577debfe63cf2da6e4516cf872aa",
+    "sha256Lf": "6db267fe2237c6e424b2d1515bc8fe86fc12577debfe63cf2da6e4516cf872aa"
   },
   {
     "file": "pages/auth/forgot-password.html",
-    "sha256": "4b50c808bfe77865c9c770be673d6f4b2ddf774c2acb3c434848b0a2770327cb"
+    "sha256": "4b50c808bfe77865c9c770be673d6f4b2ddf774c2acb3c434848b0a2770327cb",
+    "sha256Lf": "c1e20c61ae5865c5c4312b4c4969b128890cee16f27286b6655ea8b025c9adce"
   },
   {
     "file": "pages/auth/login.html",
-    "sha256": "e9bd3264b26e3c9cc799592e80924d028bee75dc0837287d319150e8023e0be4"
+    "sha256": "e9bd3264b26e3c9cc799592e80924d028bee75dc0837287d319150e8023e0be4",
+    "sha256Lf": "babd15b99eb4b51145aa9585e63f97e0fe286e4975950518a5461ea971f1d30c"
   },
   {
     "file": "pages/auth/reset-password.html",
-    "sha256": "5c151ca0d0d342aca080722ae87ede9f35771dc0e10cba9a6b88362b67568dd8"
+    "sha256": "5c151ca0d0d342aca080722ae87ede9f35771dc0e10cba9a6b88362b67568dd8",
+    "sha256Lf": "855ed95141b21d978b29452bc694bfc721e594b13d1feb2093bfe1027d5edd7c"
   },
   {
     "file": "pages/auth/signup.html",
-    "sha256": "ee9d2211194f91d06eb10ac0255b64707f5a6a3b9ee46aa920d2c13a792e26f9"
+    "sha256": "ee9d2211194f91d06eb10ac0255b64707f5a6a3b9ee46aa920d2c13a792e26f9",
+    "sha256Lf": "a84c72bc2a64bd637eaf7d1489bc8f751a9f6fd165d634a85c9d9dc6ab6f0e4c"
   },
   {
     "file": "pages/auth/teacher-login.html",
-    "sha256": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc"
+    "sha256": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc",
+    "sha256Lf": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc"
   },
   {
     "file": "pages/auth/teacher-signup.html",
-    "sha256": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc"
+    "sha256": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc",
+    "sha256Lf": "691f05dd7874d8e168b2191a1221d793ce5bf5f41d025bf158a89c7ac41e3dcc"
   },
   {
     "file": "js/lesson.js",
-    "sha256": "c3b40dbfa6d539a8835f14ff7dc7188ce7283cd347f006584344e35522a60539"
+    "sha256": "c3b40dbfa6d539a8835f14ff7dc7188ce7283cd347f006584344e35522a60539",
+    "sha256Lf": "4004f63f30983d76c82aa6ed9fd08a982e32d17a987ed9425e95eff3593e5d82"
   },
   {
     "file": "js/level-assessment.js",
-    "sha256": "af3a9a3593f59c69b33d5fef6b3b86d2f32726ad5ba837e4059c9745da5ee43d"
+    "sha256": "af3a9a3593f59c69b33d5fef6b3b86d2f32726ad5ba837e4059c9745da5ee43d",
+    "sha256Lf": "af3a9a3593f59c69b33d5fef6b3b86d2f32726ad5ba837e4059c9745da5ee43d"
   }
 ]

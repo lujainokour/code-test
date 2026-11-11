@@ -76,5 +76,8 @@ check('Cancelling the override leaves the choice unapplied', !ui.document.getEle
 ui.document.getElementById('apply-placement-start').fire('click');
 check('Start here applies the recommendation and targets the learning path', ui.store.choice().startLevel === 3 && ui.location.href === 'learning-path.html');
 const protectedFiles = JSON.parse(fs.readFileSync('docs/phase2-protected-baseline.json', 'utf8'));
-check('Mentor, backend execution/grading and account files remain untouched', protectedFiles.every(entry => crypto.createHash('sha256').update(fs.readFileSync(entry.file)).digest('hex') === entry.sha256));
+// sha256 = raw bytes of the original CRLF/mixed working copy; sha256Lf = the same content with CRLF->LF,
+// derived only after the raw hash was confirmed. Clean clones check out LF (.gitattributes).
+const lfHash = file => crypto.createHash('sha256').update(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n')).digest('hex');
+check('Mentor, backend execution/grading and account files remain untouched', protectedFiles.every(entry => lfHash(entry.file) === entry.sha256Lf));
 console.log(`${checks} placement storage, UI and completion-isolation checks passed.`);
