@@ -24,10 +24,11 @@
     window.languageCatalog.populateSelect(languageInput);
     languageInput.value = "";
     const placeholder = document.createElement("option"); placeholder.value = ""; placeholder.textContent = "Select a language"; languageInput.prepend(placeholder); languageInput.value = "";
+    try { const active = window.cmStorage.activeLanguage(); if (window.languageCatalog.has(active)) languageInput.value = active; } catch { /* Preserve invalid stored selection for its owner to recover. */ }
     let saved = false;
 
     function readDrafts() {
-        const raw = sessionStorage.getItem(storageKey);
+        const raw = window.cmStorage.getItem(storageKey);
 
         if (raw === null) return [];
 
@@ -159,7 +160,7 @@
                 createdAt: new Date().toISOString()
             };
 
-            sessionStorage.setItem(
+            window.cmStorage.setItem(
                 storageKey,
                 JSON.stringify({
                     version: 1,

@@ -1,0 +1,41 @@
+{
+  "browserRerunBlocked": true,
+  "reason": "Automatic approval review unavailable due to account usage limit; latest lifecycle and summary changes have not been rerun in Chrome.",
+  "suites": [
+    {
+      "suite": "language-page-guards",
+      "passed": 8,
+      "exitCode": 0,
+      "stdout": "PASS Same-tab language selection hides the stale page and stops both runners\nPASS Stale page cannot write progress after its language changes\nPASS Back navigation re-hides stale content even if another guard made it visible\nPASS Focus rechecks the current language without duplicating notices\nPASS Same-tab account switch immediately hides the previous account page\nPASS Stale language selection cannot affect the new account\nPASS Onboarding can change its own language without hiding its active form\nPASS Onboarding still hides after a different account takes over\n8 language lifecycle guard checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "language-storage",
+      "passed": 13,
+      "exitCode": 0,
+      "stdout": "PASS Old Python owner key reads byte for byte without rewriting metadata\nPASS Stale Python page cannot save into newly selected JavaScript\nPASS JavaScript starts without inheriting Python progress\nPASS JavaScript writes have an independent language namespace\nPASS Returning to Python restores original progress with separate drafts and placement\nPASS JavaScript progress and draft survive a round trip\nPASS Account switch rejects stale ownership and does not inherit A language\nPASS B does not inherit either language progress or drafts\nPASS Coming-soon interest is a local owner-specific flag\nPASS Legacy tab progress imports to the unchanged Python key\nPASS Removing a JavaScript record cannot delete legacy Python source\nPASS Second account cannot import first owner legacy records\nPASS Second account cannot inherit first owner legacy language\n13 language storage and migration checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "curriculum-migration",
+      "passed": 8,
+      "exitCode": 0,
+      "stdout": "PASS Every legacy Python lesson id remains in the schema\nPASS Every legacy Python task id remains in the schema\nPASS Old completed Foundations levels retain their completion\nPASS Old Foundations record advances to Level 4 without fabricated completion\nPASS Legacy passing submissions and metadata remain unchanged\nPASS JavaScript schema has the required complete path\nPASS Only languages with implemented paths advertise ready status\nPASS Active JavaScript summaries use its real level count and free access\n8 curriculum migration checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "language-publishing",
+      "passed": 6,
+      "exitCode": 0,
+      "stdout": "PASS Published profile uses the selected JavaScript language id\nPASS Company talent snapshot retains the same active language id\nPASS Language metadata does not expose private account email\nPASS Changing a private preference cannot silently republish a public profile\nPASS Explicit republishing updates selected language without replacing self-reported skills\nPASS Stale publishing owner is rejected\n6 language publishing checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "phase0-honesty",
+      "passed": 5,
+      "exitCode": 0,
+      "stdout": "PASS Published curriculum inventory matches executable content\nPASS Homepage labels the prepared mentor demo without promising connected AI\nPASS Public sample credentials are visibly labelled demo only on login screens\nPASS README and all textual documentation omit hardcoded demo passwords\nPASS Sample teaching card directs users to login rather than displaying credentials\n5 Phase 0 honesty checks passed.\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -94,8 +94,9 @@
     try {
         const current = renderList();
         const back = document.getElementById("level-content-back"); back.href = `../admin/admin-course-content.html?id=${encodeURIComponent(courseId)}`;
-        if ((current.course.language || current.course.languageId) === "python") {
-            (window.pythonLessons || []).forEach(lesson => { const option = node("option", lesson.title); option.value = lesson.id; input("builtInLessonId").append(option); });
+        const schema = window.curriculumRegistry.get(current.course.language || current.course.languageId);
+        if (schema) {
+            schema.levels.flatMap(level => level.lessons).forEach(lesson => { const option = node("option", lesson.title); option.value = lesson.id; input("builtInLessonId").append(option); });
         } else input("builtInLessonId").closest(".form-field").hidden = true;
         selectLesson(null); view.hidden = false;
     } catch (error) { say(`Level content could not be loaded. ${error.message} Existing data was not changed.`, true); form.querySelector("fieldset").disabled = true; sourceFields.disabled = true; }

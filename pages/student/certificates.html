@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +11,9 @@
     <title>Certificates | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
-    <script src="../../js/student-workspace.js" defer></script>
+    <script src="../../js/student-workspace.js" defer></script><script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/certificates.js" defer></script>
 </head>
 
 <body class="workspace-page">
@@ -66,157 +69,30 @@
         </header>
 
         <main class="workspace-main" id="certificates-main">
-            <p class="eyebrow">YOUR ACHIEVEMENTS</p>
-            <h1>Your learning, recognized.</h1>
-
-            <p class="workspace-intro">
-                Complete the Python learning path and pass your final
-                project evaluation to earn a certificate.
-            </p>
-
-            <p
-                id="workspace-message"
-                class="form-message"
-                role="status"
-                aria-live="polite"
-            ></p>
-
-            <div class="module-layout">
-                <section
-                    class="dashboard-card certificate-panel"
-                    aria-labelledby="certificate-title"
-                >
-                    <div class="certificate-panel-heading">
-                        <p class="eyebrow">PYTHON LEARNING PATH</p>
-                        <span class="certificate-status">
-                            Not issued
-                        </span>
-                    </div>
-
-                    <div class="certificate-empty-state">
-                        <span class="certificate-symbol" aria-hidden="true">
-                            ☆
-                        </span>
-
-                        <h2 id="certificate-title">
-                            Your certificate is ahead.
-                        </h2>
-
-                        <p>
-                            No certificate has been issued yet.
-                            Keep building your skills and complete
-                            the required learning activities.
-                        </p>
-
-                        <a
-                            href="../../pages/student/learning-path.html"
-                            class="button button-primary"
-                        >
-                            Continue learning
-                        </a>
-                    </div>
-
-                    <div
-                        class="certificate-actions"
-                        aria-describedby="certificate-actions-help"
-                    >
-                        <button
-                            type="button"
-                            class="button button-outline"
-                            disabled
-                        >
-                            Download PDF
-                        </button>
-
-                        <button
-                            type="button"
-                            class="button button-outline"
-                            disabled
-                        >
-                            Share on LinkedIn
-                        </button>
-                    </div>
-
-                    <p
-                        id="certificate-actions-help"
-                        class="dashboard-footnote"
-                    >
-                        Download and sharing become available
-                        after a verified certificate is issued.
-                    </p>
-                </section>
-
-                <aside class="module-aside">
-                    <section class="dashboard-card dashboard-sage">
-                        <h2>What you need to complete.</h2>
-
-                        <ol class="roadmap-requirements">
-                            <li>
-                                Complete the required lessons
-                                in Levels 01–03.
-                            </li>
-
-                            <li>
-                                Pass the required practice task tests
-                                in each level.
-                            </li>
-
-                            <li>
-                                Score at least 70% on each required
-                                level assessment.
-                            </li>
-
-                            <li>
-                                Submit the Level 04 final project
-                                and pass its evaluation.
-                            </li>
-                        </ol>
-
-                        <a
-                            href="../../pages/student/progress.html"
-                            class="dashboard-text-link"
-                        >
-                            View my progress →
-                        </a>
-                    </section>
-
-                    <section class="dashboard-card">
-                        <h2>Your final step.</h2>
-
-                        <p>
-                            Build a study task manager that brings
-                            your Python skills together.
-                        </p>
-
-                        <a
-                            href="../../pages/student/project.html"
-                            class="button button-outline"
-                        >
-                            View final project
-                        </a>
-                    </section>
-
-                    <section class="dashboard-card">
-                        <h2>Certificate verification</h2>
-
-                        <p>
-                            An issued certificate will include your name,
-                            the completed learning path, an issue date
-                            and a verification reference.
-                        </p>
-
-                        <p class="dashboard-footnote">
-                            Certificate issuance and verification
-                            are not connected in this frontend demo.
-                        </p>
-                    </section>
-                </aside>
-            </div>
-
-            <footer class="workspace-footer">
-                CodeMentor AI · Frontend demo · Certificates
-            </footer>
-        </main>
+ <p class="eyebrow">YOUR ACHIEVEMENTS</p><h1>Your learning, recognized.</h1>
+ <p class="workspace-intro">Your Python Foundations (Levels 1-3) completion certificate, signed by Lujain Okour, Founder &amp; Developer of CodeMentor AI.</p>
+ <p id="workspace-message" class="form-message" role="status" aria-live="polite"></p>
+ <section class="dashboard-card certificate-readiness" aria-labelledby="certificate-status-title">
+  <div><h2 id="certificate-status-title">Checking your progress</h2><p id="certificate-status-description"></p><ul id="certificate-requirements"></ul></div>
+  <div class="certificate-actions"><button type="button" class="button button-primary" id="print-certificate" disabled>Print / Save PDF</button><a class="button button-outline" href="learning-path.html">View learning path</a></div>
+ </section>
+ <p class="dashboard-footnote certificate-screen-note">Landscape A4 preview. Your browser's print window lets you print or choose Save as PDF. This certificate records completion on this platform from locally saved learning records; online verification is not connected.</p>
+ <div class="certificate-preview-container">
+  <article class="certificate-document" aria-label="Python learning path completion certificate">
+   <div class="certificate-corner certificate-corner-top" aria-hidden="true"></div><div class="certificate-corner certificate-corner-bottom" aria-hidden="true"></div>
+   <div class="certificate-border" aria-hidden="true"></div>
+   <header class="certificate-brand"><img src="../../assets/images/Burgundy CMA cherry monogram logo.png" alt="CodeMentor AI" width="64" height="64"><p>CodeMentor AI</p></header>
+   <p class="certificate-ornament" aria-hidden="true">──── ✦ ────</p>
+   <h2 class="certificate-headline">CERTIFICATE</h2><p class="certificate-subtitle">OF COMPLETION</p>
+   <p class="certificate-presentation">This certificate is presented to</p><p class="certificate-recipient" id="certificate-recipient">Your name</p>
+   <p class="certificate-achievement">For completing Python Foundations - Levels 1-3</p><p class="certificate-topics">Foundations · Control Flow · Functions &amp; Collections</p>
+   <p class="certificate-python-badge">&lt;/&gt; &nbsp; PYTHON</p>
+   <footer class="certificate-document-footer"><div class="certificate-date"><span>Date of completion</span><time id="certificate-date">—</time></div><div class="certificate-signature"><span class="certificate-signature-art" aria-label="Decorative signature of Lujain Okour">Lujain Okour</span><strong>Lujain Okour</strong><span>Founder &amp; Developer, CodeMentor AI</span></div></footer>
+   <p class="certificate-preview-label" id="certificate-preview-label">PREVIEW — COMPLETE THE REQUIREMENTS TO PRINT</p>
+  </article>
+ </div>
+ <p id="certificate-print-notice">Complete the certificate requirements and sign in to print your certificate.</p>
+</main>
     </div>
 </body>
 </html>

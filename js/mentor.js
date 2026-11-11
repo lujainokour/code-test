@@ -13,6 +13,8 @@ const lessonNames = {
     "input-output": "Input and output",
     numbers: "Working with numbers"
 };
+Object.assign(taskNames, { "grade-checker": "Check a grade", "sum-numbers": "Sum a range", "list-summary": "Summarise a list", "task-manager": "Build a Study Task Manager" }, Object.fromEntries(Object.values(window.pythonCurriculum.tasks).map(task => [task.id, task.title])));
+Object.assign(lessonNames, Object.fromEntries((window.pythonCurriculum?.allLessons || []).map(lesson => [lesson.id, lesson.title])));
 
 const requestedTask = parameters.get("task");
 const requestedLesson = parameters.get("lesson");
@@ -25,8 +27,13 @@ const lessonId = !taskId && Object.hasOwn(lessonNames, requestedLesson)
     ? requestedLesson
     : null;
 
-const contextId = taskId || lessonId || "general";
-const conversationKey = `codementor-demo-chat-${contextId}`;
+const contextId = (taskId || lessonId || "general") + (window.pythonCurriculum.id === "python" ? "" : ":" + window.pythonCurriculum.id);
+// Unscoped historical records have no provable owner. Never show, migrate,
+// overwrite or clear them on behalf of the current demo profile.
+const legacyConversationKey = `codementor-demo-chat-${contextId}`;
+let conversationKey = null;
+let conversationOwner = null;
+let clearOwner = null;
 
 const messagesContainer = document.getElementById("chat-messages");
 const chatForm = document.getElementById("chat-form");
@@ -36,10 +43,60 @@ const chatStatus = document.getElementById("chat-status");
 const clearDialog = document.getElementById("clear-dialog");
 const welcomeText =
     "Welcome! This demo uses prepared explanations. " +
-    "Try asking about variables, input(), numbers or range().";
+    (window.pythonCurriculum.id === "javascript" ? "Try asking about JavaScript variables, input(), numbers or functions." : "Try asking about variables, input(), numbers or range().");
 
 let messages = [];
 let storageReadable = true;
+
+function currentOwner() {
+    const raw = window.cmStorage.getItem("codementor-demo-session");
+    if (raw === null) return "guest";
+    const account = JSON.parse(raw);
+    if (!account || account.role !== "student" || account.isDemo !== true ||
+        typeof account.name !== "string" || !account.name.trim() ||
+        typeof account.email !== "string" || !account.email.trim()) {
+        throw new Error("A readable student demo profile is required.");
+    }
+    return `student:${encodeURIComponent(account.email.trim().toLowerCase())}`;
+}
+
+function syncConversation() {
+    let owner;
+    try {
+        owner = currentOwner();
+    } catch {
+        conversationOwner = null;
+        conversationKey = null;
+        clearOwner = null;
+        storageReadable = false;
+        messages = [];
+        chatInput.value = "";
+        document.getElementById("context-code-text").textContent = "";
+        document.getElementById("context-code").hidden = true;
+        clearDialog.close();
+        renderConversation();
+        chatStatus.textContent = "Your demo profile could not be read. Conversations were kept and cannot be saved or cleared until the profile is available.";
+        return false;
+    }
+    if (owner === conversationOwner && conversationKey !== null) return true;
+    conversationOwner = owner;
+    conversationKey = `codementor-demo-chat-v2:${owner}:${contextId}`;
+    clearOwner = null;
+    messages = [];
+    storageReadable = true;
+    chatInput.value = "";
+    chatStatus.textContent = "";
+    // A saved code preview is private too; do not leave the previous owner's
+    // draft visible when a profile changes in another tab or a stale page.
+    document.getElementById("context-code-text").textContent = "";
+    document.getElementById("context-code").hidden = true;
+    document.getElementById("code-context-note").textContent = "";
+    clearDialog.close();
+    configureContext();
+    loadConversation();
+    renderConversation();
+    return false;
+}
 
 function configureContext() {
     const name = document.getElementById("context-name");
@@ -51,7 +108,7 @@ function configureContext() {
         link.textContent = "Back to task";
 
         try {
-            const saved = sessionStorage.getItem(
+            const saved = window.cmStorage.getItem(
                 `codementor-demo-code-${taskId}`
             );
 
@@ -115,9 +172,12 @@ function renderConversation() {
 
 function loadConversation() {
     try {
-        const saved = sessionStorage.getItem(conversationKey);
+        const saved = window.cmStorage.getItem(conversationKey);
 
         if (!saved) {
+            if (window.cmStorage.getItem(legacyConversationKey) !== null) {
+                chatStatus.textContent = "Older unassigned demo conversations were kept separately. They are not shown or assigned to this profile.";
+            }
             return;
         }
 
@@ -147,9 +207,14 @@ function loadConversation() {
 }
 
 /*
+    Later, replace this function with a backend request.
     These responses do not analyse arbitrary code.
 */
 function getDemoReply(question) {
+    if (window.pythonCurriculum.id === "javascript") {
+        const guide = window.pythonCurriculum.tasks[taskId];
+        return guide ? guide.hints[0] + " Think about the smallest input and an empty or boundary case. Explain your next step before coding it." : "These are prepared JavaScript hints (demo). Describe the input and expected output, trace one small example, and check types, boundaries and return values. This response is not generated by AI and does not analyze arbitrary code.";
+    }
     const text = question.toLowerCase();
 
     if (/range|loop|لوب|حلقة/.test(text)) {
@@ -200,6 +265,10 @@ function getDemoReply(question) {
 }
 
 function sendMessage() {
+    if (!syncConversation()) {
+        if (conversationKey !== null) chatStatus.textContent = "Your demo account changed. Its conversation was reloaded; enter your question again.";
+        return;
+    }
     const text = chatInput.value.trim();
 
     if (!text) {
@@ -233,7 +302,7 @@ function sendMessage() {
     }
 
     try {
-        sessionStorage.setItem(
+        window.cmStorage.setItem(
             conversationKey,
             JSON.stringify(messages)
         );
@@ -267,16 +336,25 @@ document.querySelectorAll("[data-question]").forEach(function (button) {
 });
 
 document.getElementById("clear-chat").addEventListener("click", function () {
+    if (!syncConversation() || conversationKey === null) return;
+    clearOwner = conversationOwner;
     clearDialog.showModal();
 });
 
 document.getElementById("cancel-clear").addEventListener("click", function () {
+    clearOwner = null;
     clearDialog.close();
 });
 
 document.getElementById("confirm-clear").addEventListener("click", function () {
+    const expectedOwner = clearOwner;
+    if (!syncConversation() || conversationKey === null || expectedOwner !== conversationOwner) {
+        clearDialog.close();
+        if (conversationKey !== null) chatStatus.textContent = "Your demo account changed. No conversation was cleared.";
+        return;
+    }
     try {
-        sessionStorage.removeItem(conversationKey);
+        window.cmStorage.removeItem(conversationKey);
     } catch {
         clearDialog.close();
         chatStatus.textContent =
@@ -285,6 +363,7 @@ document.getElementById("confirm-clear").addEventListener("click", function () {
     }
 
     messages = [];
+    clearOwner = null;
     storageReadable = true;
     chatStatus.textContent = "";
 
@@ -293,7 +372,9 @@ document.getElementById("confirm-clear").addEventListener("click", function () {
     chatInput.focus();
 });
 
-configureContext();
-loadConversation();
-renderConversation();
+window.addEventListener("storage", event => {
+    if (event.key === "codementor-profile-v1" || event.key === null) syncConversation();
+});
+window.addEventListener("pageshow", syncConversation);
+syncConversation();
 })();

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +11,13 @@
     <title>Python Foundations | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
     <script src="../../js/student-workspace.js" defer></script>
-    <script src="../../js/module.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/module.js" defer></script>
+    <script src="../../js/level-challenges.js" defer></script>
+    <script src="../../js/module-challenge.js" defer></script>
 </head>
 <body class="workspace-page">
     <a href="#module-main" class="skip-link">Skip to content</a>
@@ -84,7 +89,7 @@
 
             <div class="module-summary">
                 <span>4 required lessons</span>
-                <span>2 required tasks</span>
+                <span>2 optional practice tasks</span>
                 <span>1 level assessment</span>
             </div>
 
@@ -162,7 +167,7 @@
                                 <div>
                                     <h3>Task 01 · Create a student profile</h3>
                                     <p>Variables and formatted output</p>
-                                    <span>Required · Pass all task tests</span>
+                                    <span>Optional · Save and practise your solution</span>
                                 </div>
 
                                 <a href="../../pages/student/workspace.html?task=student-profile"
@@ -176,7 +181,7 @@
                                 <div>
                                     <h3>Task 02 · Build a simple receipt</h3>
                                     <p>Numeric input and arithmetic</p>
-                                    <span>Required · Pass all task tests</span>
+                                    <span>Optional · Save and practise your solution</span>
                                 </div>
 
                                 <a href="../../pages/student/workspace.html?task=receipt"
@@ -199,13 +204,15 @@
                             <li>Use input() and print()</li>
                             <li>Convert input and perform calculations</li>
                         </ul>
+                        <h3>Level goal</h3>
+                        <p id="level-progression">Complete all four lessons and pass the level quiz with at least 70%.</p>
                     </section>
 
                     <section class="dashboard-card">
                         <h2>Your level progress</h2>
 
                         <p id="lesson-progress">Lessons: 0 / 4</p>
-                        <p id="task-progress">Required tasks: 0 / 2</p>
+                        <p id="task-progress">Practice tasks: 0 / 2</p>
                         <p id="assessment-progress">Assessment: Not attempted</p>
 
                         <p class="dashboard-footnote">
@@ -218,7 +225,7 @@
 
                         <p>
                             Check your understanding after completing
-                            the required lessons and tasks.
+                            the four required lessons.
                         </p>
 
                         <p class="dashboard-meta">
@@ -239,8 +246,16 @@
                         </button>
 
                         <p class="dashboard-footnote" id="assessment-note">
-                            Locked until required lessons and tasks are complete.
+                            Complete the four lessons to unlock the quiz.
                         </p>
+                    </section>
+
+                    <section class="dashboard-card module-challenge" id="level-challenge" aria-labelledby="level-challenge-title" hidden>
+                        <p class="eyebrow">OPTIONAL REVIEW</p>
+                        <h2 id="level-challenge-title"></h2>
+                        <p id="level-challenge-description"></p>
+                        <div id="level-challenge-actions"></div>
+                        <p class="dashboard-footnote">This activity is optional and separate from your level assessment. Kahoot! results are not synced here, and opening the link does not record completion or unlock a level.</p>
                     </section>
 
                     <section class="dashboard-card">
@@ -269,8 +284,8 @@
         <h2 id="requirements-title">Complete these activities first.</h2>
 
         <p>
-            Your level assessment opens after all required lessons
-            and tasks are complete.
+            Your level assessment opens after all four lessons
+            are complete. Coding tasks are optional practice.
         </p>
 
         <ul id="remaining-requirements"

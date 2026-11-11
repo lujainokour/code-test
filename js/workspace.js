@@ -1,46 +1,21 @@
 (() => {
 if (window.learningUnavailable) return;
-const tasks = {
-    "student-profile": {
-        title: "Create a student profile",
-        description:
-            "Create three variables and display a student's details.",
-        requirements: [
-            'Set name to "Lujain", age to 21 and track to "Python".',
-            "Print one labeled value per line.",
-            "Match the expected output exactly.",
-            "Do not print additional text."
-        ],
-        input: "",
-        output: "Name: Lujain\nAge: 21\nTrack: Python",
-        starter:
-            "# Create the three variables\n\n" +
-            "# Print the labeled values\n"
-    },
-
-    receipt: {
-        title: "Build a simple receipt",
-        description:
-            "Read a price and quantity, then calculate the total.",
-        requirements: [
-            "Read the price from the first input line using float(input()).",
-            "Read the quantity from the second line using int(input()).",
-            "Use input() without prompt text.",
-            "Print Total: followed by the result with two decimal places.",
-            "Assume the inputs are valid non-negative numbers."
-        ],
-        input: "2.5\n3",
-        output: "Total: 7.50",
-        starter:
-            "# Read price and quantity\n\n" +
-            "# Calculate the total\n\n" +
-            "# Print the formatted result\n"
-    }
-};
-
+const tasks = window.pythonCurriculum.tasks;
+window.pythonWorkspaceTasks = tasks;
 const taskId = new URLSearchParams(
     window.location.search
 ).get("task") || "student-profile";
+
+try {
+    const taskLevel = window.pythonCurriculum?.levels.find(level => level.tasks.includes(taskId));
+    if (taskLevel && !window.subscriptionStore.canAccessLevel(taskLevel.id)) {
+        window.location.replace("subscription.html");
+        return;
+    }
+} catch {
+    window.location.replace("subscription.html?access=unavailable");
+    return;
+}
 
 const task = tasks[taskId];
 
@@ -64,6 +39,42 @@ let saveTimer;
 let hasUnsavedChanges = false;
 let tabCanLeaveEditor = false;
 let draftLoaded = false;
+let workspaceOwner;
+let accountChanged = false;
+function currentOwner() {
+    const raw = window.cmStorage.getItem("codementor-demo-session");
+    if (raw === null) return "guest";
+    const account = JSON.parse(raw);
+    if (account?.role !== "student" || !account.email?.trim()) throw new Error("Your student profile is unavailable.");
+    return account.email.trim().toLowerCase() + ":" + window.cmStorage.activeLanguage();
+}
+try { workspaceOwner = currentOwner(); } catch { accountChanged = true; }
+function assertWorkspaceOwner() {
+    let activeOwner; try { activeOwner = currentOwner(); } catch { activeOwner = null; }
+    if (accountChanged || activeOwner !== workspaceOwner) {
+        accountChanged = true;
+        clearTimeout(saveTimer);
+        hasUnsavedChanges = false;
+        draftLoaded = false;
+        window.learningRunner?.stop();
+        editor.value = "";
+        programInput.value = "";
+        document.getElementById("program-output").textContent = "";
+        document.getElementById("submission-completion").hidden = true;
+        [editor, programInput, saveButton, runButton, submitButton, resetButton].forEach(node => node.disabled = true);
+        draftStatus.textContent = "Account changed — reload required";
+        throw new Error("Your account changed. Reload this page before editing or submitting. The previous account's records were kept.");
+    }
+    const level = window.pythonCurriculum?.levels.find(level => level.tasks.includes(taskId));
+    if (level && !window.subscriptionStore.canAccessLevel(level.id)) throw new Error("Premium access is required for this task. Your saved code was kept.");
+}
+function checkWorkspaceOwner() {
+    try { assertWorkspaceOwner(); } catch (error) { showMessage(error.message, true); }
+}
+window.addEventListener("storage", event => { if (["codementor-profile-v1", "codementor-platform-v1", null].includes(event.key) || event.key?.includes("codementor-demo-language")) checkWorkspaceOwner(); });
+window.addEventListener("student-account-changed", checkWorkspaceOwner);
+window.addEventListener("focus", checkWorkspaceOwner);
+window.addEventListener("pageshow", checkWorkspaceOwner);
 
 function showMessage(text, isError = false) {
     message.textContent = text;
@@ -78,7 +89,8 @@ function saveDraft(showConfirmation = false) {
     clearTimeout(saveTimer);
 
     try {
-        sessionStorage.setItem(
+        assertWorkspaceOwner();
+        window.cmStorage.setItem(
             draftKey,
             JSON.stringify({
                 version: 1,
@@ -93,7 +105,7 @@ function saveDraft(showConfirmation = false) {
         draftStatus.textContent = "Draft saved";
 
         if (showConfirmation) {
-            showMessage("Your code and input are saved in this tab.");
+            showMessage("Your code and input are saved on this device.");
         }
 
         return true;
@@ -122,6 +134,15 @@ function scheduleSave() {
 
 function loadTask() {
     document.title = `${task.title} | CodeMentor AI`;
+    const level = window.pythonCurriculum.levels.find(level => level.tasks.includes(taskId));
+    if (level) {
+        document.querySelector(".coding-task-panel > .eyebrow").textContent = `LEVEL ${level.id} / PRACTICE TASK`;
+        const back = document.getElementById("task-level-back");
+        back.href = `module.html?level=${level.id}`; back.textContent = `Back to ${level.title}`;
+    }
+    const needsInput = task.tests.some(test => Boolean(test.input));
+    programInput.hidden = !needsInput;
+    document.querySelector('label[for="program-input"]').hidden = !needsInput;
     document.getElementById("task-title").textContent = task.title;
     document.getElementById("task-description").textContent =
         task.description;
@@ -147,7 +168,7 @@ function loadTask() {
     programInput.value = task.input;
 
     try {
-        const saved = sessionStorage.getItem(draftKey);
+        const saved = window.cmStorage.getItem(draftKey);
 
         if (saved) {
             const draft = JSON.parse(saved);
@@ -225,29 +246,77 @@ saveButton.addEventListener("click", function () {
     saveDraft(true);
 });
 
-runButton.addEventListener("click", function () {
-    if (saveDraft()) {
-        showMessage(
-            "Your draft is saved. Python execution is not connected yet; " +
-            "no code has been run."
-        );
-    }
-});
-
-submitButton.addEventListener("click", function () {
+let running = false;
+const stopButton = document.getElementById("stop-code");
+const outputPanel = document.getElementById("program-output");
+function busy(value) {
+    running = value;
+    [runButton, submitButton, resetButton, saveButton, editor, programInput].forEach(element => element.disabled = value || accountChanged);
+    stopButton.hidden = !value;
+}
+function normalize(text) { return text.replace(/\r\n/g, "\n").trimEnd(); }
+function saveTestResult(passed, cases, solution) {
+    assertWorkspaceOwner();
+    const raw = window.cmStorage.getItem("codementor-demo-learning");
+    const progress = raw === null ? { version: 1, lessons: [], tasks: [], assessments: {} } : JSON.parse(raw);
+    if (progress?.version !== 1 || !Array.isArray(progress.lessons) || !Array.isArray(progress.tasks) || !progress.assessments || typeof progress.assessments !== "object" || Array.isArray(progress.assessments)) throw new Error("Saved progress is unavailable. Your solution was kept, but results could not be recorded.");
+    if (passed === task.tests.length && !progress.tasks.includes(taskId)) progress.tasks.push(taskId);
+    progress.taskResults = { ...progress.taskResults, [taskId]: { passed, total: task.tests.length, cases, code: solution, submittedAt: new Date().toISOString() } };
+    if (passed === task.tests.length) progress.submissions = { ...progress.submissions, [taskId]: { code: solution, passed, total: task.tests.length, submittedAt: progress.taskResults[taskId].submittedAt } };
+    window.cmStorage.setItem("codementor-demo-learning", JSON.stringify(progress));
+    window.dispatchEvent(new CustomEvent("task-attempt-recorded", { detail: { taskId } }));
+}
+async function execute(submit) {
+    if (running || !task || !draftLoaded) return;
     if (!editor.value.trim()) {
-        showMessage("Write your solution before submitting.", true);
-        editor.focus();
-        return;
+        showMessage("Write your solution first.", true); editor.focus(); return;
     }
-
-    if (saveDraft()) {
-        showMessage(
-            "Your draft is saved. Required tests are not connected yet, " +
-            "so this task has not been submitted or marked complete."
-        );
+    if (!saveDraft()) return;
+    const solution = editor.value;
+    let executionStarted = false;
+    function executionStatus(text) {
+        if (text === `Running ${window.pythonCurriculum.name}...`) executionStarted = true;
+        showMessage(text);
     }
-});
+    busy(true); outputPanel.textContent = "";
+    try {
+        if (!submit) {
+            const result = await window.learningRunner.execute(solution, programInput.value, executionStatus);
+            assertWorkspaceOwner();
+            window.dispatchEvent(new CustomEvent("task-attempt-recorded", { detail: { taskId } }));
+            outputPanel.textContent = result.output + (result.error ? `\n${result.error}` : "");
+            showMessage(result.error ? `${window.pythonCurriculum.name} found an error. Review the details below and try again.` : "Program finished.", Boolean(result.error));
+            return;
+        }
+        let passed = 0;
+        const cases = [];
+        for (const [index, test] of task.tests.entries()) {
+            showMessage(`Checking test ${index + 1} of ${task.tests.length}...`);
+            const result = await window.learningRunner.execute(solution + (task.verify || ""), test.input, text => { if (text === `Running ${window.pythonCurriculum.name}...`) executionStarted = true; showMessage(`Test ${index + 1}: ${text}`); });
+            assertWorkspaceOwner();
+            const correct = !result.error && normalize(result.output) === normalize(test.output);
+            cases.push({ passed: correct, input: test.input, expected: test.output, output: result.output, error: result.error });
+            outputPanel.textContent += `Test ${index + 1}: ${correct ? "Passed" : "Needs work"}\n`;
+            if (!correct) {
+                saveTestResult(passed, cases, solution);
+                outputPanel.textContent += `Input:\n${test.input || "(none)"}\nExpected:\n${test.output}\nYour output:\n${result.output || "(empty)"}\n${result.error || ""}\n`;
+                showMessage("Some checks did not pass. Use the input and expected output above to improve your solution.", true);
+                return;
+            }
+            passed++;
+        }
+        saveTestResult(passed, cases, solution);
+        showMessage(`All ${passed} checks passed! Task completion saved on this device.`);
+    } catch (error) {
+        if (executionStarted && !accountChanged) window.dispatchEvent(new CustomEvent("task-attempt-recorded", { detail: { taskId } }));
+        showMessage(error.message, true);
+    } finally {
+        busy(false);
+    }
+}
+runButton.addEventListener("click", () => execute(false));
+submitButton.addEventListener("click", () => execute(true));
+stopButton.addEventListener("click", () => window.learningRunner.stop());
 
 resetButton.addEventListener("click", function () {
     if (task) {
@@ -261,7 +330,8 @@ cancelReset.addEventListener("click", function () {
 
 confirmReset.addEventListener("click", function () {
     try {
-        sessionStorage.setItem(
+        assertWorkspaceOwner();
+        window.cmStorage.setItem(
             draftKey,
             JSON.stringify({
                 version: 1,
@@ -313,6 +383,9 @@ window.addEventListener("beforeunload", function (event) {
 
 if (task) {
     loadTask();
+    const reviewLink = document.getElementById("open-code-review");
+    reviewLink.href = `../student/code-review.html?task=${encodeURIComponent(taskId)}`;
+    reviewLink.addEventListener("click", event => { if (!saveDraft()) event.preventDefault(); });
 } else {
     document.getElementById("task-title").textContent = "Task not found";
     draftStatus.textContent = "Unknown task";
@@ -327,7 +400,7 @@ if (task) {
     );
 
     showMessage(
-        "Return to Python Foundations and choose an available task.",
+        `Return to the ${window.pythonCurriculum.name} learning path and choose an available task.`,
         true
     );
     const reviewLink = document.getElementById("open-code-review");

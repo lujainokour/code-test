@@ -1,0 +1,342 @@
+{
+  "phase": 1,
+  "status": "browser recheck pending manual verification; user authorized a conditional commit and continuation",
+  "baselineCommit": "b68a34b",
+  "note": "The working tree already contained unrelated uncommitted work. This manifest lists Phase 1 source files and their current hashes; it is not a claim that all pre-existing changes belong to this phase. This local recording tool only reads source and writes this manifest; it never stages or commits files.",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "c5fbe95db72af24a03c44a9f41c0bf24b58510d72295f1682a66b370a1ee42d5"
+    },
+    {
+      "file": "css/learning-language.css",
+      "sha256": "2041a01c12626cc9853f85445a86611cfe4802b75321ba787c8d5ac810d2c29a"
+    },
+    {
+      "file": "docs/CURRENT-IMPLEMENTATION.md",
+      "sha256": "dc718fd35aaba8599c68c04796777b7ad4d5826dd2187a1d8234e5bd355b5d21"
+    },
+    {
+      "file": "docs/LEARNING-UPGRADE.md",
+      "sha256": "3e967833732923b04a4213e289f2f75ba8dc96c322b75719d7c52624f63156ee"
+    },
+    {
+      "file": "docs/PHASE-1.md",
+      "sha256": "d2080b927b4730573b8ad5ced5f35eac779252f9e29350f540848ff53c931ab8"
+    },
+    {
+      "file": "docs/WORKFLOWS-AND-USER-MAP.md",
+      "sha256": "4793045e2cfb35e2af0d6ac7b065dffeecddbbb3b18b4c0373280d612bb17b66"
+    },
+    {
+      "file": "index.html",
+      "sha256": "0bb5b16c79bfaffac5a4608bbb9e1551e7e4e1d299ac24795ea3737c9eb2d15c"
+    },
+    {
+      "file": "js/admin-course-create.js",
+      "sha256": "d3b344875b95b7d436cd9c760a65c5070cafceea026ff31bc55e9817c19dd2a3"
+    },
+    {
+      "file": "js/admin-level-content.js",
+      "sha256": "0c7ab4fc593fe0a0efa920ea426c60c419420ce83a5eef7eb500d13367aab7ed"
+    },
+    {
+      "file": "js/code-review.js",
+      "sha256": "c0ee3a586436c66e7aaf0e0cb0edd1d2817802ed659b439094413b8f0b267448"
+    },
+    {
+      "file": "js/curricula/javascript.js",
+      "sha256": "b468abab23a35c9e854e82426b849bac0082a1e3126a98c4386d131e56142d67"
+    },
+    {
+      "file": "js/curricula/python.js",
+      "sha256": "af046fd41fd2960622bfc15fe7ba301f9b8d0c7f4b3e8456600bbfff822741bc"
+    },
+    {
+      "file": "js/curriculum-registry.js",
+      "sha256": "6e0cd374fe44aab6bf3c4004a97e8a474bbb232f1d3565304f04e482409a46c2"
+    },
+    {
+      "file": "js/dashboard.js",
+      "sha256": "f236117d3755bcd41c42f59203caf15309cc5fbd42e3cb844570d71103d306fa"
+    },
+    {
+      "file": "js/javascript-runner.js",
+      "sha256": "fd6bcc51d20c388cf677d81730ffaf719b0cb88528e68da8b1eb67174ab34655"
+    },
+    {
+      "file": "js/javascript-worker.js",
+      "sha256": "290cfca69f946a5016c87e3ba0f341eb3ad32bbcd7a565e455ef7658e228f949"
+    },
+    {
+      "file": "js/language-catalog.js",
+      "sha256": "0eb22dcf9f3efbdb66d0bd80e2b4d3b047830a5694fa46ccd60f3b3b1be566f4"
+    },
+    {
+      "file": "js/languages.js",
+      "sha256": "4abf2da4f0b9069217c50f2c881e2547dfc786ac38b7151333d6e4d1e5fc252c"
+    },
+    {
+      "file": "js/learning-context.js",
+      "sha256": "9a4a8da3d65819ff535c88aafe58559ee1236681d0757e509fa878e8db28d9ab"
+    },
+    {
+      "file": "js/learning-language.js",
+      "sha256": "3637e0fd177505a1e210c3f5eb3a49c425a12269ae72082cc9230cbe8cbfcb2a"
+    },
+    {
+      "file": "js/learning-path.js",
+      "sha256": "37d079f989e9f78a0ad7886db9815a4688dc489b8b38acf8a861cb7e19b49132"
+    },
+    {
+      "file": "js/learning-report.js",
+      "sha256": "34a3f843c9f17655ec6b7765a87ccdea6cff0a09fd4d40f9f7343448d946312d"
+    },
+    {
+      "file": "js/learning-storage.js",
+      "sha256": "9c44dbd03b69df90a0d4da870f1ee2dd6f7fe39723038883e4f304fce20512b0"
+    },
+    {
+      "file": "js/learning-support.js",
+      "sha256": "f9bce201adc29428c0370a6515183b6bfa71fe852a4e4b77fe4f1d5408c657f7"
+    },
+    {
+      "file": "js/lesson-content.js",
+      "sha256": "10277445db79c2b6e1f29bc058220b9211a92369cc3aaf4481369c917adf6d0f"
+    },
+    {
+      "file": "js/lesson.js",
+      "sha256": "c3b40dbfa6d539a8835f14ff7dc7188ce7283cd347f006584344e35522a60539"
+    },
+    {
+      "file": "js/level-assessment.js",
+      "sha256": "af3a9a3593f59c69b33d5fef6b3b86d2f32726ad5ba837e4059c9745da5ee43d"
+    },
+    {
+      "file": "js/mentor.js",
+      "sha256": "83408637f4cb9e84ab025d823786b0b243fb0e7f39fc66961158082c9a5e1ca5"
+    },
+    {
+      "file": "js/module-challenge.js",
+      "sha256": "bcb485cd8601fd038f235aa68cd0f446942984da200555b66bf05fd8383bba69"
+    },
+    {
+      "file": "js/module.js",
+      "sha256": "5e11ea665844c2809d9a8aaf700268660f7f28f9821b541b8617d7d0eedce318"
+    },
+    {
+      "file": "js/onboarding.js",
+      "sha256": "e06300bd8da7257626ca5469a9114662a635eda1f1853e963f43a531eb05b4d6"
+    },
+    {
+      "file": "js/placement-intro.js",
+      "sha256": "66e5d8882143b99f921fed360a7dcab41618b928679853680526b81c28591736"
+    },
+    {
+      "file": "js/placement-review.js",
+      "sha256": "13e0c8a229f9a49802bd2aad74986bf5243ab169d1133fa56508c5941658b5c3"
+    },
+    {
+      "file": "js/platform-store.js",
+      "sha256": "c93fad59bcf9170e4c41bf1fee6ec49362d982919ee20b4b87f84180aa57ae17"
+    },
+    {
+      "file": "js/portfolio-publishing.js",
+      "sha256": "c9cccfde0933e828bbf07c07ca7b874ce8089d8c96e3ece43e4c5d18b6e3e054"
+    },
+    {
+      "file": "js/practice.js",
+      "sha256": "a90d6619422c437ca12f96d8bcbf4224e2915b92cf22540ea08e2560af33dce0"
+    },
+    {
+      "file": "js/profile.js",
+      "sha256": "e197d05f832ff1da2b8d35e8a95ce18c55883a5d498ceb9eb4662a3ec6e1384c"
+    },
+    {
+      "file": "js/progress.js",
+      "sha256": "db55d43fa08f5eafa39cb55c26a41b5529207b8c2cd6da4add5ef393fe1e3973"
+    },
+    {
+      "file": "js/project.js",
+      "sha256": "08e54a03e36235909f26fa5e85c23177307ff58dee9aff08d4217f5fddbd7baf"
+    },
+    {
+      "file": "js/python-curriculum.js",
+      "sha256": "741ecb6b1b8c0b1e9c085a9cf0ff99036bc8b7e5ef3e6077de100c92fa22cbda"
+    },
+    {
+      "file": "js/student-journey.js",
+      "sha256": "682543915ab79d04d94f92722528c61561eb5b5c566ac99ddf74c9d8ae71fd8b"
+    },
+    {
+      "file": "js/workspace-completion.js",
+      "sha256": "9344f05af44a8e28bcfdd98532dd8fc3cf833e4b067998a1496fe97ed634ff82"
+    },
+    {
+      "file": "js/workspace.js",
+      "sha256": "90ab0c6c86ad79c941abcfb616923a8dbd3efc4a61548b531e1fac2fbe6e3317"
+    },
+    {
+      "file": "pages/admin/admin-level-content.html",
+      "sha256": "8dbbaf1f236500cfe8c81be6661f1c1eb766bf7f084e9a5192958063d88b81be"
+    },
+    {
+      "file": "pages/student/career.html",
+      "sha256": "2c9d46bdce6083b4a6efb0744d32ee2de110282135b800abd174b5b4cac0b496"
+    },
+    {
+      "file": "pages/student/certificates.html",
+      "sha256": "3756ed42ba5b4e50651ae3e61b1370d860aad716f9ac7ceb4f2aab8ef253b6c0"
+    },
+    {
+      "file": "pages/student/code-review.html",
+      "sha256": "d9b7d016cd836c4a1a59811bb6f7a02449af104902ce8ab05f0523199bcfdaff"
+    },
+    {
+      "file": "pages/student/dashboard.html",
+      "sha256": "2184c4ab08374d03c1214cd5de1d62f24b7f52298ac90f6ccb0b3add8ceb7f6b"
+    },
+    {
+      "file": "pages/student/learning-path.html",
+      "sha256": "5756b0f70866e5a8b624a0fc3f23925679bc61c331a76a586b1eb153374125ec"
+    },
+    {
+      "file": "pages/student/learning-report.html",
+      "sha256": "930fcca8f4bdf983485a5eb35798461450743743eb6d69fc324057c1acbd4e6e"
+    },
+    {
+      "file": "pages/student/lesson.html",
+      "sha256": "87c681da89a10e048740f0b44907c36cdc62671e0e79d1fe9e9f91c5c7f21263"
+    },
+    {
+      "file": "pages/student/level-assessment.html",
+      "sha256": "d6c9ebf02a63082d9adee81284b96a5b5c675baea906b1abb64ac02ed87b93e0"
+    },
+    {
+      "file": "pages/student/local-portfolio.html",
+      "sha256": "6a4854eac81bb6851612d4b642e73ac4da1a147b31275611d5e8b579a5b3c397"
+    },
+    {
+      "file": "pages/student/mentor-studio.html",
+      "sha256": "e26cf7c6c47691e3b1984934ba5a2386e1659e6ad23fbf367dc69338bc5aa993"
+    },
+    {
+      "file": "pages/student/mentor.html",
+      "sha256": "601b2dd5a61443faa649ff5e10d53cd53d3de0be0c12a0abea142d173610a0c8"
+    },
+    {
+      "file": "pages/student/messages.html",
+      "sha256": "89012fc997ada5b2fcacc90d1739f6164878efb3c4e95919fffcad498c738815"
+    },
+    {
+      "file": "pages/student/module.html",
+      "sha256": "6edf99fce2cb29ee969c0851563ca44492d0533c7968af0c7ee7331c749f557a"
+    },
+    {
+      "file": "pages/student/onboarding.html",
+      "sha256": "64765b8f583e4f2d23586b3c0a162d1c35c9cdc53ec2b8619707cc607134db4f"
+    },
+    {
+      "file": "pages/student/placement-intro.html",
+      "sha256": "003b7b103ff710d497949ae466b08458bfff4aebdac1b5208c655504fadb5eb8"
+    },
+    {
+      "file": "pages/student/placement-question.html",
+      "sha256": "7788638c25f0435e17b6263ee32b63e467dbfa5b88d2597089e012576598c28a"
+    },
+    {
+      "file": "pages/student/placement-results.html",
+      "sha256": "17b497bffc094dddfcd9ae30f961d6035b9513b4b5a311ee3b57d46aa58a1246"
+    },
+    {
+      "file": "pages/student/placement-review.html",
+      "sha256": "4dd882abbff3a8c68aa3a3a4412b26b435a6ecc06cbdbe283f350ca99f1a360b"
+    },
+    {
+      "file": "pages/student/practice.html",
+      "sha256": "16124cb962e65b1c8e832ce8d63de483595e46fe5c8a5a02275704745367e81a"
+    },
+    {
+      "file": "pages/student/profile.html",
+      "sha256": "066e61d9d4ee620ac04bb60a5c3a5a1194b67ed64f93fd7b3dbd5ca4bbd554ff"
+    },
+    {
+      "file": "pages/student/progress.html",
+      "sha256": "0f012fc21af437fd2b6a48847a6de93db8b44f9ebccdf7681d4796daa0d9360d"
+    },
+    {
+      "file": "pages/student/project-evaluation.html",
+      "sha256": "05faede0c97972ed68765b676662c9d451e02d0b41257879be1d7e041916d694"
+    },
+    {
+      "file": "pages/student/project.html",
+      "sha256": "16b3c7368097bb2422a1ab6b13e6cfeb97781f146a424af998c158c3ac7d190f"
+    },
+    {
+      "file": "pages/student/requests.html",
+      "sha256": "d66e5b36f8c7649aa77aed1350c9342a9d85baff5b3775554afd1b080a47e2b7"
+    },
+    {
+      "file": "pages/student/skill-analysis.html",
+      "sha256": "af02477fccc0d8b64b8e16e91ed9d7b20bed18ba0bfb51fcefb788864b8acc92"
+    },
+    {
+      "file": "pages/student/subscription.html",
+      "sha256": "9ec161ba89bd080adf943f97ecb1927b41c731d71952b3ffc118b40d12186de0"
+    },
+    {
+      "file": "pages/student/virtual-internship.html",
+      "sha256": "fdc0bb2ca50a0e05606ef037c84d58da4ec17c12ac35c19cf5077b812ca5a477"
+    },
+    {
+      "file": "pages/student/workspace.html",
+      "sha256": "8d93d6cec35224b276059d89fd47b80b670d2f150a7d3ad8f5fd08809e1ceaf5"
+    },
+    {
+      "file": "tests/curriculum-migration.cjs",
+      "sha256": "9595504521bd61ffe206e6283f09f666cc972bcb8efae4a5a5f30517d3b0f0be"
+    },
+    {
+      "file": "tests/language-page-guards.cjs",
+      "sha256": "4a821434e460f4dd88670ca8979a043ae32fe61ac3c956ee6aff41b47578d13c"
+    },
+    {
+      "file": "tests/language-publishing.cjs",
+      "sha256": "8737da8a04a3394783c4e1cc4e8b64d94a9a34286f93bb8071f4f6afddd3e3b3"
+    },
+    {
+      "file": "tests/language-storage.cjs",
+      "sha256": "47e604b213304e4fecb329def42c953aa26ef9b4949df9bac5ba76b670862a3f"
+    },
+    {
+      "file": "tests/language-switch-browser.ps1",
+      "sha256": "e98fd258597f9c7528814a35eae8c0d3ff4aa3a90e4e240297bc1e84b28b8203"
+    },
+    {
+      "file": "tools/curriculum-summary.cjs",
+      "sha256": "7c2347566cc3069b1abc73cdfaf40904be182a6ee5c14ba5c220d25220b64ecb"
+    },
+    {
+      "file": "tools/record-phase1-local.cjs",
+      "sha256": "0571092be306924d1994823145a9ef71c1907a2fed13856acc0e55bfef33aef1"
+    },
+    {
+      "file": "tools/verify-phase1-local.cjs",
+      "sha256": "8de1f28f384d66b783eb86875963171a8823fb25d6a92dbb804ba2552e763e11"
+    }
+  ],
+  "artifacts": [
+    "docs/phase1-current-results.json",
+    "docs/language-switch-results.json",
+    "docs/phase1-initial-language-results.json",
+    "docs/phase1-local-results.json",
+    "docs/phase1-2026-11-11-reference-results.json",
+    "docs/phase1-2026-11-11-js-errors.json",
+    "docs/archive/phase1/phase1-before-copy-fix-1440.png",
+    "docs/archive/phase1/phase1-before-copy-fix-390.png",
+    "docs/phase1-files.json",
+    "docs/phase1-closure-results.json",
+    "docs/phase1-git-status.txt",
+    "docs/phase1-git-diff-stat.txt"
+  ]
+}

@@ -10,6 +10,7 @@ const placementMessage = document.getElementById("placement-message");
 
 const preferencesKey = "codementor-demo-onboarding";
 const attemptKey = "codementor-demo-placement";
+let placementOwner; try { placementOwner = window.cmStorage.captureOwner(); } catch { /* Saving stays blocked. */ }
 
 const experienceLabels = {
     beginner: "Just starting",
@@ -50,7 +51,7 @@ function loadPageData() {
     showMessage("");
 
     try {
-        const sessionText = sessionStorage.getItem(
+        const sessionText = window.cmStorage.getItem(
             "codementor-demo-session"
         );
 
@@ -69,7 +70,7 @@ function loadPageData() {
             }
         }
 
-        const savedPreferences = sessionStorage.getItem(preferencesKey);
+        const savedPreferences = window.cmStorage.getItem(preferencesKey);
 
         if (savedPreferences) {
             try {
@@ -79,7 +80,7 @@ function loadPageData() {
             }
         }
 
-        const savedAttempt = sessionStorage.getItem(attemptKey);
+        const savedAttempt = window.cmStorage.getItem(attemptKey);
 
         if (savedAttempt !== null) {
             try {
@@ -168,11 +169,12 @@ startButton.addEventListener("click", function () {
         };
 
         try {
-            if (sessionStorage.getItem(attemptKey) !== null) {
+            window.cmStorage.assertOwner(placementOwner);
+            if (window.cmStorage.getItem(attemptKey) !== null) {
                 showMessage("The saved placement attempt changed. Reload this page before continuing. Existing records were kept.", true);
                 return;
             }
-            sessionStorage.setItem(attemptKey, JSON.stringify(attempt));
+            window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));
         } catch {
             showMessage(
                 "Couldn’t save your assessment. Check browser storage and try again.",

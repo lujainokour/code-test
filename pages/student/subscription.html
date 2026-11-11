@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans &amp; access | CodeMentor AI</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/subscription-store.js" defer></script>
+    <script src="../../js/subscription-page.js" defer></script>
+</head>
+<body class="workspace-page subscription-page">
+    <a href="#subscription-main" class="skip-link">Skip to content</a>
+    <aside class="workspace-sidebar" id="workspace-sidebar"></aside>
+    <div class="workspace-body">
+        <header class="workspace-topbar"></header>
+        <main class="workspace-main subscription-main" id="subscription-main">
+            <header class="subscription-heading">
+                <p class="eyebrow">PLANS &amp; ACCESS</p>
+                <h1>Learn at your pace. Choose your path.</h1>
+                <p class="workspace-intro">Start for free and keep learning through Level 5. Premium is designed for the advanced levels that follow.</p>
+                <p class="subscription-current-plan" id="subscription-current-plan" role="status">Loading your plan...</p>
+            </header>
+
+            <div class="subscription-notice" role="note">
+                <strong>Prototype note</strong>
+                <p>Plan changes on this page are a local preview only. No payment is collected. Paid access needs a connected billing service and server-side entitlement checks.</p>
+            </div>
+
+            <section class="subscription-plan-grid" aria-label="Available plans">
+                <article class="subscription-plan-card">
+                    <p class="eyebrow">GOOD PLACE TO START</p>
+                    <h2>Free</h2>
+                    <p class="subscription-price"><strong>JOD 0</strong><span>forever</span></p>
+                    <p class="subscription-plan-summary">Build strong foundations with a clear learning path.</p>
+                    <ul>
+                        <li>All published lessons through Level 5</li>
+                        <li>Progress tracking and practice activities</li>
+                        <li>Access to free learning resources</li>
+                    </ul>
+                    <span class="subscription-plan-label">Included for every student</span>
+                </article>
+
+                <article class="subscription-plan-card subscription-plan-premium">
+                    <span class="subscription-recommended">ADVANCED LEARNING</span>
+                    <p class="eyebrow">WHEN YOU ARE READY</p>
+                    <h2>Premium</h2>
+                    <p class="subscription-price"><strong>JOD 3</strong><span>/ month, illustrative</span></p>
+                    <p class="subscription-plan-summary">Continue into advanced learning when those levels are available.</p>
+                    <ul>
+                        <li>Everything in Free</li>
+                        <li>Levels 6 and above when published</li>
+                        <li>One plan for all supported learning paths</li>
+                    </ul>
+                    <button class="button button-primary" type="button" id="subscription-upgrade">Preview Premium access</button>
+                    <button class="button button-outline" type="button" id="subscription-cancel" hidden>Return to Free</button>
+                </article>
+            </section>
+
+            <section class="subscription-content-note" aria-labelledby="content-availability-title">
+                <h2 id="content-availability-title">What is available today?</h2>
+                <p>Python includes six published levels: Levels 1-5 are free, and Level 6 is the advanced Premium preview. Each level includes lessons, a quiz and coding practice. Plan activation is local until a billing service is connected.</p>
+                <a class="button button-outline" href="learning-path.html">Return to my learning path</a>
+            </section>
+            <p class="form-message subscription-message" id="subscription-message" role="status" aria-live="polite"></p>
+        </main>
+    </div>
+</body>
+</html>

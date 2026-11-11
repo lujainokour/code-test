@@ -1,0 +1,6 @@
+.language-choice { display: grid; grid-template-columns: auto minmax(160px, 1fr) auto; align-items: center; gap: 12px 20px; }
+.language-choice label { font-weight: 700; }
+.language-choice select { min-width: 0; width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--primary); font: inherit; }
+.language-choice .form-message { grid-column: 1 / -1; margin: 0; }
+#language-change-notice { margin: 24px; }
+@media (max-width: 600px) { .language-choice { grid-template-columns: minmax(0, 1fr); } .language-choice .button { width: 100%; } }

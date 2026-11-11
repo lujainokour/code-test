@@ -1,11 +1,12 @@
-const requiredLessons = [
+if (!window.learningUnavailable) {
+let requiredLessons = [
     { id: "variables", title: "Variables and values" },
     { id: "data-types", title: "Data types" },
     { id: "input-output", title: "Input and output" },
     { id: "numbers", title: "Working with numbers" }
 ];
 
-const requiredTasks = [
+let requiredTasks = [
     { id: "student-profile", title: "Create a student profile" },
     { id: "receipt", title: "Build a simple receipt" }
 ];
@@ -17,7 +18,7 @@ const nextDescription = document.getElementById("next-step-description");
 const nextLink = document.getElementById("next-step-link");
 
 function readProgress() {
-    const saved = sessionStorage.getItem("codementor-demo-learning");
+    const saved = window.cmStorage.getItem("codementor-demo-learning");
 
     if (!saved) {
         return {
@@ -61,6 +62,7 @@ function addActivity(type, title, href) {
 
 function updateProgress() {
     let progress;
+    const course = window.pythonCurriculum;
 
     try {
         progress = readProgress();
@@ -76,6 +78,14 @@ function updateProgress() {
         return;
     }
 
+    const level = course.current(progress);
+    requiredLessons = level.lessons;
+    requiredTasks = level.tasks.map(id => ({id, title: id.replaceAll("-", " ")}));
+    document.querySelector(".workspace-intro").textContent = `${course.levels.filter(item => course.completed(item, progress)).length} of ${course.levels.length} levels completed. Current level: ${level.title}. Saved on this device.`;
+    document.querySelectorAll(".dashboard-stat > p").forEach((element, index) => element.textContent = ["LESSONS / CURRENT LEVEL", "TASKS / CURRENT LEVEL", "CURRENT LEVEL STATUS"][index]);
+    document.querySelector(".dashboard-grid .dashboard-card h2").textContent = level.title;
+    document.querySelector(".dashboard-grid .dashboard-card > p").textContent = "Complete the lessons and pass the quiz with at least 70%. Coding tasks provide extra practice.";
+    document.querySelector('.dashboard-grid a[href*="module.html"]').href = `module.html?level=${level.id}`;
     const completedLessons = requiredLessons.filter(function (lesson) {
         return progress.lessons.includes(lesson.id);
     });
@@ -87,7 +97,7 @@ function updateProgress() {
     const lessonsDone = completedLessons.length;
     const tasksDone = completedTasks.length;
 
-    const assessment = progress.assessments["1"];
+    const assessment = progress.assessments[level.id];
 
     const hasAssessment = (
         typeof assessment?.score === "number" &&
@@ -97,8 +107,7 @@ function updateProgress() {
     );
 
     const activitiesComplete = (
-        lessonsDone === requiredLessons.length &&
-        tasksDone === requiredTasks.length
+        lessonsDone === requiredLessons.length
     );
 
     const levelComplete = (
@@ -138,7 +147,7 @@ function updateProgress() {
     } else {
         assessmentStatus.textContent = activitiesComplete
             ? "Available · Pass mark: 70%"
-            : "Locked until required lessons and tasks are complete.";
+            : "Complete the four lessons to unlock. Coding tasks are optional practice.";
     }
 
     activitiesList.replaceChildren();
@@ -162,8 +171,8 @@ function updateProgress() {
     if (hasAssessment) {
         addActivity(
             "ASSESSMENT RESULT",
-            `Level 01 · ${assessment.score}%`,
-            "../student/level-assessment.html?level=1"
+            `Level ${level.id} / ${assessment.score}%`,
+            `../student/level-assessment.html?level=${level.id}`
         );
     }
 
@@ -188,10 +197,10 @@ function updateProgress() {
 
         nextLink.textContent = "Open lesson";
         nextLink.href = `../student/lesson.html?lesson=${nextLesson.id}`;
-    } else if (nextTask) {
+    } else if (nextTask && levelComplete) {
         nextDescription.textContent =
             `Practise your skills in ${nextTask.title}. ` +
-            "Task testing will become available after the backend connection.";
+            "Run your solution and submit it to check all test cases.";
 
         nextLink.textContent = "Open task";
         nextLink.href = `../student/workspace.html?task=${nextTask.id}`;
@@ -200,10 +209,10 @@ function updateProgress() {
             "Complete your level assessment with at least 70%.";
 
         nextLink.textContent = "Open assessment";
-        nextLink.href = "../student/level-assessment.html?level=1";
+        nextLink.href = `../student/level-assessment.html?level=${level.id}`;
     } else {
         nextDescription.textContent =
-            "You have completed Level 01. Review your learning roadmap.";
+            `You have completed all published ${course.name} levels. Review your roadmap or practise the final project.`;
 
         nextLink.textContent = "View learning path";
         nextLink.href = "../student/learning-path.html";
@@ -211,3 +220,5 @@ function updateProgress() {
 }
 
 window.addEventListener("pageshow", updateProgress);
+
+}

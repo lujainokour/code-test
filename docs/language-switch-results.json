@@ -1,0 +1,491 @@
+﻿{
+    "checks":  [
+                   {
+                       "name":  "Language selector lists every catalog entry and its readiness",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Selecting JavaScript switches the dashboard and starts separate progress",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript roadmap uses three levels and the shared selector",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson completion is saved in its own language",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: student-profile case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: receipt case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: receipt case 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: receipt case 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: receipt case 4",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: grade-checker case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: grade-checker case 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: grade-checker case 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: grade-checker case 4",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: sum-numbers case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: sum-numbers case 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: sum-numbers case 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: sum-numbers case 4",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: list-summary case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: list-summary case 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: list-summary case 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: list-summary case 4",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: task-manager case 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: task-manager case 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: task-manager case 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Real JavaScript worker: task-manager case 4",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Checking reference solutions alone does not award progress",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript has no document or network fetch capability",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript infinite loop is terminated at five seconds",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Stop cancels execution and a later worker can run",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript workspace submission runs checks and records a passing solution",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Mentor keeps JavaScript task context and prepared hints",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript report counts only active-language work",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: variables",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: data-types",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: input-output",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: numbers",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: student-profile",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: receipt",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript level quiz saves and unlocks progression: 1",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: conditions",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: boolean-logic",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: for-loops",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: while-loops",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: grade-checker",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: sum-numbers",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript level quiz saves and unlocks progression: 2",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: functions",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: lists",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: dictionaries",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript lesson answer saves completion: problem-solving",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: list-summary",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript task submission awards its own completion: task-manager",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript level quiz saves and unlocks progression: 3",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript milestone uses its own completed lessons, quizzes and tasks",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Completed JavaScript path leads to progress rather than Python or Premium",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript language selector and dashboard fit 1440 pixels",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "JavaScript language selector and dashboard fit 390 pixels",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Missing JavaScript placement bank is explicit and does not manufacture a score",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Returning to Python preserves original progress byte for byte",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "A stale selector cannot save a choice for another account",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Account B has separate language and progress",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Coming-soon selection shows honest availability instead of Python content",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Coming-soon notification is an owner-local interest flag",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "Coming-soon user can continue Python without losing records",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/placement-question.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/virtual-internship.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/code-review.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/placement-intro.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/local-portfolio.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/dashboard.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/learning-report.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/placement-results.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/progress.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/mentor.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/learning-path.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/project-evaluation.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/onboarding.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/certificates.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/placement-review.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/module.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/skill-analysis.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/workspace.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/practice.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/level-assessment.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/requests.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/subscription.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/project.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/lesson.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/profile.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/career.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/messages.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "python student page renders: pages/student/mentor-studio.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/placement-question.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/virtual-internship.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/code-review.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/placement-intro.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/local-portfolio.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/dashboard.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/learning-report.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/placement-results.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/progress.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/mentor.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/learning-path.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/project-evaluation.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/onboarding.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/certificates.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/placement-review.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/module.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/skill-analysis.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/workspace.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/practice.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/level-assessment.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/requests.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/subscription.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/project.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/lesson.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/profile.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/career.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/messages.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "javascript student page renders: pages/student/mentor-studio.html",
+                       "passed":  true
+                   },
+                   {
+                       "name":  "No uncaught JavaScript exceptions on either language student pages",
+                       "passed":  true
+                   }
+               ],
+    "jsErrors":  [
+
+                 ]
+}

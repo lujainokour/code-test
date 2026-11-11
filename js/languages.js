@@ -4,9 +4,10 @@
     function el(tag, text, cls) { const node = document.createElement(tag); if (text) node.textContent = text; if (cls) node.className = cls; return node; }
     function link(label, href) { const a = el("a", label, "button button-outline"); a.href = href; return a; }
     const params = new URLSearchParams(location.search), id = params.get("id");
+    let choiceOwner; try { choiceOwner = window.cmStorage.captureOwner(); } catch { /* Saving a choice stays blocked. */ }
     function publicLessons(course, content) {
         const levels = Object.hasOwn(content.courses, course.id) ? content.courses[course.id].levels : [];
-        return levels.map(level => ({ ...level, lessons: (level.lessons || []).filter(lesson => lesson.status === "published" && (lesson.content?.trim() || ((course.language || course.languageId) === "python" && lesson.builtInLessonId))) })).filter(level => level.lessons.length);
+        return levels.map((level, index) => ({ ...level, levelNumber: index + 1, lessons: (level.lessons || []).filter(lesson => lesson.status === "published" && (lesson.content?.trim() || (catalog.get(course.language || course.languageId)?.builtInContent && lesson.builtInLessonId))) })).filter(level => level.lessons.length);
     }
     try {
         const courses = store.readCourses(), content = store.readContent();
@@ -20,6 +21,11 @@
             if (!levels.length) root.append(el("p", "Content not available. There are no locally available lessons in this course yet.", "services-notice"));
             levels.forEach(level => {
                 const card = el("section", undefined, "services-panel"); card.append(el("h2", level.title));
+                if (!window.subscriptionStore.canAccessLevel(level.levelNumber)) {
+                    card.append(el("p", "PREMIUM - LEVEL " + level.levelNumber, "services-tag"), el("p", "This advanced level is included with Premium. Lesson details are hidden until you have access."));
+                    card.append(link("View Free and Premium plans", "../student/subscription.html"));
+                    root.append(card); return;
+                }
                 const list = el("ul"); level.lessons.forEach(lesson => {
                     const row = el("li"); const a = link(lesson.title, `../student/lesson.html?course=${encodeURIComponent(course.id)}&level=${encodeURIComponent(level.id)}&lesson=${encodeURIComponent(lesson.id)}`); row.append(a); list.append(row);
                 }); card.append(list); root.append(card);
@@ -33,7 +39,7 @@
         const requested = params.get("language");
         if (requested) {
             const language = catalog.get(requested);
-            root.append(el("p", language ? `${language.name}: ${language.builtInContent ? "Python demo available" : "Full learning path coming soon. No placement test is connected for this language."}` : "This language is not in the catalogue. No Python activity has been opened.", "services-notice"));
+            root.append(el("p", language ? `${language.name}: ${language.builtInContent ? "Learning path available" : "Full learning path coming soon. No placement test is connected for this language."}` : "This language is not in the catalogue. No activity has been opened.", "services-notice"));
         }
         function render() {
             const entries = catalog.entries.filter(entry => `${entry.name} ${entry.description}`.toLowerCase().includes(search.value.trim().toLowerCase()));
@@ -42,14 +48,20 @@
                 const card = el("article", undefined, "services-card");
                 const matching = courses.filter(course => (course.language || course.languageId) === entry.id);
                 const available = matching.filter(course => publicLessons(course, content).length > 0);
-                card.append(el("p", entry.builtInContent ? "PYTHON FRONTEND DEMO" : available.length ? "LOCAL LESSON CONTENT" : "COMING SOON", "eyebrow"), el("h2", entry.name), el("p", entry.description));
+                card.append(el("p", entry.builtInContent ? `${entry.name.toUpperCase()} LEARNING PATH` : available.length ? "LOCAL LESSON CONTENT" : "COMING SOON", "eyebrow"), el("h2", entry.name), el("p", entry.description));
                 if (entry.builtInContent) {
-                    const choose = el("button", "Choose the Python demo path", "button button-primary"); choose.type = "button";
+                    const choose = el("button", `Choose the ${entry.name} path`, "button button-primary"); choose.type = "button";
                     choose.addEventListener("click", () => {
                         try {
-                            const raw = sessionStorage.getItem("codementor-demo-onboarding"); const previous = raw === null ? {} : JSON.parse(raw);
+                            window.cmStorage.assertOwner(choiceOwner);
+                            if (choiceOwner === "guest") {
+                                location.href = "../auth/login.html?next=" + encodeURIComponent(`pages/student/dashboard.html?chooseLanguage=${entry.id}`);
+                                return;
+                            }
+                            const raw = window.cmStorage.getItem("codementor-demo-onboarding"); const previous = raw === null ? {} : JSON.parse(raw);
                             if (!previous || typeof previous !== "object" || Array.isArray(previous) || (raw !== null && (!catalog.has(previous.language) || !["beginner", "basics", "practising"].includes(previous.experience) || !["foundations", "problem-solving", "projects"].includes(previous.goal)))) throw new Error("Invalid preferences");
-                            sessionStorage.setItem("codementor-demo-onboarding", JSON.stringify({ experience: "beginner", goal: "foundations", ...previous, language: entry.id }));
+                            window.cmStorage.setItem("codementor-demo-onboarding", JSON.stringify({ experience: "beginner", goal: "foundations", ...previous, language: entry.id }));
+                            window.cmStorage.setItem("codementor-demo-language", JSON.stringify(entry.id));
                             location.href = "../student/learning-path.html";
                         } catch { root.prepend(el("p", "Preferences could not be saved. Existing data was not replaced.", "services-notice")); }
                     }); card.append(choose);

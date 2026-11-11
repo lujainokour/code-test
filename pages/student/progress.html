@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>My Progress | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/progress-page.css">
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
     <script src="../../js/student-workspace.js" defer></script>
-    <script src="../../js/progress.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/progress.js" defer></script>
 </head>
 <body class="workspace-page">
     <a href="#progress-main" class="skip-link">Skip to content</a>
@@ -63,7 +66,7 @@
 
         <main class="workspace-main" id="progress-main">
             <p class="eyebrow">SMALL STEPS. VISIBLE PROGRESS.</p>
-            <h1>See how far you’ve come.</h1>
+            <h1>My learning progress</h1>
 
             <p class="workspace-intro">
                 Review completed activities and what remains
@@ -72,12 +75,6 @@
 
             <p id="workspace-message" class="form-message"
                role="status" aria-live="polite"></p>
-
-            <section class="dashboard-card" aria-labelledby="export-report-title">
-                <h2 id="export-report-title">Export Learning Report</h2>
-                <p>Review available demo records, then use your browser's Print / Save as PDF window. This report is not an official certificate.</p>
-                <a class="button button-outline" href="../../pages/student/learning-report.html">Preview learning report</a>
-            </section>
 
             <div class="dashboard-stats">
                 <article class="dashboard-stat">
@@ -96,7 +93,17 @@
                 </article>
             </div>
 
-            <div class="dashboard-grid">
+                    <section class="dashboard-card progress-next-step">
+                        <h2>Your next step</h2>
+                        <p id="next-step-description">Loading progress…</p>
+
+                        <a href="../../pages/student/module.html?level=1"
+                           class="button button-primary"
+                           id="next-step-link">
+                            Open current level
+                        </a>
+                    </section>
+            <div class="dashboard-grid progress-content-grid">
                 <div>
                     <section class="dashboard-card">
                         <h2>Python Foundations</h2>
@@ -117,12 +124,12 @@
 
                         <div class="progress-requirement">
                             <div>
-                                <strong>Required tasks</strong>
+                                <strong>Optional practice tasks</strong>
                                 <span id="task-count">—</span>
                             </div>
 
                             <progress id="task-bar" value="0" max="2"
-                                      aria-label="Required tasks passed"></progress>
+                                      aria-label="Optional practice tasks passed"></progress>
                         </div>
 
                         <div class="progress-assessment">
@@ -136,54 +143,20 @@
                         </a>
                     </section>
 
-                    <section class="dashboard-card module-section">
-                        <h2>Your completed activities</h2>
-                        <ul id="completed-activities" class="completed-activities"></ul>
-                    </section>
+
                 </div>
 
-                <aside class="module-aside">
-                    <section class="dashboard-card dashboard-sage">
-                        <h2>Your next step</h2>
-                        <p id="next-step-description">Loading progress…</p>
 
-                        <a href="../../pages/student/module.html?level=1"
-                           class="button button-outline"
-                           id="next-step-link">
-                            Open current level
-                        </a>
+                    <section class="dashboard-card module-section">
+                        <h2>Completed in this level</h2>
+                        <ul id="completed-activities" class="completed-activities"></ul>
                     </section>
-
-                    <section class="dashboard-card">
-                        <h2>Progress and understanding</h2>
-
-                        <p>
-                            Completed lessons show the content you reviewed.
-                            Task tests and assessments check your application
-                            of those concepts.
-                        </p>
-
-                        <a href="../../pages/student/skill-analysis.html"
-                           class="button button-outline">
-                            Explore skill analysis
-                        </a>
-                    </section>
-
-                    <section class="dashboard-card">
-                        <h2>About this demo</h2>
-
-                        <p>
-                            Lesson completion is saved in this browser tab.
-                            Python task evaluation is not connected yet.
-                        </p>
-
-                        <p class="dashboard-footnote">
-                            Saving code does not mark a task complete.
-                            Browser progress is not a server-verified record.
-                        </p>
-                    </section>
-                </aside>
             </div>
+
+            <section class="progress-tools" aria-labelledby="progress-tools-title">
+                <div class="progress-report-link"><div><h2 id="progress-tools-title">Learning report</h2><p>Progress saves automatically on this device. View your completed lessons, quiz results and practice activity in the report.</p></div><a class="button button-outline" href="learning-report.html">View learning report</a></div>
+                <a class="progress-insights-link" href="skill-analysis.html">Explore topics that need more practice &rarr;</a>
+            </section>
 
             <footer class="workspace-footer">
                 CodeMentor AI · Frontend demo · Saved learning progress

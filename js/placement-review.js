@@ -2,6 +2,7 @@
 if (window.learningUnavailable) return;
 const questions = window.placementQuestions;
 const attemptKey = "codementor-demo-placement";
+let placementOwner; try { placementOwner = window.cmStorage.captureOwner(); } catch { /* Saving stays blocked. */ }
 
 const reviewList = document.getElementById("review-list");
 const selectedCount = document.getElementById("selected-count");
@@ -36,7 +37,7 @@ function isValidAnswer(answer, index) {
 
 function loadAttempt() {
     try {
-        const saved = sessionStorage.getItem(attemptKey);
+        const saved = window.cmStorage.getItem(attemptKey);
 
         if (!saved) {
             window.location.replace("../student/placement-intro.html");
@@ -84,7 +85,8 @@ function editQuestion(index) {
     attempt.currentQuestion = index;
 
     try {
-        sessionStorage.setItem(attemptKey, JSON.stringify(attempt));
+        window.cmStorage.assertOwner(placementOwner);
+        window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));
         window.location.href = "../student/placement-question.html";
     } catch {
         showMessage(
@@ -217,7 +219,8 @@ confirmSubmitButton.addEventListener("click", function () {
     };
 
     try {
-        sessionStorage.setItem(
+        window.cmStorage.assertOwner(placementOwner);
+        window.cmStorage.setItem(
             attemptKey,
             JSON.stringify(submittedAttempt)
         );

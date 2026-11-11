@@ -1,29 +1,12 @@
 (() => {
 if (window.learningUnavailable) return;
-const practiceTasks = [
-    {
-        id: "student-profile",
-        title: "Create a student profile",
-        topic: "variables",
-        topicLabel: "Variables and output",
-        description:
-            "Create variables for a student's name, age and track, " +
-            "then print their labeled values."
-    },
-    {
-        id: "receipt",
-        title: "Build a simple receipt",
-        topic: "numbers",
-        topicLabel: "Input and arithmetic",
-        description:
-            "Read a price and quantity, calculate the total " +
-            "and display it with two decimal places."
-    }
-];
-
+const practiceTasks = Object.values(window.pythonCurriculum.tasks);
 const filtersForm = document.getElementById("practice-filters");
+
 const searchInput = document.getElementById("task-search");
 const topicFilter = document.getElementById("topic-filter");
+topicFilter.replaceChildren();
+for (const [value, label] of [["all", "All topics"], ...[...new Set(practiceTasks.map(task => task.topic || task.topics[0]))].map(id => [id, id.replaceAll("-", " ")])]) { const option = document.createElement("option"); option.value = value; option.textContent = label; topicFilter.append(option); }
 const statusFilter = document.getElementById("status-filter");
 
 const tasksList = document.getElementById("practice-list");
@@ -45,7 +28,7 @@ function loadTaskStates() {
     const issues = [];
 
     try {
-        const savedProgress = sessionStorage.getItem(
+        const savedProgress = window.cmStorage.getItem(
             "codementor-demo-learning"
         );
 
@@ -74,7 +57,7 @@ function loadTaskStates() {
 
         if (status !== "passed") {
             try {
-                const savedDraft = sessionStorage.getItem(
+                const savedDraft = window.cmStorage.getItem(
                     `codementor-demo-code-${task.id}`
                 );
 
@@ -117,7 +100,8 @@ function createTaskCard(task) {
 
     const category = document.createElement("p");
     category.className = "eyebrow";
-    category.textContent = "REQUIRED · LEVEL 01";
+    const level = window.pythonCurriculum.levels.find(level => level.tasks.includes(task.id));
+    category.textContent = `OPTIONAL PRACTICE · LEVEL ${String(level?.id || 1).padStart(2, "0")}${level?.id > 5 ? ' · PREMIUM' : ''}`;
 
     const status = document.createElement("span");
     status.className = "practice-status";
@@ -133,7 +117,7 @@ function createTaskCard(task) {
 
     const meta = document.createElement("div");
     meta.className = "practice-task-meta";
-    meta.textContent = `${task.topicLabel} · Python`;
+    meta.textContent = `${task.topicLabel || task.topics[0]} · ${window.pythonCurriculum.name}`;
 
     const actions = document.createElement("div");
     actions.className = "practice-task-actions";
@@ -184,7 +168,7 @@ function renderTasks() {
     });
 
     countElement.textContent =
-        `${matches.length} of ${practiceTasks.length} tasks shown · Level 01 · Python`;
+        `${matches.length} of ${practiceTasks.length} tasks shown · ${window.pythonCurriculum.name}`;
 
     emptyState.hidden = matches.length > 0;
 }

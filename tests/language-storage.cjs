@@ -1,0 +1,56 @@
+const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict');
+let checks = 0;
+const local = new Map(), session = new Map();
+const storage = map => ({ getItem: key => map.has(key) ? map.get(key) : null, setItem: (key, value) => map.set(key, String(value)), removeItem: key => map.delete(key) });
+const account = email => ({ name: email.split('@')[0], email, role: 'student', isDemo: true });
+const a = 'language-a@example.com', b = 'language-b@example.com';
+const key = (owner, name) => `codementor-learning-v1:${encodeURIComponent(owner)}:${name}`;
+function page() {
+    const window = { dispatchEvent() {} };
+    const context = vm.createContext({ window, localStorage: storage(local), sessionStorage: storage(session), CustomEvent: class {} });
+    vm.runInContext(fs.readFileSync('js/learning-storage.js', 'utf8'), context);
+    return window.cmStorage;
+}
+function check(name, condition) { assert.ok(condition, name); checks++; console.log('PASS ' + name); }
+local.set('codementor-profile-v1', JSON.stringify(account(a)));
+const original = JSON.stringify({ version: 1, lessons: ['variables'], tasks: ['student-profile'], assessments: {}, customHistoricalField: { kept: true } });
+local.set(key(a, 'codementor-demo-learning'), original);
+let store = page();
+check('Old Python owner key reads byte for byte without rewriting metadata', store.getItem('codementor-demo-learning') === original && local.get(key(a, 'codementor-demo-learning')) === original);
+store.setItem('codementor-demo-language', JSON.stringify('javascript'));
+assert.throws(() => store.setItem('codementor-demo-learning', '{}'));
+check('Stale Python page cannot save into newly selected JavaScript', !local.has(key(a, 'javascript:codementor-demo-learning')));
+store = page();
+check('JavaScript starts without inheriting Python progress', store.getItem('codementor-demo-learning') === null);
+const jsProgress = JSON.stringify({ version: 1, lessons: ['variables'], tasks: [], assessments: {} });
+store.setItem('codementor-demo-learning', jsProgress);
+store.setItem('codementor-demo-code-receipt', JSON.stringify({ version: 1, taskId: 'receipt', code: 'console.log(1)', input: '' }));
+store.setItem('codementor-demo-placement', JSON.stringify({ version: 1, answers: [], status: 'in-progress' }));
+check('JavaScript writes have an independent language namespace', local.get(key(a, 'javascript:codementor-demo-learning')) === jsProgress && local.get(key(a, 'codementor-demo-learning')) === original);
+store.setItem('codementor-demo-language', JSON.stringify('python')); store = page();
+check('Returning to Python restores original progress with separate drafts and placement', store.getItem('codementor-demo-learning') === original && store.getItem('codementor-demo-code-receipt') === null && store.getItem('codementor-demo-placement') === null);
+store.setItem('codementor-demo-language', JSON.stringify('javascript')); store = page();
+check('JavaScript progress and draft survive a round trip', store.getItem('codementor-demo-learning') === jsProgress && JSON.parse(store.getItem('codementor-demo-code-receipt')).code === 'console.log(1)');
+const captured = store.captureOwner();
+store.setItem('codementor-demo-session', JSON.stringify(account(b)));
+assert.throws(() => store.assertOwner(captured));
+check('Account switch rejects stale ownership and does not inherit A language', store.activeLanguage() === 'python' && store.getItem('codementor-demo-language') === null);
+store = page();
+check('B does not inherit either language progress or drafts', store.getItem('codementor-demo-learning') === null && store.getItem('codementor-demo-code-receipt') === null);
+store.setItem('codementor-demo-language', JSON.stringify('rust'));
+store.setItem('codementor-demo-language-notifications', JSON.stringify({ rust: true }));
+check('Coming-soon interest is a local owner-specific flag', local.get(key(b, 'codementor-demo-language-notifications')) === '{"rust":true}' && !local.has(key(a, 'codementor-demo-language-notifications')));
+// Legacy tab records migrate only to their first owner and only to Python.
+local.clear(); session.clear(); local.set('codementor-profile-v1', JSON.stringify(account(a)));
+session.set('codementor-demo-learning', original);
+session.set('codementor-demo-onboarding', JSON.stringify({ language: 'python', experience: 'beginner', goal: 'foundations' }));
+store = page();
+check('Legacy tab progress imports to the unchanged Python key', store.getItem('codementor-demo-learning') === original && local.get(key(a, 'codementor-demo-learning')) === original && session.get('codementor-demo-learning') === original);
+store.setItem('codementor-demo-language', JSON.stringify('javascript')); store = page();
+store.removeItem('codementor-demo-learning');
+check('Removing a JavaScript record cannot delete legacy Python source', session.get('codementor-demo-learning') === original && local.get(key(a, 'codementor-demo-learning')) === original);
+store.setItem('codementor-demo-session', JSON.stringify(account(b))); store = page();
+check('Second account cannot import first owner legacy records', store.getItem('codementor-demo-learning') === null);
+session.set('codementor-demo-onboarding', JSON.stringify({ language: 'javascript' }));
+check('Second account cannot inherit first owner legacy language', store.activeLanguage() === 'python');
+console.log(`${checks} language storage and migration checks passed.`);

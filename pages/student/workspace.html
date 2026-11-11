@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Coding Workspace | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/coding-workspace.css">
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
+    <script src="../../js/python-runner.js" defer></script><script src="../../js/javascript-worker.js" defer></script><script src="../../js/javascript-runner.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script>
+    <script src="../../js/learning-support.js" defer></script>
     <script src="../../js/workspace.js" defer></script>
+    <script src="../../js/workspace-completion.js" defer></script>
+    <script src="../../js/workspace-support.js" defer></script>
 </head>
 <body class="coding-page">
-    <header class="container onboarding-header">
-    <script src="../../js/theme.js"></script>
-        <a href="../../pages/student/module.html?level=1" class="auth-back">
-            ← Python Foundations
-        </a>
+    <a href="#coding-main" class="skip-link">Skip to coding task</a>
 
-        <a href="../../pages/student/dashboard.html" class="logo">CodeMentor AI</a>
 
-        <span id="draft-status" class="coding-save-status"
-              role="status" aria-live="polite">
-            Loading draft…
-        </span>
-    </header>
-
-    <main class="container coding-layout">
-        <aside class="coding-task-panel">
-            <p class="eyebrow">LEVEL 01 · REQUIRED TASK</p>
+    <main class="coding-layout" id="coding-main">
+        <div class="coding-work-area">
+        <aside class="coding-task-panel" aria-label="Task instructions">
+            <a href="module.html?level=1" class="coding-level-back" id="task-level-back">Back to this level</a>
+            <p class="eyebrow">LEVEL 01 · OPTIONAL PRACTICE</p>
             <h1 id="task-title">Coding task</h1>
             <p id="task-description"></p>
 
@@ -43,24 +42,40 @@
             <h2>Expected output</h2>
             <pre class="lesson-output" id="expected-output"></pre>
 
-            <div class="placement-info">
-                <h3>How completion works</h3>
+            <details class="coding-completion-help">
+                <summary>How completion works</summary>
                 <p>
-                    This editor saves drafts locally. Code execution and required task tests are not connected.
-                    No task pass is awarded by this frontend demo.
+                    Run real Python in your browser. Submit your solution to check several test cases.
+                    Passing all checks saves this task to your progress on this device.
                 </p>
-            </div>
+            </details>
+
+            <details class="task-support" aria-labelledby="task-support-title">
+                <summary id="task-support-title">Hints &amp; explained solution</summary>
+                <p>Reveal one hint at a time, then try your idea in the editor.</p>
+                <ol id="task-hints" class="task-hints" aria-live="polite"></ol>
+                <button type="button" class="button button-outline" id="reveal-hint">Show first hint</button>
+                <p id="solution-help" class="coding-help"></p>
+                <button type="button" class="button button-outline" id="reveal-solution" aria-expanded="false" aria-controls="task-solution" aria-describedby="solution-help" disabled>Show explained solution</button>
+                <div id="task-solution" hidden>
+                    <h3>One possible solution</h3>
+                    <pre class="question-code"><code id="task-solution-code"></code></pre>
+                    <p id="task-solution-explanation"></p>
+                    <p class="coding-help">Close this explanation and try writing your own version before submitting again.</p>
+                </div>
+                <p id="task-support-status" class="form-message" role="status"></p>
+            </details>
 
             <a href="../../pages/student/mentor.html" class="button button-outline"
                id="mentor-link">
-                Ask AI Mentor
+                Ask AI study assistant
             </a>
         </aside>
 
         <section class="coding-editor-panel" aria-labelledby="editor-title">
             <div class="coding-editor-header">
                 <h2 id="editor-title">main.py</h2>
-                <span>Python</span>
+                <div class="coding-editor-meta"><span class="coding-language">Python</span><span id="draft-status" class="coding-save-status" role="status" aria-live="polite">Loading draft...</span></div>
             </div>
 
             <label for="code-editor" class="coding-label">
@@ -112,6 +127,7 @@
                         id="submit-code">
                     Submit solution
                 </button>
+                <button type="button" class="button button-outline" id="stop-code" hidden>Stop execution</button>
             </div>
 
             <p id="workspace-message" class="form-message"
@@ -120,13 +136,30 @@
             <section class="coding-output-panel" aria-labelledby="output-title">
                 <h2 id="output-title">Output</h2>
                 <pre id="program-output">Your program output will appear here after execution.</pre>
+                <a href="../../pages/student/code-review.html"
+   class="dashboard-text-link"
+   id="open-code-review">
+    View code review →
+</a>
             </section>
 
+            <section id="submission-completion" class="submission-completion" aria-labelledby="submission-completion-title" hidden>
+                <p class="eyebrow">SUBMISSION SAVED</p>
+                <h2 id="submission-completion-title"></h2>
+                <p id="submission-completion-description" role="status" aria-live="polite"></p>
+                <p id="submission-draft-note" class="coding-help"></p>
+                <div class="submission-next-actions">
+                    <a id="submission-certificate-link" href="certificates.html" class="button button-primary">Check certificate requirements</a>
+                    <button type="button" id="download-submission" class="button button-outline">Download submitted code (.py)</button>
+                    <a href="dashboard.html" class="button button-outline">Back to dashboard</a>
+                    <a href="../../index.html" class="dashboard-text-link">Go to homepage</a>
+                </div>
+            </section>
             <p class="coding-help">
-                Frontend demo: Python execution and required tests are
-                waiting for the backend connection.
+                Python runs on your device using the runtime included with this site. Each run has a five-second execution limit.
             </p>
         </section>
+        </div>
     </main>
 
     <dialog class="confirmation-dialog" id="reset-dialog"
@@ -153,11 +186,7 @@
     <footer class="container onboarding-footer">
         CodeMentor AI · Frontend coding workspace
     </footer>
-    <a href="../../pages/student/code-review.html"
-   class="dashboard-text-link"
-   id="open-code-review">
-    View code review →
-</a>
+
 </body>
 </html>
 

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +11,11 @@
     <title>Final Project | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
     <script src="../../js/student-workspace.js" defer></script>
-    <script src="../../js/project.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/project.js" defer></script>
 </head>
 
 <body class="workspace-page">
@@ -64,229 +67,20 @@
         </header>
 
         <main class="workspace-main" id="project-main">
-            <a href="../../pages/student/learning-path.html" class="module-back">
-                ← Back to learning path
-            </a>
+ <a class="module-back" href="learning-path.html">Back to learning path</a>
+ <p class="eyebrow">PYTHON / FINAL PROJECT</p><h1>Build a Study Task Manager</h1>
+ <p class="workspace-intro">Combine functions, lists and dictionaries in a program you can run and test.</p>
+ <p id="workspace-message" class="form-message" role="status"></p>
+ <section class="dashboard-card"><h2 id="project-status-title">Your project</h2><p id="project-status-description"></p><a id="project-workspace" class="button button-primary" href="workspace.html?task=task-manager">Open project workspace</a><a class="button button-outline" href="code-review.html?task=task-manager">Review test results</a></section>
+ <section class="dashboard-card module-section"><h2>The brief</h2><p>Read a number of task records. Each record has a title and a status: done or todo. Store the tasks in a list of dictionaries and write count_done(tasks) to count completed records.</p><p>Print a summary in the form Completed: X/N. Your solution must also handle an empty task list.</p><pre class="lesson-output">Input:
+2
+Read,done
+Code,todo
 
-            <p class="eyebrow">LEVEL 04 · FINAL PROJECT</p>
-            <h1>Build a study task manager.</h1>
-
-            <p class="workspace-intro">
-                Bring variables, control flow, functions and collections
-                together in one useful Python program.
-            </p>
-
-            <p
-                id="workspace-message"
-                class="form-message"
-                role="status"
-                aria-live="polite"
-            ></p>
-
-            <section
-                class="review-status-banner"
-                aria-labelledby="project-status-title"
-            >
-                <h2 id="project-status-title">Project locked</h2>
-
-                <p id="project-status-description">
-                    Complete the requirements of Level 03 to unlock
-                    project submission.
-                </p>
-            </section>
-
-            <p>
-                <a
-                    href="../../pages/student/project-evaluation.html"
-                    class="dashboard-text-link"
-                >
-                    View evaluation status →
-                </a>
-            </p>
-
-            <div class="module-layout">
-                <div>
-                    <section class="dashboard-card">
-                        <h2>Your project brief</h2>
-
-                        <p>
-                            Build a console application that helps a student
-                            add, view and complete study tasks.
-                        </p>
-
-                        <h3 class="lesson-small-heading">
-                            Required behaviour
-                        </h3>
-
-                        <ol class="roadmap-requirements">
-                            <li>
-                                Show a menu to add a task, list tasks,
-                                complete a task or exit.
-                            </li>
-
-                            <li>
-                                Store tasks in a list of dictionaries.
-                                Each task has an ID, title and completion status.
-                            </li>
-
-                            <li>
-                                Assign a unique ID to each new task.
-                                Reject empty titles.
-                            </li>
-
-                            <li>
-                                Display each task’s ID, title and status.
-                                Handle an empty task list.
-                            </li>
-
-                            <li>
-                                Complete a task using its ID.
-                                Handle invalid and already completed IDs.
-                            </li>
-
-                            <li>
-                                Handle invalid menu choices without crashing.
-                                Continue until the user chooses to exit.
-                            </li>
-                        </ol>
-
-                        <p class="dashboard-footnote">
-                            Data stays in memory. Saving tasks to a file
-                            is not required.
-                        </p>
-                    </section>
-
-                    <section class="dashboard-card module-section">
-                        <h2>Organize your program.</h2>
-
-                        <p>
-                            Use these functions to separate the main
-                            responsibilities:
-                        </p>
-
-                        <pre class="question-code"><code>add_task(tasks)
-list_tasks(tasks)
-complete_task(tasks)
-main()</code></pre>
-
-                        <p class="dashboard-footnote">
-                            main() owns the menu loop and calls the
-                            other functions.
-                        </p>
-                    </section>
-
-                    <section class="dashboard-card module-section">
-                        <h2>What a successful submission includes.</h2>
-
-                        <ul class="roadmap-requirements">
-                            <li>All required behaviour works</li>
-                            <li>Invalid input is handled clearly</li>
-                            <li>
-                                Functions and variable names are understandable
-                            </li>
-                            <li>
-                                README instructions explain how to run
-                                the program
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-
-                <aside class="module-aside">
-                    <section class="dashboard-card dashboard-sage">
-                        <h2>Make it your own.</h2>
-
-                        <p>
-                            Focus on a clear, reliable console experience
-                            before adding optional features.
-                        </p>
-
-                        <a
-                            href="../../pages/student/mentor.html"
-                            class="button button-outline"
-                        >
-                            Open AI Mentor
-                        </a>
-                    </section>
-
-                    <section class="dashboard-card">
-                        <h2>Starter files</h2>
-
-                        <p>
-                            A starter ZIP will contain main.py and README.md.
-                        </p>
-
-                        <button
-                            type="button"
-                            class="button button-outline project-full-button"
-                            disabled
-                        >
-                            Starter download not connected
-                        </button>
-                    </section>
-
-                    <section class="dashboard-card">
-                        <h2>Submit your project.</h2>
-
-                        <p>
-                            Upload one ZIP containing main.py and README.md.
-                            Maximum file size: 10 MB.
-                        </p>
-
-                        <form id="project-form">
-                            <fieldset
-                                id="project-upload-fields"
-                                class="project-upload-fields"
-                                disabled
-                            >
-                                <label for="project-file">
-                                    Project ZIP
-                                </label>
-
-                                <input
-                                    type="file"
-                                    id="project-file"
-                                    accept=".zip,application/zip"
-                                    aria-describedby="project-file-help"
-                                    required
-                                >
-
-                                <p
-                                    id="project-file-help"
-                                    class="dashboard-footnote"
-                                >
-                                    File selection is local.
-                                    No upload occurs yet.
-                                </p>
-
-                                <p
-                                    id="selected-file"
-                                    class="project-file-name"
-                                ></p>
-
-                                <button
-                                    type="submit"
-                                    class="button button-primary project-full-button"
-                                >
-                                    Submit project
-                                </button>
-                            </fieldset>
-                        </form>
-
-                        <p
-                            id="project-upload-message"
-                            class="form-message"
-                            role="status"
-                            aria-live="polite"
-                        ></p>
-                    </section>
-                </aside>
-            </div>
-
-            <footer class="workspace-footer">
-                CodeMentor AI · Frontend demo · Final project brief
-            </footer>
-        </main>
+Output:
+Completed: 1/2</pre><p>The workspace includes starter code, detailed requirements and automated test cases. Start there, then use the test results to improve your solution.</p></section>
+ <section class="dashboard-card module-section"><h2>After you pass</h2><p>Extend your own version with commands to add, list and complete tasks. Keep the tested version as a baseline before adding features.</p></section>
+</main>
     </div>
 </body>
 </html>

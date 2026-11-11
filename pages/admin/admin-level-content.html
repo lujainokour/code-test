@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="../../js/theme.js"></script>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script><script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,7 +15,7 @@
     <script src="../../js/admin-workspace.js" defer></script>
     <script src="../../js/admin-course-data.js" defer></script>
     <script src="../../js/course-content-store.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/admin-level-content.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/admin-level-content.js" defer></script>
 </head>
 
 <body class="workspace-page">
@@ -74,7 +75,7 @@
 <form id="lesson-editor" class="content-editor"><fieldset>
 <div class="form-field"><label for="edit-lesson-title">Lesson title</label><input id="edit-lesson-title" maxlength="120" required></div>
 <div class="form-field"><label for="edit-lesson-summary">Short introduction</label><textarea id="edit-lesson-summary" rows="3" maxlength="1000"></textarea></div>
-<div class="form-field"><label for="edit-lesson-builtin">Existing Python demo lesson (optional)</label><select id="edit-lesson-builtin"><option value="">Use my own platform content</option></select><p class="field-help">Link an existing Python lesson to keep its prepared explanation and attach your own external sources.</p></div>
+<div class="form-field"><label for="edit-lesson-builtin">Existing built-in lesson (optional)</label><select id="edit-lesson-builtin"><option value="">Use my own platform content</option></select><p class="field-help">Link an existing lesson in this course's language to keep its prepared explanation and attach your own external sources.</p></div>
 <div class="form-field"><label for="edit-lesson-content">Platform explanation (plain text)</label><textarea id="edit-lesson-content" rows="10" maxlength="30000"></textarea><p class="field-help">Separate paragraphs with blank lines. HTML is displayed as text, not executed.</p></div>
 <div class="form-field"><label for="edit-lesson-code">Prepared code example (optional)</label><textarea id="edit-lesson-code" rows="6" maxlength="15000" spellcheck="false"></textarea></div>
 <div class="form-field"><label for="edit-lesson-output">Prepared example output (optional)</label><textarea id="edit-lesson-output" rows="3" maxlength="10000"></textarea></div>

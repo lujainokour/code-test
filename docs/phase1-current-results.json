@@ -1,0 +1,112 @@
+﻿[
+    {
+        "suite":  "learning-upgrade",
+        "passed":  36,
+        "failed":  0,
+        "completed":  36,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\learning-upgrade.log"
+    },
+    {
+        "suite":  "learning-support",
+        "passed":  22,
+        "failed":  0,
+        "completed":  22,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\learning-support.log"
+    },
+    {
+        "suite":  "site-fixes",
+        "passed":  3,
+        "failed":  0,
+        "completed":  3,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\site-fixes.log"
+    },
+    {
+        "suite":  "submission-completion",
+        "passed":  36,
+        "failed":  0,
+        "completed":  36,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\submission-completion.log"
+    },
+    {
+        "suite":  "kahoot-challenge",
+        "passed":  18,
+        "failed":  0,
+        "completed":  18,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\kahoot-challenge.log"
+    },
+    {
+        "suite":  "user-guide",
+        "passed":  34,
+        "failed":  0,
+        "completed":  34,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\user-guide.log"
+    },
+    {
+        "suite":  "certificates",
+        "passed":  12,
+        "failed":  0,
+        "completed":  12,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\certificates.log"
+    },
+    {
+        "suite":  "services-input",
+        "passed":  8,
+        "failed":  0,
+        "completed":  8,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\services-input.log"
+    },
+    {
+        "suite":  "services-arrival",
+        "passed":  75,
+        "failed":  0,
+        "completed":  75,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\services-arrival.log"
+    },
+    {
+        "suite":  "footer-visual",
+        "passed":  30,
+        "failed":  0,
+        "completed":  30,
+        "exitCode":  0,
+        "shellErrors":  0,
+        "jsErrors":  0,
+        "consoleErrors":  0,
+        "log":  "C:\\Users\\user\\AppData\\Local\\Temp\\cm-stability-ps-4291138934de469887f95bc60a1610a5\\footer-visual.log"
+    }
+]

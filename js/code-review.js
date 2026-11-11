@@ -2,8 +2,10 @@
 if (window.learningUnavailable) return;
 const taskNames = {
     "student-profile": "Create a student profile",
-    receipt: "Build a simple receipt"
+    receipt: "Build a simple receipt",
+    "grade-checker": "Check a grade", "sum-numbers": "Sum a range", "list-summary": "Summarise a list", "task-manager": "Build a Study Task Manager"
 };
+Object.assign(taskNames, Object.fromEntries(Object.values(window.pythonCurriculum.tasks).map(task => [task.id, task.title])));
 
 const taskId = new URLSearchParams(
     window.location.search
@@ -36,7 +38,7 @@ function loadDraft() {
         `../student/mentor.html?task=${encodeURIComponent(taskId)}`;
 
     try {
-        const saved = sessionStorage.getItem(
+        const saved = window.cmStorage.getItem(
             `codementor-demo-code-${taskId}`
         );
 
@@ -57,6 +59,28 @@ function loadDraft() {
         }
 
         codeElement.textContent = draft.code || "# Your draft is empty";
+        const progressText = window.cmStorage.getItem("codementor-demo-learning");
+        const progress = progressText === null ? null : JSON.parse(progressText);
+        const last = progress?.taskResults?.[taskId];
+        const banner = document.querySelector(".review-status-banner");
+        const results = document.querySelector(".review-empty-state"); results.replaceChildren();
+        if (!last || !Array.isArray(last.cases)) {
+            document.getElementById("evaluation-title").textContent = "Ready to test your solution";
+            banner.querySelector("p").textContent = "Open the coding workspace and submit your solution to run the automated checks.";
+            results.textContent = "No test results saved yet.";
+        } else {
+            document.getElementById("evaluation-title").textContent = `${last.passed} / ${last.total} checks passed`;
+            banner.querySelector("p").textContent = last.code === draft.code ? "Results from your latest checked solution on this device." : "These results are from an earlier solution. Your current draft has changed; submit it again to check the changes.";
+            last.cases.forEach((test, index) => {
+                const title = document.createElement("h3"); title.textContent = `Test ${index + 1}: ${test.passed ? "Passed" : "Needs work"}`;
+                const detail = document.createElement("pre"); detail.className = "lesson-output";
+                detail.textContent = `Input: ${test.input || "(none)"}\nExpected:\n${test.expected}\nYour output:\n${test.output || "(empty)"}${test.error ? "\n" + test.error : ""}`;
+                results.append(title, detail);
+            });
+            if (last.cases.length < last.total) {
+                const note = document.createElement("p"); note.textContent = "Remaining checks were not run after the first failure. Fix the issue and submit again."; results.append(note);
+            }
+        }
     } catch {
         codeElement.textContent = "Saved draft unavailable.";
 

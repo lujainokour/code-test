@@ -1,0 +1,23 @@
+const fs = require('node:fs'), vm = require('node:vm'), assert = require('node:assert/strict'), crypto = require('node:crypto');
+const records = new Map();
+const localStorage = { getItem: key => records.get(key) ?? null, setItem: (key, value) => records.set(key, String(value)) };
+const account = { name: 'Language Publisher', email: 'publisher@example.com', role: 'student', isDemo: true };
+let language = 'javascript';
+const window = { cmStorage: { activeLanguage: () => language, getItem: key => key === 'codementor-demo-session' ? JSON.stringify(account) : null }, dispatchEvent() {}, addEventListener() {} };
+const context = vm.createContext({ window, document: { addEventListener() {} }, localStorage, sessionStorage: { getItem: () => null }, crypto, URL, CustomEvent: class {} });
+for (const file of ['language-catalog', 'platform-store']) vm.runInContext(fs.readFileSync('js/' + file + '.js', 'utf8'), context);
+const store = window.platformStore; store.registerStudent(account);
+const profile = { bio: 'A self-reported learning profile.', skills: ['JavaScript', 'Functions'], projects: [{ title: 'Task summary', description: 'Self-reported example.', url: 'https://github.com/example/learning-demo' }] };
+let count = 0;
+function check(name, condition) { assert.ok(condition, name); count++; console.log('PASS ' + name); }
+store.publish(profile, account.email);
+check('Published profile uses the selected JavaScript language id', store.publishedStudents()[0].languageId === 'javascript' && store.publishedStudents()[0].language === 'JavaScript');
+check('Company talent snapshot retains the same active language id', store.publishedTalent()[0].languageId === 'javascript' && store.publishedTalent()[0].learning.includes('JavaScript'));
+check('Language metadata does not expose private account email', !JSON.stringify(store.publishedTalent()).includes(account.email));
+language = 'python';
+check('Changing a private preference cannot silently republish a public profile', store.publishedTalent()[0].languageId === 'javascript');
+store.publish(profile, account.email);
+check('Explicit republishing updates selected language without replacing self-reported skills', store.publishedTalent()[0].languageId === 'python' && store.publishedTalent()[0].skills.includes('JavaScript'));
+assert.throws(() => store.publish(profile, 'someone-else@example.com'));
+check('Stale publishing owner is rejected', store.publishedTalent()[0].languageId === 'python');
+console.log(`${count} language publishing checks passed.`);

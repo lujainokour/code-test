@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="js/learning-storage.js"></script><script src="js/platform-store.js"></script>
+    <script src="js/access-guard.js"></script>
     <script src="js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,14 +27,14 @@
     <script src="js/main.js" defer></script>
     <script src="js/hero-background.js" defer></script>
     <script src="js/home-effects.js" defer></script>
+    <script src="js/service-entry.js" defer></script>
 </head>
 
 <body class="home-page">
     <a class="skip-link" href="#main">Skip to content</a>
 
-    
+    <!-- NAVIGATION -->
     <header class="site-header">
-    <script src="js/theme.js"></script>
         <nav class="container navbar" aria-label="Main navigation">
             <a class="logo brand-logo" href="index.html">
                 <img
@@ -68,24 +70,25 @@
 
                 <div class="nav-actions">
                     <a href="pages/auth/login.html" class="button button-outline">
+                        <svg class="nav-account-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="3.5"></circle>
+                            <path d="M5 20v-2a7 7 0 0 1 14 0v2"></path>
+                        </svg>
                         Sign in
                     </a>
 
-                    <a href="pages/auth/signup.html" class="button button-primary">
-                        Get started
-                    </a>
                 </div>
             </div>
         </nav>
     </header>
 
     <main id="main">
-        
+        <!-- HERO -->
         <section
             class="hero-video-shell"
             aria-labelledby="hero-title"
         >
-            
+            <!-- ENERGY LINES -->
             <svg
                 class="hero-energy"
                 viewBox="0 0 1440 800"
@@ -144,7 +147,7 @@
                 </g>
             </svg>
 
-            
+            <!-- EXISTING HERO VIDEO -->
             <div class="hero-video-background" aria-hidden="true">
                 <video
                     id="hero-background-video"
@@ -207,10 +210,10 @@
             </button>
         </section>
 
-        
+        <!-- CONTENT BELOW THE HERO -->
         <div class="home-content">
 
-            
+            <!-- 01: FEATURES -->
             <section
                 class="hc-section"
                 id="features"
@@ -292,7 +295,7 @@
                 </div>
             </section>
 
-            
+            <!-- 02: JOURNEY -->
             <section
                 class="hc-section hc-dark"
                 id="how-it-works"
@@ -392,7 +395,7 @@
                 </div>
             </section>
 
-            
+            <!-- 03: LANGUAGES -->
             <section
                 class="hc-section hc-blue"
                 id="modules"
@@ -410,10 +413,12 @@
                             <span>One place to grow.</span>
                         </h2>
 
-                        <p class="hc-intro">
-                            Explore a growing catalogue of programming languages.
-                            Python is the first path in the current demo. Other full paths are coming soon.
-                        </p>
+                        <div class="hc-language-intro">
+                            <p class="hc-intro">
+                                Explore a growing catalogue of programming languages.
+                                Python and JavaScript paths are available. Other full paths are coming soon.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="hc-languages">
@@ -497,7 +502,21 @@
                         </article>
                     </div>
 
-                    <p><a class="button button-outline" href="pages/public/languages.html">Browse all programming languages</a></p>
+                    <aside class="language-discover" aria-labelledby="language-discover-title">
+                        <div class="language-discover-copy">
+                            <span class="language-discover-label">13 LANGUAGES. MORE POSSIBILITIES.</span>
+                            <h3 id="language-discover-title">Your next language is waiting.</h3>
+                            <p>Explore the Python and JavaScript learning paths. Other full language paths are coming soon.</p>
+                        </div>
+                        <a class="language-discover-button" href="pages/public/languages.html">Explore all languages <span aria-hidden="true">↗</span></a>
+                        <div class="language-discover-window" aria-hidden="true">
+                            <div class="language-discover-track">
+                                <div class="language-discover-group"><span>JavaScript</span><span>TypeScript</span><span>Java</span><span>Rust</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>PHP</span><span>Ruby</span></div>
+                                <div class="language-discover-group"><span>JavaScript</span><span>TypeScript</span><span>Java</span><span>Rust</span><span>Go</span><span>Swift</span><span>Kotlin</span><span>PHP</span><span>Ruby</span></div>
+                            </div>
+                        </div>
+                    </aside>
+
                     <div class="hc-path-summary">
                         <strong>Your Python journey</strong>
 
@@ -514,7 +533,7 @@
                 </div>
             </section>
 
-            
+            <!-- 04: MENTOR -->
             <section
                 class="hc-section"
                 aria-labelledby="hc-mentor-title"
@@ -582,22 +601,22 @@
                 </div>
             </section>
 
-            
+            <!-- STUDENT SERVICES -->
             <section class="hc-section home-services" id="student-services" aria-labelledby="student-services-title">
                 <div class="container">
                     <p class="eyebrow">GROW WITH YOUR COMMUNITY</p>
                     <h2 id="student-services-title">More ways to learn and build.</h2>
                     <p class="hc-intro">Connect ideas, explore peer guidance and discover what fellow learners can create.</p>
                     <div class="services-grid">
-                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">01</span><span>/ TOGETHER</span></p><span class="service-cherries" aria-hidden="true"><i></i><i></i></span></div><h3>Student Community</h3><p>Exchange knowledge, support fellow learners and share achievements. The Discord link has not been added yet.</p><a class="button button-outline" href="pages/services/community.html"><span>Explore the community</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
-                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">02</span><span>/ GUIDANCE</span></p><span class="service-cherries" aria-hidden="true"><i></i><i></i></span></div><h3>Peer Mentoring</h3><p>Explore paid sessions from demo admin-approved student mentors. Booking is a local simulation.</p><a class="button button-outline" href="pages/services/peer-mentoring.html"><span>Explore peer sessions</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
-                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">03</span><span>/ DISCOVER</span></p><span class="service-cherries" aria-hidden="true"><i></i><i></i></span></div><h3>Student Showcase</h3><p>Discover public student demo profiles, programming skills and project ideas across our language paths.</p><a class="button button-outline" href="pages/services/showcase.html"><span>Explore student work</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
-                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">04</span><span>/ CREATE</span></p><span class="service-cherries" aria-hidden="true"><i></i><i></i></span></div><h3>Student Freelance Services</h3><p>Browse programming services offered by students, try a local request or prepare your own private service draft.</p><a class="button button-outline" href="pages/services/freelance-services.html"><span>Explore student services</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
+                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">01</span><span>/ TOGETHER</span></p><video class="service-cherry-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/videos/cherry-alpha.webm" type="video/webm"></video></div><h3>Student Community</h3><p>Join private study communities, request channel access and discuss lessons, notes and projects with approved members.</p><a class="button button-outline" href="pages/auth/login.html?next=pages%2Fservices%2Fcommunity.html" data-service-target="pages/services/community.html"><span><small class="service-access-note">Sign in required</small>Explore the community</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
+                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">02</span><span>/ GUIDANCE</span></p><video class="service-cherry-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/videos/cherry-alpha.webm" type="video/webm"></video></div><h3>Student-led Sessions</h3><p>Book a focused learning session with a skilled fellow student, or apply to offer your own teaching sessions.</p><a class="button button-outline" href="pages/auth/login.html?next=pages%2Fservices%2Fpeer-mentoring.html" data-service-target="pages/services/peer-mentoring.html"><span><small class="service-access-note">Sign in required</small>Explore student-led sessions</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
+                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">03</span><span>/ DISCOVER</span></p><video class="service-cherry-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/videos/cherry-alpha.webm" type="video/webm"></video></div><h3>Student Showcase</h3><p>Discover public student demo profiles, programming skills and project ideas across our language paths.</p><a class="button button-outline" href="pages/auth/login.html?next=pages%2Fservices%2Fshowcase.html" data-service-target="pages/services/showcase.html"><span><small class="service-access-note">Sign in required</small>Explore student work</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
+                        <article class="services-card"><div class="service-card-top"><p class="eyebrow"><span class="service-number">04</span><span>/ CREATE</span></p><video class="service-cherry-video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1"><source src="assets/videos/cherry-alpha.webm" type="video/webm"></video></div><h3>Student Freelance Services</h3><p>Browse programming services offered by students, try a local request or prepare your own private service draft.</p><a class="button button-outline" href="pages/auth/login.html?next=pages%2Fservices%2Ffreelance-services.html" data-service-target="pages/services/freelance-services.html"><span><small class="service-access-note">Sign in required</small>Explore student services</span><span class="service-arrow" aria-hidden="true">↗</span></a></article>
                     </div>
                 </div>
             </section>
 
-            
+            <!-- 05: FAQ -->
             <section
                 class="hc-section hc-blue"
                 id="faq"
@@ -634,8 +653,9 @@
                             </summary>
 
                             <p>
-                                Complete the required lessons and tasks,
-                                then score at least 70% in the level assessment.
+                                Complete the four lessons in each level,
+                                then score at least 70% in its quiz.
+                                Coding tasks provide additional practice.
                             </p>
                         </details>
 
@@ -667,7 +687,7 @@
                 </div>
             </section>
 
-            
+            <!-- FINAL INVITATION -->
             <section
                 class="hc-closing"
                 aria-labelledby="hc-closing-title"
@@ -695,7 +715,7 @@
         </div>
     </main>
 
-    
+    <!-- FOOTER -->
     <footer class="site-footer" id="contact">
         <div class="container footer-inner">
             <div class="footer-brand">
@@ -723,6 +743,8 @@
                     <li><a href="#student-services">Student services</a></li>
                     <li><a href="#faq">FAQ</a></li>
                     <li><a href="pages/auth/login.html">Sign in</a></li>
+
+                    <li><a href="pages/auth/company-login.html">Company & Hiring portal</a></li>
                 </ul>
             </nav>
 
@@ -739,9 +761,9 @@
                         <span>GitHub</span>
                         <span class="footer-sr-only"> (opens in a new tab)</span>
                     </a>
-                    <a href="tel:+962779994475">
-                        <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m8 3 3 5-3 2c1.5 3 3 4.5 6 6l2-3 5 3-1 4c-1 3-8-1-12-5S0 4 3 3Z"/></svg>
-                        <span class="footer-contact-text"><span class="footer-contact-label">Phone</span><span dir="ltr">0779994475</span></span>
+                    <a href="https://wa.me/qr/OLHW7VLAKBJ4M1" target="_blank" rel="noopener noreferrer" aria-label="Phone — contact me on WhatsApp (opens in a new tab)">
+                        <svg class="footer-contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 10V7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v3h-4V8H8v2Z"/><path d="M8 11H6L3 18v2h18v-2l-3-7h-2M9 8v3h6V8"/><circle cx="12" cy="15.5" r="2.5"/></svg>
+                        <span>Phone</span>
                     </a>
                 </address>
             </section>

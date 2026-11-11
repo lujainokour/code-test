@@ -1,205 +1,51 @@
 (() => {
-if (window.learningUnavailable) return;
-/*
-    Shared progress format for the coming lesson and task pages:
-
-    {
-        version: 1,
-        lessons: ["variables"],
-        tasks: ["student-profile"],
-        assessments: {
-            "1": { score: 75 }
+    if (window.learningUnavailable) return;
+    const course = window.pythonCurriculum, level = course.selected;
+    const byId = id => document.getElementById(id);
+    const node = (tag, text) => { const element = document.createElement(tag); element.textContent = text; return element; };
+    const taskNames = { 'student-profile': 'Create a student profile', receipt: 'Build a receipt', 'grade-checker': 'Check a grade', 'sum-numbers': 'Sum a range', 'list-summary': 'Summarise a list', 'task-manager': 'Build a task manager' };
+    Object.assign(taskNames, Object.fromEntries(Object.values(course.tasks).map(task => [task.id, task.title])));
+    function render() {
+        try {
+            const progress = course.read();
+            document.querySelector('main h1').textContent = level.title;
+            document.querySelector('main > .eyebrow').textContent = `LEVEL ${level.id} / ${course.name.toUpperCase()}`;
+            document.querySelector('.workspace-intro').textContent = level.goal;
+            const lists = document.querySelectorAll('.module-activities'); lists.forEach(list => list.replaceChildren());
+            level.lessons.forEach((lesson, index) => {
+                const item = node('li', ''), info = node('div', '');
+                info.append(node('h3', `${index + 1}. ${lesson.title}`), node('p', lesson.intro), node('span', `About ${lesson.minutes} minutes`));
+                const link = node('a', progress.lessons.includes(lesson.id) ? 'Review' : 'Start');
+                link.className = 'button button-outline'; link.href = `lesson.html?lesson=${lesson.id}`; link.dataset.lessonLink = lesson.id;
+                item.append(info, link); lists[0].append(item);
+            });
+            level.tasks.forEach(id => {
+                const item = node('li', ''), info = node('div', '');
+                info.append(node('h3', taskNames[id]), node('p', `Run your ${course.name} solution and pass all automated checks.`));
+                const link = node('a', progress.tasks.includes(id) ? 'Review passed task' : 'Practise');
+                link.className = 'button button-outline'; link.href = `workspace.html?task=${id}`; link.dataset.taskLink = id;
+                item.append(info, link); lists[1].append(item);
+            });
+            const goals = document.querySelector('.module-aside .roadmap-requirements'); goals.replaceChildren();
+            level.objectives.forEach(objective => goals.append(node('li', objective)));
+            const progression = document.getElementById('level-progression');
+            if (progression) progression.textContent = level.progression;
+            const remaining = level.lessons.filter(lesson => !progress.lessons.includes(lesson.id));
+            byId('lesson-progress').textContent = `Lessons: ${level.lessons.length - remaining.length} / ${level.lessons.length}`;
+            byId('task-progress').textContent = `Practice tasks passed: ${level.tasks.filter(id => progress.tasks.includes(id)).length} / ${level.tasks.length}`;
+            const score = progress.assessments[level.id]?.score;
+            byId('assessment-progress').textContent = Number.isFinite(score) ? `Quiz best score: ${score}% / ${score >= 70 ? 'Passed' : 'Try again'}` : 'Quiz: not attempted';
+            byId('assessment-link').href = `level-assessment.html?level=${level.id}`;
+            byId('assessment-link').hidden = remaining.length > 0;
+            byId('assessment-locked').hidden = remaining.length === 0;
+            byId('assessment-note').textContent = remaining.length ? `Complete ${remaining.length} remaining lessons to unlock the quiz.` : level.progression;
+            byId('remaining-requirements').replaceChildren(...remaining.map(lesson => node('li', lesson.title)));
+        } catch (error) {
+            byId('workspace-message').textContent = error.message;
+            byId('assessment-link').hidden = true;
         }
     }
-
-    This is demo progress, not server-verified achievement.
-*/
-
-const progressKey = "codementor-demo-learning";
-
-const requiredLessons = [
-    { id: "variables", title: "Variables and values" },
-    { id: "data-types", title: "Data types" },
-    { id: "input-output", title: "Input and output" },
-    { id: "numbers", title: "Working with numbers" }
-];
-
-const requiredTasks = [
-    { id: "student-profile", title: "Create a student profile" },
-    { id: "receipt", title: "Build a simple receipt" }
-];
-
-const lessonProgress = document.getElementById("lesson-progress");
-const taskProgress = document.getElementById("task-progress");
-const assessmentProgress = document.getElementById("assessment-progress");
-
-const assessmentLink = document.getElementById("assessment-link");
-const lockedButton = document.getElementById("assessment-locked");
-const assessmentNote = document.getElementById("assessment-note");
-
-const requirementsDialog = document.getElementById("requirements-dialog");
-const remainingList = document.getElementById("remaining-requirements");
-const closeButton = document.getElementById("close-requirements");
-const workspaceMessage = document.getElementById("workspace-message");
-
-let remainingActivities = [];
-let progressAvailable = true;
-
-function readProgress() {
-    const emptyProgress = {
-        version: 1,
-        lessons: [],
-        tasks: [],
-        assessments: {}
-    };
-
-    try {
-        const saved = sessionStorage.getItem(progressKey);
-
-        if (!saved) {
-            return emptyProgress;
-        }
-
-        const progress = JSON.parse(saved);
-
-        if (
-            progress?.version !== 1 ||
-            !Array.isArray(progress.lessons) ||
-            !Array.isArray(progress.tasks) ||
-            !progress.assessments ||
-            typeof progress.assessments !== "object" ||
-            Array.isArray(progress.assessments)
-        ) {
-            throw new Error("Invalid progress");
-        }
-
-        return progress;
-    } catch {
-        progressAvailable = false;
-
-        workspaceMessage.textContent =
-            "Saved progress could not be loaded. The assessment remains locked.";
-
-        workspaceMessage.classList.add("is-error");
-
-        return emptyProgress;
-    }
-}
-
-function updateModule() {
-    const requestedLevel = new URLSearchParams(
-        window.location.search
-    ).get("level");
-
-    if (requestedLevel && requestedLevel !== "1") {
-        window.location.replace("../student/learning-path.html");
-        return;
-    }
-
-    progressAvailable = true;
-    const progress = readProgress();
-
-    const completedLessons = requiredLessons.filter(function (lesson) {
-        return progress.lessons.includes(lesson.id);
-    });
-
-    const completedTasks = requiredTasks.filter(function (task) {
-        return progress.tasks.includes(task.id);
-    });
-
-    lessonProgress.textContent =
-        `Lessons: ${completedLessons.length} / ${requiredLessons.length}`;
-
-    taskProgress.textContent =
-        `Required tasks: ${completedTasks.length} / ${requiredTasks.length}`;
-
-    document.querySelectorAll("[data-lesson-link]").forEach(function (link) {
-        const completed = progress.lessons.includes(
-            link.dataset.lessonLink
-        );
-
-        link.textContent = completed ? "Review" : "Start";
-    });
-
-    document.querySelectorAll("[data-task-link]").forEach(function (link) {
-        const completed = progress.tasks.includes(
-            link.dataset.taskLink
-        );
-
-        link.textContent = completed ? "Review task" : "Start task";
-    });
-
-    remainingActivities = [
-        ...requiredLessons.filter(function (lesson) {
-            return !progress.lessons.includes(lesson.id);
-        }).map(function (lesson) {
-            return `Lesson: ${lesson.title}`;
-        }),
-
-        ...requiredTasks.filter(function (task) {
-            return !progress.tasks.includes(task.id);
-        }).map(function (task) {
-            return `Task: ${task.title}`;
-        })
-    ];
-
-    const assessment = progress.assessments["1"];
-
-    const hasScore = (
-        typeof assessment?.score === "number" &&
-        Number.isFinite(assessment.score) &&
-        assessment.score >= 0 &&
-        assessment.score <= 100
-    );
-
-    assessmentProgress.textContent = hasScore
-        ? `Assessment: ${assessment.score}% · ${
-            assessment.score >= 70 ? "Passed" : "Not passed"
-        }`
-        : "Assessment: Not attempted";
-
-    const unlocked = (
-        progressAvailable &&
-        remainingActivities.length === 0
-    );
-
-    assessmentLink.hidden = !unlocked;
-    lockedButton.hidden = unlocked;
-
-    if (unlocked) {
-        assessmentLink.textContent = hasScore
-            ? assessment.score >= 70
-                ? "View assessment result"
-                : "Retry assessment"
-            : "Start assessment";
-
-        assessmentNote.textContent =
-            "Required lessons and tasks complete. Assessment available.";
-    } else {
-        assessmentNote.textContent =
-            "Locked until required lessons and tasks are complete.";
-    }
-}
-
-lockedButton.addEventListener("click", function () {
-    remainingList.replaceChildren();
-
-    const items = progressAvailable
-        ? remainingActivities
-        : ["Restore access to your saved progress and reload this page."];
-
-    items.forEach(function (text) {
-        const item = document.createElement("li");
-        item.textContent = text;
-        remainingList.append(item);
-    });
-
-    requirementsDialog.showModal();
-});
-
-closeButton.addEventListener("click", function () {
-    requirementsDialog.close();
-});
-
-window.addEventListener("pageshow", updateModule);
+    byId('assessment-locked').addEventListener('click', () => byId('requirements-dialog').showModal());
+    byId('close-requirements').addEventListener('click', () => byId('requirements-dialog').close());
+    render(); window.addEventListener('pageshow', render);
 })();

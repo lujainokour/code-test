@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +11,12 @@
     <title>Learning Path | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
     <script src="../../js/student-workspace.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script>
     <script src="../../js/learning-path.js" defer></script>
 </head>
 <body class="workspace-page">
@@ -83,7 +88,7 @@
                     <div class="roadmap-track">
                         <div>
                             <p class="eyebrow">YOUR TRACK</p>
-                            <h2 id="track-title">Python · 4 levels</h2>
+                            <h2 id="track-title">Python · 6 levels</h2>
                         </div>
 
                         <span class="track-badge">Python available now</span>
@@ -173,12 +178,12 @@
 
                         <ul class="roadmap-requirements">
                             <li>All required lessons</li>
-                            <li>All required task tests</li>
+                            <li>Coding tasks are optional practice</li>
                             <li>The level assessment with at least 70%</li>
                         </ul>
 
-                        <p class="dashboard-footnote">
-                            The final project becomes available after Level 03.
+                        <p class="dashboard-footnote" data-curriculum-summary>
+                            Six Python levels are available. Levels 1-5 are free; Level 6 uses the Premium preview. Pass each level quiz to continue and practise in the coding workspace.
                         </p>
                     </section>
 
@@ -206,6 +211,12 @@
                         <a href="../../pages/student/progress.html" class="button button-outline">
                             View my progress
                         </a>
+                    </section>
+                    <section class="dashboard-card subscription-roadmap-card">
+                        <p class="eyebrow">FREE THROUGH LEVEL 5</p>
+                        <h2>Keep learning as you grow.</h2>
+                        <p data-curriculum-access>Levels 1 to 5 are included in Free. Level 6 continues with advanced Python in the Premium preview.</p>
+                        <a href="subscription.html" class="button button-outline">Compare plans</a>
                     </section>
                 </aside>
             </div>

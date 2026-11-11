@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <noscript><meta http-equiv="refresh" content="0;url=../auth/login.html"><style>body{display:none!important}</style></noscript>
     <script src="../../js/theme.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +11,10 @@
     <title>Dashboard | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
+    <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/placement-data.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/dashboard.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/dashboard.js" defer></script>
 </head>
 <body class="workspace-page">
     <a href="#dashboard-main" class="skip-link">Skip to content</a>
@@ -67,20 +70,26 @@
 
         <main class="workspace-main" id="dashboard-main">
     <p class="eyebrow">YOUR NEXT STEP</p><h1 id="dashboard-greeting">Your demo workspace.</h1>
-    <p class="workspace-intro">Review your selected language, available learning records and private local requests.</p>
+    <p class="workspace-intro">Continue your next lesson, check your progress and revisit topics that need practice.</p>
     <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
-    <p class="services-notice" id="dashboard-provenance">Learning and placement records are shared in this browser tab. They are not verified or attributed to the active account. Request counts below are filtered to the current demo account.</p>
+    <section class="dashboard-card dashboard-next-step" aria-labelledby="next-title"><p class="eyebrow">1 / CONTINUE LEARNING</p><h2 id="next-title">Next step</h2><p id="next-description"></p><div id="next-actions" class="dashboard-actions"></div></section>
     <div class="dashboard-stats">
         <article class="dashboard-stat"><p>SELECTED LANGUAGE</p><h2 id="selected-language">Not loaded</h2></article>
-        <article class="dashboard-stat"><p>SHARED PYTHON LESSONS RECORDED</p><h2 id="recorded-lessons">Not loaded</h2><p id="recorded-tasks"></p></article>
-        <article class="dashboard-stat"><p>SHARED PYTHON PLACEMENT</p><h2 id="placement-score">Not loaded</h2></article>
+        <article class="dashboard-stat"><p>PYTHON LESSONS COMPLETED</p><h2 id="recorded-lessons">Not loaded</h2><p id="recorded-tasks"></p></article>
+        <article class="dashboard-stat"><p>CURRENT LEVEL</p><h2 id="current-level">Not loaded</h2><p id="level-progress-label"></p><progress id="level-progress-bar" max="100" value="0" aria-label="Python Level 01 completion"></progress></article>
+        <article class="dashboard-stat"><p>PYTHON PLACEMENT</p><h2 id="placement-score">Not loaded</h2></article>
     </div>
     <div class="dashboard-grid">
-        <section class="dashboard-card" aria-labelledby="next-title"><p class="eyebrow">BASED ON AVAILABLE RECORDS</p><h2 id="next-title">Next step</h2><p id="next-description"></p><div id="next-actions" class="dashboard-actions"></div><p class="dashboard-footnote">Code execution and task verification are not connected. Saving a solution does not award a task pass or unlock the assessment.</p></section>
-        <section class="dashboard-card dashboard-sage" aria-labelledby="snapshot-title"><h2 id="snapshot-title">Shared placement evidence</h2><div id="skill-snapshot"></div><a id="placement-link" class="button button-outline" href="../../pages/student/onboarding.html">Choose learning preferences</a><p class="dashboard-footnote">Placement results belong to this tab's Python demo history, not a verified student account.</p></section>
-        <section class="dashboard-card" aria-labelledby="path-title"><div class="dashboard-card-heading"><h2 id="path-title">Selected path</h2><a id="path-link" class="dashboard-text-link" href="../../pages/public/languages.html">Browse languages</a></div><ol class="dashboard-levels" id="dashboard-levels"></ol><p class="dashboard-footnote">Only Python Level 01 has the original demo path. Later levels and other full language paths are not available. Locally authored lessons are separate previews.</p><a class="dashboard-text-link" href="../../pages/student/learning-report.html">Preview available learning report</a></section>
-        <section class="dashboard-card" aria-labelledby="activity-title"><h2 id="activity-title">My local activity</h2><p>Only records with the active demo account as owner are counted. No request has been sent to another person or confirmed.</p><dl class="dashboard-local-counts"><div><dt>Booking requests</dt><dd id="booking-count">Not loaded</dd></div><div><dt>Service requests</dt><dd id="request-count">Not loaded</dd></div><div><dt>Private service drafts</dt><dd id="draft-count">Not loaded</dd></div></dl><div class="dashboard-actions"><a class="button button-outline" href="../../pages/student/requests.html">View my local requests</a><a class="dashboard-text-link" href="../../pages/services/service-draft.html">View my private drafts</a></div></section>
+        <div class="dashboard-column">
+            <section class="dashboard-card" aria-labelledby="review-title"><p class="eyebrow">2 / FOCUS YOUR PRACTICE</p><h2 id="review-title">Topics to revisit</h2><div id="dashboard-review"></div></section>
+            <section class="dashboard-card dashboard-sage" aria-labelledby="snapshot-title"><h2 id="snapshot-title">Optional placement check</h2><div id="skill-snapshot"></div><a id="placement-link" class="button button-outline" href="../../pages/student/onboarding.html">Choose learning preferences</a><p class="dashboard-footnote">Placement helps you identify topics to review. Level quizzes track your learning progress separately.</p></section>
+        </div>
+        <div class="dashboard-column">
+            <section class="dashboard-card" aria-labelledby="path-title"><div class="dashboard-card-heading"><h2 id="path-title">Selected path</h2><a id="path-link" class="dashboard-text-link" href="../../pages/public/languages.html">Browse languages</a></div><ol class="dashboard-levels" id="dashboard-levels"></ol><p class="dashboard-footnote" data-curriculum-summary>Six Python levels. Start with foundations, then progress to advanced topics. Complete the lessons and pass the quiz with at least 70% to unlock the next level. Levels 1-5 are free; Level 6 uses the Premium preview.</p><a class="dashboard-text-link" href="../../pages/student/learning-report.html">Preview available learning report</a></section>
+            <details class="dashboard-card dashboard-secondary"><summary id="activity-title">Bookings &amp; service requests</summary><p>Only records with the active demo account as owner are counted. No request has been sent to another person or confirmed.</p><dl class="dashboard-local-counts"><div><dt>Booking requests</dt><dd id="booking-count">Not loaded</dd></div><div><dt>Service requests</dt><dd id="request-count">Not loaded</dd></div><div><dt>Private service drafts</dt><dd id="draft-count">Not loaded</dd></div></dl><div class="dashboard-actions"><a class="button button-outline" href="../../pages/student/requests.html">View my local requests</a><a class="dashboard-text-link" href="../../pages/services/service-draft.html">View my private drafts</a></div></details>
+        </div>
     </div>
+    <p class="dashboard-footnote" id="dashboard-provenance">Progress is saved on this device under your demo profile. Python runs in your browser; account sync across devices is not connected.</p>
     <footer class="workspace-footer">CodeMentor AI · Frontend demo · Student workspace</footer>
 </main>
     </div>

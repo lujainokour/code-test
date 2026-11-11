@@ -80,7 +80,7 @@
 
     function loadProfile() {
         try {
-            const sessionText = sessionStorage.getItem(sessionKey);
+            const sessionText = window.cmStorage.getItem(sessionKey);
 
             if (!sessionText) {
                 showMessage(
@@ -101,7 +101,7 @@
             }
 
             const preferencesText =
-                sessionStorage.getItem(preferencesKey);
+                window.cmStorage.getItem(preferencesKey);
 
             const preferences = preferencesText
                 ? JSON.parse(preferencesText)
@@ -175,9 +175,9 @@
         let sessionWritten = false;
 
         try {
-            previousSessionText = sessionStorage.getItem(sessionKey);
+            previousSessionText = window.cmStorage.getItem(sessionKey);
             previousPreferencesText =
-                sessionStorage.getItem(preferencesKey);
+                window.cmStorage.getItem(preferencesKey);
 
             const currentSession = previousSessionText
                 ? JSON.parse(previousSessionText)
@@ -222,20 +222,21 @@
                 goal: goalInput.value
             };
 
-            sessionStorage.setItem(
+            window.cmStorage.setItem(
                 sessionKey,
                 JSON.stringify(updatedSession)
             );
 
             sessionWritten = true;
 
-            sessionStorage.setItem(
+            window.cmStorage.setItem(
                 preferencesKey,
                 JSON.stringify(updatedPreferences)
             );
 
             savedSession = updatedSession;
             savedPreferences = updatedPreferences;
+            window.learningLanguage.select(updatedPreferences.language, updatedSession.email.trim().toLowerCase());
 
             fillForm();
             updateAccountDisplay(name);
@@ -246,15 +247,15 @@
 
             if (sessionWritten) {
                 try {
-                    sessionStorage.setItem(
+                    window.cmStorage.setItem(
                         sessionKey,
                         previousSessionText
                     );
 
                     if (previousPreferencesText === null) {
-                        sessionStorage.removeItem(preferencesKey);
+                        window.cmStorage.removeItem(preferencesKey);
                     } else {
-                        sessionStorage.setItem(
+                        window.cmStorage.setItem(
                             preferencesKey,
                             previousPreferencesText
                         );
