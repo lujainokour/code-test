@@ -48,7 +48,7 @@ try {
     Eval "document.getElementById('onboarding-language').value='python';document.querySelector('[name=experience][value=beginner]').checked=true;document.querySelector('[name=goal][value=foundations]').checked=true;document.getElementById('onboarding-form').requestSubmit();true" | Out-Null
     Start-Sleep -Milliseconds 650
     Check 'Preferences lead to dashboard without requiring optional placement' (Eval "location.pathname.endsWith('/dashboard.html') && document.querySelector('#next-actions a').href.endsWith('lesson.html?lesson=variables')")
-    Check 'Only four primary learning links are expanded on the dashboard' (Eval "document.querySelector('.shell-nav-group').querySelectorAll('a').length===4 && !document.querySelector('.dashboard-secondary').open")
+    Check 'Only four primary learning links are expanded on the dashboard' (Eval "document.querySelector('.shell-nav-group').querySelectorAll('a').length===4 && !document.getElementById('booking-count')")
     Check 'Dashboard describes all six levels' (Eval "document.querySelector('[aria-labelledby=path-title]').textContent.includes('Six Python levels')")
     Check 'Learning journey has four steps and a current marker' (Eval "document.querySelectorAll('.student-journey nav a').length===4 && document.querySelector('.student-journey [aria-current=step]')")
     Follow '#next-actions a'

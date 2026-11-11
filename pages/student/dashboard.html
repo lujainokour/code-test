@@ -10,13 +10,13 @@
 
     <title>Dashboard | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/dashboard-insights.css">
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css">
     <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/placement-data.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/dashboard.js" defer></script><script src="../../js/progress-insights.js" defer></script><script src="../../js/dashboard-insights.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/progress-insights.js" defer></script><script src="../../js/student-overview.js" defer></script><script src="../../js/student-premium.js" defer></script><script src="../../js/dashboard.js" defer></script>
 </head>
-<body class="workspace-page">
+<body class="workspace-page student-premium">
     <a href="#dashboard-main" class="skip-link">Skip to content</a>
 
     <aside class="workspace-sidebar" id="workspace-sidebar">
@@ -68,32 +68,99 @@
             </a>
         </header>
 
-        <main class="workspace-main" id="dashboard-main">
-    <p class="eyebrow">YOUR NEXT STEP</p><h1 id="dashboard-greeting">Your demo workspace.</h1>
-    <p class="workspace-intro">Continue your next lesson, check your progress and revisit topics that need practice.</p>
-    <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
-    <section class="dashboard-card dashboard-continue" id="continue-card" aria-labelledby="continue-title" hidden><p class="eyebrow">CONTINUE WHERE YOU LEFT OFF</p><h2 id="continue-title">Loading your progress…</h2><p id="continue-context"></p><div id="continue-actions" class="dashboard-actions"></div></section>
-    <section class="dashboard-card dashboard-next-step" aria-labelledby="next-title"><p class="eyebrow">1 / CONTINUE LEARNING</p><h2 id="next-title">Next step</h2><p id="next-description"></p><div id="next-actions" class="dashboard-actions"></div></section>
-    <section class="dashboard-card dashboard-week" id="weekly-activity" aria-labelledby="week-title" hidden><div class="dashboard-card-heading"><h2 id="week-title">This week</h2><p id="streak-summary" class="dashboard-streak"></p></div><div id="week-chart" class="week-chart" role="img"></div><ul id="week-table" class="week-table"></ul><p class="dashboard-footnote" id="week-note">Counts lesson checks, coding-task runs, quiz attempts and placement from the times saved with each record on this device. Lesson completions have no saved time and are not counted here.</p></section>
-    <section class="dashboard-card" id="achievements" aria-labelledby="achievements-title" hidden><h2 id="achievements-title">Achievements</h2><p class="dashboard-footnote">Earned only from your own completed work. Levels you placed out of do not count.</p><ul id="achievement-list" class="achievement-list"></ul></section>
-    <div class="dashboard-stats">
-        <article class="dashboard-stat"><p>SELECTED LANGUAGE</p><h2 id="selected-language">Not loaded</h2></article>
-        <article class="dashboard-stat"><p>PYTHON LESSONS COMPLETED</p><h2 id="recorded-lessons">Not loaded</h2><p id="recorded-tasks"></p></article>
-        <article class="dashboard-stat"><p>CURRENT LEVEL</p><h2 id="current-level">Not loaded</h2><p id="level-progress-label"></p><progress id="level-progress-bar" max="100" value="0" aria-label="Python Level 01 completion"></progress></article>
-        <article class="dashboard-stat"><p>PYTHON PLACEMENT</p><h2 id="placement-score">Not loaded</h2></article>
-    </div>
-    <div class="dashboard-grid">
-        <div class="dashboard-column">
-            <section class="dashboard-card" aria-labelledby="review-title"><p class="eyebrow">2 / FOCUS YOUR PRACTICE</p><h2 id="review-title">Topics to revisit</h2><div id="dashboard-review"></div></section>
-            <section class="dashboard-card dashboard-sage" aria-labelledby="snapshot-title"><h2 id="snapshot-title">Optional placement check</h2><div id="skill-snapshot"></div><a id="placement-link" class="button button-outline" href="../../pages/student/onboarding.html">Choose learning preferences</a><p class="dashboard-footnote">Placement helps you identify topics to review. Level quizzes track your learning progress separately.</p></section>
+        <main class="workspace-main sp-page" id="dashboard-main" aria-busy="true">
+    <p id="dashboard-message" class="form-message sp-message" role="status" aria-live="polite"></p>
+
+    <!-- B. Hero: greeting, one real-progress sentence and the ONE next action -->
+    <section class="sp-hero" aria-labelledby="dashboard-greeting">
+        <div class="sp-hero-intro">
+            <p class="sp-eyebrow" id="hero-date">Your dashboard</p>
+            <h1 id="dashboard-greeting">Welcome back.</h1>
+            <p class="sp-lead" id="hero-line"><span class="sp-skeleton sp-skeleton-line"></span></p>
         </div>
-        <div class="dashboard-column">
-            <section class="dashboard-card" aria-labelledby="path-title"><div class="dashboard-card-heading"><h2 id="path-title">Selected path</h2><a id="path-link" class="dashboard-text-link" href="../../pages/public/languages.html">Browse languages</a></div><ol class="dashboard-levels" id="dashboard-levels"></ol><p class="dashboard-footnote" data-curriculum-summary>Six Python levels. Start with foundations, then progress to advanced topics. Complete the lessons and pass the quiz with at least 70% to unlock the next level. Levels 1-5 are free; Level 6 uses the Premium preview.</p><a class="dashboard-text-link" href="../../pages/student/learning-report.html">Preview available learning report</a></section>
-            <details class="dashboard-card dashboard-secondary"><summary id="activity-title">Bookings &amp; service requests</summary><p>Only records with the active demo account as owner are counted. No request has been sent to another person or confirmed.</p><dl class="dashboard-local-counts"><div><dt>Booking requests</dt><dd id="booking-count">Not loaded</dd></div><div><dt>Service requests</dt><dd id="request-count">Not loaded</dd></div><div><dt>Private service drafts</dt><dd id="draft-count">Not loaded</dd></div></dl><div class="dashboard-actions"><a class="button button-outline" href="../../pages/student/requests.html">View my local requests</a><a class="dashboard-text-link" href="../../pages/services/service-draft.html">View my private drafts</a></div></details>
-        </div>
+        <article class="sp-card sp-next" aria-labelledby="next-title">
+            <div class="sp-next-meta"><span class="sp-chip sp-chip-brand" id="next-chip">Next step</span><span class="sp-next-level" id="current-level"><span class="sp-skeleton sp-skeleton-word"></span></span></div>
+            <h2 id="next-title" class="sp-next-title"><span class="sp-skeleton sp-skeleton-title"></span></h2>
+            <p id="next-description" class="sp-muted"></p>
+            <div class="sp-next-progress">
+                <progress id="level-progress-bar" class="sp-progress" max="100" value="0" aria-label="Current level completion"></progress>
+                <span id="level-progress-label" class="sp-small"></span>
+            </div>
+            <div id="next-actions" class="sp-next-actions"></div>
+        </article>
+    </section>
+
+    <!-- C. Four KPI tiles -->
+    <section class="sp-kpis" aria-label="Your numbers">
+        <article class="kpi-tile" tabindex="0" aria-describedby="kpi-lessons-tip" data-kpi="lessons">
+            <span class="kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5zM4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg></span>
+            <p class="kpi-value" id="recorded-lessons"><span class="sp-skeleton sp-skeleton-num"></span></p>
+            <p class="kpi-label">Lessons completed</p>
+            <p class="kpi-sub" id="kpi-lessons-sub"></p>
+            <span class="kpi-tip" role="tooltip" id="kpi-lessons-tip">Lessons you finished in the active language. Placement never adds lessons.</span>
+        </article>
+        <article class="kpi-tile" tabindex="0" aria-describedby="kpi-tasks-tip" data-kpi="tasks">
+            <span class="kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 6-6 6 6 6M16 6l6 6-6 6"/></svg></span>
+            <p class="kpi-value" id="recorded-tasks"><span class="sp-skeleton sp-skeleton-num"></span></p>
+            <p class="kpi-label">Coding tasks passed</p>
+            <p class="kpi-sub" id="kpi-tasks-sub"></p>
+            <span class="kpi-tip" role="tooltip" id="kpi-tasks-tip">Tasks where every test passed. The 7-day change uses the saved time of each passing run.</span>
+        </article>
+        <article class="kpi-tile" tabindex="0" aria-describedby="kpi-streak-tip" data-kpi="streak">
+            <span class="kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22c4 0 7-2.7 7-6.6 0-3.2-2-5.4-3.6-7.2-.4 1.8-1.4 3-2.6 3.6.3-3.3-1-6.3-3.8-8.8.2 3.4-1.4 5.3-3 7.2C4.8 11.5 5 13.2 5 15.4 5 19.3 8 22 12 22z"/></svg></span>
+            <p class="kpi-value" id="kpi-streak"><span class="sp-skeleton sp-skeleton-num"></span></p>
+            <p class="kpi-label">Current streak</p>
+            <p class="kpi-sub" id="kpi-streak-sub"></p>
+            <span class="kpi-tip" role="tooltip" id="kpi-streak-tip">Consecutive days with saved activity: lesson checks, task runs, quizzes or placement.</span>
+        </article>
+        <article class="kpi-tile" tabindex="0" aria-describedby="kpi-days-tip" data-kpi="days">
+            <span class="kpi-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v16H4zM4 9h16M8 3v4M16 3v4M8 13h2M12 13h2M8 17h2"/></svg></span>
+            <p class="kpi-value" id="kpi-days"><span class="sp-skeleton sp-skeleton-num"></span></p>
+            <p class="kpi-label">Active days this month</p>
+            <p class="kpi-sub" id="kpi-days-sub"></p>
+            <span class="kpi-tip" role="tooltip" id="kpi-days-tip">Days this month with saved activity. Learning time is not tracked, so hours are not shown.</span>
+        </article>
+    </section>
+
+    <!-- D. Level progress ring + weekly activity -->
+    <div class="sp-row">
+        <section class="sp-card" aria-labelledby="ring-title">
+            <h2 class="sp-card-title" id="ring-title">Level progress</h2>
+            <div class="sp-ring-layout">
+                <div class="sp-ring" id="progress-ring" role="img" aria-label="Overall progress loading"></div>
+                <dl class="sp-ring-facts">
+                    <div><dt>Current level</dt><dd id="ring-level">—</dd></div>
+                    <div><dt>Lessons in this level</dt><dd id="ring-lessons">—</dd></div>
+                    <div><dt>Levels completed</dt><dd id="ring-levels">—</dd></div>
+                </dl>
+            </div>
+            <p class="sp-unlock" id="ring-unlock"></p>
+        </section>
+        <section class="sp-card" aria-labelledby="week-title">
+            <div class="sp-card-head"><h2 class="sp-card-title" id="week-title">This week</h2><p class="sp-small" id="streak-summary"></p></div>
+            <div id="week-chart" class="sp-week" role="group" aria-label="Activity in the last 7 days"></div>
+            <ul id="week-table" class="sp-visually-hidden"></ul>
+            <p class="sp-empty" id="week-empty" hidden></p>
+            <p class="sp-small" id="week-note">Counts lesson checks, coding-task runs, quizzes and placement saved with a time on this device. Lesson completions have no saved time and are not counted here.</p>
+        </section>
     </div>
-    <p class="dashboard-footnote" id="dashboard-provenance">Progress is saved on this device under your demo profile. Python runs in your browser; account sync across devices is not connected.</p>
-    <footer class="workspace-footer">CodeMentor AI · Frontend demo · Student workspace</footer>
+
+    <!-- E. Recent activity + one system suggestion -->
+    <section class="sp-card" aria-labelledby="recent-title">
+        <div class="sp-card-head"><h2 class="sp-card-title" id="recent-title">Recent activity</h2><a class="sp-text-link" href="../../pages/student/progress.html">See all progress</a></div>
+        <ol class="sp-timeline" id="recent-activity"></ol>
+        <p class="sp-empty" id="recent-empty" hidden></p>
+        <p class="sp-suggestion" id="suggested-next"></p>
+    </section>
+
+    <!-- F. Links (no copies of other pages) -->
+    <nav class="sp-links" aria-label="Go to">
+        <a href="../../pages/student/progress.html"><strong>My progress</strong><span>Badges, insights and your level roadmap</span></a>
+        <a href="../../pages/student/learning-path.html"><strong>Learning path</strong><span>Every level and lesson</span></a>
+        <a href="../../pages/student/practice.html"><strong>Practice</strong><span>Coding tasks with real tests</span></a>
+        <a href="../../pages/services/community.html"><strong>Community</strong><span>Ask and help other students</span></a>
+    </nav>
+    <p class="sp-footnote" id="dashboard-provenance">Progress is saved on this device under your demo profile. Account sync across devices is not connected.</p>
 </main>
     </div>
 </body>

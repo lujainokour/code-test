@@ -4,7 +4,7 @@
     const root = new URL("../", document.currentScript.src);
     const filename = location.pathname.split("/").pop();
     const stages = {
-        "dashboard.html": 0, "learning-path.html": 0, "module.html": 1, "lesson.html": 1,
+        "learning-path.html": 0, "module.html": 1, "lesson.html": 1,
         "practice.html": 2, "workspace.html": 2, "level-assessment.html": 3, "progress.html": 3
     };
     if (!(filename in stages) || new URLSearchParams(location.search).has("course")) return;

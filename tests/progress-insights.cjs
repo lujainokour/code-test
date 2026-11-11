@@ -88,9 +88,10 @@ check('Insights never write storage', () => {
 check('Dashboard markup says what is counted and keeps a text view of the chart', () => {
     const html = fs.readFileSync('pages/student/dashboard.html', 'utf8');
     assert.match(html, /Lesson completions have no saved time and are not counted here/);
-    assert.match(html, /Levels you placed out of do not count/);
-    assert.ok(html.indexOf('progress-insights.js') < html.indexOf('dashboard-insights.js'));
-    assert.ok(!/Math\.random/.test(fs.readFileSync('js/dashboard-insights.js', 'utf8')), 'no random or placeholder numbers');
+    assert.match(html, /id="week-table"/, 'the chart keeps a text view');
+    assert.match(fs.readFileSync('pages/student/progress.html', 'utf8'), /Levels you placed out of never count as completed/);
+    assert.ok(html.indexOf('progress-insights.js') < html.indexOf('student-overview.js') && html.indexOf('student-overview.js') < html.indexOf('/dashboard.js'));
+    assert.ok(!/Math\.random/.test(fs.readFileSync('js/dashboard.js', 'utf8')), 'no random or placeholder numbers');
 });
 
 // Mentor quick actions
