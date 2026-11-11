@@ -1,0 +1,80 @@
+(async () => {
+    if (new URLSearchParams(location.search).get("run") !== "disposable-profile") return;
+    const frame = document.getElementById("subject"), output = document.getElementById("results"), checks = [];
+    const key = "codementor-demo-virtual-internship", identity = "codementor-demo-session", learningKey = "codementor-demo-learning";
+    const a = { name: "Owner Alpha", email: "alpha@example.com", role: "student", isDemo: true }, b = { name: "Owner Beta", email: "beta@example.com", role: "student", isDemo: true };
+    let win, doc;
+    const set = (name, value) => testStorage.setItem(name, JSON.stringify(value));
+    const data = () => JSON.parse(testStorage.getItem(key));
+    const own = () => data().records.find(record => record.owner === a.email);
+    function check(name, passed) { checks.push({ name, passed: Boolean(passed) }); output.textContent = JSON.stringify({ passed: checks.filter(c => c.passed).length, total: checks.length, checks }, null, 2); }
+    function load(path) { return new Promise((resolve, reject) => { const timer = setTimeout(() => reject(new Error(path)), 8000); frame.onload = () => { clearTimeout(timer); setTimeout(() => { win = frame.contentWindow; doc = win.document; resolve(); }, 30); }; frame.src = testPageUrl(path); }); }
+    function submit(id) { doc.getElementById(id).dispatchEvent(new win.Event("submit", { bubbles: true, cancelable: true })); }
+    const message = () => doc.getElementById("internship-message").textContent;
+    function solution(url, notes = "My private notes", share = false) { doc.getElementById("internship-url").value = url; doc.getElementById("internship-notes").value = notes; doc.getElementById("internship-share").checked = share; submit("internship-submission"); }
+    try {
+        testStorage.clear();
+        await load("virtual-internship.html");
+        check("Visitor reads fictional brief but cannot save", doc.getElementById("internship-brief").textContent.includes("C#") && !doc.getElementById("internship-submission") && message().includes("Sign in"));
+        set(identity, { ...a, role: "admin" }); await load("local-portfolio.html");
+        check("Non-student denied private portfolio", !doc.getElementById("internship-portfolio-card") && message().includes("student"));
+        testStorage.setItem(identity, "{bad"); await load("virtual-internship.html");
+        check("Malformed session preserved and denied", !doc.getElementById("internship-tasks") && testStorage.getItem(identity) === "{bad");
+        set(identity, a); set("codementor-demo-onboarding", { language: "csharp", experience: "beginner", goal: "projects" });
+        const learning = JSON.stringify({ version: 1, lessons: [], tasks: [], assessments: {} }); testStorage.setItem(learningKey, learning);
+        await load("virtual-internship.html");
+        check("C# independent brief, clean empty state and five To Do tasks", doc.querySelectorAll("#internship-tasks select").length === 5 && [...doc.querySelectorAll("#internship-tasks select")].every(s => s.value === "To Do") && doc.getElementById("internship-content").textContent.includes("No internship record"));
+        check("Opening page never creates internship records", testStorage.getItem(key) === null);
+        check("Student shell, actual logo and active internship link", doc.querySelector('#workspace-sidebar a[href$="/virtual-internship.html"]').getAttribute("aria-current") === "page" && decodeURIComponent(doc.querySelector('.site-brand img').getAttribute("src")).includes("Burgundy CMA") && !doc.querySelector('#workspace-sidebar a[href$="/admin-courses.html"]'));
+        const toggle = doc.getElementById("workspace-menu-toggle"); toggle.click(); check("Mobile navigation opens", toggle.getAttribute("aria-expanded") === "true"); toggle.click();
+        check("390px mobile has no horizontal overflow", doc.documentElement.scrollWidth <= win.innerWidth + 1);
+        doc.getElementById("task-plan").value = "In Progress"; submit("internship-tasks");
+        check("Task changes persist under session owner", own().tasks.plan === "In Progress" && data().records.length === 1 && message().includes("Nothing was sent"));
+        await load("virtual-internship.html"); check("Reopening restores task columns", doc.getElementById("task-plan").value === "In Progress" && doc.querySelectorAll(".internship-board > section")[1].textContent.includes("Plan the school model"));
+        const before = testStorage.getItem(key);
+        ["http://github.com/alpha/school", "https://github.com.evil.example/alpha/school", "https://user:pass@github.com/alpha/school", "https://github.com/alpha", "https://github.com/alpha/school/tree/main", "javascript:alert(1)", "https://github.com/alpha/school?token=private"].forEach(url => { solution(url); check(`Reject unsafe/non-repository URL: ${url}`, testStorage.getItem(key) === before && message().includes("valid HTTPS")); });
+        solution("https://github.com/alpha/school", "<img src=x onerror=alert(1)> Private Alpha notes");
+        check("Submission saves only URL and notes, opt-in off by default", own().submission.notes.includes("Private Alpha") && own().showInPortfolio === false && own().tasks.plan === "In Progress" && message().includes("Nothing was sent"));
+        await load("local-portfolio.html"); check("Portfolio empty before explicit inclusion", !doc.getElementById("internship-portfolio-card") && doc.getElementById("internship-content").textContent.includes("No projects included"));
+        await load("virtual-internship.html"); solution("https://github.com/alpha/revised-school", "<img src=x onerror=alert(1)> Private Alpha notes", true);
+        check("Link and notes can be updated without resetting tasks", own().submission.url.endsWith("/revised-school") && own().showInPortfolio && own().tasks.plan === "In Progress");
+        const review = doc.getElementById("sample-review").textContent; doc.getElementById("sample-review").open = true;
+        check("Sample review is unconditional and explicitly not code inspection", doc.body.textContent.includes("not a review of your submitted solution") && doc.body.textContent.includes("has not read any code") && review.includes("Check that IDs"));
+        await load("local-portfolio.html");
+        const card = doc.getElementById("internship-portfolio-card");
+        check("Opted-in project appears as Self-reported with safe GitHub link", card.textContent.includes("Virtual internship project — Self-reported") && card.querySelector('a[target="_blank"]').rel === "noopener noreferrer" && card.querySelector("time"));
+        check("Student notes are literal text, never HTML", card.textContent.includes("<img src=x") && card.querySelector("img") === null);
+        check("Portfolio active and mobile fits", doc.querySelector('#workspace-sidebar a[href$="/local-portfolio.html"]').getAttribute("aria-current") === "page" && doc.documentElement.scrollWidth <= win.innerWidth + 1);
+        set(identity, b); await load("local-portfolio.html"); check("Other account cannot see Alpha project or notes", !doc.getElementById("internship-portfolio-card") && !doc.getElementById("internship-content").textContent.includes("Alpha"));
+        await load("virtual-internship.html"); check("Other account begins with unsaved board", doc.getElementById("task-plan").value === "To Do" && doc.getElementById("internship-url").value === "");
+        doc.getElementById("task-students").value = "Done"; submit("internship-tasks");
+        check("Saving Beta preserves Alpha record", data().records.length === 2 && own().submission.url.endsWith("revised-school"));
+        set(identity, a); await load("virtual-internship.html");
+        const stale = testStorage.getItem(key); set(identity, b); submit("internship-tasks");
+        check("Account change during editing blocks save and clears private controls", testStorage.getItem(key) === stale && !doc.getElementById("internship-submission") && message().includes("account changed"));
+        set(identity, a); await load("virtual-internship.html");
+        const newer = data(); newer.extra = "keep-envelope"; newer.records[0].extra = "keep-record"; newer.records[0].tasks.plan = "Done"; set(key, newer); const changed = testStorage.getItem(key); submit("internship-tasks");
+        check("Stale page cannot overwrite a newer record", testStorage.getItem(key) === changed && message().includes("changed after"));
+        await load("virtual-internship.html"); solution("https://github.com/alpha/updated", "Updated notes", false);
+        check("Opt-out preserves envelope, record and other account", data().extra === "keep-envelope" && own().extra === "keep-record" && data().records.length === 2 && !own().showInPortfolio);
+        await load("local-portfolio.html"); check("Opt-out removes local card without deleting submission", !doc.getElementById("internship-portfolio-card") && own().submission.url.endsWith("/updated"));
+        await load("virtual-internship.html");
+        const valid = testStorage.getItem(key), originalSet = win.Storage.prototype.setItem;
+        win.Storage.prototype.setItem = function(name, value) { if (name === key) throw new Error("Storage write unavailable"); return originalSet.call(this, name, value); };
+        submit("internship-tasks"); win.Storage.prototype.setItem = originalSet;
+        check("Failed storage write retains last record and reports error", testStorage.getItem(key) === valid && message().includes("Storage write unavailable"));
+        testStorage.setItem(key, "{corrupt"); await load("virtual-internship.html");
+        check("Corrupt storage disables editing without resetting bytes", !doc.getElementById("internship-tasks") && testStorage.getItem(key) === "{corrupt" && message().includes("not been changed"));
+        await load("local-portfolio.html"); check("Corrupt storage cannot produce a misleading empty portfolio", !doc.getElementById("internship-portfolio-card") && message().includes("could not be read"));
+        testStorage.setItem(key, valid); const invalid = data(); invalid.records[0].tasks.plan = "Passed"; set(key, invalid); const invalidRaw = testStorage.getItem(key); await load("virtual-internship.html");
+        check("Invalid state rejected without repair", !doc.getElementById("internship-tasks") && message().includes("invalid") && testStorage.getItem(key) === invalidRaw);
+        testStorage.setItem(key, valid); await load("virtual-internship.html"); doc.querySelectorAll("#internship-tasks select").forEach(s => s.value = "Done"); submit("internship-tasks");
+        check("All Done never changes learning or creates scores/certificates", testStorage.getItem(learningKey) === learning && !own().score && !own().certificate);
+        check("Review unchanged after saving all tasks", doc.getElementById("sample-review").textContent === review);
+        frame.style.width = "1280px"; await load("virtual-internship.html");
+        check("Desktop fits and sidebar does not cover main", doc.documentElement.scrollWidth <= win.innerWidth + 1 && doc.querySelector("main").getBoundingClientRect().left >= doc.getElementById("workspace-sidebar").getBoundingClientRect().right);
+        await load("showcase.html"); check("Public showcase keeps fictional catalogue separate", doc.querySelector('a[href$="/local-portfolio.html"]') && !doc.getElementById("service-content").textContent.includes("Updated notes") && doc.getElementById("service-content").textContent.includes("fictional"));
+        await load("profile.html"); check("Profile links to own portfolio", doc.querySelector('main a[href$="/local-portfolio.html"]'));
+    } catch (error) { check(`Unexpected: ${error.message}`, false); }
+    document.documentElement.dataset.done = "true";
+})();
