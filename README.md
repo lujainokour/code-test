@@ -6,14 +6,25 @@
 
 حالة التسليم: [تقرير المرحلة 1](docs/PHASE-1.md) يميّز الفحوص غير المعتمدة على المتصفح عن النتائج السابقة، ويسجل التحقق البصري وحارس الرجوع/التركيز كـ **pending manual verification**. أجاز المستخدم حفظ المرحلة بهذه الحالة والاستكمال إذا نجحت الفحوص غير المعتمدة على المتصفح. [تقرير المرحلة 2](docs/PHASE-2.md) يوثق تحديد البداية الفعلي ونتائج Node/VM وحدود التحقق الحالية.
 
-آخر مراجعة: **11 نوفمبر 2026**. تفاصيل الإضافات والفحوص والحدود في [تقرير تجهيز الموقع](docs/CLEANUP-2026-11-11.md).
-أُضيف طلب تدريس تجريبي معلّق للحساب الطلابي العادي عند فتح قائمة مراجعات فارغة لدى الإدارة، مع تمييزه بوضوح كعينة وعدم استبدال الطلبات الموجودة. تعرض إدارة الشركات تفاصيل الفرص والمهارات والتعويض المعلن وعدد الطلبات المرتبطة بكل فرصة.
+آخر تحديث: **11 نوفمبر 2026** — ترقية الجودة (الأجزاء 0–6) موثقة في [تقرير الترقية](docs/UPGRADE-REPORT.md) مع ما تم التحقق منه وما بقي معلقًا. التقرير السابق: [تقرير تجهيز الموقع](docs/CLEANUP-2026-11-11.md).
+البيانات التجريبية لا تُضاف تلقائيًا أبدًا: صفحات إدارة المجتمع والتدريس بين الطلاب والشركات فيها زرا **Load sample data** و**Remove sample data**، وكل سجل تجريبي موسوم بـ SAMPLE وبأسماء وعناوين وهمية. تعرض إدارة الشركات ملفات الشركات وحالة التوثيق وسجلها، والفرص مع مسار الطلبات (applied / interview / accepted / rejected / completed)، وأعداد الرسائل فقط، والخط الزمني؛ والشركة الموقوفة لا تستطيع نشر فرص أو مراسلة المرشحين.
+
+**Accounts.** Student accounts are saved only in this browser (salt + PBKDF2 hash, never the plain password). They survive restarts but do not sync across browsers or devices. **Change password** verifies the current password and keeps all progress. No email service exists, so **Forgot password** honestly offers to reset this browser's account after a typed `RESET <email>` confirmation; it removes only that account and its learning records.
 إدارة جلسات المنصة أصبحت ضمن بوابة الأدمن؛ روابط بوابة المعلم القديمة تحوّل إلى الصفحات المقابلة. راجع [تدفق الإدارة الحالي](docs/admin-role-flow.md).
 
-The built-in community at `pages/services/community.html` has private channels.
+The built-in community at `pages/services/community.html` has private channels:
+Python, JavaScript, General, Projects and Help (the student's active language is highlighted).
 Students request membership with a reason; administrators approve or decline requests
 at `pages/admin/admin-community.html` (Community requests in the admin sidebar).
 Only approved channel members see discussions and can post, reply or react.
+Posts have a title, body, an optional code block (language label, copy button), tags,
+an author-only "solved" mark and edit (shown as edited) / delete. Members can search,
+filter by tag / solved / unanswered, sort by latest or most helpful, and page through results.
+Members can report posts; administrators review a queue (hide / restore / remove with a reason)
+and every decision, including member removal, is written to an audit log.
+All text is rendered as plain text, posting is length- and rate-limited, and there are no
+private messages (learners under 18 can never be contacted privately). A notifications badge
+shows replies to your posts and membership decisions.
 Administrators can remove access; students can cancel requests, reapply or leave.
 Decisions update other tabs immediately. Each channel has independent membership.
 This is a browser-local prototype: records are shared between tabs, not devices.
@@ -24,6 +35,8 @@ for the two-tab request, approval, rejection, discussion and revocation workflow
 
 Student-led teaching sessions now include application, admin review, session publishing,
 appointment requests, confirmation, cancellation, completion and learner reviews.
+Administrators can approve, request changes or reject (with a reason); the student sees the
+status and next steps in **My teaching sessions**, updated live.
 Start at `pages/services/peer-mentoring.html` and choose **Browse student sessions**
 or **Offer a teaching session**. See [the complete workflow](docs/PEER-TEACHING-WORKFLOW.md).
 This cycle is browser-local; cross-device accounts, server authorization and payments
@@ -65,14 +78,20 @@ pages/
 css/
 js/
 assets/
-tests/         الاختبارات وخادم التطوير
-previews/      المعاينات والصور المرجعية
-docs/          التقارير وخريطة الصفحات ونتائج الاختبارات
+tests/         الاختبارات وخادم التطوير (tests/*.cjs بدون متصفح، tests/*.ps1 مع Chrome)
+tools/         أدوات التحقق (tools/verify-local.cjs)
+docs/          التقارير وخريطة الصفحات؛ docs/evidence/ نتائج محفوظة، وتقارير التشغيل المولّدة مُستثناة في .gitignore
 ```
 
 ## التحقق
 
-بعد تشغيل الخادم، نفّذ في نافذة أخرى:
+الفحوص غير المعتمدة على المتصفح (كل مجموعات `tests/*.cjs`، فحص صياغة `js/`، ومراجع HTML):
+
+```powershell
+node tools/verify-local.cjs            # أضف --tracked للتأكد من أن كل ملف مرجعي محفوظ في Git
+```
+
+فحوص المتصفح: بعد تشغيل الخادم، نفّذ في نافذة أخرى:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tests/stability-powershell.ps1
@@ -96,6 +115,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests/language-switch-browse
 تفاصيل إعادة التنظيم والاسترجاع في [تقرير التنظيم](docs/REORGANIZATION.md).
 
 ## Python learning path
+
+The student dashboard shows **Continue where you left off**, a 7-day activity chart and a streak
+computed only from times already saved with lesson checks, task runs, quizzes and placement
+(lesson completions have no saved time and are not counted), and achievements earned from real
+work only (placed-out levels never count). In the coding workspace, **Explain the error**,
+**Give me a hint** and **Review my code** prefill the study assistant with your code and the last
+failing test; replies are still prepared hints, not live AI.
 
 The site includes six Python levels, 24 lessons with explanations and learning resources,
 independent quizzes, twelve executable coding tasks and a tested Foundations project.

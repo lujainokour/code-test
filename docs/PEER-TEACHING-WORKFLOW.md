@@ -11,9 +11,14 @@ sessions** and **Offer a teaching session**.
 2. They submit teaching topics, experience, an HTTPS portfolio, a sample teaching
    plan and agreement to guide learners rather than complete assessed work.
 3. An admin signs in through Admin Login and opens **Student tutor reviews**.
-   Approval requires an explanatory note. Changes requested are visible to the
-   applicant, who can revise and resubmit. Approval is a human review rather than
-   an automatic consequence of completing a course.
+   Every decision requires an explanatory note. A pending application can be
+   Approved, sent back with Changes requested, or Rejected with a reason; an approved
+   one can be sent back with Changes requested. The applicant sees the decision, the
+   note and next steps in My teaching sessions (updated live from other tabs) and can
+   revise and resubmit after Changes requested or Rejected. Approval is a human review
+   rather than an automatic consequence of completing a course.
+   Demonstration data is never added automatically: the admin page has **Load sample
+   data** / **Remove sample data** buttons (see [UPGRADE-REPORT.md](UPGRADE-REPORT.md)).
 4. An approved student saves a session draft: title, description, reviewed language,
    learning outcome, requirements, audience, duration and listed price. They add
    non-overlapping future appointments and explicitly publish the session.

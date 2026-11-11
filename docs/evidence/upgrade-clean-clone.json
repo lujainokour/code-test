@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-11-11T19:02:40.545Z",
+  "browser": "NOT RUN by this tool",
+  "suites": [
+    {
+      "suite": "account-recovery.cjs",
+      "exitCode": 0,
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "suite": "admin-companies.cjs",
+      "exitCode": 0,
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "suite": "admin-sessions-store.cjs",
+      "exitCode": 0,
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "suite": "community-store.cjs",
+      "exitCode": 0,
+      "passed": 26,
+      "failed": 0
+    },
+    {
+      "suite": "curriculum-migration.cjs",
+      "exitCode": 0,
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "suite": "language-page-guards.cjs",
+      "exitCode": 0,
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "suite": "language-publishing.cjs",
+      "exitCode": 0,
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "suite": "language-storage.cjs",
+      "exitCode": 0,
+      "passed": 13,
+      "failed": 0
+    },
+    {
+      "suite": "peer-mentoring-store.cjs",
+      "exitCode": 0,
+      "passed": 51,
+      "failed": 0
+    },
+    {
+      "suite": "peer-teaching.cjs",
+      "exitCode": 0,
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "suite": "phase0-honesty.cjs",
+      "exitCode": 0,
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "suite": "placement-policy.cjs",
+      "exitCode": 0,
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "suite": "placement-store.cjs",
+      "exitCode": 0,
+      "passed": 29,
+      "failed": 0
+    },
+    {
+      "suite": "progress-insights.cjs",
+      "exitCode": 0,
+      "passed": 11,
+      "failed": 0
+    },
+    {
+      "suite": "service-access.cjs",
+      "exitCode": 0,
+      "passed": 23,
+      "failed": 0
+    }
+  ],
+  "syntax": {
+    "files": 108,
+    "failures": []
+  },
+  "references": {
+    "scope": "Declared href/src/action/poster in every repo HTML page (excluding tests/ and vendor/). No runtime DOM.",
+    "pages": 84,
+    "unique": 173,
+    "missing": [],
+    "untracked": []
+  },
+  "totalPassed": 275,
+  "totalFailed": 0
+}
