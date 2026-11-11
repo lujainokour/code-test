@@ -15,7 +15,6 @@
     --cm-blue-100: #e6f1f5;
     --cm-blue-50:  #f3f8fa;
     /* surfaces & ink */
-    --cm-page: #f4f8fa;
     --cm-surface: #ffffff;
     --cm-surface-soft: #f8fbfc;
     --cm-ink: #1d1416;
@@ -42,11 +41,31 @@
     --cm-ease: cubic-bezier(.2, .7, .2, 1);
 }
 
+/* 1b. STUDENT PAGE PALETTE --------------------------------------------- */
+/* Dashboard and My progress use the ORIGINAL student-area blues from css/style.css,
+   like every other student page: --page-bg #b1d4e1, --surface-bg #daeaf0,
+   --surface-alt #c2dde7, --line-color #8aafbd, --text-muted #405761.
+   Green and amber are darker shades of the same tokens so small text keeps
+   WCAG AA (>= 4.5:1) on all three blues. Other pages keep the :root values. */
+body.student-premium {
+    --cm-page: var(--page-bg);
+    --cm-surface: var(--surface-bg);
+    --cm-surface-soft: var(--surface-alt);
+    --cm-blue-50: var(--surface-alt);
+    --cm-blue-100: var(--surface-alt);
+    --cm-blue-300: var(--line-color);
+    --cm-line: var(--line-color);
+    --cm-line-strong: var(--line-color);
+    --cm-ink-3: var(--text-muted);
+    --cm-success: #176139;
+    --cm-amber: #844800;
+}
+
 /* 2. PAGE BASE ---------------------------------------------------------- */
 body.student-premium { background: var(--cm-page); color: var(--cm-ink); font-family: var(--cm-font); }
 body.student-premium::before, body.student-premium::after { display: none; }
 body.student-premium .workspace-body { background: var(--cm-page); }
-body.student-premium .workspace-topbar { background: rgb(244 248 250 / 92%); backdrop-filter: blur(8px); border-bottom: 1px solid var(--cm-line); }
+body.student-premium .workspace-topbar { background: var(--cm-page); border-bottom: 1px solid var(--cm-line); }
 body.student-premium .workspace-main { max-width: 1200px; margin-inline: auto; padding: var(--cm-s4) var(--cm-s4) var(--cm-s6); display: grid; gap: var(--cm-s3); min-width: 0; }
 body.student-premium .workspace-main > * { min-width: 0; margin: 0; }
 body.student-premium h1, body.student-premium h2, body.student-premium h3 { color: var(--cm-ink); letter-spacing: -.01em; }
@@ -77,7 +96,7 @@ body.student-premium :is(a, button, [tabindex]):focus-visible { outline: none; b
 .sp-empty { color: var(--cm-ink-3); font-size: var(--cm-text-sm); margin: 0; padding: var(--cm-s2); border: 1px dashed var(--cm-line-strong); border-radius: var(--cm-radius-sm); background: var(--cm-surface-soft); list-style: none; }
 
 /* 4. LOADING SKELETONS -------------------------------------------------- */
-.sp-skeleton { display: inline-block; border-radius: 6px; background: linear-gradient(90deg, var(--cm-blue-100), var(--cm-blue-50), var(--cm-blue-100)); background-size: 200% 100%; animation: sp-shimmer 1.4s infinite linear; vertical-align: middle; }
+.sp-skeleton { display: inline-block; border-radius: 6px; background: linear-gradient(90deg, var(--cm-blue-100), var(--cm-surface), var(--cm-blue-100)); background-size: 200% 100%; animation: sp-shimmer 1.4s infinite linear; vertical-align: middle; }
 .sp-skeleton-line { width: min(420px, 100%); height: 16px; }
 .sp-skeleton-title { width: min(320px, 90%); height: 28px; }
 .sp-skeleton-word { width: 120px; height: 14px; }
@@ -90,7 +109,7 @@ body.student-premium :is(a, button, [tabindex]):focus-visible { outline: none; b
 .sp-hero-intro { display: flex; flex-direction: column; justify-content: center; gap: var(--cm-s1); }
 .sp-hero-intro h1 { font-size: var(--cm-text-2xl); line-height: 1.15; margin: 0; }
 .sp-lead { font-size: var(--cm-text-md); color: var(--cm-ink-2); margin: 0; max-width: 46ch; line-height: 1.55; }
-.sp-next { position: relative; overflow: hidden; padding: var(--cm-s4); border: 0; background: linear-gradient(135deg, #fff 0%, var(--cm-blue-50) 100%); box-shadow: var(--cm-shadow-2); border-top: 4px solid var(--cm-burgundy-700); }
+.sp-next { position: relative; overflow: hidden; padding: var(--cm-s4); border: 0; background: linear-gradient(135deg, var(--cm-surface) 0%, var(--cm-surface-soft) 100%); box-shadow: var(--cm-shadow-2); border-top: 4px solid var(--cm-burgundy-700); }
 .sp-next-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cm-s1); color: var(--cm-ink-2); font-size: var(--cm-text-sm); }
 .sp-next-title { font-size: var(--cm-text-xl); line-height: 1.2; margin: var(--cm-s2) 0 var(--cm-s1); overflow-wrap: anywhere; }
 .sp-next-progress { display: grid; gap: 6px; margin: var(--cm-s3) 0; }
@@ -135,7 +154,7 @@ body.student-premium :is(a, button, [tabindex]):focus-visible { outline: none; b
 .week-col:hover, .week-col:focus-visible { background: var(--cm-blue-50); }
 .week-col::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 2px); left: 50%; transform: translateX(-50%); white-space: nowrap; padding: 4px 8px; border-radius: 6px; background: var(--cm-ink); color: #fff; font-size: var(--cm-text-xs); opacity: 0; pointer-events: none; transition: opacity .15s; }
 .week-col:hover::after, .week-col:focus-visible::after { opacity: 1; }
-.week-bar { display: block; width: min(30px, 70%); height: var(--h, 0%); min-height: 3px; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, var(--cm-blue-300), #8fbfd1); align-self: end; transform-origin: bottom; animation: sp-grow .7s var(--cm-ease) both; }
+.week-bar { display: block; width: min(30px, 70%); height: var(--h, 0%); min-height: 3px; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, var(--cm-blue-300), var(--text-muted)); align-self: end; transform-origin: bottom; animation: sp-grow .7s var(--cm-ease) both; }
 .week-bar.is-empty { background: var(--cm-line); height: 3px; animation: none; }
 .week-value { font-size: var(--cm-text-xs); font-weight: 700; color: var(--cm-ink); font-variant-numeric: tabular-nums; }
 .week-day { font-size: var(--cm-text-xs); color: var(--cm-ink-3); align-self: center; }
@@ -164,7 +183,7 @@ body.student-premium :is(a, button, [tabindex]):focus-visible { outline: none; b
 .badge-grid { list-style: none; margin: var(--cm-s2) 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: var(--cm-s2); }
 .badge-card { position: relative; overflow: hidden; display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: var(--cm-s2); align-items: start; padding: var(--cm-s2); border-radius: var(--cm-radius); border: 1px solid var(--cm-line); background: var(--cm-surface); transition: transform .2s var(--cm-ease), box-shadow .2s var(--cm-ease); }
 .badge-card.is-loading { grid-template-columns: 1fr; }
-.badge-card.is-earned { background: linear-gradient(160deg, #fff 0%, var(--cm-burgundy-50) 100%); border-color: #ebd3d5; }
+.badge-card.is-earned { background: linear-gradient(160deg, var(--cm-surface) 0%, var(--cm-burgundy-50) 100%); border-color: #ebd3d5; }
 .badge-card.is-earned::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / 70%) 50%, transparent 65%); transform: translateX(-100%); animation: sp-shine 1.6s .3s var(--cm-ease) 1 both; pointer-events: none; }
 .badge-card:hover { transform: translateY(-2px); box-shadow: var(--cm-shadow-2); }
 .badge-art { width: 72px; height: 72px; }
@@ -207,7 +226,7 @@ a.roadmap-title:hover { text-decoration: underline; }
 .roadmap-node[data-state="current"] .roadmap-state { color: var(--cm-burgundy-700); }
 .roadmap-node[data-state="locked"] { background: var(--cm-surface-soft); }
 .roadmap-node[data-state="locked"] .roadmap-title { color: var(--cm-ink-3); }
-.roadmap-node[data-state="placed-out"] { border-style: dashed; background: repeating-linear-gradient(135deg, #fff, #fff 8px, var(--cm-amber-bg) 8px, var(--cm-amber-bg) 16px); }
+.roadmap-node[data-state="placed-out"] { border-style: dashed; background: repeating-linear-gradient(135deg, var(--cm-surface), var(--cm-surface) 8px, var(--cm-amber-bg) 8px, var(--cm-amber-bg) 16px); }
 .roadmap-node[data-state="placed-out"] .roadmap-marker { background: var(--cm-amber-bg); color: var(--cm-amber); }
 .roadmap-node[data-state="placed-out"] .roadmap-state { color: var(--cm-amber); }
 .sp-placement-why { font-weight: 600; margin: var(--cm-s1) 0; }

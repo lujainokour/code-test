@@ -1,7 +1,7 @@
 # Student dashboard / My progress redesign: screenshots and browser checks.
 #   -Phase before   only screenshots (used once before the redesign)
 #   -Phase after    screenshots + checks
-param([ValidateSet('before','after')][string]$Phase = 'after')
+param([ValidateSet('before','after')][string]$Phase = 'after', [string]$Tag = '')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot
 $evidence = Join-Path $root 'docs/evidence'
@@ -43,20 +43,20 @@ try {
         Size $size.w $size.h
         Open 'pages/student/dashboard.html'
         Eval "document.querySelector('#cm-user-guide[open] .cm-guide-skip')?.click();true" | Out-Null
-        Shot "dashboard-$Phase-$($size.w)"
+        Shot "dashboard$Tag-$Phase-$($size.w)"
         Open 'pages/student/progress.html'
         Eval "document.querySelector('#cm-user-guide[open] .cm-guide-skip')?.click();true" | Out-Null
-        Shot "progress-$Phase-$($size.w)"
+        Shot "progress$Tag-$Phase-$($size.w)"
     }
     if ($Phase -eq 'after') {
         foreach ($w in @(1440,1024,768,390)) {
             Size $w 900
             Open 'pages/student/dashboard.html'
             Check "Dashboard $w px has no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth')
-            if ($w -eq 1024 -or $w -eq 768) { Shot "dashboard-after-$w" }
+            if ($w -eq 1024 -or $w -eq 768) { Shot "dashboard$Tag-after-$w" }
             Open 'pages/student/progress.html'
             Check "My progress $w px has no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth')
-            if ($w -eq 1024 -or $w -eq 768) { Shot "progress-after-$w" }
+            if ($w -eq 1024 -or $w -eq 768) { Shot "progress$Tag-after-$w" }
         }
         Size 1440 1000
         Open 'pages/student/dashboard.html'
@@ -76,7 +76,7 @@ try {
         Start-Sleep -Milliseconds 1200
         Check 'Picking JavaScript switches immediately and confirms with a toast' (Eval "cmStorage.activeLanguage()==='javascript' && document.querySelector('.cm-toast')?.textContent.includes('Switched to JavaScript. Your Python progress is saved.')")
         Check 'JavaScript dashboard never shows Python numbers' (Eval "document.getElementById('recorded-lessons').textContent==='0 / '+pythonCurriculum.allLessons.length && pythonCurriculum.id==='javascript'")
-        Shot "dashboard-after-1440-javascript"
+        Shot "dashboard$Tag-after-1440-javascript"
         Eval "document.querySelector('.workspace-topbar .lang-switch-button').click();document.querySelector('.workspace-topbar [role=option][data-language=rust]').click();true" | Out-Null
         Start-Sleep -Milliseconds 300
         Check 'Coming-soon language opens the availability panel without switching' (Eval "cmStorage.activeLanguage()==='javascript' && document.querySelector('dialog.lang-availability[open]')?.textContent.includes('Notify me')")

@@ -87,6 +87,18 @@ Picking a **Ready** language calls the existing `learningLanguage.select()` with
 
 ## Visual system
 
+**Palette update (follow-up).** Dashboard and My progress no longer use the off-white page. Section 1b of `css/student-premium.css` maps them to the original student-area blues from `css/style.css`, the same values the pages used before commit `24bcec7` and every other student page uses:
+
+| Use | Variable | Value |
+|---|---|---|
+| Page and top bar | `--page-bg` | `#b1d4e1` |
+| Cards | `--surface-bg` | `#daeaf0` |
+| Soft fills | `--surface-alt` | `#c2dde7` |
+| Borders | `--line-color` | `#8aafbd` |
+| Secondary text | `--text-muted` | `#405761` |
+
+Green and amber use darker shades (`#176139`, `#844800`) so small text stays WCAG AA on all three blues. The off-white `--cm-page` token was removed. Pages without the `student-premium` class keep the `:root` values. Screenshots: `docs/evidence/*-palette-before-*` and `*-palette-after-*`.
+
 All tokens are in section 1 of `css/student-premium.css`:
 
 - **Colours:** burgundy for primary actions and key numbers, light blue for accents and chart fills, one success green and one amber.
