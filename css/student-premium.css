@@ -458,6 +458,68 @@ body.student-ui #level-assessment-form label { display: flex; align-items: cente
 body.student-ui #level-assessment-form label:has(input:checked) { border-color: var(--cm-burgundy-700); box-shadow: inset 0 0 0 1px var(--cm-burgundy-700); }
 body.student-ui #assessment-result { font-weight: 650; }
 
+/* 15. PAGE GROUP — PRACTICE, CODING WORKSPACE, CODE REVIEW ----------------- */
+/* 15.1 Practice: filter bar, status chips (data-status is a styling hook only), one primary */
+body.student-ui .practice-filters { align-items: end; gap: var(--cm-s2); }
+body.student-ui .practice-filter :is(input, select) { min-height: 44px; background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); color: var(--cm-ink); }
+body.student-ui .practice-filter :is(input, select):focus-visible { outline: 3px solid var(--cm-focus); outline-offset: 2px; }
+body.student-ui .practice-task-card { display: flex; flex-direction: column; transition: transform .2s var(--cm-ease), box-shadow .2s var(--cm-ease); }
+body.student-ui .practice-task-card .practice-task-actions { margin-top: auto; }
+body.student-ui .practice-task-card .practice-status { border-radius: var(--cm-radius-pill); font-weight: 700; }
+body.student-ui .practice-task-card[data-status="passed"] { border-left: 4px solid var(--cm-success); }
+body.student-ui .practice-task-card[data-status="passed"] .practice-status { background: var(--cm-success-bg); color: var(--cm-success); }
+body.student-ui .practice-task-card[data-status="passed"] .practice-status::before { content: "✓ "; }
+body.student-ui .practice-task-card[data-status="draft"] { border-left: 4px solid var(--cm-amber); }
+body.student-ui .practice-task-card[data-status="draft"] .practice-status { background: var(--cm-amber-bg); color: var(--cm-amber); }
+/* Only the next unfinished task keeps the filled primary button; the rest are outline. */
+body.student-ui .practice-grid > .practice-task-card .button-primary { background: transparent; color: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); }
+body.student-ui .practice-grid > .practice-task-card:nth-child(1 of :not([data-status="passed"])) { box-shadow: 0 0 0 2px var(--cm-burgundy-700), var(--cm-shadow-2); }
+body.student-ui .practice-grid > .practice-task-card:nth-child(1 of :not([data-status="passed"])) .button-primary { background: var(--cm-burgundy-700); color: #fff; }
+@media (hover: hover) { body.student-ui .practice-task-card:hover { transform: translateY(-2px); box-shadow: var(--cm-shadow-2); } }
+
+/* 15.2 Coding workspace: focused, legible editor; clear run / submit / results */
+body.student-ui .coding-task-panel h1 { line-height: 1.15; }
+body.student-ui .coding-task-panel #task-requirements li::marker { color: var(--cm-burgundy-700); font-weight: 800; }
+body.student-ui .coding-task-panel .lesson-output { background: #fff; border: 1px solid var(--cm-line); border-left: 4px solid var(--cm-line-strong); border-radius: var(--cm-radius-sm); }
+body.student-ui .coding-task-panel #expected-output { border-left-color: var(--cm-success); }
+body.student-ui .coding-task-panel details { border-radius: var(--cm-radius-sm); }
+body.student-ui .coding-task-panel summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+body.student-ui .coding-editor-panel { box-shadow: var(--cm-shadow-2); }
+body.student-ui .coding-editor-header { align-items: center; }
+body.student-ui #coding-main textarea.code-editor { font-family: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace; font-size: 15px; line-height: 1.7; border-radius: 12px; box-shadow: inset 4px 0 0 var(--cm-burgundy-500); }
+body.student-ui textarea.code-editor:focus-visible { outline: 3px solid var(--cm-focus); outline-offset: 3px; }
+body.student-ui textarea.program-input { min-height: 72px; font-family: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace; font-size: 14px; background: #fff; border-color: var(--cm-line); border-radius: var(--cm-radius-sm); color: var(--cm-ink); }
+body.student-ui textarea.program-input:focus-visible { outline: 3px solid var(--cm-focus); outline-offset: 2px; }
+body.student-ui .coding-help { font-size: 13px; color: var(--cm-ink-2); }
+/* Toolbar: draft actions on the left, run + submit on the right, submit last and primary. */
+body.student-ui .coding-toolbar { justify-content: flex-start; align-items: center; padding: var(--cm-s2) 0; border-block: 1px solid var(--cm-line); }
+body.student-ui #coding-main .coding-toolbar .button { min-height: 44px; font-size: 14px; }
+body.student-ui .coding-toolbar #run-code { margin-left: auto; }
+body.student-ui .coding-toolbar #reset-code { border-color: transparent; background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+body.student-ui .coding-output-panel { background: var(--cm-surface); border: 1px solid var(--cm-line); border-top: 4px solid var(--cm-ink); border-radius: var(--cm-radius); }
+body.student-ui .coding-output-panel h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--cm-ink-2); }
+body.student-ui .coding-output-panel pre { background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); padding: 14px 16px; font-family: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace; font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+body.student-ui #workspace-message.is-error { color: #8a1c1c; font-weight: 650; }
+body.student-ui .submission-completion { border: 1px solid var(--cm-line); border-top: 4px solid var(--cm-success); border-radius: var(--cm-radius); background: var(--cm-surface); padding: var(--cm-s3); box-shadow: var(--cm-shadow-2); }
+body.student-ui .submission-completion .eyebrow { color: var(--cm-success); }
+@media (max-width: 560px) {
+    body.student-ui .coding-toolbar #run-code { margin-left: 0; }
+    body.student-ui .coding-toolbar .button { flex: 1 1 calc(50% - 10px); }
+    body.student-ui #coding-main textarea.code-editor { font-size: 14px; }
+}
+
+/* 15.3 Code review: score banner, one card per test (pass/fail text stays first), sticky aside */
+body.student-ui .review-status-banner { border-left: 4px solid var(--cm-burgundy-700); border-radius: var(--cm-radius); background: var(--cm-surface); box-shadow: var(--cm-shadow-1); }
+body.student-ui .review-status-banner h2 { font-variant-numeric: tabular-nums; }
+body.student-ui .review-code { font-family: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace; font-size: 14px; line-height: 1.7; border-radius: 12px; }
+body.student-ui .review-empty-state:has(h3) { display: grid; gap: 0; padding: 0; border: 0; background: transparent; }
+body.student-ui .review-empty-state h3 { margin: 12px 0 0; padding: 10px 14px; font-size: 15px; border: 1px solid var(--cm-line); border-bottom: 0; border-radius: var(--cm-radius-sm) var(--cm-radius-sm) 0 0; background: var(--cm-surface-soft); }
+body.student-ui .review-empty-state h3:first-child { margin-top: 0; }
+body.student-ui .review-empty-state h3 + pre.lesson-output { margin: 0; padding: 12px 14px; border: 1px solid var(--cm-line); border-radius: 0 0 var(--cm-radius-sm) var(--cm-radius-sm); background: #fff; font-size: 13px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+body.student-ui .review-empty-state > p { margin: 12px 0 0; color: var(--cm-ink-2); }
+body.student-ui .review-page-actions { gap: var(--cm-s2); }
+@media (min-width: 1101px) { body.student-ui #review-main .module-aside { position: sticky; top: 88px; align-self: start; } }
+
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     .sp-skeleton, .week-bar, .badge-card.is-earned::after, .cm-toast { animation: none !important; }

@@ -94,6 +94,8 @@ function loadTaskStates() {
 function createTaskCard(task) {
     const article = document.createElement("article");
     article.className = "practice-task-card";
+    // Styling hook only (status chip / next task); no behaviour reads it.
+    article.dataset.status = task.status;
 
     const top = document.createElement("div");
     top.className = "practice-card-top";

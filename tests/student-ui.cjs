@@ -41,4 +41,8 @@ check('Opted-in pages load the shared layer and the interaction kit', () => {
         assert.ok(html.includes('../../css/student-premium.css') && html.includes('../../css/interaction-kit.css') && html.includes('../../js/interaction-kit.js'), page + ' assets');
     }
 });
+check('The coding workspace toolbar keeps 44px buttons despite the ID-scoped 42px rule in coding-workspace.css', () => {
+    assert.match(fs.readFileSync('css/coding-workspace.css', 'utf8'), /#coding-main \.coding-toolbar \.button \{[^}]*min-height: 42px/, 'the rule this override answers');
+    assert.match(css, /body\.student-ui #coding-main \.coding-toolbar \.button \{ min-height: 44px;/);
+});
 console.log(`${count} student UI checks passed (${OPTED.length} pages opted in).`);
