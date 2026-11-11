@@ -14,6 +14,9 @@
         const shine = shineHere ? earned.filter(id => !seen.shined.includes(id)) : [];
         return { next: { notified: [...new Set([...seen.notified, ...announce])], shined: [...new Set([...seen.shined, ...shine])] }, announce, shine, initialised: false };
     }
+    // Badges shined during this page view: re-applied when the page re-renders (e.g. on pageshow),
+    // so the one-time shine is not lost; a later visit never replays it.
+    const shinedThisView = new Set();
     function run(model, { page = "dashboard", root = document } = {}) {
         const kit = window.interactionKit;
         if (!kit || !model?.account || !model.ready || model.learningError || !model.language) return null;
@@ -25,7 +28,8 @@
         if (!store.set(listName(model.language.id), result.next)) return null; // account changed or unreadable: do nothing
         const titles = result.announce.map(id => earned.find(a => a.id === id)?.title).filter(Boolean);
         if (titles.length) kit.toast(titles.length === 1 ? `Badge unlocked: ${titles[0]}` : `${titles.length} badges unlocked: ${titles.join(", ")}`, { tone: "celebrate", duration: 6000 });
-        for (const id of result.shine) {
+        result.shine.forEach(id => shinedThisView.add(id));
+        for (const id of shinedThisView) {
             const card = root.querySelector?.(`[data-achievement="${id}"]`);
             if (card) { card.classList.add("ik-shine"); card.setAttribute("aria-label", `${earned.find(a => a.id === id)?.title || "Badge"}: newly unlocked`); }
         }

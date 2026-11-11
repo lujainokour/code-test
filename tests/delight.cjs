@@ -268,6 +268,8 @@ const tick = () => new Promise(r => setImmediate(r));
         const card = prog.dom.walk().find(n => n.dataset.achievement === 'first-task');
         assert.ok(card.classList.contains('ik-shine'), 'one-time shine in My progress');
         assert.equal(prog.dom.document.querySelector('#ik-toasts'), null, 'not announced twice');
+        prog.window.fire('pageshow');
+        assert.ok(prog.dom.walk().find(n => n.dataset.achievement === 'first-task').classList.contains('ik-shine'), 'a re-render in the same view keeps the shine');
         const again = studentPage({ local, extra: ['achievement-moments', 'progress-overview'] });
         assert.ok(!again.dom.walk().find(n => n.dataset.achievement === 'first-task').classList.contains('ik-shine'));
     });
