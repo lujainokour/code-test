@@ -13,6 +13,7 @@ function makeDocument({ selects = [] } = {}) {
             get className() { return [...classes].join(' '); }, set className(v) { classes.clear(); String(v).split(/\s+/).filter(Boolean).forEach(c => classes.add(c)); },
             setAttribute(n, v) { attrs[n] = String(v); }, getAttribute(n) { return attrs[n] ?? null; }, removeAttribute(n) { delete attrs[n]; },
             append(...nodes) { for (const n of nodes) { if (typeof n === 'string') { const t = el('#text'); t._text = n; this.children.push(t); continue; } if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = this; this.children.push(n); if (n.id) ids.set(n.id, n); } },
+            prepend(...nodes) { const rest = this.children; this.children = []; this.append(...nodes); this.children.push(...rest); },
             replaceChildren(...nodes) { this.children.forEach(c => { c.parent = null; }); this.children = []; this.append(...nodes); },
             before(...nodes) { const p = this.parent; if (!p) return; const i = p.children.indexOf(this); for (const n of nodes) { if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = p; if (n.id) ids.set(n.id, n); } p.children.splice(i, 0, ...nodes); },
             after(...nodes) { const p = this.parent; if (!p) return; const i = p.children.indexOf(this); for (const n of nodes) { if (n.parent) n.parent.children = n.parent.children.filter(c => c !== n); n.parent = p; if (n.id) ids.set(n.id, n); } p.children.splice(p.children.indexOf(this) + 1, 0, ...nodes); },
@@ -31,7 +32,7 @@ function makeDocument({ selects = [] } = {}) {
     const walk = root => root.children.flatMap(c => [c, ...walk(c)]);
     // Supports: tag, #id, .class, tag.class, [data-x="y"], 'a, b' lists and descendant-free simple selectors.
     function matches(n, sel) {
-        const m = sel.trim().match(/^([a-z]+)?(#[\w-]+)?(\.[\w-]+)?(\[[^\]]+\])?$/i);
+        const m = sel.trim().match(/^([a-z][a-z0-9]*)?(#[\w-]+)?(\.[\w-]+)?(\[[^\]]+\])?$/i);
         if (!m) return false;
         if (m[1] && n.tagName !== m[1].toUpperCase()) return false;
         if (m[2] && n.id !== m[2].slice(1)) return false;

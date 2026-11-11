@@ -303,6 +303,70 @@ const tick = () => new Promise(r => setImmediate(r));
         assert.equal(seenA.get('achievements:javascript'), undefined, 'lists are per language');
     });
 
+    // ================= 4. LESSON / LEVEL COMPLETION =================
+    function lessonDom(p) {
+        const d = p.dom.document;
+        const panel = d.createElement('section'); panel.className = 'lesson-next-panel'; panel.append(d.createElement('h2'));
+        const actions = d.createElement('div'); actions.className = 'lesson-next-actions';
+        const complete = d.createElement('button'); complete.className = 'button button-primary lesson-complete'; complete.id = 'complete-lesson'; complete.hidden = true;
+        const next = d.createElement('a'); next.className = 'button button-outline'; next.id = 'next-activity'; next.textContent = 'Next lesson →';
+        actions.append(complete, next); panel.append(actions); p.dom.body.append(panel);
+        const result = d.createElement('p'); result.id = 'assessment-result'; const wrap = d.createElement('div'); wrap.append(result); p.dom.body.append(wrap);
+        return { panel, next, wrap };
+    }
+    const primaries = root => root.children.flatMap(function walk(n) { return [n, ...n.children.flatMap(walk)]; }).filter(n => n.classList?.contains('button-primary') && !n.hidden);
+    await check('Completion: pure diff finds new lessons and really completed levels only', async () => {
+        const p = studentPage({ extra: ['completion-moments'] }); const cm = p.window.completionMoments, c = p.window.pythonCurriculum, l1 = c.levels[0];
+        const base = { version: 1, lessons: [], tasks: [], assessments: {} };
+        deq(cm.diff(base, { ...base, lessons: ['variables'] }), { lessons: ['variables'], levels: [] });
+        const allL1 = { ...base, lessons: l1.lessons.map(l => l.id) };
+        deq(cm.diff(allL1, { ...allL1, assessments: { 1: { score: 69 } } }).levels, [], 'a failed quiz completes nothing');
+        deq(cm.diff(allL1, { ...allL1, assessments: { 1: { score: 75 } } }).levels, [1]);
+        deq(cm.diff({ ...base, lessons: ['ghost'] }, { ...base, lessons: ['ghost', 'unknown'] }).lessons, [], 'unknown ids ignored');
+    });
+    await check('Completion: saving a lesson shows a small moment and keeps exactly one primary action', async () => {
+        const p = studentPage({ extra: ['completion-moments'] }); const { panel, next } = lessonDom(p);
+        p.window.cmStorage.setItem('codementor-demo-learning', JSON.stringify({ version: 1, lessons: ['variables'], tasks: [], assessments: {} }));
+        p.runTimers(0);
+        const box = panel.children.find(n => n.className?.includes('cm-moment-lesson'));
+        assert.ok(box && /Lesson complete/.test(box.textContent) && box.getAttribute('role') === 'status');
+        assert.ok(box.children.some(n => n.tagName === 'SVG'), 'animated check');
+        assert.ok(next.classList.contains('button-primary'));
+        assert.equal(primaries(panel).length, 1, 'one primary next action only');
+    });
+    await check('Completion: passing a level quiz shows the larger moment above the existing next step', async () => {
+        const local = memory(); const owner = 'learner-a@example.test';
+        const l1 = ['variables', 'data-types', 'input-output', 'numbers'];
+        local.setItem(lkey(owner, 'codementor-demo-learning'), JSON.stringify({ version: 1, lessons: l1, tasks: [], assessments: {} }));
+        const p = studentPage({ local, extra: ['completion-moments'] }); const { wrap } = lessonDom(p);
+        const step = p.dom.document.createElement('div'); step.id = 'assessment-next-step';
+        const go = p.dom.document.createElement('a'); go.className = 'button button-primary'; go.textContent = 'Continue to Level 2 →'; step.append(go); wrap.append(step);
+        p.window.cmStorage.setItem('codementor-demo-learning', JSON.stringify({ version: 1, lessons: l1, tasks: [], assessments: { 1: { score: 75, submittedAt: new Date().toISOString() } } }));
+        p.runTimers(0);
+        const box = step.children.find(n => n.className?.includes('cm-moment-level'));
+        assert.ok(box && /Level 1 complete!/.test(box.textContent));
+        assert.equal(primaries(step).length, 1, 'still one primary action');
+    });
+    await check('Completion: placement never triggers a moment; reduced motion keeps the message', async () => {
+        const p = studentPage({ owner: 'placed@example.test', extra: ['completion-moments'] }); const { panel } = lessonDom(p);
+        const store = p.window.placementStore;
+        let attempt = store.begin(store.capture());
+        attempt = store.save({ answers: store.bank().questions.map(q => q.correct), currentQuestion: store.bank().questions.length - 1 }, JSON.stringify(attempt), store.capture());
+        store.applyRecommended(JSON.stringify(store.submit(JSON.stringify(attempt), store.capture())), store.capture());
+        p.runTimers(0);
+        assert.ok(!p.dom.walk().some(n => n.className?.includes?.('cm-moment')), 'placed-out levels never celebrate');
+        const r = studentPage({ reduced: true, extra: ['completion-moments'] }); const dom = lessonDom(r);
+        r.window.cmStorage.setItem('codementor-demo-learning', JSON.stringify({ version: 1, lessons: ['variables'], tasks: [], assessments: {} }));
+        r.runTimers(0);
+        assert.ok(dom.panel.children.some(n => /Lesson complete/.test(n.textContent || '')));
+        assert.match(fs.readFileSync('css/interaction-kit.css', 'utf8'), /\.cm-moment \{ animation: none !important|\.ik-rocket, \.cm-moment \{ animation: none !important/);
+    });
+    await check('Completion: grading scripts are untouched by the moments layer', async () => {
+        const src = fs.readFileSync('js/completion-moments.js', 'utf8');
+        assert.ok(!/setItem|removeItem/.test(src), 'never writes storage');
+        for (const page of ['pages/student/lesson.html', 'pages/student/level-assessment.html']) assert.match(fs.readFileSync(page, 'utf8'), /completion-moments\.js/);
+    });
+
     // ===== further sections are appended per item =====
     console.log(`${count} delight checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });

@@ -76,11 +76,20 @@
 .ik-check path { fill: none; stroke: var(--ik-success); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; animation: ik-draw .45s .55s var(--ik-ease) forwards; }
 @keyframes ik-draw { to { stroke-dashoffset: 0; } }
 
+/* 8b. COMPLETION MOMENTS (lesson / level) */
+.cm-moment { display: flex; align-items: center; gap: 14px; margin: 12px 0; padding: 12px 16px; border-radius: 12px; background: #e7f5ee; border: 1px solid #b9e0cb; color: var(--ik-ink); animation: ik-rise .4s var(--ik-ease) both; }
+.cm-moment p { margin: 2px 0 0; font-size: 14px; color: #2f4a3c; }
+.cm-moment strong { font-size: 16px; color: var(--ik-success); }
+.cm-moment-lesson .ik-check { width: 44px; height: 44px; flex-shrink: 0; }
+.cm-moment-level { padding: 18px 20px; }
+.cm-moment-level h2 { margin: 0; font-size: 24px; color: var(--ik-success); }
+.cm-moment-level .ik-check { width: 72px; height: 72px; flex-shrink: 0; }
+
 /* 9. REDUCED MOTION: everything still works, nothing moves */
 @media (prefers-reduced-motion: reduce) {
     .ik .button, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post) { transition: none !important; }
     .ik .button:hover, .ik .button:active, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post):is(:hover, :focus-within) { transform: none !important; }
-    .ik .ik-stagger > *, .ik-skeleton, .ik-toast, .ik-toast.is-leaving, .ik-shine::before, .ik-rocket { animation: none !important; }
+    .ik .ik-stagger > *, .ik-skeleton, .ik-toast, .ik-toast.is-leaving, .ik-shine::before, .ik-rocket, .cm-moment { animation: none !important; }
     .ik-rocket, .ik-celebrate-canvas { display: none !important; }
     .ik-check circle, .ik-check path { animation: none !important; stroke-dashoffset: 0; }
 }
