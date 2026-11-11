@@ -86,21 +86,21 @@
             snapshot.append(node("p", language ? `The ${language.name} full path and placement are coming soon. Stored Python results, if any, are separate shared tab history.` : "Choose valid learning preferences to see matching placement options."));
             placementLink.href = preferenceError ? "../student/profile.html" : language ? `../public/languages.html?language=${language.id}` : "../student/onboarding.html";
             placementLink.textContent = preferenceError ? "Review preferences" : language ? "View content availability" : "Choose learning preferences";
-        } else if (course.id !== "python") {
+        } else if (!window.placementBanks.get(course.id)) {
             byId("placement-score").textContent = "No placement bank";
             snapshot.append(node("p", `${course.name} placement is not available. Start Level 1; no placement result or skipped levels were inferred.`));
             placementLink.href = "learning-path.html"; placementLink.textContent = "Start this learning path";
         } else {
-            placementLink.href = "../student/placement-intro.html"; placementLink.textContent = "Start Python placement";
+            placementLink.href = "../student/placement-intro.html"; placementLink.textContent = `Start ${course.name} placement`;
             try {
-                const attempt = read("codementor-demo-placement"), questions = window.placementQuestions;
+                const attempt = window.placementStore.read(), questions = window.placementQuestions;
                 if (attempt !== null) {
                     if (!object(attempt) || attempt.version !== 1 || !["in-progress", "submitted"].includes(attempt.status) || !Array.isArray(attempt.answers) || attempt.answers.length !== questions.length || !attempt.answers.every((answer, index) => (answer === null && attempt.status === "in-progress") || answer === "unsure" || (Number.isInteger(answer) && answer >= 0 && answer < questions[index].options.length)) || (attempt.status === "in-progress" && (!Number.isInteger(attempt.currentQuestion) || attempt.currentQuestion < 0 || attempt.currentQuestion >= questions.length))) throw new Error("Invalid placement");
                     placementState = attempt.status;
                     if (placementState === "in-progress") {
                         const answered = attempt.answers.filter(value => value !== null).length;
                         byId("placement-score").textContent = `${answered} / ${questions.length} answered`;
-                        snapshot.append(node("p", "Your Python placement attempt is in progress.")); placementLink.textContent = "Resume Python placement";
+                        snapshot.append(node("p", `Your ${course.name} placement attempt is in progress.`)); placementLink.textContent = `Resume ${course.name} placement`;
                     } else {
                         const correct = attempt.answers.filter((answer, index) => answer === questions[index].correct).length;
                         byId("placement-score").textContent = `${correct} / ${questions.length} correct`;
@@ -120,7 +120,9 @@
         const pathLink = byId("path-link"); pathLink.href = language ? `../public/languages.html?language=${language.id}` : "../public/languages.html"; pathLink.textContent = "Browse matching content";
         if (!language || !language.builtInContent) levels.append(node("li", preferenceError ? "Saved path unavailable." : language ? `${language.name}: full path coming soon.` : "No learning language selected."));
         else {
-            course.levels.forEach(level => levels.append(node("li", `${level.title}: ${learningError ? "Unavailable" : course.completed(level, learning || {lessons:[],assessments:{}}) ? "Completed" : course.available(level, learning || {lessons:[],assessments:{}}) ? "Available" : "Complete earlier levels"}`)));
+            course.levels.forEach(level => levels.append(node("li", `${level.title}: ${learningError ? "Unavailable" : course.completed(level, learning || {lessons:[],assessments:{}}) ? "Completed" : course.placedOut(level, learning || {lessons:[],assessments:{}}) ? "Placed out — not completed" : course.available(level, learning || {lessons:[],assessments:{}}) ? "Available" : "Complete earlier levels"}`)));
+            const choice = course.placementChoice();
+            if (choice) levels.append(node("li", `Saved placement start: Level ${choice.startLevel}. Placed-out levels remain open for review and do not count toward completion.`));
             if (assessment) levels.append(node("li", `Current level quiz best score: ${assessment.score}%.`));
             pathLink.href = "../student/learning-path.html"; pathLink.textContent = "View my learning path";
         }

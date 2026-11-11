@@ -22,8 +22,8 @@
         }
         return legacy;
     }
-    const persistent = key => ["codementor-demo-language", "codementor-demo-language-notifications", "codementor-demo-learning", "codementor-demo-onboarding", "codementor-demo-placement", "codementor-demo-subscription"].includes(key) || key.startsWith("codementor-demo-code-");
-    const languageScoped = key => ["codementor-demo-learning", "codementor-demo-placement"].includes(key) || key.startsWith("codementor-demo-code-");
+    const persistent = key => ["codementor-demo-language", "codementor-demo-language-notifications", "codementor-demo-learning", "codementor-demo-onboarding", "codementor-demo-placement", "codementor-demo-placement-choice", "codementor-demo-placement-recommendation", "codementor-demo-subscription"].includes(key) || key.startsWith("codementor-demo-code-");
+    const languageScoped = key => ["codementor-demo-learning", "codementor-demo-placement", "codementor-demo-placement-choice", "codementor-demo-placement-recommendation"].includes(key) || key.startsWith("codementor-demo-code-");
     const shared = key => ["codementor-demo-peer-bookings", "codementor-demo-service-requests", "codementor-demo-service-drafts"].includes(key);
     function sharedRecords(key) {
         const saved = localStorage.getItem(key), legacy = sessionStorage.getItem(key);

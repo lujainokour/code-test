@@ -1,0 +1,388 @@
+ M README.md
+ M SOURCES.md
+ M css/style.css
+ M docs/CURRENT-IMPLEMENTATION.md
+ M docs/WORKFLOWS-AND-USER-MAP.md
+ M js/admin-account-access.js
+ M js/admin-course-content.js
+ M js/admin-courses.js
+ M js/admin-level-create.js
+ M js/admin-student-data.js
+ M js/admin-student-details.js
+ M js/course-content-store.js
+ M js/dashboard.js
+ M js/home-effects.js
+ M js/learning-context.js
+ M js/learning-path.js
+ M js/learning-report.js
+ M js/learning-storage.js
+ M js/login.js
+ M js/module.js
+ M js/password-recovery.js
+ M js/placement-data.js
+ M js/placement-intro.js
+ M js/placement-question.js
+ M js/placement-results.js
+ M js/placement-review.js
+ M js/project-evaluation.js
+ M js/python-curriculum.js
+ M js/python-lessons.js
+ M js/signup.js
+ M js/skill-analysis.js
+ M js/student-services-data.js
+ M js/student-services-store.js
+ M js/student-services.js
+ M js/student-workspace.js
+ M js/theme.js
+ M js/virtual-internship-store.js
+ M js/workspace-shell.js
+ M pages/admin/admin-account-access.html
+ M pages/admin/admin-analytics.html
+ M pages/admin/admin-course-content.html
+ M pages/admin/admin-course-create.html
+ M pages/admin/admin-courses.html
+ M pages/admin/admin-dashboard.html
+ M pages/admin/admin-level-create.html
+ M pages/admin/admin-student-details.html
+ M pages/admin/admin-students.html
+ M pages/auth/change-password.html
+ M pages/auth/forgot-password.html
+ M pages/auth/login.html
+ M pages/auth/reset-password.html
+ M pages/auth/signup.html
+ M pages/public/course.html
+ M pages/public/demo.html
+ M pages/public/languages.html
+ M pages/services/community.html
+ M pages/services/freelance-services.html
+ M pages/services/mentoring-details.html
+ M pages/services/peer-mentoring.html
+ M pages/services/service-details.html
+ M pages/services/service-draft.html
+ M pages/services/showcase.html
+ M pages/services/student-public-profile.html
+ M pages/student/career.html
+ M pages/student/certificates.html
+ M pages/student/code-review.html
+ M pages/student/dashboard.html
+ M pages/student/learning-path.html
+ M pages/student/learning-report.html
+ M pages/student/lesson.html
+ M pages/student/level-assessment.html
+ M pages/student/local-portfolio.html
+ M pages/student/messages.html
+ M pages/student/module.html
+ M pages/student/onboarding.html
+ M pages/student/placement-intro.html
+ M pages/student/placement-question.html
+ M pages/student/placement-results.html
+ M pages/student/placement-review.html
+ M pages/student/practice.html
+ M pages/student/progress.html
+ M pages/student/project-evaluation.html
+ M pages/student/project.html
+ M pages/student/requests.html
+ M pages/student/skill-analysis.html
+ M pages/student/subscription.html
+ M pages/student/virtual-internship.html
+ M pages/student/workspace.html
+ M start-server.ps1
+ M tools/curriculum-summary.cjs
+?? assets/images/signup-workspace.png
+?? assets/images/student-coding-poster.jpg
+?? assets/videos/cherry-alpha.webm
+?? assets/videos/student-coding.mp4
+?? company-dashboard.html
+?? css/admin-overview.css
+?? css/coding-workspace.css
+?? css/community.css
+?? css/lesson-navigation.css
+?? css/peer-mentoring.css
+?? css/progress-page.css
+?? css/student-journey.css
+?? css/user-guide.css
+?? css/workspace-layout.css
+?? dashboard.html
+?? database/
+?? docs/KAHOOT-CHALLENGES.md
+?? docs/PEER-TEACHING-WORKFLOW.md
+?? docs/PHASE-2.md
+?? docs/PLACEMENT-RULES.md
+?? docs/PYTHON-SOURCES-NOTES.md
+?? docs/STUDENT-JOURNEY.md
+?? docs/access-fixes-2026-11-08-harness-results.json
+?? docs/access-fixes-2026-11-08-js-errors.json
+?? docs/access-fixes-2026-11-08-reference-results.json
+?? docs/admin-companies-1440.png
+?? docs/admin-companies-390.png
+?? docs/admin-overview-1440-dark.png
+?? docs/admin-overview-1440-light.png
+?? docs/admin-overview-390-dark.png
+?? docs/admin-overview-390-light.png
+?? docs/admin-role-1440.png
+?? docs/admin-role-390.png
+?? docs/admin-role-admin-bookings-1440.png
+?? docs/admin-role-admin-bookings-390.png
+?? docs/admin-role-admin-schedule-1440.png
+?? docs/admin-role-admin-schedule-390.png
+?? docs/admin-role-admin-session-students-1440.png
+?? docs/admin-role-admin-session-students-390.png
+?? docs/admin-role-admin-sessions-1440.png
+?? docs/admin-role-admin-sessions-390.png
+?? docs/admin-role-flow.md
+?? docs/audit-2026-11-06-harness-results.json
+?? docs/audit-2026-11-06-js-errors.json
+?? docs/audit-2026-11-06-reference-results.json
+?? docs/audit-browser-2026-11-06.json
+?? docs/audit-static-2026-11-06.json
+?? docs/auth-fix-harness-results.json
+?? docs/auth-fix-js-errors.json
+?? docs/auth-fix-reference-results.json
+?? docs/auth-layout-results.json
+?? docs/certificate-results.json
+?? docs/check-progress.ps1
+?? docs/cleanup-2026-11-11-current-suites.json
+?? docs/cleanup-2026-11-11-harness-results.json
+?? docs/cleanup-2026-11-11-js-errors.json
+?? docs/cleanup-2026-11-11-reference-results.json
+?? docs/cleanup-final-2026-11-11-js-errors.json
+?? docs/cleanup-final-2026-11-11-reference-results.json
+?? docs/coding-layout-1440-dark.png
+?? docs/coding-layout-1440-light.png
+?? docs/coding-layout-390-dark.png
+?? docs/coding-layout-390-light.png
+?? docs/community-1440-dark.png
+?? docs/community-1440-light.png
+?? docs/community-390-dark.png
+?? docs/community-390-light.png
+?? docs/connected-all-2026-11-06-harness-results.json
+?? docs/connected-all-2026-11-06-js-errors.json
+?? docs/connected-all-2026-11-06-reference-results.json
+?? docs/connected-compat-2026-11-06-harness-results.json
+?? docs/connected-compat-2026-11-06-js-errors.json
+?? docs/connected-compat-2026-11-06-reference-results.json
+?? docs/connected-final-2026-11-06-harness-results.json
+?? docs/connected-final-2026-11-06-js-errors.json
+?? docs/connected-final-2026-11-06-reference-results.json
+?? docs/connected-first-harness-results.json
+?? docs/connected-first-js-errors.json
+?? docs/connected-first-reference-results.json
+?? docs/dark-palette-results.json
+?? docs/dashboard-layout-results.json
+?? docs/database-phase2-proposed-tables.json
+?? docs/database/
+?? docs/delivery-harness-results.json
+?? docs/delivery-js-errors.json
+?? docs/delivery-reference-results.json
+?? docs/delivery-static-results.json
+?? docs/final-fixes-2026-11-08-harness-results.json
+?? docs/final-fixes-2026-11-08-js-errors.json
+?? docs/final-fixes-2026-11-08-reference-results.json
+?? docs/fixes-2026-11-06-harness-results.json
+?? docs/fixes-2026-11-06-js-errors.json
+?? docs/fixes-2026-11-06-reference-results.json
+?? docs/fixes-2026-11-08-delivery-results.json
+?? docs/fixes-2026-11-08-design-results.json
+?? docs/fixes-2026-11-08-final-results.json
+?? docs/fixes-2026-11-08-harness-results.json
+?? docs/fixes-2026-11-08-js-errors.json
+?? docs/fixes-2026-11-08-reference-results.json
+?? docs/fixes-2026-11-08-sql-results.json
+?? docs/fixes-2026-11-08-supplemental.json
+?? docs/fixes-final-2026-11-06-harness-results.json
+?? docs/fixes-final-2026-11-06-js-errors.json
+?? docs/fixes-final-2026-11-06-reference-results.json
+?? docs/footer-visual-results.json
+?? docs/frontend-stability-results-2026-11-04.json
+?? docs/kahoot-challenge-results.json
+?? docs/latest-results.json
+?? docs/learning-support-results.json
+?? docs/learning-upgrade-results.json
+?? docs/lesson-next-1440.png
+?? docs/lesson-next-390.png
+?? docs/navbar-harness-results.json
+?? docs/navbar-js-errors.json
+?? docs/navbar-reference-results.json
+?? docs/page-routes.json
+?? docs/peer-admin-review.png
+?? docs/peer-catalogue.png
+?? docs/peer-confirmed-booking-mobile.png
+?? docs/peer-confirmed-booking.png
+?? docs/peer-mentor-studio.png
+?? docs/phase2-protected-baseline.json
+?? docs/phase2-results.json
+?? docs/progress-layout-1440-dark.png
+?? docs/progress-layout-1440-light.png
+?? docs/progress-layout-390-dark.png
+?? docs/progress-layout-390-light.png
+?? docs/python-sources-results.json
+?? docs/requests-layout-1440-dark.png
+?? docs/requests-layout-1440-light.png
+?? docs/requests-layout-390-dark.png
+?? docs/requests-layout-390-light.png
+?? docs/requests-layout-768-dark.png
+?? docs/requests-layout-768-light.png
+?? docs/review-2026-11-08-harness-results.json
+?? docs/review-2026-11-08-js-errors.json
+?? docs/review-2026-11-08-reference-results.json
+?? docs/review-2026-11-08-static.json
+?? docs/review-2026-11-08-supplemental.json
+?? docs/services-arrival-results.json
+?? docs/services-input-results.json
+?? docs/services-visual-results.json
+?? docs/signup-visual-harness-results.json
+?? docs/signup-visual-js-errors.json
+?? docs/signup-visual-reference-results.json
+?? docs/site-audit-results.json
+?? docs/site-fixes-results.json
+?? docs/structure-harness-results.json
+?? docs/structure-js-errors.json
+?? docs/structure-reference-results.json
+?? docs/structure-static-results.json
+?? docs/student-journey-1440.png
+?? docs/student-journey-390.png
+?? docs/submission-completion-results.json
+?? docs/theme-input-results.json
+?? docs/theme-regression-results.json
+?? docs/theme-results.json
+?? docs/user-guide-results.json
+?? docs/verified-fixes-2026-11-08-harness-results.json
+?? docs/verified-fixes-2026-11-08-js-errors.json
+?? docs/verified-fixes-2026-11-08-reference-results.json
+?? docs/virtual-internship-results.json
+?? docs/workflow-final-2026-11-08-harness-results.json
+?? docs/workflow-final-2026-11-08-js-errors.json
+?? docs/workflow-final-2026-11-08-reference-results.json
+?? docs/workflow-fixes-2026-11-08-harness-results.json
+?? docs/workflow-fixes-2026-11-08-js-errors.json
+?? docs/workflow-fixes-2026-11-08-reference-results.json
+?? js/access-guard.js
+?? js/admin-community.js
+?? js/admin-companies.js
+?? js/admin-mentoring-monitor.js
+?? js/admin-overview.js
+?? js/admin-sessions-store.js
+?? js/admin-sessions-workspace.js
+?? js/auth-video.js
+?? js/certificates.js
+?? js/community-membership.js
+?? js/community.js
+?? js/company-auth.js
+?? js/company-store.js
+?? js/company-workspace.js
+?? js/demo-account.js
+?? js/level-challenges.js
+?? js/peer-mentoring-store.js
+?? js/placement-banks.js
+?? js/placement-engine.js
+?? js/placement-store.js
+?? js/python-extension.js
+?? js/python-runner.js
+?? js/python-worker.js
+?? js/service-entry.js
+?? js/student-account.js
+?? js/student-career.js
+?? js/subscription-page.js
+?? js/subscription-store.js
+?? js/teacher-auth.js
+?? js/teacher-store.js
+?? js/teacher-workspace.js
+?? js/user-guide.js
+?? js/workspace-support.js
+?? manifest.json
+?? pages/admin/admin-bookings.html
+?? pages/admin/admin-community.html
+?? pages/admin/admin-companies.html
+?? pages/admin/admin-peer-mentoring.html
+?? pages/admin/admin-schedule.html
+?? pages/admin/admin-session-students.html
+?? pages/admin/admin-sessions.html
+?? pages/auth/company-signup.html
+?? pages/auth/teacher-login.html
+?? pages/auth/teacher-signup.html
+?? pages/company/
+?? pages/teacher/
+?? teacher-dashboard.html
+?? tests/CdpSocket.cs
+?? tests/access-regressions.html
+?? tests/access-regressions.js
+?? tests/admin-companies-browser.ps1
+?? tests/admin-overview-browser.ps1
+?? tests/admin-role-browser.ps1
+?? tests/admin-sessions-store.cjs
+?? tests/approved-fixes.ps1
+?? tests/audit-regressions.html
+?? tests/audit-regressions.js
+?? tests/auth-layout-check.ps1
+?? tests/browser-smoke.html
+?? tests/browser-smoke.js
+?? tests/capture-fixes.ps1
+?? tests/certificates.ps1
+?? tests/coding-layout-browser.ps1
+?? tests/community-browser.ps1
+?? tests/complete-workflows.html
+?? tests/complete-workflows.js
+?? tests/connected-flows.html
+?? tests/connected-flows.js
+?? tests/content-phase.html
+?? tests/content-phase.js
+?? tests/dark-palette.ps1
+?? tests/dashboard-layout.ps1
+?? tests/footer-visual.ps1
+?? tests/hero-restore-check.ps1
+?? tests/integration-audit.html
+?? tests/integration-audit.js
+?? tests/kahoot-challenge.ps1
+?? tests/language-phase.html
+?? tests/language-phase.js
+?? tests/learning-support.ps1
+?? tests/learning-upgrade.ps1
+?? tests/lesson-next-browser.ps1
+?? tests/mentor-isolation.html
+?? tests/mentor-isolation.js
+?? tests/navigation-phase.html
+?? tests/navigation-phase.js
+?? tests/original-pages-phase.html
+?? tests/original-pages-phase.js
+?? tests/page-routes.js
+?? tests/peer-mentoring-browser.ps1
+?? tests/peer-mentoring-store.cjs
+?? tests/placement-fixture.js
+?? tests/placement-policy.cjs
+?? tests/placement-store.cjs
+?? tests/progress-layout-browser.ps1
+?? tests/python-sources.html
+?? tests/python-sources.js
+?? tests/reference-audit.js
+?? tests/requests-dashboard.html
+?? tests/requests-dashboard.js
+?? tests/requests-layout-browser.ps1
+?? tests/review-layout.html
+?? tests/review-layout.js
+?? tests/serve.ps1
+?? tests/service-access-browser.ps1
+?? tests/service-access.cjs
+?? tests/services-arrival.ps1
+?? tests/services-input.ps1
+?? tests/services-visual.html
+?? tests/services-visual.js
+?? tests/site-audit.html
+?? tests/site-audit.ps1
+?? tests/site-fixes.ps1
+?? tests/stability-audit.html
+?? tests/stability-audit.js
+?? tests/stability-powershell.ps1
+?? tests/student-journey-browser.ps1
+?? tests/submission-completion.ps1
+?? tests/theme-input.ps1
+?? tests/theme-smoke.html
+?? tests/theme-smoke.js
+?? tests/user-guide.ps1
+?? tests/verify-structure.ps1
+?? tests/virtual-internship.html
+?? tests/virtual-internship.js
+?? tools/finalize-fixes.cjs
+?? tools/package-delivery.cjs
+?? tools/record-phase2-local.cjs
+?? tools/verify-phase2-local.cjs
+?? vendor/

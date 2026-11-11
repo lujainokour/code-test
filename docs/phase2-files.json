@@ -1,0 +1,222 @@
+{
+  "phase": 2,
+  "baselineCommit": "d5344bf78ab6dc73d1a5f103d9f439abbb3ac3a9",
+  "browserVerification": "pending manual verification",
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "ea36cd884932bd990d964c5cf664c4dc8bb35ac91b433b0b9292fafb36ff5338"
+    },
+    {
+      "file": "docs/CURRENT-IMPLEMENTATION.md",
+      "sha256": "2e5f28e1050bc257d3f7807802f763491ea7cbc8e5ae9c37326099cceec80a05"
+    },
+    {
+      "file": "docs/WORKFLOWS-AND-USER-MAP.md",
+      "sha256": "2bcf65cd8c0850b8c128ad882d911a9dec2098fdfe0ce61c5abd4ce00840d8a7"
+    },
+    {
+      "file": "docs/PLACEMENT-RULES.md",
+      "sha256": "d2869943a922d4e73eac55b290c124ea90dcdde58dd4384f1bb557c6ee899dd9"
+    },
+    {
+      "file": "docs/PHASE-2.md",
+      "sha256": "208c1dd6e2fabd5e561fcf379c755fb0de626663806e3d347cf36afd98770576"
+    },
+    {
+      "file": "js/dashboard.js",
+      "sha256": "524937f35bf7de63b9bc2e3661d8e347b6c831f9395f1aea0a4b290602bd6ed2"
+    },
+    {
+      "file": "js/learning-context.js",
+      "sha256": "89e783a6cda5a868b75e7569493602a910e72b5ed256e5acf7d27abebeeb866e"
+    },
+    {
+      "file": "js/learning-path.js",
+      "sha256": "09a77d191fffcb22e710dc10082752c83fac34a543dd911da89944ed7b2fb918"
+    },
+    {
+      "file": "js/learning-report.js",
+      "sha256": "a0bcca71474fd5d8419a8d58cf831671a74497c3da1d120ba666d588b0cc2ca9"
+    },
+    {
+      "file": "js/learning-storage.js",
+      "sha256": "450e5cdacfdacbc8567e5c87b3541dc6c61bdea5abaced54fc88d442004916a5"
+    },
+    {
+      "file": "js/module.js",
+      "sha256": "7a26a772c62d31a1d8eb59552940eed57793ef2f0adefd179c1ab1ba864f901b"
+    },
+    {
+      "file": "js/placement-data.js",
+      "sha256": "f5f34f822df4059ea1d92f9b8c86653fcd5ea01d39abce8714b86b299040403a"
+    },
+    {
+      "file": "js/placement-intro.js",
+      "sha256": "098f32defb699369aa783c08c0198f7ece7f729759253d4033d01424fbf3a430"
+    },
+    {
+      "file": "js/placement-question.js",
+      "sha256": "b0e1fcc852846eb8ee2b00f1fa0a442641d894bf7410817345ee43e93ed7b64b"
+    },
+    {
+      "file": "js/placement-results.js",
+      "sha256": "055e4bd6559df672755fff5151a5bf0c3e967ec564399ed895ab83a6fb1eea7c"
+    },
+    {
+      "file": "js/placement-review.js",
+      "sha256": "57c32b4ef396f7c439e202816ea655a15f7a5e886ca7b64b558f1cfc6338db4e"
+    },
+    {
+      "file": "js/python-curriculum.js",
+      "sha256": "ab5b7218970e5e11b832672b5cf759d7bcac22d0f8f0895b99aa7b77c23e50ea"
+    },
+    {
+      "file": "js/skill-analysis.js",
+      "sha256": "3674a0c3b01ed5e832e2a3fc956f1e7c54f7c624836f263e2518896df05571a4"
+    },
+    {
+      "file": "js/placement-banks.js",
+      "sha256": "30268b2e3690562911a04da06a5f678e974e50dec8f786830afc4ede5eca6041"
+    },
+    {
+      "file": "js/placement-engine.js",
+      "sha256": "6ec6ec2ff6dff7b0686eeb7e6538d76762c7c52b72022ff63e83af8bfeeb9ed9"
+    },
+    {
+      "file": "js/placement-store.js",
+      "sha256": "b2b7d8731c7821dfdf5b3f867aaabbc0ff0e9004a1aae942513ac1300e1b3ea8"
+    },
+    {
+      "file": "pages/student/career.html",
+      "sha256": "3b364892d3f695ff2476a77482688cf0742e4d3ee2b011ccc17eb4591260c2a0"
+    },
+    {
+      "file": "pages/student/certificates.html",
+      "sha256": "af8cba26ebd014f971ad4eff1e4f6e34c5d07118297181c1ecc997b03a51847c"
+    },
+    {
+      "file": "pages/student/code-review.html",
+      "sha256": "bc88cfc7baf96be675123cdd114f93e21f7037da9b75f336cb1e2459fd833127"
+    },
+    {
+      "file": "pages/student/dashboard.html",
+      "sha256": "5667ffc77f9ea7cafe405e0f8108f37ba1d3334073af9930d6fc2aeeb44cd578"
+    },
+    {
+      "file": "pages/student/learning-path.html",
+      "sha256": "e18802011395fc5cd248eba22aa529945155e86f13ccf27d8ed2793142c8b23e"
+    },
+    {
+      "file": "pages/student/learning-report.html",
+      "sha256": "cd0a7b0a9ebfd2aa6f4666a5527e8411bd6c36e3f3165e9235072bb1d15008b7"
+    },
+    {
+      "file": "pages/student/lesson.html",
+      "sha256": "2711eb13c90216c5e40047a15b2be4673d50e0b2a5b6f0f22bc958ef9dcf5f38"
+    },
+    {
+      "file": "pages/student/level-assessment.html",
+      "sha256": "d2e4d9bf3205adf61359e58b8cacfcbc966d32994b5170bdb2c630edd3900a94"
+    },
+    {
+      "file": "pages/student/local-portfolio.html",
+      "sha256": "9654ae2f29e3acb2685829db2ed5f2e737b19e2e4c3c656d1443c786bbf643aa"
+    },
+    {
+      "file": "pages/student/messages.html",
+      "sha256": "af7e29331a7341f246078b3a8d017046c690c1d67f083bc595629f907de48732"
+    },
+    {
+      "file": "pages/student/module.html",
+      "sha256": "43d58d40b54a2d14c4b59f1bc08c14625e3c872ed7c48bcedce014cb25e55d6a"
+    },
+    {
+      "file": "pages/student/onboarding.html",
+      "sha256": "02032bcceb168ca25d6adfdf374262467c0ce07dc40477b7fd67704dee186c48"
+    },
+    {
+      "file": "pages/student/placement-intro.html",
+      "sha256": "766abbdda525c7d3843e126569406b9332c42cdd4148c6dfc991360bb037db88"
+    },
+    {
+      "file": "pages/student/placement-question.html",
+      "sha256": "638f4f6938c8cc12a0f3d7e5bab20fe1e919c7da1d3f545f7ba77830383a9e05"
+    },
+    {
+      "file": "pages/student/placement-results.html",
+      "sha256": "4e5560cbc5c42dd19bc991292781abd9c35c8cb32bc9143cf38e034b2e6872bb"
+    },
+    {
+      "file": "pages/student/placement-review.html",
+      "sha256": "08c85536c8d8618a855cc4d893e4a8d1d0cc6f7545992c876f467328f6dca713"
+    },
+    {
+      "file": "pages/student/practice.html",
+      "sha256": "5ca113258281a91abb866c60631a28e8dbfe13d410bcd9d7d003b88b370e482a"
+    },
+    {
+      "file": "pages/student/progress.html",
+      "sha256": "4f1a0791ab1ef43b05a21b0896dc733663ce9c4e522113be4ebc0bca88149bbd"
+    },
+    {
+      "file": "pages/student/project-evaluation.html",
+      "sha256": "514be8f23016057949b3d45cbae75bfea670d693de10afcac6f2d305e2b9c591"
+    },
+    {
+      "file": "pages/student/project.html",
+      "sha256": "a7f2462c19161831102818001798caad1eaad83d2434737ede6eb71f6cbe0acb"
+    },
+    {
+      "file": "pages/student/requests.html",
+      "sha256": "90d8395155af9024d9418826891947c8a987172403ecf320e4eeaa1a00674db4"
+    },
+    {
+      "file": "pages/student/skill-analysis.html",
+      "sha256": "6c45859406c631221889b0bc7c93c9c3a6f5a21a1a9393d9fbbd798e9463eb46"
+    },
+    {
+      "file": "pages/student/subscription.html",
+      "sha256": "9da05f3635c00a5a33ca6fb3fbb962df1e04e29f4793535a9420e3e96b418a62"
+    },
+    {
+      "file": "pages/student/virtual-internship.html",
+      "sha256": "4eb09a827ea705fb63fa883b95a3e3c8fc35d3a72f5ca48a3a25d51ff3a79c78"
+    },
+    {
+      "file": "pages/student/workspace.html",
+      "sha256": "fe910feb20d79bc783bd791da8988fcba3a8b84c5e8e30a45eb9d1904fc8bbfc"
+    },
+    {
+      "file": "tests/placement-fixture.js",
+      "sha256": "272440396a00fced1810ceb711da24c5135946d9e9a0e283fd9081b64f60170f"
+    },
+    {
+      "file": "tests/placement-policy.cjs",
+      "sha256": "8846e3f2d0366690a30f6099e55f50e671c0adf024edd6856d7f8ef59fbfbf1e"
+    },
+    {
+      "file": "tests/placement-store.cjs",
+      "sha256": "e1d48f0530e33fbc58a3d879ce304978034e11c0e17cf16483e85e09a02cc552"
+    },
+    {
+      "file": "tools/curriculum-summary.cjs",
+      "sha256": "49921b5452491bb52475c8db921f7d91ef1ee09f717cc3d9e8ed5af864cf7fc6"
+    },
+    {
+      "file": "tools/verify-phase2-local.cjs",
+      "sha256": "05d26a25fc81bce65ec69246e69811a54bae8cf5990373dccf5b3b0b98a425a0"
+    },
+    {
+      "file": "tools/record-phase2-local.cjs",
+      "sha256": "470081e5dd92b17c3509a1f570685fbb89ed406c17abd20780bdabadc0a56df0"
+    }
+  ],
+  "artifacts": [
+    "docs/phase2-results.json",
+    "docs/phase2-protected-baseline.json",
+    "docs/phase2-git-status.txt",
+    "docs/phase2-git-diff-stat.txt",
+    "docs/phase2-files.json"
+  ]
+}

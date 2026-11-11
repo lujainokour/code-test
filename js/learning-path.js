@@ -20,12 +20,13 @@
             const progress = course.read();
             course.levels.forEach((level, index) => {
                 const card = cards[index]; card.querySelector("h2").textContent = level.title; card.querySelector(".roadmap-content > p:not(.eyebrow)").textContent = level.goal;
-                const done = course.completed(level, progress), entitled = window.subscriptionStore.canAccessLevel(level.id), open = course.available(level, progress) && entitled;
+                const done = course.completed(level, progress), out = course.placedOut(level, progress), entitled = window.subscriptionStore.canAccessLevel(level.id), open = course.available(level, progress) && entitled;
                 card.classList.toggle('roadmap-locked', !open);
-                card.querySelector('.eyebrow').textContent = `LEVEL ${level.id} / ${done ? 'COMPLETED' : open ? 'AVAILABLE' : 'LOCKED'}`;
+                card.classList.toggle('roadmap-placed-out', out);
+                card.querySelector('.eyebrow').textContent = `LEVEL ${level.id} / ${done ? 'COMPLETED' : out ? 'PLACED OUT — NOT COMPLETED' : open ? 'AVAILABLE' : 'LOCKED'}`;
                 const old = card.querySelector('a, button');
                 const action = document.createElement(open || !entitled ? 'a' : 'button'); action.className = 'button button-outline';
-                action.textContent = done ? 'Review level' : open ? 'Continue level' : 'View requirements';
+                action.textContent = done ? 'Review level' : out ? 'Review placed-out level' : open ? 'Continue level' : 'View requirements';
                 if (!entitled) { action.href = 'subscription.html'; action.textContent = 'View Premium access'; }
                 else if (open) action.href = `module.html?level=${level.id}`;
                 else action.addEventListener('click', () => {

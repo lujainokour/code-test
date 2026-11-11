@@ -11,7 +11,7 @@
     <title>Placement Assessment | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
-    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script>
+    <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
     <script src="../../js/placement-data.js" defer></script><script src="../../js/placement-intro.js" defer></script>
@@ -74,7 +74,7 @@
 
             <h2 id="intro-title">Let’s find your starting line.</h2>
 
-            <p class="auth-intro">
+            <p class="auth-intro" id="placement-introduction">
                 Answer a few Python questions so we can show your initial
                 strengths and the topics to practise next.
             </p>
@@ -105,7 +105,7 @@
 
                 <div class="assessment-facts">
                     <div>
-                        <strong>10</strong>
+                        <strong id="placement-question-count">10</strong>
                         <span>Multiple-choice questions</span>
                     </div>
 
@@ -124,13 +124,13 @@
                     <li>Choose one answer or “I’m not sure” for each question.</li>
                     <li>You can move between questions and change your choices.</li>
                     <li>Review all answers before submitting.</li>
-                    <li>Your responses are saved in this browser tab.</li>
+                    <li>Your responses are saved on this device for your account and selected language.</li>
                 </ul>
             </section>
 
             <div class="placement-info">
                 <h3>What happens afterward?</h3>
-                <p>
+                <p id="placement-start-note">
                     You’ll see your score and a breakdown by topic.
                     Your learning journey begins with Python Foundations.
                 </p>

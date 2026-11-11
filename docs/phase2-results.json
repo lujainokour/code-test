@@ -1,0 +1,88 @@
+{
+  "phase": 2,
+  "browser": "NOT RUN: the single authorized normal-permission launch failed during Phase 1 closure. No retry.",
+  "suites": [
+    {
+      "suite": "admin-sessions-store.cjs",
+      "exitCode": 0,
+      "passed": 25,
+      "stdout": "PASS Retired teacher identity cannot manage sessions\nPASS Teacher authentication APIs are removed\nPASS Reading legacy data preserves it byte for byte\nPASS Admin can publish a platform session\nPASS Student cannot change platform availability\nPASS Concurrent reservations produce one booking\nPASS Student sees their pending booking\nPASS Student cannot confirm a platform booking\nPASS Other student cannot read the booking\nPASS Other student cannot cancel the booking\nPASS Admin cannot confirm without a valid meeting link\nPASS Active bookings prevent deleting the session\nPASS Admin confirmation and meeting link reach the student\nPASS Confirmation enrolls the student for follow-up\nPASS Confirmation connects the existing student and preserves notes\nPASS Completion before the scheduled end is rejected\nPASS Pausing removes a listing and keeps its confirmed booking\nPASS Pausing blocks new reservations\nPASS Declining requires an explanation\nPASS Overlapping weekly availability is rejected\nPASS Admin can retain student follow-up notes\nPASS Completing a session updates student progress once\nPASS Repeating completion cannot double count progress\nPASS Admin logout blocks subsequent mutations\nPASS Malformed legacy data is preserved for recovery\n25 admin session checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "curriculum-migration.cjs",
+      "exitCode": 0,
+      "passed": 8,
+      "stdout": "PASS Every legacy Python lesson id remains in the schema\nPASS Every legacy Python task id remains in the schema\nPASS Old completed Foundations levels retain their completion\nPASS Old Foundations record advances to Level 4 without fabricated completion\nPASS Legacy passing submissions and metadata remain unchanged\nPASS JavaScript schema has the required complete path\nPASS Only languages with implemented paths advertise ready status\nPASS Active JavaScript summaries use its real level count and free access\n8 curriculum migration checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "language-page-guards.cjs",
+      "exitCode": 0,
+      "passed": 8,
+      "stdout": "PASS Same-tab language selection hides the stale page and stops both runners\nPASS Stale page cannot write progress after its language changes\nPASS Back navigation re-hides stale content even if another guard made it visible\nPASS Focus rechecks the current language without duplicating notices\nPASS Same-tab account switch immediately hides the previous account page\nPASS Stale language selection cannot affect the new account\nPASS Onboarding can change its own language without hiding its active form\nPASS Onboarding still hides after a different account takes over\n8 language lifecycle guard checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "language-publishing.cjs",
+      "exitCode": 0,
+      "passed": 6,
+      "stdout": "PASS Published profile uses the selected JavaScript language id\nPASS Company talent snapshot retains the same active language id\nPASS Language metadata does not expose private account email\nPASS Changing a private preference cannot silently republish a public profile\nPASS Explicit republishing updates selected language without replacing self-reported skills\nPASS Stale publishing owner is rejected\n6 language publishing checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "language-storage.cjs",
+      "exitCode": 0,
+      "passed": 13,
+      "stdout": "PASS Old Python owner key reads byte for byte without rewriting metadata\nPASS Stale Python page cannot save into newly selected JavaScript\nPASS JavaScript starts without inheriting Python progress\nPASS JavaScript writes have an independent language namespace\nPASS Returning to Python restores original progress with separate drafts and placement\nPASS JavaScript progress and draft survive a round trip\nPASS Account switch rejects stale ownership and does not inherit A language\nPASS B does not inherit either language progress or drafts\nPASS Coming-soon interest is a local owner-specific flag\nPASS Legacy tab progress imports to the unchanged Python key\nPASS Removing a JavaScript record cannot delete legacy Python source\nPASS Second account cannot import first owner legacy records\nPASS Second account cannot inherit first owner legacy language\n13 language storage and migration checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "peer-mentoring-store.cjs",
+      "exitCode": 0,
+      "passed": 51,
+      "stdout": "PASS Guests cannot apply as mentors\nPASS Application starts pending and private\nPASS Pending mentors cannot create listings\nPASS Students cannot review applications\nPASS Admin must explain their decision\nPASS Applicant can read review feedback\nPASS Stale admin review cannot overwrite a resubmission\nPASS Publishing requires a future appointment\nPASS Past appointments are rejected\nPASS Overlapping appointments across a mentor sessions are blocked\nPASS Only approved published sessions reach the catalogue\nPASS Public catalogue excludes email, private evidence and approval feedback\nPASS Mentors cannot book their own sessions\nPASS Concurrent attempts reserve a slot exactly once\nPASS Learner sees Requested without a fabricated meeting link\nPASS Reserved appointment is unavailable in the catalogue\nPASS Learner cannot confirm on behalf of the mentor\nPASS Unrelated student cannot read private bookings\nPASS Unrelated student cannot cancel another booking\nPASS Reserved appointments cannot be removed\nPASS Unsafe meeting links are rejected\nPASS Mentor confirmation shares the supplied link with participants\nPASS A stale status action cannot overwrite confirmation\nPASS Completion before the scheduled end is blocked\nPASS Reviews before completion are blocked\nPASS Learner sees mentor confirmation and the private link\nPASS Completed learner can review once\nPASS Duplicate reviews are blocked\nPASS Public listing exposes only aggregated ratings\nPASS Account changes block stale form submissions\nPASS Cancellation releases the future appointment\nPASS Pausing a session removes it from the catalogue\nPASS Paused sessions reject new bookings\nPASS Existing bookings survive a paused listing\nPASS Student cannot impose an administrator hold\nPASS Administrator hold hides a student session\nPASS Student cannot republish through an administrator hold\nPASS Stale hold release cannot overwrite a newer session\nPASS Releasing a hold keeps the student session as a draft\nPASS Administrator cancellation requires an explanation\nPASS Administrator cancellation reaches learner history and releases the appointment\nPASS Admin logout removes application access\nPASS Corrupt storage fails without replacing records\nPASS Corrupt storage is preserved for recovery\nPASS Students cannot prepare administrator demo data\nPASS Preparing a sample leaves an existing queue intact\nPASS Concurrent initialization adds exactly one labelled pending sample\nPASS Sample request belongs to the ordinary student sample account\nPASS Sample initialization preserves an existing review decision\nPASS Sample initialization preserves malformed records\nPASS Malformed sample queue remains untouched\n51 peer mentoring checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "phase0-honesty.cjs",
+      "exitCode": 0,
+      "passed": 5,
+      "stdout": "PASS Published curriculum inventory matches executable content\nPASS Homepage labels the prepared mentor demo without promising connected AI\nPASS Public sample credentials are visibly labelled demo only on login screens\nPASS README and all textual documentation omit hardcoded demo passwords\nPASS Sample teaching card directs users to login rather than displaying credentials\n5 Phase 0 honesty checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "placement-policy.cjs",
+      "exitCode": 0,
+      "passed": 16,
+      "stdout": "PASS python has a valid bank across the first three real levels\nPASS python all-unsure starts at Level 1 and earns no placed-out levels\nPASS python all-correct is capped at two skipped levels\nPASS python strong later topics cannot skip a weak earlier level\nPASS python unanswered submitted attempts are rejected\nPASS javascript has a valid bank across the first three real levels\nPASS javascript all-unsure starts at Level 1 and earns no placed-out levels\nPASS javascript all-correct is capped at two skipped levels\nPASS javascript strong later topics cannot skip a weak earlier level\nPASS javascript unanswered submitted attempts are rejected\nPASS Exactly 75 percent on every Level 1 topic allows Level 2\nPASS One percentage point below 75 cannot skip Level 1\nPASS A 75 percent overall average cannot hide a topic below threshold\nPASS Legacy Python order and result remain usable without rewriting the attempt\nPASS A legacy Python attempt cannot be interpreted as JavaScript\nPASS Explicitly wrong language metadata is rejected\n16 placement policy checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "placement-store.cjs",
+      "exitCode": 0,
+      "passed": 28,
+      "stdout": "PASS A recommendation alone does not unlock a later level\nPASS Applying placement changes the current starting level\nPASS Placed-out levels are reviewable but distinct from completed\nPASS Placement never writes lesson, task or quiz completion\nPASS The unchanged certificate UI stays locked after placing out levels\nPASS A placement-only record cannot print a completion certificate\nPASS Real Level 3 plus placed-out Levels 1-2 still cannot earn a certificate\nPASS Real required work still enables the existing certificate\nPASS A retake preserves the applied choice and last submitted recommendation\nPASS A low retake updates only the recommendation until the student applies it\nPASS A retake preserves real progress and code byte for byte\nPASS An unconfirmed override cannot change the starting choice\nPASS Confirmed Level 1 override preserves real work and its next unlocked level\nPASS JavaScript has an independent attempt, choice and progress\nPASS The JavaScript bank covers all three levels with at least ten questions\nPASS JavaScript can apply its own placement choice without earned completion\nPASS Returning to Python restores its own override and low retake result\nPASS Account switch during an attempt rejects stale answer saves and submit\nPASS Account B cannot inherit A placement choice or attempt\nPASS A stale tab cannot overwrite newer answers\nPASS Language switch during an attempt rejects stale saves\nPASS Corrupt placement data is preserved rather than reset\nPASS Legacy Python results can be applied without rewriting saved answers\nPASS Results show a recommended Level 3 with per-topic reasons\nPASS Override opens a confirmation without applying a choice\nPASS Cancelling the override leaves the choice unapplied\nPASS Start here applies the recommendation and targets the learning path\nPASS Mentor, backend execution/grading and account files remain untouched\n28 placement storage, UI and completion-isolation checks passed.\n",
+      "stderr": ""
+    },
+    {
+      "suite": "service-access.cjs",
+      "exitCode": 0,
+      "passed": 23,
+      "stdout": "PASS Guest cannot open community\nPASS Guest cannot open peer-mentoring\nPASS Guest cannot open showcase\nPASS Guest cannot open freelance-services\nPASS Guest cannot open mentoring-details\nPASS Guest cannot open service-details\nPASS Guest cannot open student-public-profile\nPASS Guest cannot open service-draft\nPASS Missing, malformed or wrong role fails closed: null\nPASS Missing, malformed or wrong role fails closed: {broken\nPASS Missing, malformed or wrong role fails closed: {}\nPASS Missing, malformed or wrong role fails closed: {\"role\":\"company\",\"isDemo\":true,\"name\":\"Company\",\"email\":\"company@example.com\"}\nPASS Missing, malformed or wrong role fails closed: {\"role\":\"student\",\"isDemo\":true,\"name\":\"Student\",\"email\":\"\"}\nPASS Unavailable storage fails closed\nPASS Student can open the requested private page\nPASS Company can browse service listings without student identity\nPASS Company cannot enter student workspace\nPASS Company cannot create a student draft\nPASS Public landing and catalogue remain accessible\nPASS Back and cross-tab logout recheck identity\nPASS Return target preserves valid query and fragment\nPASS Return target rejects external, script, admin and sibling-app paths\nPASS All protected documents install the guard before deferred page code\n23 access checks passed.\n",
+      "stderr": ""
+    }
+  ],
+  "syntax": {
+    "files": 103,
+    "failures": []
+  },
+  "staticReferences": {
+    "scope": "Declared HTML href/src/action/poster only; no runtime DOM, browser errors or image decoding.",
+    "routes": 79,
+    "references": 161,
+    "missing": []
+  },
+  "totalPassed": 183,
+  "failures": 0
+}

@@ -17,7 +17,7 @@
         if (!window.languageCatalog.get(id)?.builtInContent) {
             window.learningUnavailable = true;
             window.showLanguageUnavailable();
-        } else if (id !== "python" && /\/(placement-(intro|question|review|results)|skill-analysis)\.html$/.test(location.pathname)) {
+        } else if (!window.placementBanks?.get(id) && /\/(placement-(intro|question|review|results)|skill-analysis)\.html$/.test(location.pathname)) {
             window.learningUnavailable = true;
             const main = document.querySelector("main");
             const heading = document.createElement("h1"); heading.textContent = "Placement is not available for this language";

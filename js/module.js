@@ -8,6 +8,7 @@
     function render() {
         try {
             const progress = course.read();
+            byId('workspace-message').textContent = course.placedOut(level, progress) ? 'This level is placed out, not completed. Review it any time; complete its real lessons, quiz and required tasks to earn completion credit.' : '';
             document.querySelector('main h1').textContent = level.title;
             document.querySelector('main > .eyebrow').textContent = `LEVEL ${level.id} / ${course.name.toUpperCase()}`;
             document.querySelector('.workspace-intro').textContent = level.goal;

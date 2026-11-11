@@ -84,7 +84,7 @@ function renderPriorities(scores) {
             "You answered all placement questions correctly. " +
             "Apply that understanding in practical tasks.";
 
-        priorityLink.href = "../student/module.html?level=1";
+        priorityLink.href = "../student/learning-path.html";
         priorityLink.textContent = "Continue learning";
 
         return;
@@ -126,7 +126,7 @@ function loadAnalysis() {
     placementLink.textContent = "Start placement";
 
     try {
-        const saved = sessionStorage.getItem(
+        const saved = window.cmStorage.getItem(
             "codementor-demo-placement"
         );
 

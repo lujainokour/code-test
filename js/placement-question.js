@@ -1,274 +1,67 @@
 (() => {
-if (window.learningUnavailable) return;
-const questions = window.placementQuestions;
-const attemptKey = "codementor-demo-placement";
-
-const title = document.getElementById("question-title");
-const position = document.getElementById("question-position");
-const topic = document.getElementById("question-topic");
-const codeContent = document.getElementById("code-content");
-const optionsContainer = document.getElementById("answer-options");
-const navigation = document.getElementById("question-navigation");
-const progress = document.getElementById("question-progress");
-const answerCount = document.getElementById("answer-count");
-const saveStatus = document.getElementById("save-status");
-const message = document.getElementById("question-message");
-
-const previousButton = document.getElementById("previous-question");
-const nextButton = document.getElementById("next-question");
-const reviewButton = document.getElementById("review-answers");
-
-let attempt = null;
-let savedSuccessfully = true;
-
-function showMessage(text, isError = false) {
-    message.textContent = text;
-    message.classList.toggle("is-error", isError);
-}
-
-function isValidAnswer(answer, index) {
-    return (
-        answer === null ||
-        answer === "unsure" ||
-        (
-            Number.isInteger(answer) &&
-            answer >= 0 &&
-            answer < questions[index].options.length
-        )
-    );
-}
-
-function loadAttempt() {
-    try {
-        const saved = sessionStorage.getItem(attemptKey);
-
-        if (!saved) {
-            window.location.replace("../student/placement-intro.html");
-            return false;
-        }
-
-        attempt = JSON.parse(saved);
-
-        const valid = (
-            attempt?.version === 1 &&
-            Array.isArray(attempt.answers) &&
-            attempt.answers.length === questions.length &&
-            attempt.answers.every(isValidAnswer)
-        );
-
-        if (!valid) {
-            throw new Error("Invalid saved attempt");
-        }
-
-        if (attempt.status === "submitted") {
-            window.location.replace("../student/placement-results.html");
-            return false;
-        }
-
-        if (attempt.status !== "in-progress") {
-            throw new Error("Invalid attempt status");
-        }
-
-        if (
-            !Number.isInteger(attempt.currentQuestion) ||
-            attempt.currentQuestion < 0 ||
-            attempt.currentQuestion >= questions.length
-        ) {
-            throw new Error("Invalid question position");
-        }
-
-        return true;
-    } catch {
-        showMessage(
-            "Your saved assessment could not be loaded. Return to the introduction.",
-            true
-        );
-
-        previousButton.disabled = true;
-        nextButton.disabled = true;
-        reviewButton.disabled = true;
-
-        return false;
+    "use strict";
+    if (window.learningUnavailable) return;
+    const store = window.placementStore, context = store.capture(), questions = store.bank(context).questions;
+    const byId = id => document.getElementById(id);
+    let attempt = null, snapshot = "null", saved = true;
+    function message(text, error = false) { byId("question-message").textContent = text; byId("question-message").classList.toggle("is-error", error); }
+    function persist() {
+        try {
+            attempt = store.save({ answers: attempt.answers, currentQuestion: attempt.currentQuestion }, snapshot, context);
+            snapshot = JSON.stringify(attempt); saved = true; byId("save-status").textContent = "Answers saved on this device."; message(""); return true;
+        } catch (error) { saved = false; byId("save-status").textContent = "Changes not saved."; message(error.message, true); return false; }
     }
-}
-
-function saveAttempt() {
-    try {
-        sessionStorage.setItem(attemptKey, JSON.stringify(attempt));
-
-        savedSuccessfully = true;
-        saveStatus.textContent = "Answers saved in this tab.";
-        showMessage("");
-
-        return true;
-    } catch {
-        savedSuccessfully = false;
-        saveStatus.textContent = "Changes not saved.";
-
-        showMessage(
-            "Couldn’t save your changes. Select an answer again to retry.",
-            true
-        );
-
-        return false;
-    }
-}
-
-function updateNavigation() {
-    navigation.replaceChildren();
-
-    questions.forEach(function (question, index) {
-        const button = document.createElement("button");
-        const answered = attempt.answers[index] !== null;
-
-        button.type = "button";
-        button.className = "question-number";
-        button.textContent = index + 1;
-
-        button.classList.toggle("is-answered", answered);
-
-        button.setAttribute(
-            "aria-label",
-            `Question ${index + 1}, ${answered ? "answered" : "unanswered"}`
-        );
-
-        if (index === attempt.currentQuestion) {
-            button.setAttribute("aria-current", "step");
-        }
-
-        button.addEventListener("click", function () {
-            goToQuestion(index);
+    function navigation() {
+        const host = byId("question-navigation"); host.replaceChildren();
+        questions.forEach((question, index) => {
+            const button = document.createElement("button"); button.type = "button"; button.className = "question-number"; button.textContent = String(index + 1);
+            const answered = attempt.answers[index] !== null;
+            button.classList.toggle("is-answered", answered); button.setAttribute("aria-label", `Question ${index + 1}, ${answered ? "answered" : "unanswered"}`);
+            if (index === attempt.currentQuestion) button.setAttribute("aria-current", "step");
+            button.addEventListener("click", () => go(index)); host.append(button);
         });
-
-        navigation.append(button);
-    });
-
-    const answered = attempt.answers.filter(function (answer) {
-        return answer !== null;
-    }).length;
-
-    answerCount.textContent =
-        `${answered} answered · ${questions.length - answered} unanswered`;
-
-    reviewButton.disabled =
-        answered !== questions.length || !savedSuccessfully;
-}
-
-function renderQuestion(moveFocus = false) {
-    const index = attempt.currentQuestion;
-    const question = questions[index];
-
-    position.textContent = `QUESTION ${index + 1} OF ${questions.length}`;
-    progress.value = index + 1;
-    topic.textContent = question.topic;
-    title.textContent = question.title;
-    codeContent.textContent = question.code;
-
-    optionsContainer.replaceChildren();
-
-    const choices = [
-        ...question.options.map(function (text, value) {
-            return { text: text, value: value };
-        }),
-        { text: "I’m not sure", value: "unsure" }
-    ];
-
-    choices.forEach(function (choice, optionIndex) {
-        const label = document.createElement("label");
-        const input = document.createElement("input");
-        const text = document.createElement("span");
-
-        label.className = "answer-option";
-        input.type = "radio";
-        input.name = "answer";
-        input.value = String(choice.value);
-        input.checked = attempt.answers[index] === choice.value;
-
-        text.textContent = choice.value === "unsure"
-            ? choice.text
-            : `${String.fromCharCode(65 + optionIndex)} · ${choice.text}`;
-
-        label.classList.toggle("is-selected", input.checked);
-
-        input.addEventListener("change", function () {
-            attempt.answers[index] = choice.value;
-
-            optionsContainer.querySelectorAll(".answer-option").forEach(
-                function (option) {
-                    const radio = option.querySelector("input");
-                    option.classList.toggle("is-selected", radio.checked);
-                }
-            );
-
-            saveAttempt();
-            updateNavigation();
+        const answered = attempt.answers.filter(answer => answer !== null).length;
+        byId("answer-count").textContent = `${answered} answered · ${questions.length - answered} unanswered`;
+        byId("review-answers").disabled = answered !== questions.length || !saved;
+    }
+    function render(focus = false) {
+        const index = attempt.currentQuestion, question = questions[index];
+        byId("question-title").textContent = question.title; byId("question-position").textContent = `QUESTION ${index + 1} OF ${questions.length}`;
+        byId("question-topic").textContent = `Level ${question.level} · ${question.topic}`; byId("code-content").textContent = question.code;
+        byId("question-progress").max = questions.length; byId("question-progress").value = index + 1;
+        const host = byId("answer-options"); host.replaceChildren();
+        const choices = [...question.options.map((text, value) => ({ text, value })), { text: "I’m not sure", value: "unsure" }];
+        choices.forEach((choice, position) => {
+            const label = document.createElement("label"), input = document.createElement("input"), text = document.createElement("span");
+            label.className = "answer-option"; input.type = "radio"; input.name = "answer"; input.value = String(choice.value); input.checked = attempt.answers[index] === choice.value;
+            text.textContent = choice.value === "unsure" ? choice.text : `${String.fromCharCode(65 + position)} · ${choice.text}`;
+            label.classList.toggle("is-selected", input.checked);
+            input.addEventListener("change", () => { attempt.answers[index] = choice.value; persist(); host.querySelectorAll(".answer-option").forEach(option => option.classList.toggle("is-selected", option.querySelector("input").checked)); navigation(); });
+            label.append(input, text); host.append(label);
         });
-
-        label.append(input, text);
-        optionsContainer.append(label);
-    });
-
-    previousButton.disabled = index === 0;
-    nextButton.textContent = index === questions.length - 1
-        ? "Review answers →"
-        : "Next question →";
-
-    updateNavigation();
-
-    if (moveFocus) {
-        title.focus();
+        byId("previous-question").disabled = index === 0; byId("next-question").disabled = false;
+        byId("next-question").textContent = index === questions.length - 1 ? "Review answers →" : "Next question →";
+        navigation(); if (focus) byId("question-title").focus();
     }
-}
-
-function goToQuestion(index) {
-    attempt.currentQuestion = index;
-
-    saveAttempt();
-    renderQuestion(true);
-}
-
-function openReview() {
-    const allAnswered = attempt.answers.every(function (answer) {
-        return answer !== null;
-    });
-
-    if (!allAnswered) {
-        showMessage(
-            "Answer every question, or choose “I’m not sure”, before reviewing.",
-            true
-        );
-        return;
+    function go(index) { if (!attempt || index < 0 || index >= questions.length) return; attempt.currentQuestion = index; persist(); render(true); }
+    function review() {
+        if (!attempt || attempt.answers.some(answer => answer === null)) { message("Answer every question or choose unsure before reviewing.", true); return; }
+        if (persist()) location.href = "placement-review.html";
     }
-
-    if (saveAttempt()) {
-        window.location.href = "../student/placement-review.html";
+    function load() {
+        try {
+            attempt = store.read(context);
+            if (!attempt) { location.replace("placement-intro.html"); return; }
+            if (attempt.status === "submitted") { location.replace("placement-results.html"); return; }
+            snapshot = JSON.stringify(attempt); saved = true; byId("save-status").textContent = "Answers loaded.";
+            document.querySelector(".eyebrow").textContent = `${window.languageCatalog.get(context.language).name.toUpperCase()} PLACEMENT`;
+            document.title = `${window.languageCatalog.get(context.language).name} placement | CodeMentor AI`;
+            document.querySelector(".onboarding-footer").textContent = `CodeMentor AI · Frontend demo · ${window.languageCatalog.get(context.language).name} placement`;
+            render();
+        } catch (error) { message(error.message, true); ["previous-question", "next-question", "review-answers"].forEach(id => { byId(id).disabled = true; }); }
     }
-}
-
-previousButton.addEventListener("click", function () {
-    if (attempt && attempt.currentQuestion > 0) {
-        goToQuestion(attempt.currentQuestion - 1);
-    }
-});
-
-nextButton.addEventListener("click", function () {
-    if (!attempt) {
-        return;
-    }
-
-    if (attempt.currentQuestion === questions.length - 1) {
-        openReview();
-    } else {
-        goToQuestion(attempt.currentQuestion + 1);
-    }
-});
-
-reviewButton.addEventListener("click", openReview);
-
-window.addEventListener("pageshow", function () {
-    if (loadAttempt()) {
-        saveStatus.textContent = "Answers loaded.";
-        renderQuestion();
-    }
-});
+    byId("previous-question").addEventListener("click", () => go(attempt?.currentQuestion - 1));
+    byId("next-question").addEventListener("click", () => { if (!attempt) return; if (attempt.currentQuestion === questions.length - 1) review(); else go(attempt.currentQuestion + 1); });
+    byId("review-answers").addEventListener("click", review);
+    window.addEventListener("pageshow", load); load();
 })();

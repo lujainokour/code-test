@@ -1,194 +1,41 @@
 (() => {
-if (window.learningUnavailable) return;
-const greeting = document.getElementById("placement-greeting");
-const languageSummary = document.getElementById("summary-language");
-const experienceSummary = document.getElementById("summary-experience");
-const goalSummary = document.getElementById("summary-goal");
-
-const startButton = document.getElementById("start-assessment");
-const placementMessage = document.getElementById("placement-message");
-
-const preferencesKey = "codementor-demo-onboarding";
-const attemptKey = "codementor-demo-placement";
-let placementOwner; try { placementOwner = window.cmStorage.captureOwner(); } catch { /* Saving stays blocked. */ }
-
-const experienceLabels = {
-    beginner: "Just starting",
-    basics: "Know the basics",
-    practising: "Have some practice"
-};
-
-const goalLabels = {
-    foundations: "Build foundations",
-    "problem-solving": "Solve problems",
-    projects: "Build projects"
-};
-
-let preferences = null;
-let attemptStatus = "new";
-let storageAvailable = true;
-
-function showMessage(message, isError = false) {
-    placementMessage.textContent = message;
-    placementMessage.classList.toggle("is-error", isError);
-}
-
-function hasValidPreferences() {
-    return Boolean(
-        preferences &&
-        preferences.language === "python" &&
-        Object.hasOwn(experienceLabels, preferences.experience) &&
-        Object.hasOwn(goalLabels, preferences.goal)
-    );
-}
-
-function loadPageData() {
-    preferences = null;
-    attemptStatus = "new";
-    storageAvailable = true;
-    startButton.disabled = false;
-    startButton.textContent = "Start assessment →";
-    showMessage("");
-
-    try {
-        const sessionText = window.cmStorage.getItem(
-            "codementor-demo-session"
-        );
-
-        if (sessionText) {
-            try {
-                const session = JSON.parse(sessionText);
-
-                if (typeof session?.name === "string" && session.name.trim()) {
-                    const firstName = session.name.trim().split(/\s+/)[0];
-
-                    greeting.textContent =
-                        `Ready for the challenge, ${firstName}?`;
-                }
-            } catch {
-                /* Keep the default greeting */
-            }
-        }
-
-        const savedPreferences = window.cmStorage.getItem(preferencesKey);
-
-        if (savedPreferences) {
-            try {
-                preferences = JSON.parse(savedPreferences);
-            } catch {
-                preferences = null;
-            }
-        }
-
-        const savedAttempt = window.cmStorage.getItem(attemptKey);
-
-        if (savedAttempt !== null) {
-            try {
-                const attempt = JSON.parse(savedAttempt);
-                const questions = window.placementQuestions;
-
-                if (
-                    attempt?.version === 1 &&
-                    Array.isArray(attempt.answers) &&
-                    attempt.answers.length === questions.length &&
-                    ["in-progress", "submitted"].includes(attempt.status) &&
-                    attempt.answers.every((answer, index) =>
-                        (answer === null && attempt.status === "in-progress") || answer === "unsure" ||
-                        (Number.isInteger(answer) && answer >= 0 && answer < questions[index].options.length)
-                    ) && (attempt.status === "submitted" ||
-                        (Number.isInteger(attempt.currentQuestion) && attempt.currentQuestion >= 0 && attempt.currentQuestion < questions.length))
-                ) {
-                    if (attempt.status === "in-progress") {
-                        attemptStatus = "in-progress";
-                    } else if (attempt.status === "submitted") {
-                        attemptStatus = "submitted";
-                    }
-                } else throw new Error("Invalid placement attempt");
-            } catch {
-                storageAvailable = false;
-                showMessage("Your saved placement attempt could not be read. It has not been deleted or replaced.", true);
-            }
-        }
-    } catch {
-        storageAvailable = false;
-        showMessage(
-            "Browser storage is unavailable. Enable it to save your assessment.",
-            true
-        );
-    }
-
-    languageSummary.textContent = "Python";
-
-    experienceSummary.textContent = hasValidPreferences()
-        ? experienceLabels[preferences.experience]
-        : "Not selected";
-
-    goalSummary.textContent = hasValidPreferences()
-        ? goalLabels[preferences.goal]
-        : "Not selected";
-
-    if (!storageAvailable) {
-        startButton.disabled = true;
-        return;
-    }
-
-    if (!hasValidPreferences()) {
-        startButton.textContent = "Complete preferences →";
-        showMessage("Choose your experience and goal before starting.");
-        return;
-    }
-
-    if (attemptStatus === "in-progress") {
-        startButton.textContent = "Resume assessment →";
-        showMessage("Your saved assessment is ready to resume.");
-    } else if (attemptStatus === "submitted") {
-        startButton.textContent = "View results →";
-        showMessage("You have already submitted this assessment.");
-    }
-}
-
-startButton.addEventListener("click", function () {
-    if (!storageAvailable || startButton.disabled) return;
-    if (!hasValidPreferences()) {
-        window.location.href = "../student/onboarding.html";
-        return;
-    }
-
-    if (attemptStatus === "submitted") {
-        window.location.href = "../student/placement-results.html";
-        return;
-    }
-
-    if (attemptStatus === "new") {
-        const attempt = {
-            version: 1,
-            status: "in-progress",
-            currentQuestion: 0,
-            answers: Array(window.placementQuestions.length).fill(null),
-            startedAt: new Date().toISOString()
-        };
-
+    "use strict";
+    if (window.learningUnavailable) return;
+    const store = window.placementStore, context = store.capture();
+    const button = document.getElementById("start-assessment"), status = document.getElementById("placement-message");
+    const experiences = { beginner: "Just starting", basics: "Know the basics", practising: "Have some practice" };
+    const goals = { foundations: "Build foundations", "problem-solving": "Solve problems", projects: "Build projects" };
+    let ready = false;
+    function render() {
+        ready = false; button.disabled = true; status.textContent = "";
         try {
-            window.cmStorage.assertOwner(placementOwner);
-            if (window.cmStorage.getItem(attemptKey) !== null) {
-                showMessage("The saved placement attempt changed. Reload this page before continuing. Existing records were kept.", true);
-                return;
-            }
-            window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));
-        } catch {
-            showMessage(
-                "Couldn’t save your assessment. Check browser storage and try again.",
-                true
-            );
-            return;
-        }
+            const bank = store.bank(context), attempt = store.read(context);
+            const preferences = JSON.parse(window.cmStorage.getItem("codementor-demo-onboarding") || "null");
+            const valid = preferences && preferences.language === context.language && Object.hasOwn(experiences, preferences.experience) && Object.hasOwn(goals, preferences.goal);
+            const name = window.languageCatalog.get(context.language).name;
+            document.title = `${name} placement | CodeMentor AI`;
+            document.querySelector(".onboarding-description").textContent = `Explore your current ${name} understanding and choose a starting point without changing completed work.`;
+            document.getElementById("summary-language").textContent = name;
+            document.getElementById("summary-experience").textContent = valid ? experiences[preferences.experience] : "Not selected";
+            document.getElementById("summary-goal").textContent = valid ? goals[preferences.goal] : "Not selected";
+            document.getElementById("placement-question-count").textContent = String(bank.questions.length);
+            document.getElementById("placement-introduction").textContent = `Answer a few ${name} questions to find a recommended starting level. Placement can mark up to two levels as placed out; it does not complete lessons or award certificate progress.`;
+            document.getElementById("placement-start-note").textContent = "Review the recommendation before choosing where to start. You can also confirm a start from Level 1. Real learning progress is always kept.";
+            const account = JSON.parse(window.cmStorage.getItem("codementor-demo-session") || "null");
+            if (account?.name?.trim()) document.getElementById("placement-greeting").textContent = `Ready for the challenge, ${account.name.trim().split(/\s+/)[0]}?`;
+            button.textContent = !valid ? "Complete preferences →" : attempt?.status === "submitted" ? "View results →" : attempt ? "Resume assessment →" : "Start assessment →";
+            status.textContent = attempt?.status === "in-progress" ? "Your saved assessment is ready to resume." : attempt?.status === "submitted" ? "Your submitted result is saved. Retakes are available on the results page." : "";
+            ready = valid; button.disabled = false;
+        } catch (error) { status.textContent = error.message; status.classList.add("is-error"); }
     }
-
-    startButton.disabled = true;
-    startButton.textContent = "Opening assessment…";
-
-    window.location.href = "../student/placement-question.html";
-});
-
-window.addEventListener("pageshow", loadPageData);
+    button.addEventListener("click", () => {
+        try {
+            window.cmStorage.assertOwner(context.owner);
+            if (window.cmStorage.activeLanguage() !== context.language) throw Error("Your language changed. Reload before starting placement.");
+            if (!ready) { location.href = "onboarding.html"; return; }
+            const attempt = store.begin(context);
+            location.href = attempt.status === "submitted" ? "placement-results.html" : "placement-question.html";
+        } catch (error) { status.textContent = error.message; status.classList.add("is-error"); }
+    });
+    window.addEventListener("pageshow", render); render();
 })();

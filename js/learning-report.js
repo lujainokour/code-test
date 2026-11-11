@@ -38,6 +38,11 @@
             add("p", `Prepared: ${new Date().toLocaleString("en-GB")}`);
             add("p", "This report contains browser-tab demo records, which may be manually changed and are not verified achievements. It is not an official certificate.").className = "services-notice";
             add("p", "Learning records are saved on this device for the current demo profile. They are not synced to a server or verified by an instructor.");
+            const choice = window.pythonCurriculum.placementChoice();
+            if (choice) {
+                add("p", `Placement starting choice: Level ${choice.startLevel}. This is separate from completed work.`);
+                list("Placed out — not completed", window.pythonCurriculum.levels.filter(level => window.pythonCurriculum.placedOut(level, learning || { lessons: [], assessments: {} })).map(level => level.title), "No uncompleted levels are currently placed out.");
+            }
             const done = learning ? Object.keys(lessons).filter(id => learning.lessons.includes(id)) : [];
             const passed = learning ? Object.keys(tasks).filter(id => learning.tasks.includes(id)) : [];
             add("h2", "Available progress");
