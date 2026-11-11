@@ -131,7 +131,7 @@ failing test; replies are still prepared hints, not live AI.
 The site includes six Python levels, 24 lessons with explanations and learning resources,
 independent quizzes, twelve executable coding tasks and a tested Foundations project.
 Levels 1-5 are free; Level 6 uses the local Premium preview. Existing Levels 1-3
-Foundations certificate requirements are preserved. No payment is collected.
+Foundations Completion badge (local demo) requirements are preserved. The completion badge (local demo) is computed from browser-local records that can be edited on this device: it is not a verifiable credential and is not issued by a server. No payment is collected.
 Progress saves automatically on the same device. My progress includes a learning report.
 See [learning implementation and verification](docs/LEARNING-UPGRADE.md) for
 runtime setup, browser checks and the remaining production requirements.

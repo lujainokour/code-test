@@ -165,9 +165,13 @@ Serve the site with `powershell -NoProfile -ExecutionPolicy Bypass -File tests/s
    - After an applied placement, no level achievement appears for placed-out levels.
 9. **Workspace quick actions.** Open `pages/student/workspace.html?task=student-profile`. Run failing tests, click "Explain the error", and check that the mentor question box is prefilled and the "No live AI" badge is still shown.
 10. **Demo tour.** `pages/admin/admin-demo-tour.html` shows "Load sample data first" until all three sets are loaded, then the four steps.
-11. **Earlier pending items.** The pending items from Phase 1 and 2 remain: the language switch and placement UI, back/forward and focus behaviour, and certificate locking in a real browser.
+11. **Earlier pending items.** The pending items from Phase 1 and 2 remain: the language switch and placement UI, back/forward and focus behaviour, and completion badge (local demo) locking in a real browser.
 12. **Historical HTML suites.** Running `verify-structure.ps1` without a filter still includes historical suites known to fail (14 of 18 on 11 November, per the README). That includes `original-pages-phase` at its admin-analytics check, which blocks the new recovery checks in that file from running.
 13. **Arabic text.** Rendering of Arabic in posts and notes was not checked.
+
+## Honest wording: Completion badge (local demo)
+
+Everything a student sees about the earned item says "Completion badge (local demo)" and states that it is not a verifiable credential and is not issued by a server, because it is computed from browser-local records that can be edited on the device. This covers the badge page and print view (title, headline "COMPLETION BADGE / LOCAL DEMO", a printed disclaimer line, status messages), the navigation, workspace links, the user guide, the homepage FAQ and the placement notes. Earning rules, ids, classes, data attributes and the page URL `certificates.html` are unchanged. Sentences that deny a certificate (for example "This report is not an official certificate") were kept because they are already honest.
 
 ## Decisions for you
 

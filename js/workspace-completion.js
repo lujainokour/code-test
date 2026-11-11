@@ -26,7 +26,7 @@
             document.getElementById("submission-draft-note").textContent = submission && submission.code !== editor.value ? "Your editor draft has changed. The download contains your last passing submission. Submit again to check your changes." : "Saving a draft is separate from submitting. Returning to this page restores your saved completion.";
             const course = window.pythonCurriculum;
             const eligible = course.levels.filter(level => level.id <= 3).every(level => course.completed(level, progress) && level.tasks.every(taskId => progress.tasks.includes(taskId)));
-            document.getElementById("submission-certificate-link").textContent = eligible ? "View your certificate" : "Check certificate requirements";
+            document.getElementById("submission-certificate-link").textContent = eligible ? "View your Completion badge (local demo)" : "Check Completion badge (local demo) requirements";
         } catch { panel.hidden = true; download.disabled = true; }
     }
     download.addEventListener("click", () => {

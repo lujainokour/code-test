@@ -8,7 +8,7 @@ details below remain the Python path contract.
 The student path includes six levels (24 lessons), independent four-question
 level quizzes, twelve executable coding tasks, and a task-manager Foundations project.
 Levels 1–5 are free; Level 6 uses the local Premium preview without collecting payments.
-The Foundations certificate retains its Levels 1–3 requirements (12 lessons and six tasks).
+The Foundations Completion badge (local demo) retains its Levels 1–3 requirements (12 lessons and six tasks). It is based on browser-local records, so it is not a verifiable credential and is not issued by a server.
 Each lesson includes an explanation, example, question, and a related Arabic
 video link. Some video buttons link to the instructor's lesson page containing
 the video rather than directly to YouTube.
@@ -63,7 +63,7 @@ site over HTTP or HTTPS; workers do not work from a `file://` page.
 ## Remaining production work
 
 Real authentication, a server database, cross-device sync, secure administrative
-roles, live AI mentoring, and trusted certificates are not connected. Browser
+roles, live AI mentoring, and verifiable, server-issued credentials are not connected. Browser
 records can be changed by the user. Connected services and real student testing
 are required before describing the entire product as production-ready.
 

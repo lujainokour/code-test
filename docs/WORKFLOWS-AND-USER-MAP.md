@@ -62,7 +62,7 @@ flowchart TD
     Checks -->|"تحتاج تعديلًا"| Tasks
     Checks -->|"اجتياز"| Saved["حفظ إنجاز المهمة ونتائجها"]
     Next --> Level
-    Saved --> Certificate["فحص متطلبات الشهادة"]
+    Saved --> Certificate["فحص متطلبات Completion badge (local demo)"]
 ```
 
 ### أ. الحساب والتهيئة — الصفحات المشتركة مع الحساب
@@ -125,7 +125,7 @@ JavaScript يتبع المخطط نفسه بثلاثة مستويات وأربع
 | `pages/student/skill-analysis.html` | فهم نتيجة التشخيص وتوزيع المهارات | محاولة تحديد المستوى المحفوظة |
 | `pages/student/progress.html` | متابعة إنجاز التعلم | الدروس والمهام والاختبارات المحفوظة |
 | `pages/student/learning-report.html` | تجميع تقرير تعلم قابل للطباعة | السجلات التعليمية المتاحة |
-| `pages/student/certificates.html` | معاينة شهادة الإنجاز وطباعتها عند الاستحقاق | هوية طالب + 12 درسًا + نجاح الاختبارات الثلاثة + المهام الست |
+| `pages/student/certificates.html` | معاينة Completion badge (local demo) وطباعتها عند الاستحقاق؛ ليست شهادة قابلة للتحقق ولا تصدر من خادم | هوية طالب + 12 درسًا + نجاح الاختبارات الثلاثة + المهام الست |
 | `pages/student/profile.html` | البيانات والتفضيلات المحلية؛ لا توجد أدوات استيراد أو تصدير نسخ التعلّم | هوية الطالب وتقدمه المحلي |
 | `pages/student/subscription.html` | مقارنة Free وPremium وتغيير المعاينة المحلية | Free للمستويات 1–5؛ معاينة Premium المحلية للمستوى 6 المنشور |
 

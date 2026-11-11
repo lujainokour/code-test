@@ -29,16 +29,16 @@
             });
             byId("certificate-recipient").textContent = state.signedIn ? state.account.name.trim() : "Your name";
             byId("certificate-recipient").classList.toggle("certificate-name-long", state.signedIn && state.account.name.trim().length > 32);
-            byId("certificate-status-title").textContent = state.ready ? "Your certificate is ready" : "Your certificate is ahead";
-            byId("certificate-status-description").textContent = state.ready ? "Your saved records meet the completion requirements. Print your certificate or save it as a PDF." : "Preview the design below. Printing becomes available after completing the remaining requirements.";
+            byId("certificate-status-title").textContent = state.ready ? "Your Completion badge (local demo) is ready" : "Your Completion badge (local demo) is ahead";
+            byId("certificate-status-description").textContent = state.ready ? "Your saved records meet the completion requirements. Print your Completion badge (local demo) or save it as a PDF. It is not a verifiable credential and is not issued by a server." : "Preview the design below. Printing becomes available after completing the remaining requirements.";
             byId("certificate-date").textContent = state.ready && state.date ? state.date.toLocaleDateString("en-GB", {day:"numeric",month:"long",year:"numeric",timeZone:"Asia/Amman"}) : state.ready ? "Completion date not recorded" : "—";
             if (state.ready && state.date) byId("certificate-date").dateTime = state.date.toISOString(); else byId("certificate-date").removeAttribute("datetime");
-            byId("certificate-preview-label").textContent = state.ready ? "PLATFORM COMPLETION · BROWSER LEARNING RECORDS" : "PREVIEW — COMPLETE THE REQUIREMENTS TO PRINT";
+            byId("certificate-preview-label").textContent = state.ready ? "LOCAL DEMO · NOT A VERIFIABLE CREDENTIAL · BROWSER LEARNING RECORDS" : "PREVIEW — COMPLETE THE REQUIREMENTS TO PRINT";
             button.disabled = !state.ready;
             document.body.classList.toggle("certificate-locked", !state.ready);
             byId("workspace-message").textContent = "";
         } catch {
-            byId("certificate-status-title").textContent = "Certificate unavailable";
+            byId("certificate-status-title").textContent = "Completion badge (local demo) unavailable";
             byId("workspace-message").textContent = "Your saved profile or progress could not be read. Existing records were kept.";
             byId("certificate-recipient").textContent = "Your name";
             byId("certificate-date").textContent = "—";

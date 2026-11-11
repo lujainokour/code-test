@@ -16,7 +16,7 @@ const route = value => new URL(routes[value] || value, appRoot).href;
         ["dashboard.html", "Dashboard"], ["learning-path.html", "Learning path"], ["practice.html", "Practice tasks"],
         ["workspace.html", "Coding workspace"], ["progress.html", "My progress"], ["project.html", "Projects"],
         ["skill-analysis.html", "Skill analysis"], ["mentor.html", "AI Mentor demo"], ["languages.html", "Language catalogue"],
-        ["local-portfolio.html", "My local portfolio"], ["certificates.html", "Certificates"], ["virtual-internship.html", "Virtual Internship"],
+        ["local-portfolio.html", "My local portfolio"], ["certificates.html", "Completion badge (local demo)"], ["virtual-internship.html", "Virtual Internship"],
         ["community.html", "Student Community"], ["peer-mentoring.html", "Peer Mentoring"],
         ["showcase.html", "Student Showcase"], ["freelance-services.html", "Student services"], ["requests.html", "My local requests"], ["subscription.html", "Plans & subscriptions"]
     ];

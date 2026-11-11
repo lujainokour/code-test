@@ -47,7 +47,7 @@ try {
     WaitRun
     Check 'Four real passing checks display Project completed' (Eval "!document.getElementById('submission-completion').hidden&&document.getElementById('submission-completion-title').textContent==='Project completed!'")
     Check 'Passing code is saved separately from drafts and latest attempts' (Eval "(()=>{const p=pythonCurriculum.read();return p.tasks.includes('task-manager')&&p.submissions['task-manager'].code===learningSupport.tasks['task-manager'].solution&&p.submissions['task-manager'].passed===4})()")
-    Check 'Certificate link does not claim eligibility when other requirements remain' (Eval "document.getElementById('submission-certificate-link').textContent==='Check certificate requirements'")
+    Check 'Certificate link does not claim eligibility when other requirements remain' (Eval "document.getElementById('submission-certificate-link').textContent==='Check Completion badge (local demo) requirements'")
     Check 'Dashboard, homepage and certificate links resolve correctly' (Eval "document.querySelectorAll('.submission-next-actions a').length===3&&[...document.querySelectorAll('.submission-next-actions a')].every(a=>a.href.startsWith(location.origin))")
     Go 'pages/student/workspace.html?task=task-manager'
     Check 'Reopening restores completion and enables saved-code download' (Eval "!document.getElementById('submission-completion').hidden&&!document.getElementById('download-submission').disabled")
@@ -59,7 +59,7 @@ try {
     WaitRun
     Check 'Failed retry does not overwrite the last passing submission' (Eval "(()=>{const p=pythonCurriculum.read();return p.taskResults['task-manager'].passed===0&&p.submissions['task-manager'].passed===4&&p.submissions['task-manager'].code===learningSupport.tasks['task-manager'].solution})()")
     Eval "var p=pythonCurriculum.read();p.lessons=pythonCurriculum.allLessons.map(l=>l.id);p.tasks=pythonCurriculum.levels.filter(l=>l.id<=3).flatMap(l=>l.tasks);p.assessments={'1':{score:100},'2':{score:100},'3':{score:100}};cmStorage.setItem('codementor-demo-learning',JSON.stringify(p));true"|Out-Null
-    Check 'Completed path offers View your certificate' (Eval "document.getElementById('submission-certificate-link').textContent==='View your certificate'")
+    Check 'Completed path offers View your certificate' (Eval "document.getElementById('submission-certificate-link').textContent==='View your Completion badge (local demo)'")
     Cdp 'Emulation.setDeviceMetricsOverride' @{width=390;height=844;deviceScaleFactor=1;mobile=$true}|Out-Null
     Check 'Completion actions fit the phone viewport' (Eval 'document.documentElement.scrollWidth<=innerWidth')
     Eval "var p=pythonCurriculum.read();delete p.submissions;p.taskResults['task-manager']={passed:4,total:4,code:learningSupport.tasks['task-manager'].solution,cases:[]};cmStorage.setItem('codementor-demo-learning',JSON.stringify(p));true"|Out-Null

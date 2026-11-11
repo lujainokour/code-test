@@ -19,7 +19,7 @@
             document.getElementById("summary-experience").textContent = valid ? experiences[preferences.experience] : "Not selected";
             document.getElementById("summary-goal").textContent = valid ? goals[preferences.goal] : "Not selected";
             document.getElementById("placement-question-count").textContent = String(bank.questions.length);
-            document.getElementById("placement-introduction").textContent = `Answer a few ${name} questions to find a recommended starting level. Placement can mark up to two levels as placed out; it does not complete lessons or award certificate progress.`;
+            document.getElementById("placement-introduction").textContent = `Answer a few ${name} questions to find a recommended starting level. Placement can mark up to two levels as placed out; it does not complete lessons or award completion badge progress.`;
             document.getElementById("placement-start-note").textContent = "Review the recommendation before choosing where to start. You can also confirm a start from Level 1. Real learning progress is always kept.";
             const account = JSON.parse(window.cmStorage.getItem("codementor-demo-session") || "null");
             if (account?.name?.trim()) document.getElementById("placement-greeting").textContent = `Ready for the challenge, ${account.name.trim().split(/\s+/)[0]}?`;

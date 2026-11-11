@@ -21,7 +21,7 @@ With four questions in a topic, 3/4 passes and 2/4 fails. With two, 2/2 is requi
 
 Applying Level N makes earlier unfinished levels **placed out — not completed**. Students can open and review them. The path, dashboard and report label this state separately. Completing real work can subsequently turn a placed-out level into a completed level.
 
-No placement operation writes lesson completion, assessment scores, task results, drafts, badges or certificate progress. Real completion remains the existing lessons plus quiz requirement; existing task requirements for certificates remain unchanged. All required real work in placed-out levels is still necessary for a certificate.
+No placement operation writes lesson completion, assessment scores, task results, drafts, badges or completion badge (local demo) progress. Real completion remains the existing lessons plus quiz requirement; existing task requirements for the completion badge (local demo) remain unchanged. All required real work in placed-out levels is still necessary for a certificate.
 
 The selected start opens that level and earlier review levels. Real completed levels preserve the existing progression frontier. The current level is the first unfinished level at or after the saved start, falling back to earlier unfinished work when appropriate. Reviewing an earlier level never awards completion automatically.
 

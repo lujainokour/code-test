@@ -70,6 +70,16 @@
       "file": "js/login.js",
       "part": "Part 1",
       "reason": "Follow-up fix 2: sample student display name changed from a real name to Demo Student (SAMPLE)."
+    },
+    {
+      "file": "js/certificates.js",
+      "part": "Part 6",
+      "reason": "Honest wording: the earned item is a \"Completion badge (local demo)\", not a verifiable credential; text only, earning rules unchanged."
+    },
+    {
+      "file": "js/workspace-completion.js",
+      "part": "Part 6",
+      "reason": "Honest wording: the earned item is a \"Completion badge (local demo)\", not a verifiable credential; text only, earning rules unchanged."
     }
   ]
 }

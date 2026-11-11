@@ -9,7 +9,7 @@ The delight layer adds tactile interactions and celebration moments on the exist
 | 3 | `7a6c232` | **Achievement unlock moments**: a seen list per account and language. The first visit records existing badges silently; a new unlock gets one toast and a one-time shine in My progress. | `progressInsights.achievements()` |
 | 4 | `77f80ef` | **Lesson and level completion moments** on `lesson.html` and `level-assessment.html`. They diff progress on the existing `learning-progress-changed` event and reuse each page's own next link as the single primary action. | `pythonCurriculum.read()/completed()` |
 | 5 | `54e772b` | **Admin dashboard**: glass cards with a solid fallback, stat count-up on first render, 7/30-day tabs only when dated records exist, a trend only when history predates the period, an application-status bar chart, and a grouped sidebar. | `platformStore.getStudents()[].createdAt`, `peerMentoringStore.applications()` (sample rows excluded) |
-| 6 | `9e4d19c` | **Certificate printing reveal**, triggered when `certificates.js` removes `body.certificate-locked`. The locked state is never animated. | Existing certificate eligibility (unchanged) |
+| 6 | `9e4d19c` | **Completion badge (local demo) printing reveal** (page `certificates.html`), triggered when `certificates.js` removes `body.certificate-locked`. The locked state is never animated. | Existing eligibility rules (unchanged) |
 
 ## Undo scope
 
@@ -26,7 +26,7 @@ Both keep their existing confirmations.
 - `lesson.js`, `level-assessment.js` and `certificates.js`. The new modules only observe them.
 - The admin sidebar regrouping is the one change to a protected file (`js/workspace-shell.js`). It's recorded in `docs/evidence/authorized-baseline-changes.json`.
 
-The "Completion badge (local demo)" wording mentioned in the request does not exist in the code; the certificates page uses "certificate". No wording was changed.
+Follow-up: student-facing wording now says "Completion badge (local demo)" everywhere and states that it is not a verifiable credential and is not issued by a server (see UPGRADE-REPORT.md).
 
 ## Verification
 
@@ -39,7 +39,7 @@ The "Completion badge (local demo)" wording mentioned in the request does not ex
 - unlock seen lists
 - completion moments
 - admin ranges and trends
-- the certificate reveal
+- the completion badge (local demo) reveal
 
 **Browser:** `tests/delight-browser.ps1` (headless Chrome, normal permissions) passed 17 of 17 checks with 0 uncaught JavaScript exceptions on its third run:
 
@@ -51,6 +51,6 @@ The "Completion badge (local demo)" wording mentioned in the request does not ex
 **Pending manual verification:**
 
 1. Screen-reader announcement of toasts and completion moments.
-2. Visual quality of the confetti, rocket and certificate print-in in a headed browser.
+2. Visual quality of the confetti, rocket and completion badge (local demo) print-in in a headed browser.
 3. Lesson and level moments on the real lesson and quiz pages (covered in Node only).
 4. The glass blur on browsers without `backdrop-filter` (solid fallback; untested).
