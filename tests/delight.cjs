@@ -359,7 +359,7 @@ const tick = () => new Promise(r => setImmediate(r));
         r.window.cmStorage.setItem('codementor-demo-learning', JSON.stringify({ version: 1, lessons: ['variables'], tasks: [], assessments: {} }));
         r.runTimers(0);
         assert.ok(dom.panel.children.some(n => /Lesson complete/.test(n.textContent || '')));
-        assert.match(fs.readFileSync('css/interaction-kit.css', 'utf8'), /\.cm-moment \{ animation: none !important|\.ik-rocket, \.cm-moment \{ animation: none !important/);
+        assert.match(fs.readFileSync('css/interaction-kit.css', 'utf8'), /prefers-reduced-motion: reduce\)[\s\S]*\.cm-moment[^{]*\{ animation: none !important/);
     });
     await check('Completion: grading scripts are untouched by the moments layer', async () => {
         const src = fs.readFileSync('js/completion-moments.js', 'utf8');
@@ -435,6 +435,34 @@ const tick = () => new Promise(r => setImmediate(r));
         assert.equal(new Set(groups).size, groups.length, 'no duplicates');
         const css = fs.readFileSync('css/admin-overview.css', 'utf8');
         assert.match(css, /background: var\(--card\)[\s\S]*@supports \(\(backdrop-filter: blur\(1px\)\)/);
+    });
+
+    // ================= 6. CERTIFICATES =================
+    function certPage({ locked, reduced = false } = {}) {
+        const p = kitPage({ owner: null, reduced });
+        const doc = p.dom.document.createElement('article'); doc.className = 'certificate-document'; p.dom.body.append(doc);
+        if (locked) p.dom.body.classList.add('certificate-locked');
+        p.load('interaction-kit'); p.load('certificate-reveal');
+        return { p, doc };
+    }
+    await check('Certificate: the locked state is never animated; meeting the requirements prints in once', async () => {
+        const { p, doc } = certPage({ locked: true });
+        assert.ok(!doc.classList.contains('cm-printing'));
+        assert.equal(p.window.certificateReveal.check(), false);
+        p.dom.body.classList.remove('certificate-locked');
+        assert.equal(p.window.certificateReveal.check(), true);
+        assert.ok(doc.classList.contains('cm-printing'));
+        assert.equal(p.window.certificateReveal.check(), false, 'plays once per page view');
+    });
+    await check('Certificate: reduced motion shows the unlocked certificate without the reveal', async () => {
+        const { doc } = certPage({ locked: false, reduced: true });
+        assert.ok(!doc.classList.contains('cm-printing'));
+        assert.match(fs.readFileSync('css/interaction-kit.css', 'utf8'), /prefers-reduced-motion: reduce\)[\s\S]*\.certificate-document\.cm-printing[^{]*\{ animation: none !important/);
+    });
+    await check('Certificate: eligibility logic and wording are untouched', async () => {
+        const src = fs.readFileSync('js/certificate-reveal.js', 'utf8');
+        assert.ok(!/setItem|removeItem|textContent\s*=/.test(src), 'no writes and no text changes');
+        assert.match(fs.readFileSync('pages/student/certificates.html', 'utf8'), /certificate-reveal\.js/);
     });
 
     // ===== further sections are appended per item =====

@@ -85,11 +85,15 @@
 .cm-moment-level h2 { margin: 0; font-size: 24px; color: var(--ik-success); }
 .cm-moment-level .ik-check { width: 72px; height: 72px; flex-shrink: 0; }
 
+/* 8c. CERTIFICATE PRINTING REVEAL (only when requirements are met) */
+.certificate-document.cm-printing { animation: cm-print 1.3s cubic-bezier(.3, .6, .2, 1) both; }
+@keyframes cm-print { from { clip-path: inset(0 0 100% 0); transform: translateY(-6px); } 70% { transform: translateY(1px); } to { clip-path: inset(0 0 0 0); transform: none; } }
+
 /* 9. REDUCED MOTION: everything still works, nothing moves */
 @media (prefers-reduced-motion: reduce) {
     .ik .button, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post) { transition: none !important; }
     .ik .button:hover, .ik .button:active, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post):is(:hover, :focus-within) { transform: none !important; }
-    .ik .ik-stagger > *, .ik-skeleton, .ik-toast, .ik-toast.is-leaving, .ik-shine::before, .ik-rocket, .cm-moment { animation: none !important; }
+    .ik .ik-stagger > *, .ik-skeleton, .ik-toast, .ik-toast.is-leaving, .ik-shine::before, .ik-rocket, .cm-moment, .certificate-document.cm-printing { animation: none !important; }
     .ik-rocket, .ik-celebrate-canvas { display: none !important; }
     .ik-check circle, .ik-check path { animation: none !important; stroke-dashoffset: 0; }
 }
