@@ -36,3 +36,28 @@
 .admin-overview .button-primary { background: var(--action-bg); color: var(--action-text); border-color: var(--action-bg); }
 @media (max-width: 1000px) { .overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .overview-columns { grid-template-columns: minmax(0, 1fr); gap: 0; } }
 @media (max-width: 600px) { .overview-panel { padding: 20px 16px; } .overview-stats { gap: 10px; } .overview-stat { padding: 16px; } .overview-stat strong { font-size: 25px; } .overview-shortcuts { grid-template-columns: minmax(0, 1fr); } .overview-queue-row { align-items: flex-start; flex-direction: column; gap: 8px; } .overview-top-actions .button { width: 100%; } }
+
+/* Part 4: richer company directory */
+.admin-company-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.admin-company-toolbar { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); max-width: none; align-items: end; }
+.admin-company-toolbar > div { display: grid; gap: 6px; min-width: 0; }
+.admin-company-toolbar select { padding: 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--card); color: var(--primary); font: inherit; min-width: 0; }
+.admin-company-toolbar input[type="checkbox"] { width: 22px; height: 22px; padding: 0; }
+.admin-company-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.admin-company-head .eyebrow { flex-basis: 100%; margin: 0; }
+.admin-company-head h2 { margin: 0; overflow-wrap: anywhere; }
+.admin-company-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.admin-badge { font-size: 11px; font-weight: 700; letter-spacing: .4px; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-alt, var(--card)); }
+.admin-badge[data-verification="Verified"] { background: var(--action-bg); color: var(--action-text); border-color: transparent; }
+.admin-badge[data-verification="Suspended"], .admin-badge-flag { border-style: dashed; border-color: currentColor; }
+.admin-funnel { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; list-style: none; padding: 0; margin: 10px 0 18px; }
+.admin-funnel li { display: grid; gap: 2px; padding: 10px; border: 1px solid var(--border); border-radius: 9px; text-align: center; }
+.admin-funnel strong { font-size: 20px; }
+.admin-funnel span { font-size: 11px; color: var(--muted); }
+.admin-candidates, .admin-history, .admin-timeline { padding-left: 20px; font-size: 14px; }
+.admin-candidates li, .admin-history li, .admin-timeline li { margin-bottom: 6px; overflow-wrap: anywhere; }
+.admin-company-actions textarea { display: block; width: 100%; max-width: 640px; padding: 10px; margin: 8px 0 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--card); color: var(--primary); font: inherit; }
+.admin-company-actions label { font-size: 13px; font-weight: 600; }
+.admin-company-card .button:focus-visible, .admin-company-toolbar :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+@media (max-width: 1000px) { .admin-company-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .admin-company-toolbar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 600px) { .admin-company-toolbar { grid-template-columns: minmax(0, 1fr); } .admin-funnel { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

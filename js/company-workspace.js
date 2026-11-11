@@ -344,11 +344,13 @@
 
                 const skills = skillsRaw.split(",").map(s => s.trim()).filter(Boolean);
 
-                store.addOpportunity({
-                    title, type, department, location, duration, stipend,
-                    skillsRequired: skills.length > 0 ? skills : ["Python", "SQL"],
-                    description
-                });
+                try {
+                    store.addOpportunity({
+                        title, type, department, location, duration, stipend,
+                        skillsRequired: skills.length > 0 ? skills : ["Python", "SQL"],
+                        description
+                    });
+                } catch (error) { alert(error.message); return; }
 
                 form.reset();
                 modal.close();
@@ -374,7 +376,7 @@
                     const opp = store.getOpportunities().find(o => o.id === id);
                     if (opp) {
                         const newStatus = opp.status === "Active" ? "Paused" : "Active";
-                        store.updateOpportunity(id, { status: newStatus });
+                        try { store.updateOpportunity(id, { status: newStatus }); } catch (error) { alert(error.message); return; }
                         render();
                     }
                 }
@@ -490,7 +492,7 @@
                         </a>
                     </div>
                 `;
-                if (student.localPublished) { const profileLink = el("a", "View published projects", "button button-outline"); profileLink.href = "../services/student-public-profile.html?id=" + encodeURIComponent(student.id); card.append(profileLink); }
+                if (student.localPublished) { const profileLink = el("a", "View published projects", "button button-outline"); profileLink.href = "../services/student-public-profile.html?id=" + encodeURIComponent(student.id); profileLink.addEventListener("click", () => { try { store.recordTalentView(); } catch { /* Counting a view never blocks opening the profile. */ } }); card.append(profileLink); }
                 root.appendChild(card);
             });
         }
@@ -523,7 +525,7 @@
                 e.preventDefault();
                 const msg = document.getElementById("invite-message-text").value;
                 if (activeStudent && msg.trim()) {
-                    store.sendMessage(activeStudent.email, activeStudent.name, msg.trim());
+                    try { store.sendMessage(activeStudent.email, activeStudent.name, msg.trim()); } catch (error) { alert(error.message); return; }
                     inviteForm.reset();
                     inviteModal.close();
                     alert(`Message saved locally for ${activeStudent.name}. Continue the preview conversation in Messages; no notification was sent.`);
@@ -742,7 +744,10 @@
             try { requestedEmail = store.openConversation(candidateId).studentEmail; messages = store.getMessages(); }
             catch (error) { if (chatMessages) chatMessages.textContent = error.message; if (chatInput) chatInput.disabled = true; return; }
         }
-        if (requestedEmail && !messages.some(m => m.studentEmail.toLowerCase() === requestedEmail.toLowerCase())) { store.openConversation(requestedEmail); messages = store.getMessages(); }
+        if (requestedEmail && !messages.some(m => m.studentEmail.toLowerCase() === requestedEmail.toLowerCase())) {
+            try { store.openConversation(requestedEmail); messages = store.getMessages(); }
+            catch (error) { if (chatMessages) chatMessages.textContent = error.message; if (chatInput) chatInput.disabled = true; return; }
+        }
         if (messages.length === 0) { if (chatMessages) chatMessages.textContent = "No conversations yet. Choose a candidate from Applications or Talent Directory."; if (chatInput) chatInput.disabled = true; return; }
         let activeEmail = messages.find(message => message.studentEmail.toLowerCase() === requestedEmail?.toLowerCase())?.studentEmail || messages[0].studentEmail;
 
@@ -817,7 +822,7 @@
                 const text = chatInput.value.trim();
                 const currentConv = messages.find(m => m.studentEmail.toLowerCase() === activeEmail.toLowerCase());
                 if (text && currentConv) {
-                    store.sendMessage(currentConv.studentEmail, currentConv.studentName, text);
+                    try { store.sendMessage(currentConv.studentEmail, currentConv.studentName, text); } catch (error) { alert(error.message); return; }
                     messages = store.getMessages();
                     chatInput.value = "";
                     renderThreads();

@@ -40,6 +40,11 @@
       "file": "js/peer-mentoring-ui.js",
       "part": "Part 3",
       "reason": "Status and next steps in studio, live cross-tab updates, explicit sample buttons instead of automatic seeding."
+    },
+    {
+      "file": "js/company-workspace.js",
+      "part": "Part 4",
+      "reason": "Count (only) published talent profiles the company opens; show suspension errors from post/message actions instead of failing silently."
     }
   ]
 }
