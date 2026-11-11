@@ -252,6 +252,17 @@ check('Switcher states: no preference and unreadable preference are never shown 
     assert.equal(p.$('selected-language').textContent, 'Unavailable');
 });
 
+check('Unreadable preferences: the dashboard shows a clear error state instead of crashing', () => {
+    const bad = shared(); bad.local.setItem(key('learner-a@example.test', 'codementor-demo-onboarding'), '{broken');
+    const p = page({ shared: bad, preferences: false, core: ['learning-storage', 'language-catalog', 'student-premium'], extra: ['dashboard'] });
+    assert.equal(p.$('next-title').textContent, 'Preferences unavailable');
+    const actions = p.$('next-actions').children;
+    assert.equal(actions.length, 1); assert.match(actions[0].href, /profile\.html$/);
+    assert.ok(!p.dom.walk().some(n => n.tagName === 'A' && /lesson\.html/.test(n.href || '')), 'no lesson inferred');
+    assert.equal(p.$('recorded-lessons').textContent, '—');
+    assert.equal(bad.local.getItem(key('learner-a@example.test', 'codementor-demo-onboarding')), '{broken', 'record kept');
+});
+
 // ---- Data integrity ----
 check('No invented statistics: no random numbers, no hours, styles in one dedicated file', () => {
     for (const file of ['js/dashboard.js', 'js/student-overview.js', 'js/progress-overview.js', 'js/progress-insights.js', 'js/student-premium.js']) assert.ok(!/Math\.random/.test(fs.readFileSync(file, 'utf8')), file);

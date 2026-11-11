@@ -81,7 +81,25 @@
         else if (model.placement.state === "missing" && window.placementBanks?.get(model.course.id)) s.append(tag, el("span", " Not sure where to start? The placement check suggests a level. "), link(model.placement.link.label, model.placement.link.href, "sp-text-link"));
         else s.append(tag, el("span", " Keep momentum: a short practice task strengthens what you learned. "), link("Open practice", "practice.html", "sp-text-link"));
     }
+    // If saved preferences are unreadable the curriculum cannot load. Show a clear error state
+    // instead of throwing; nothing is inferred and no record is replaced.
+    function unavailable() {
+        $("dashboard-greeting").textContent = "Your demo workspace.";
+        $("hero-line").textContent = "Saved learning preferences could not be read. Existing records were kept.";
+        $("next-chip").textContent = "Action needed";
+        $("next-title").textContent = "Preferences unavailable";
+        $("next-description").textContent = "Review your profile settings to choose a learning language. No path was selected automatically.";
+        $("current-level").textContent = "Unavailable";
+        $("next-actions").replaceChildren(link("Review profile settings", "../student/profile.html", "button button-primary sp-primary"));
+        for (const id of ["recorded-lessons", "recorded-tasks", "kpi-streak", "kpi-days"]) $(id).textContent = "—";
+        $("ring-unlock").textContent = "Progress appears once your preferences can be read.";
+        $("week-empty").hidden = false; $("week-empty").textContent = "Activity appears once your preferences can be read.";
+        $("recent-empty").hidden = false; $("recent-empty").textContent = "Activity appears once your preferences can be read.";
+        $("dashboard-message").textContent = "Saved learning preferences could not be read. They were not replaced."; $("dashboard-message").classList.add("is-error");
+        $("dashboard-main").setAttribute("aria-busy", "false");
+    }
     function render() {
+        if (!window.pythonCurriculum) { unavailable(); return; }
         const model = window.studentOverview.build();
         renderHero(model); renderKpis(model); renderRing(model); renderWeek(model); renderRecent(model);
         $("dashboard-message").textContent = model.issues.join(" "); $("dashboard-message").classList.toggle("is-error", model.issues.length > 0);
