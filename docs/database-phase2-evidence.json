@@ -1,0 +1,4217 @@
+{
+  "date": "2026-11-04",
+  "method": "Static source inspection only; no application, browser, SQL, or model tests executed.",
+  "pages": [
+    {
+      "path": "index.html",
+      "bytes": 34041,
+      "sha256": "de55e89dc0e2cb03cc5e7279f734394ae389f3d70f91678982bfd495f3b2423c",
+      "title": "CodeMentor AI | Learn to Code",
+      "headings": [
+        "Learn to code with an AI mentor by your side.",
+        "Learn your way. Understand every step.",
+        "Find your starting point.",
+        "Learn by writing code.",
+        "Ask. Think. Try again.",
+        "A clear path. From curiosity to code.",
+        "Make it personal",
+        "Find your level",
+        "Build your skills",
+        "Create your project",
+        "Different languages. One place to grow.",
+        "Python",
+        "C#",
+        "C++",
+        "Your next language is waiting.",
+        "Don’t just fix it. Understand it.",
+        "More ways to learn and build.",
+        "Student Community",
+        "Peer Mentoring",
+        "Student Showcase",
+        "Student Freelance Services",
+        "Good questions. Clear answers.",
+        "Your first line. Your next possibility.",
+        "Explore",
+        "Get in touch"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/hero-background.js",
+        "js/home-effects.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 13,
+          "text": "content=\"Learn programming through guided lessons, practical tasks and contextual mentorship. Explore the Python-first CodeMentor AI demo.\""
+        },
+        {
+          "line": 191,
+          "text": "href=\"pages/public/demo.html\""
+        },
+        {
+          "line": 194,
+          "text": "Explore demo"
+        },
+        {
+          "line": 417,
+          "text": "Python is the first path in the current demo. Other full paths are coming soon."
+        },
+        {
+          "line": 433,
+          "text": "CURRENT DEMO"
+        },
+        {
+          "line": 472,
+          "text": "Not available in this demo yet."
+        },
+        {
+          "line": 498,
+          "text": "Not available in this demo yet."
+        },
+        {
+          "line": 507,
+          "text": "Discover more programming languages in our catalogue. Full learning paths beyond Python are coming soon."
+        },
+        {
+          "line": 595,
+          "text": "Prepared example · Live AI is not connected yet."
+        },
+        {
+          "line": 610,
+          "text": "02 / GUIDANCE Peer Mentoring Explore paid sessions from demo admin-approved student mentors. Booking is a local simulation. Explore peer sessions ↗"
+        },
+        {
+          "line": 611,
+          "text": "03 / DISCOVER Student Showcase Discover public student demo profiles, programming skills and project ideas across our language paths. Explore student work ↗"
+        },
+        {
+          "line": 680,
+          "text": "Certificate issuance is not connected"
+        },
+        {
+          "line": 681,
+          "text": "in the current frontend demo."
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-account-access.html",
+      "bytes": 6007,
+      "sha256": "55be5a63e84e6003c1cfb1b8e48540ccee37faf7e20308b483c6a5ac7931a77a",
+      "title": "Account Access | CodeMentor AI",
+      "headings": [
+        "Manage account access.",
+        "",
+        "Confirm status change"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-student-data.js",
+        "js/admin-account-access.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form method=\"dialog\" class=\"dialog-actions\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 76,
+          "text": "Demo only: changes update sample account statuses"
+        },
+        {
+          "line": 112,
+          "text": "It keeps the sample learning information."
+        },
+        {
+          "line": 165,
+          "text": "CodeMentor AI · Frontend demo · Account access"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-analytics.html",
+      "bytes": 2952,
+      "sha256": "d9139334960ffd693753dac5a954952448193c2df0c71e4f05e07c22191b59ae",
+      "title": "Admin Analytics | CodeMentor AI",
+      "headings": [
+        "Understand the available records."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/admin-student-data.js",
+        "js/admin-analytics.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 41,
+          "text": "Exit admin demo"
+        },
+        {
+          "line": 66,
+          "text": "ADMIN / LOCAL DEMO ANALYTICS Understand the available records. Counts below come from fictional student samples and locally saved course content. They are not live platform analytics."
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-course-content.html",
+      "bytes": 6410,
+      "sha256": "3364541dc7919adcfb3777ba5f915d50d974d15bb57b5a8f839456aac7289dfd",
+      "title": "Course Content | CodeMentor AI",
+      "headings": [
+        "Course content",
+        "Course overview",
+        "Learning levels",
+        "No levels yet.",
+        "Before publishing"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/admin-course-content.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 41,
+          "text": "Exit admin demo"
+        },
+        {
+          "line": 160,
+          "text": "Publishing and student access are not connected"
+        },
+        {
+          "line": 161,
+          "text": "in this frontend demo."
+        },
+        {
+          "line": 167,
+          "text": "CodeMentor AI · Admin demo · Course content"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-course-create.html",
+      "bytes": 8353,
+      "sha256": "e9c53e54365d239e6b1845c4fb8f219d3927b0384bb4e0c58aafb0723c65227f",
+      "title": "Create Course | CodeMentor AI",
+      "headings": [
+        "Create a new course.",
+        "Course details",
+        "A draft comes first.",
+        "Frontend demo"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-create.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"course-create-form\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 39,
+          "text": "Exit admin demo"
+        },
+        {
+          "line": 196,
+          "text": "Frontend demo"
+        },
+        {
+          "line": 207,
+          "text": "CodeMentor AI · Admin demo · Create course"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-courses.html",
+      "bytes": 6922,
+      "sha256": "2748412a1c08019ba36bcfe75a32fe73179f68a683b9d7a3dc63d7041cbd4a41",
+      "title": "Learning Paths | CodeMentor AI",
+      "headings": [
+        "Build paths for every language.",
+        "Learning path directory",
+        "No matching learning paths.",
+        "Publish with a clear learning structure."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-data.js",
+        "js/admin-courses.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"course-filter-form\" class=\"course-filters\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 86,
+          "text": "Sample drafts only. These records do not publish"
+        },
+        {
+          "line": 164,
+          "text": "Enable JavaScript to view sample learning paths."
+        },
+        {
+          "line": 184,
+          "text": "CodeMentor AI · Frontend demo · Learning paths"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-dashboard.html",
+      "bytes": 9184,
+      "sha256": "16b4fabf3d1b031515fe332088f0b748d6c109068f8eeb525578d76ea358d027",
+      "title": "Admin Dashboard | CodeMentor AI",
+      "headings": [
+        "A clear view of your platform.",
+        "Platform statistics",
+        "Total students",
+        "Enabled accounts",
+        "Published paths",
+        "Issued certificates",
+        "Manage your platform",
+        "Student management",
+        "Learning paths",
+        "Learning performance",
+        "Recent platform activity",
+        "Activity data is unavailable."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 73,
+          "text": "data are not connected yet."
+        },
+        {
+          "line": 90,
+          "text": "Unavailable"
+        },
+        {
+          "line": 103,
+          "text": "Unavailable"
+        },
+        {
+          "line": 116,
+          "text": "Unavailable"
+        },
+        {
+          "line": 129,
+          "text": "Unavailable"
+        },
+        {
+          "line": 140,
+          "text": "Unavailable values do not mean zero."
+        },
+        {
+          "line": 219,
+          "text": "Not connected"
+        },
+        {
+          "line": 224,
+          "text": "Activity data is unavailable."
+        },
+        {
+          "line": 235,
+          "text": "CodeMentor AI · Frontend demo · Admin dashboard"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-level-content.html",
+      "bytes": 6646,
+      "sha256": "e001986a6683ef252bb51d475312f1a7ed0ef2df4b9235a0f6611bbd2ccf0fef",
+      "title": "Level Lessons | CodeMentor AI",
+      "headings": [
+        "Level lessons",
+        "Saved lessons",
+        "Add a lesson",
+        "External learning sources"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/admin-level-content.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"lesson-editor\" class=\"content-editor\">",
+        "<form id=\"source-editor\" class=\"content-editor\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 41,
+          "text": "Exit admin demo"
+        },
+        {
+          "line": 78,
+          "text": "Existing Python demo lesson (optional) Use my own platform content Link an existing Python lesson to keep its prepared explanation and attach your own external sources."
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-level-create.html",
+      "bytes": 8174,
+      "sha256": "4d63a5da6dca15b6ce5c0bfe962ab5a21ad280140f5f1bea30179f47e3e4b213",
+      "title": "Add Level | CodeMentor AI",
+      "headings": [
+        "Add a learning level.",
+        "Level details",
+        "Next level",
+        "Keep the goal clear.",
+        "Local draft"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/admin-level-create.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"level-create-form\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 41,
+          "text": "Exit admin demo"
+        },
+        {
+          "line": 191,
+          "text": "Write objectives students can demonstrate."
+        },
+        {
+          "line": 207,
+          "text": "CodeMentor AI · Frontend demo · Course builder"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-student-details.html",
+      "bytes": 8775,
+      "sha256": "0fc4dad1dfb7ac10a87f9c43803eab34e424cec529c9a8982a638726c68ee0d2",
+      "title": "Student Details | CodeMentor AI",
+      "headings": [
+        "Student details",
+        "Account information",
+        "Learning overview",
+        "Detailed progress is not connected.",
+        "Project and certificate",
+        "Account access",
+        "Learning records"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-student-data.js",
+        "js/admin-student-details.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 80,
+          "text": "Sample data only. This page does not display"
+        },
+        {
+          "line": 148,
+          "text": "Detailed progress is not connected."
+        },
+        {
+          "line": 163,
+          "text": "certificate records are not connected"
+        },
+        {
+          "line": 168,
+          "text": "Unavailable records do not indicate"
+        },
+        {
+          "line": 219,
+          "text": "CodeMentor AI · Frontend demo · Student details"
+        }
+      ]
+    },
+    {
+      "path": "pages/admin/admin-students.html",
+      "bytes": 6633,
+      "sha256": "08001dcb50f87d82a70a38bb7461e2ce7572d667ee3e4a9f1b48ad19380a3f98",
+      "title": "Students | CodeMentor AI",
+      "headings": [
+        "Your students, in one place.",
+        "Student directory",
+        "No matching students."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/admin-workspace.js",
+        "js/admin-student-data.js",
+        "js/admin-students.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"student-filter-form\" class=\"student-filters\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 74,
+          "text": "Sample data only. These records do not represent"
+        },
+        {
+          "line": 134,
+          "text": "Sample student accounts and learning progress"
+        },
+        {
+          "line": 166,
+          "text": "Enable JavaScript to view the sample directory."
+        },
+        {
+          "line": 172,
+          "text": "CodeMentor AI · Frontend demo · Student directory"
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/admin-login.html",
+      "bytes": 6675,
+      "sha256": "0e3920f378fab83f0a3f5f9ebb391b775d7004a31555e852b66b114dbbb08ac7",
+      "title": "Admin Login | CodeMentor AI",
+      "headings": [
+        "Your learning platform. In focus.",
+        "Sign in to the admin workspace.",
+        "Frontend demo"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/auth-video.js",
+        "js/login.js"
+      ],
+      "forms": [
+        "<form id=\"login-form\" novalidate>"
+      ],
+      "dataModes": [
+        "data-login-role=\"admin\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 126,
+          "text": "Frontend demo"
+        },
+        {
+          "line": 129,
+          "text": "Use the public sample details below to try the admin preview."
+        },
+        {
+          "line": 141,
+          "text": "[demo credential redacted; see demo login]"
+        },
+        {
+          "line": 147,
+          "text": "class=\"button button-outline demo-fill\""
+        },
+        {
+          "line": 148,
+          "text": "id=\"fill-demo\""
+        },
+        {
+          "line": 150,
+          "text": "Fill demo details"
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/change-password.html",
+      "bytes": 10403,
+      "sha256": "05d5721504cc8fb53383cd39fa60cd36c2854878fa9d98c3935dffa80124b300",
+      "title": "Change Password | CodeMentor AI",
+      "headings": [
+        "Change your password.",
+        "Password details",
+        "Choose a strong password.",
+        "How this demo works"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-workspace.js",
+        "js/change-password.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"change-password-form\" novalidate>"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 90,
+          "text": "Demo only: this form checks your input."
+        },
+        {
+          "line": 228,
+          "text": "How this demo works"
+        },
+        {
+          "line": 244,
+          "text": "CodeMentor AI · Frontend demo · Password settings"
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/forgot-password.html",
+      "bytes": 2902,
+      "sha256": "765f2fbcc49c7f4ec3d8142d82c42b1ae0d8e8d5be6dcab04ee579e26a26f033",
+      "title": "Forgot password? | CodeMentor AI",
+      "headings": [
+        "One line. A new possibility.",
+        "Forgot password?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/auth-video.js",
+        "js/password-recovery.js"
+      ],
+      "forms": [
+        "<form id=\"recovery-form\" novalidate class=\"content-editor\">"
+      ],
+      "dataModes": [
+        "data-recovery=\"forgot\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 33,
+          "text": "← Back to sign in FRONTEND DEMO / PASSWORD RECOVERY Forgot password? This is a local practice flow. No email is sent and no real account or password is changed. Email address Prepare local reset demo Prepare a new local reset demo The sample sign-in credentials remain the same throughout this simulation."
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/login.html",
+      "bytes": 6609,
+      "sha256": "cc7734f26ef58dc5ae9c9cc5258e5fd81bb94f10a4203ab5e88f577fc5bee1a2",
+      "title": "Sign In | CodeMentor AI",
+      "headings": [
+        "One line. A new possibility.",
+        "Sign in to your workspace.",
+        "Frontend demo"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/auth-video.js",
+        "js/login.js"
+      ],
+      "forms": [
+        "<form id=\"login-form\" novalidate>"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 126,
+          "text": "Frontend demo"
+        },
+        {
+          "line": 129,
+          "text": "Use the sample details below to try the student flow."
+        },
+        {
+          "line": 141,
+          "text": "[demo credential redacted; see demo login]"
+        },
+        {
+          "line": 147,
+          "text": "class=\"button button-outline demo-fill\""
+        },
+        {
+          "line": 148,
+          "text": "id=\"fill-demo\""
+        },
+        {
+          "line": 150,
+          "text": "Fill demo details"
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/reset-password.html",
+      "bytes": 3586,
+      "sha256": "de63a81c5f22e5c293077b977c882362b4ad13411e0791119bf7a04f0bad1676",
+      "title": "Try a password reset. | CodeMentor AI",
+      "headings": [
+        "One line. A new possibility.",
+        "Try a password reset."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/auth-video.js",
+        "js/password-recovery.js"
+      ],
+      "forms": [
+        "<form id=\"recovery-form\" novalidate class=\"content-editor\">"
+      ],
+      "dataModes": [
+        "data-recovery=\"reset\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 33,
+          "text": "← Back to sign in FRONTEND DEMO / PASSWORD RECOVERY Try a password reset. This is a local practice flow. No email is sent and no real account or password is changed. New password (demo only) Show Use at least 12 characters. The password will not be saved. Confirm password Show Complete reset simulation Prepare a new local reset demo The sample sign-in credentials remain the same throughout this simulation."
+        }
+      ]
+    },
+    {
+      "path": "pages/auth/signup.html",
+      "bytes": 9415,
+      "sha256": "3b6bbb43d9a817271cd7732372cd71c1cf39ad08855f3b43b42a0bc180d3f024",
+      "title": "Create Account | CodeMentor AI",
+      "headings": [
+        "Start your learning journey.",
+        "Frontend demo"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/auth-video.js",
+        "js/signup.js"
+      ],
+      "forms": [
+        "<form id=\"signup-form\" autocomplete=\"on\" novalidate>"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 83,
+          "text": "Private demo profile data. Your age is not shown in public profiles."
+        },
+        {
+          "line": 188,
+          "text": "Frontend demo"
+        },
+        {
+          "line": 191,
+          "text": "demo profile in this tab. It does not create a real"
+        },
+        {
+          "line": 193,
+          "text": "Sign in continues to use the sample account shown on the login page."
+        }
+      ]
+    },
+    {
+      "path": "pages/public/course.html",
+      "bytes": 2778,
+      "sha256": "e5c885f6519d2620e190b682f442ab9f3936cf97f63efd902e6cb10eef130daf",
+      "title": "Local Course Content | CodeMentor AI",
+      "headings": [
+        "Explore available lessons."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/languages.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"course\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Local Course Content Explore available lessons. Browse the language catalogue and locally available content. Full paths for languages other than Python are coming soon."
+        },
+        {
+          "line": 24,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 26,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/public/demo.html",
+      "bytes": 4213,
+      "sha256": "34cd73a164f520cc3c77bb81effc8c4e0988762eea3ae9cef26b422357828ae4",
+      "title": "Frontend Demo | CodeMentor AI",
+      "headings": [
+        "Take a look around.",
+        "Explore learning.",
+        "Discover the community.",
+        "Try content tools.",
+        "A prepared learning example"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"demo\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 7,
+          "text": "Frontend Demo | CodeMentor AI"
+        },
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Frontend Demo Take a look around. Explore what works locally and see which platform capabilities are still planned."
+        },
+        {
+          "line": 24,
+          "text": "01 / STUDENT FLOW Explore learning. Use the sample student account to explore preferences, prepared Python lessons, local drafts and progress records. Open demo sign-in 02 / PEER SERVICES Discover the community. Browse fictional student profiles, peer mentoring and freelance service ideas. Requests remain in your browser tab. Explore Student Showcase 03 / ADMIN PREVIEW Try content tools. Explore local course, level and lesson management. This is an admin UI preview, not real administrator authentication. Open admin preview"
+        },
+        {
+          "line": 26,
+          "text": "print(f\"Hello, {name}!\") Prepared output: Hello, Learner! Show a prepared hint An f-string inserts the value of name inside braces. Try explaining how the message is built. This is a static example. Live AI, code execution, project upload/evaluation, payments, real bookings and certificate issuance are not connected. Browse programming languages Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 28,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/public/languages.html",
+      "bytes": 2781,
+      "sha256": "b15901389aacf6f68f9d36885bbf9d148e08074c46aac9301022be7e9496fbb2",
+      "title": "Programming Languages | CodeMentor AI",
+      "headings": [
+        "Find your next language."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/languages.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"languages\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Programming Languages Find your next language. Browse the language catalogue and locally available content. Full paths for languages other than Python are coming soon."
+        },
+        {
+          "line": 24,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 26,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/community.html",
+      "bytes": 4442,
+      "sha256": "7aa958c740222affc16fe1c4f582637eb28f5ba15a10b1a187af10b0574cc597",
+      "title": "Student Community | CodeMentor AI",
+      "headings": [
+        "Learn together. Share what you discover.",
+        "Share what you know.",
+        "Ask with context.",
+        "Make progress visible.",
+        "Our future Discord space",
+        "A good place to learn together"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"community\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 29,
+          "text": "Our future Discord space The Discord invitation link has not been added yet. There is no connected or active community available through this demo. When a verified invitation is provided, it will appear here. Never share passwords, private account details or payment information. Discord link: not added yet"
+        },
+        {
+          "line": 30,
+          "text": "A good place to learn together Be respectful and welcome beginners. Keep discussions focused and explain your reasoning. Credit other people's work and protect personal information. This page explains the intended community. Posting and discussions are not connected. Explore Student Showcase"
+        },
+        {
+          "line": 31,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 33,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/freelance-services.html",
+      "bytes": 2801,
+      "sha256": "7a6d86d8c4bbc240610bcd63e5d2765bad85b96e96862cc0edd59bc00ab9b012",
+      "title": "Student Freelance Services | CodeMentor AI",
+      "headings": [
+        "Small services. Practical possibilities."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"freelance\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Student Freelance Services Small services. Practical possibilities. Explore programming services offered by students, with sample scopes, prices and delivery estimates."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/mentoring-details.html",
+      "bytes": 2761,
+      "sha256": "3c17b1ef3b6b5b5be63d17a1402b9ffac85317184cc4d18eba88f49e4dcb4816",
+      "title": "Peer Session Details | CodeMentor AI",
+      "headings": [
+        "Make space for your next question."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"mentoring-details\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Peer Session Details Make space for your next question. Explore the sample mentor, session scope and local booking simulation."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/peer-mentoring.html",
+      "bytes": 2772,
+      "sha256": "7698995077599d7d3890673bec2870579177e0337055910c512ec2ba1f40767e",
+      "title": "Peer Mentoring | CodeMentor AI",
+      "headings": [
+        "A little guidance from a fellow learner."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"mentoring\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Peer Mentoring A little guidance from a fellow learner. Explore paid peer sessions in Python, C# and C++. Every listing below is a clearly marked demo."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/service-details.html",
+      "bytes": 2754,
+      "sha256": "8bd58c75c31d0c15cca8f69cf670e395fd54eb04ed52f96b1ee7ff2c6679a34e",
+      "title": "Student Service Details | CodeMentor AI",
+      "headings": [
+        "Find the right scope for your idea."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"service-details\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Student Service Details Find the right scope for your idea. Review the sample service and save a demo request locally."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/service-draft.html",
+      "bytes": 2770,
+      "sha256": "4f5633aec23fa515e67a2cb702047d86f5e44409817dad4831590313bb77d967",
+      "title": "My Service Drafts | CodeMentor AI",
+      "headings": [
+        "Turn a skill into a service idea."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"drafts\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/showcase.html",
+      "bytes": 2975,
+      "sha256": "8a1a50f1af7698cfbeda5b85122b6eb301f38a7a590ec869794565d7e88739db",
+      "title": "Student Showcase | CodeMentor AI",
+      "headings": [
+        "People learning. Ideas taking shape."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"showcase\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Student Showcase People learning. Ideas taking shape. Discover public demo profiles, skills and project concepts across our three language paths."
+        },
+        {
+          "line": 24,
+          "text": "My local portfolio (student sign-in required) Your private projects are separate from the fictional profiles below."
+        },
+        {
+          "line": 26,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 28,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/services/student-public-profile.html",
+      "bytes": 2745,
+      "sha256": "b5766250ae46ebee803da21554b1e1e456890b30304efcb4e88c7b74bb570860",
+      "title": "Public Student Profile | CodeMentor AI",
+      "headings": [
+        "A student, a skill set, a story."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"profile\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Public Student Profile A student, a skill set, a story. Explore a public demo portfolio. Account details stay private."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/certificates.html",
+      "bytes": 5847,
+      "sha256": "7a0d74b9d91d5fc2a360bb3d7b1073c0558ddc66748f7b14609362914d3d2791",
+      "title": "Certificates | CodeMentor AI",
+      "headings": [
+        "Your learning, recognized.",
+        "Checking your progress",
+        "CERTIFICATE"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/certificates.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 77,
+          "text": "Landscape A4 preview. Your browser's print window lets you print or choose Save as PDF. This certificate records completion on this platform from locally saved learning records; online verification is not connected."
+        }
+      ]
+    },
+    {
+      "path": "pages/student/code-review.html",
+      "bytes": 6814,
+      "sha256": "e7ccd5680266595bc9ae2350e9d271c6fe01ebf45b770c277582c4dbedd8f641",
+      "title": "Code Review | CodeMentor AI",
+      "headings": [
+        "Understand your next step.",
+        "Not evaluated yet",
+        "Your saved draft",
+        "Required test results",
+        "Review before submitting.",
+        "Mentor feedback"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/code-review.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 127,
+          "text": "in the mentor demo."
+        },
+        {
+          "line": 158,
+          "text": "CodeMentor AI · Frontend demo · Evaluation pending"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/dashboard.html",
+      "bytes": 7140,
+      "sha256": "5ddddd6ea528d318f3830f1b0e2352a4a23b469980a9c999ed400843569f0dab",
+      "title": "Dashboard | CodeMentor AI",
+      "headings": [
+        "Your demo workspace.",
+        "Next step",
+        "Not loaded",
+        "Not loaded",
+        "Not loaded",
+        "Not loaded",
+        "Topics to revisit",
+        "Your starting point",
+        "Selected path",
+        "My local activity"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/placement-data.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/student-services-store.js",
+        "js/learning-support.js",
+        "js/dashboard.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 70,
+          "text": "YOUR NEXT STEP Your demo workspace."
+        },
+        {
+          "line": 87,
+          "text": "My local activity Only records with the active demo account as owner are counted. No request has been sent to another person or confirmed. Booking requests Not loaded Service requests Not loaded Private service drafts Not loaded View my local requests View my private drafts"
+        },
+        {
+          "line": 90,
+          "text": "Progress is saved on this device under your demo profile. Download a backup from My progress. Python runs in your browser; account sync across devices is not connected."
+        },
+        {
+          "line": 91,
+          "text": "CodeMentor AI · Frontend demo · Student workspace"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/learning-path.html",
+      "bytes": 10389,
+      "sha256": "df9142b37f0bdccca7ef69b7af86cd09f1bb9486b903b5e89a8ee550a8281d5b",
+      "title": "Learning Path | CodeMentor AI",
+      "headings": [
+        "One step at a time. A clear path ahead.",
+        "Python · 4 levels",
+        "Python Foundations",
+        "Logic and Control Flow",
+        "Functions and Collections",
+        "Your Final Project",
+        "How levels unlock.",
+        "Support along the way.",
+        "Keep track of your growth.",
+        "Level locked"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/learning-path.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 216,
+          "text": "CodeMentor AI · Frontend demo · Starting learning state"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/learning-report.html",
+      "bytes": 3205,
+      "sha256": "2a876b4be4647650b0a747d5d3333233b0e37b63d8e3809100f1d72494301e8d",
+      "title": "Learning Report | CodeMentor AI",
+      "headings": [
+        "Your learning, in one place."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/learning-report.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"report\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 23,
+          "text": "CODEMENTOR AI / Learning Report Your learning, in one place. A printable summary of available demo records. This report is not an official certificate."
+        },
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/lesson.html",
+      "bytes": 8749,
+      "sha256": "c2f97ae0b37ff850eb3272e4c281f559952d1777a89ad27657b906959e5fbbf0",
+      "title": "Lesson | CodeMentor AI",
+      "headings": [
+        "Lesson",
+        "",
+        "Watch this topic explained",
+        "Example output",
+        "External learning sources",
+        "Check your understanding.",
+        "In this level",
+        "Need another explanation?",
+        "Finish this lesson."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/admin-course-data.js",
+        "js/course-content-store.js",
+        "js/lesson-content.js",
+        "js/lesson.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"knowledge-form\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 186,
+          "text": "Completion is saved on this device for your demo profile."
+        },
+        {
+          "line": 193,
+          "text": "CodeMentor AI · Frontend demo · Python lesson"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/level-assessment.html",
+      "bytes": 3755,
+      "sha256": "fd3138f978194eb6d9481c7d721dec0a73a9743dd24106f38ad5b2a8213cb653",
+      "title": "Level Assessment Demo | CodeMentor AI",
+      "headings": [
+        "Check what you understand.",
+        "Python Foundations"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-workspace.js",
+        "js/learning-context.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/level-assessment.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"level-assessment-form\" hidden>"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 9,
+          "text": "Level Assessment Demo | CodeMentor AI"
+        },
+        {
+          "line": 65,
+          "text": "← Back to Python Level 01 LEVEL 01 / LOCAL KNOWLEDGE QUIZ Check what you understand. A prepared frontend demo quiz with a 70% pass mark. Local marking is not a real code evaluation, official assessment or certificate. Python Foundations Review saved progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/local-portfolio.html",
+      "bytes": 1640,
+      "sha256": "647a0031a3446c674d3aa88ef42a4b9ec15ba6ec022be4d8df415ef5f2a1fbb3",
+      "title": "My Local Portfolio | CodeMentor AI",
+      "headings": [
+        "My local portfolio"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-services-store.js",
+        "js/virtual-internship-store.js",
+        "js/virtual-internship.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-internship-view=\"portfolio\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 11,
+          "text": "Only projects explicitly included by the current demo account appear here. Nothing is published publicly or added to the fictional Student Showcase profiles. Self-reported work is not proof of competence, a pass or a certificate."
+        }
+      ]
+    },
+    {
+      "path": "pages/student/mentor.html",
+      "bytes": 8621,
+      "sha256": "06ca69b26be4a93fceed569ad83f7466d1f805cdd0916e409df93ffdc9ee398b",
+      "title": "AI Mentor | CodeMentor AI",
+      "headings": [
+        "Think it through with your mentor.",
+        "Your conversation",
+        "What we’re discussing",
+        "Your saved code",
+        "A useful question includes…",
+        "Clear this conversation?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/mentor.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"chat-form\" class=\"chat-form\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 78,
+          "text": "Frontend demo · Prepared responses · No live AI connection"
+        },
+        {
+          "line": 187,
+          "text": "CodeMentor AI · Demo conversations saved in this tab"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/module.html",
+      "bytes": 13216,
+      "sha256": "addafb26401907b3bfe7e5a7329e6493ef4695b1894577e72e53e4944f14328e",
+      "title": "Python Foundations | CodeMentor AI",
+      "headings": [
+        "Python Foundations",
+        "Your lessons",
+        "01 · Variables and values",
+        "02 · Data types",
+        "03 · Input and output",
+        "04 · Working with numbers",
+        "Put it into practice.",
+        "Task 01 · Create a student profile",
+        "Task 02 · Build a simple receipt",
+        "What you’ll learn.",
+        "Your level progress",
+        "Level assessment",
+        "",
+        "Need a little guidance?",
+        "Complete these activities first."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/module.js",
+        "js/level-challenges.js",
+        "js/module-challenge.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 270,
+          "text": "CodeMentor AI · Frontend demo · Python Foundations"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/onboarding.html",
+      "bytes": 5342,
+      "sha256": "a8a4909000cb19d6b1bb3a7ae336b6e4cf3ce30a0ad89ce4666cc4502d2e30dd",
+      "title": "Your Preferences | CodeMentor AI",
+      "headings": [
+        "Your goals. Your starting point.",
+        "Start where you are.",
+        "Make this journey yours."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/onboarding.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"onboarding-form\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 79,
+          "text": "01 · Choose your language Python has a frontend demo. Other full learning paths and assessments are coming soon. Locally authored lessons can be browsed separately. Programming language"
+        },
+        {
+          "line": 108,
+          "text": "CodeMentor AI · Frontend demo · Preferences saved in this tab"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/placement-intro.html",
+      "bytes": 5883,
+      "sha256": "9d9c2477b4eba3ffb1f05958c4c46ddbf02104b169f9e6c81f3df8e14b4ded00",
+      "title": "Placement Assessment | CodeMentor AI",
+      "headings": [
+        "Ready for the challenge?",
+        "Honest answers help.",
+        "Let’s find your starting line.",
+        "What to expect",
+        "What happens afterward?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/placement-data.js",
+        "js/placement-intro.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 161,
+          "text": "CodeMentor AI · Frontend demo · Placement assessment"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/placement-question.html",
+      "bytes": 3642,
+      "sha256": "bbbbbdb32b37b4b9aef0a82cd3fba83ccad007c1e606c60629811ce2053b642a",
+      "title": "Placement Questions | CodeMentor AI",
+      "headings": [
+        "Find your starting point.",
+        "Not sure yet?",
+        ""
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/placement-data.js",
+        "js/placement-question.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 101,
+          "text": "CodeMentor AI · Frontend demo · Python placement"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/placement-results.html",
+      "bytes": 4199,
+      "sha256": "32f0f5f5b1645e52a9380b6c761f9d671c488a0b0ab45102f09f454df74ede7a",
+      "title": "Placement Results | CodeMentor AI",
+      "headings": [
+        "Your learning path starts here.",
+        "Your initial snapshot",
+        "A closer look at your skills.",
+        "Python Foundations",
+        "What should you practise next?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/placement-data.js",
+        "js/placement-results.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 112,
+          "text": "CodeMentor AI · Frontend demo · Python placement results"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/placement-review.html",
+      "bytes": 4679,
+      "sha256": "660ae2848c12f561cba43d76b85a3d7af281594d3368a7e7fc0c9148dd116dbc",
+      "title": "Review Answers | CodeMentor AI",
+      "headings": [
+        "Your answers. Your starting point.",
+        "Honest answers help.",
+        "Ready for your next step?",
+        "Submit your assessment?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/placement-data.js",
+        "js/placement-review.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 135,
+          "text": "CodeMentor AI · Frontend demo · Review your placement answers"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/practice.html",
+      "bytes": 5996,
+      "sha256": "2199dbec2407ad8898d4e633805edc69b43664a06b37813603068133c5f8d8bb",
+      "title": "Practice Tasks | CodeMentor AI",
+      "headings": [
+        "Make room for a little practice.",
+        "No tasks match your filters."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/practice.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form class=\"practice-filters\" id=\"practice-filters\"\r\n                  role=\"search\" aria-label=\"Filter practice tasks\">"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 141,
+          "text": "CodeMentor AI · Frontend demo · Level 01 practice"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/profile.html",
+      "bytes": 11378,
+      "sha256": "55e18c4e595ddd18af8da3a0bcb8e862a508eabdf881d0eac7ac2653c9f0f99b",
+      "title": "Profile Settings | CodeMentor AI",
+      "headings": [
+        "Make your profile yours.",
+        "Profile details",
+        "Learning preferences",
+        "Account security",
+        "My local portfolio",
+        "About this demo",
+        "Keep learning."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-workspace.js",
+        "js/profile.js",
+        "js/theme.js"
+      ],
+      "forms": [
+        "<form id=\"profile-form\" novalidate>"
+      ],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 129,
+          "text": "and are not available in this demo."
+        },
+        {
+          "line": 232,
+          "text": "View projects you explicitly include for this demo account. Self-reported work is private to this browser tab and is not added to fictional public profiles."
+        },
+        {
+          "line": 234,
+          "text": "About this demo"
+        },
+        {
+          "line": 242,
+          "text": "Closing the tab may clear your demo session."
+        },
+        {
+          "line": 265,
+          "text": "CodeMentor AI · Frontend demo · Profile settings"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/progress.html",
+      "bytes": 9009,
+      "sha256": "c3bebcb7214766971e586de4272e33fe625bb7dbc13fb058bff16d6afcd1a70a",
+      "title": "My Progress | CodeMentor AI",
+      "headings": [
+        "See how far you’ve come.",
+        "Export Learning Report",
+        "—",
+        "—",
+        "—",
+        "Python Foundations",
+        "Your completed activities",
+        "Your next step",
+        "Progress and understanding",
+        "About this demo"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/progress.js",
+        "js/learning-backup.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 80,
+          "text": "Progress stays on this device for this demo profile. Download a backup to keep a copy or restore it elsewhere."
+        },
+        {
+          "line": 85,
+          "text": "Review available demo records, then use your browser's Print / Save as PDF window. This report is not an official certificate."
+        },
+        {
+          "line": 180,
+          "text": "About this demo"
+        },
+        {
+          "line": 196,
+          "text": "CodeMentor AI · Frontend demo · Saved learning progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/project-evaluation.html",
+      "bytes": 3079,
+      "sha256": "33eb37282830634d5e8dc0a99fbd7f8b67c5734a3cec7415d061054ae0ce5835",
+      "title": "Project Evaluation | CodeMentor AI",
+      "headings": [
+        "Your project test results"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/project-evaluation.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": []
+    },
+    {
+      "path": "pages/student/project.html",
+      "bytes": 4515,
+      "sha256": "8b56932e4723cdf021877cb4c299456e303dea680108a7a5ca7119a881bb0c20",
+      "title": "Final Project | CodeMentor AI",
+      "headings": [
+        "Build a Study Task Manager",
+        "Your project",
+        "The brief",
+        "After you pass"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/project.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": []
+    },
+    {
+      "path": "pages/student/requests.html",
+      "bytes": 2774,
+      "sha256": "7e82fd6a1fe141f3747eca60cad0d2f0a4179b936585c6b82f06b46cfc8d2227",
+      "title": "My Local Requests | CodeMentor AI",
+      "headings": [
+        "Your requests, kept in this tab."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/main.js",
+        "js/student-services-data.js",
+        "js/student-services-store.js",
+        "js/student-services.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [
+        "data-service-page=\"history\""
+      ],
+      "sourceNotices": [
+        {
+          "line": 25,
+          "text": "Enable JavaScript to browse demo profiles, use forms or load a learning report."
+        },
+        {
+          "line": 27,
+          "text": "CodeMentor AI Frontend demo · Learn with clarity. Contact Community My progress"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/skill-analysis.html",
+      "bytes": 7430,
+      "sha256": "ebbdd35b5ca3a8dda7095634ccdcbf2f978d9d98df7e19ed910faf439040f9c8",
+      "title": "Skill Analysis | CodeMentor AI",
+      "headings": [
+        "Turn insights into your next step.",
+        "Your skill snapshot is not ready yet.",
+        "Your placement snapshot",
+        "Your practice focus",
+        "What this evidence tells us",
+        "Make sense of a concept."
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/student-workspace.js",
+        "js/placement-data.js",
+        "js/skill-analysis.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 100,
+          "text": "This is a small sample, not a complete measure of mastery."
+        },
+        {
+          "line": 154,
+          "text": "Explore an explanation in the mentor demo,"
+        },
+        {
+          "line": 171,
+          "text": "CodeMentor AI · Frontend demo · Placement-based insights"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/virtual-internship.html",
+      "bytes": 4558,
+      "sha256": "08235b9c90a35ccfb681b786da9c1b580b793aa1bcd27627d1aeff6b905ce900",
+      "title": "Virtual Internship | CodeMentor AI",
+      "headings": [
+        "Virtual Internship",
+        "School Management System in C#",
+        "Requirements and scope",
+        "Required deliverables",
+        "Suggested implementation steps",
+        "Sample review — prepared checklist"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/student-services-store.js",
+        "js/virtual-internship-store.js",
+        "js/virtual-internship.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": [
+        {
+          "line": 11,
+          "text": "Cedar School Systems is a fictional company. This independent exercise does not mean the C# learning path is complete: that path's content is still coming soon. No real internship, employer, AI review, grade, payment or certificate is provided."
+        },
+        {
+          "line": 14,
+          "text": "Client problem: a fictional school tracks students, teachers and classes in separate lists. Build a small C# console application that keeps these records consistent and makes class rosters easy to find."
+        },
+        {
+          "line": 15,
+          "text": "Requirements and scope Use C# classes for students, teachers, class groups and enrollments, with unique IDs. Add, view, edit and remove student and teacher records with input validation. Create class groups, assign a teacher, enroll students and display class rosters without duplicate enrollments. Explain and enforce what happens when deleting a referenced student, teacher or class. Save and reload local JSON data. Handle missing and malformed files explicitly. Use fictional records only; do not include real children's data, credentials or personal information."
+        },
+        {
+          "line": 16,
+          "text": "Required deliverables A GitHub repository containing your C# console project and fictional sample data. A README with prerequisites, setup/run commands, model explanation and usage examples. A checklist of manual tests and their actual results, plus known limitations. Automated tests may be included if you write them."
+        },
+        {
+          "line": 17,
+          "text": "Suggested implementation steps Review the requirements and design the model and menus. Implement record management, class assignment and enrollment validation. Add JSON persistence and error handling. Run your checks locally, document limitations and save your repository link below. Use the sample review as a checklist, revisit the requirements and update your link or notes when needed."
+        },
+        {
+          "line": 21,
+          "text": "Sample review — prepared checklist This is a Sample review, not a review of your submitted solution. These notes are the same for everyone and do not depend on your repository, task states or submission. The system has not read any code."
+        },
+        {
+          "line": 22,
+          "text": "Read the prepared sample review Check that IDs remain unique after editing records and reloading saved data. Try duplicate enrollments, invalid menu input and deletion of a teacher with assigned classes. Test startup without a JSON file and with a malformed file. Explain how existing data is protected. Make sure another learner can follow the README to run the app. Record what is incomplete instead of treating a Done label as proof of correctness. Review the requirements before updating your solution"
+        }
+      ]
+    },
+    {
+      "path": "pages/student/workspace.html",
+      "bytes": 8511,
+      "sha256": "f6a44249824c2be3d6411643b73c495f80e09d411a32c444ee78e27e77e412a5",
+      "title": "Coding Workspace | CodeMentor AI",
+      "headings": [
+        "Coding task",
+        "Requirements",
+        "Example input",
+        "Expected output",
+        "How completion works",
+        "Need a nudge?",
+        "One possible solution",
+        "main.py",
+        "Output",
+        "",
+        "Reset your code?"
+      ],
+      "scripts": [
+        "js/learning-storage.js",
+        "js/theme.js",
+        "js/language-catalog.js",
+        "js/workspace-shell.js",
+        "js/learning-context.js",
+        "js/python-runner.js",
+        "js/python-lessons.js",
+        "js/python-curriculum.js",
+        "js/learning-support.js",
+        "js/workspace.js",
+        "js/workspace-completion.js",
+        "js/workspace-support.js",
+        "js/theme.js"
+      ],
+      "forms": [],
+      "dataModes": [],
+      "sourceNotices": []
+    }
+  ],
+  "javascript": [
+    {
+      "path": "js/admin-account-access.js",
+      "bytes": 4447,
+      "sha256": "02e56bc206d1fb7fcc299c7700675f98a18c51b852e93162b4bbd33355201b9a",
+      "lines": 149,
+      "usedBy": [
+        "pages/admin/admin-account-access.html"
+      ],
+      "functions": [
+        "showMessage",
+        "renderStudent"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/admin-analytics.js",
+      "bytes": 3213,
+      "sha256": "61aa22f8a6acb73bc81d70abab1e009bd216374a05443e3e064d002c90ffad1e",
+      "lines": 30,
+      "usedBy": [
+        "pages/admin/admin-analytics.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 25,
+          "text": "        const scope = node(\"section\", \"\", \"dashboard-card\"); scope.append(node(\"h2\", \"What is unavailable\"), node(\"p\", \"Real account totals, attendance, revenue, learner engagement, verified completions and certificate issuance are not connected. No numbers are estimated for them.\")); root.append(scope);"
+        }
+      ]
+    },
+    {
+      "path": "js/admin-course-content.js",
+      "bytes": 4793,
+      "sha256": "d3c2213854ec9465de11b905613ab692e075f6e9cd67fd5096134e5363e1337a",
+      "lines": 149,
+      "usedBy": [
+        "pages/admin/admin-course-content.html"
+      ],
+      "functions": [
+        "readDrafts",
+        "readLevels",
+        "renderLevels"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-course-drafts"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/admin-course-create.js",
+      "bytes": 5993,
+      "sha256": "caa79ed4c1c2a91a8f9a6a601e66c9c3f5670fb46ddbc47b0ab8badca4a2c57e",
+      "lines": 201,
+      "usedBy": [
+        "pages/admin/admin-course-create.html"
+      ],
+      "functions": [
+        "readDrafts",
+        "createId"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-course-drafts"
+      ],
+      "signals": [
+        {
+          "line": 158,
+          "text": "                status: \"draft\","
+        },
+        {
+          "line": 162,
+          "text": "            window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/admin-course-data.js",
+      "bytes": 1088,
+      "sha256": "3f2d2fb831b91f46a6cb146718c8df2b6f82e7f6dbc43b31168015f977d64569",
+      "lines": 38,
+      "usedBy": [
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/public/course.html",
+        "pages/public/languages.html",
+        "pages/student/lesson.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 10,
+          "text": "            status: \"draft\","
+        },
+        {
+          "line": 20,
+          "text": "            status: \"draft\","
+        },
+        {
+          "line": 30,
+          "text": "            status: \"draft\","
+        }
+      ]
+    },
+    {
+      "path": "js/admin-courses.js",
+      "bytes": 6404,
+      "sha256": "4cbd57028896ee84213993c4ed85135eee4b1cfd6ba80c2c3fefcc5a83cdbc52",
+      "lines": 173,
+      "usedBy": [
+        "pages/admin/admin-courses.html"
+      ],
+      "functions": [
+        "populateLanguages",
+        "createCourseCard",
+        "renderCourses"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-course-drafts"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/admin-level-content.js",
+      "bytes": 8815,
+      "sha256": "cec413a44f16b83c2f2a60c6f4c284a073d71729f0aad80efe82cb3365430b0b",
+      "lines": 103,
+      "usedBy": [
+        "pages/admin/admin-level-content.html"
+      ],
+      "functions": [
+        "say",
+        "node",
+        "resetSource",
+        "renderSources",
+        "selectLesson",
+        "renderList",
+        "changeSources"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 14,
+          "text": "    const fields = { title: \"edit-lesson-title\", summary: \"edit-lesson-summary\", content: \"edit-lesson-content\", code: \"edit-lesson-code\", output: \"edit-lesson-output\", minutes: \"edit-lesson-minutes\", status: \"edit-lesson-status\", builtInLessonId: \"edit-lesson-builtin\" };"
+        }
+      ]
+    },
+    {
+      "path": "js/admin-level-create.js",
+      "bytes": 8886,
+      "sha256": "735b9b398ddf9fa4044ab9c8df45a17f6f68a278d6a38dc86d114ee1c26f34ab",
+      "lines": 282,
+      "usedBy": [
+        "pages/admin/admin-level-create.html"
+      ],
+      "functions": [
+        "isObject",
+        "readDrafts",
+        "readContent",
+        "getLevels",
+        "createId",
+        "initialize"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-course-drafts",
+        "codementor-demo-admin-course-content"
+      ],
+      "signals": [
+        {
+          "line": 227,
+          "text": "                status: \"draft\","
+        },
+        {
+          "line": 247,
+          "text": "            window.cmStorage.setItem(contentKey, JSON.stringify(updated));"
+        }
+      ]
+    },
+    {
+      "path": "js/admin-student-data.js",
+      "bytes": 3499,
+      "sha256": "186bd80c585bd2597fad408bf0984d1bc697ca70f953ee79738221e76bd0fd74",
+      "lines": 128,
+      "usedBy": [
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html"
+      ],
+      "functions": [
+        "readStatuses",
+        "publishStudents"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-account-status"
+      ],
+      "signals": [
+        {
+          "line": 12,
+          "text": "            status: \"enabled\","
+        },
+        {
+          "line": 22,
+          "text": "            status: \"enabled\","
+        },
+        {
+          "line": 32,
+          "text": "            status: \"suspended\","
+        },
+        {
+          "line": 42,
+          "text": "            status: \"enabled\","
+        },
+        {
+          "line": 84,
+          "text": "                status: statuses[student.id] ?? student.status"
+        },
+        {
+          "line": 119,
+          "text": "            window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/admin-student-details.js",
+      "bytes": 2704,
+      "sha256": "39db4d7642567d10c47a1408f79d77b76a5c4851f7b48c85a32082c6742afe6d",
+      "lines": 91,
+      "usedBy": [
+        "pages/admin/admin-student-details.html"
+      ],
+      "functions": [
+        "showError"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/admin-students.js",
+      "bytes": 4370,
+      "sha256": "0a3a0912a45a8bcbbe3f6ebf5fb1dbc1f55c02a1ebb7b85d5733a70ded909e7d",
+      "lines": 138,
+      "usedBy": [
+        "pages/admin/admin-students.html"
+      ],
+      "functions": [
+        "createCell",
+        "createStudentRow",
+        "renderStudents"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/admin-workspace.js",
+      "bytes": 2040,
+      "sha256": "4a1717cd787441126f3d3776e539fe0259075139af3a479396864e2e7e3488c4",
+      "lines": 73,
+      "usedBy": [
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-course-create.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-dashboard.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html"
+      ],
+      "functions": [
+        "setMenuOpen"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/auth-video.js",
+      "bytes": 1556,
+      "sha256": "986a6f4daf1da27cf233181640afd0f5c3ec9810182a6b90c4fe1b980425d502",
+      "lines": 40,
+      "usedBy": [
+        "pages/auth/admin-login.html",
+        "pages/auth/forgot-password.html",
+        "pages/auth/login.html",
+        "pages/auth/reset-password.html",
+        "pages/auth/signup.html"
+      ],
+      "functions": [
+        "syncButton",
+        "updatePlayback"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/certificates.js",
+      "bytes": 4298,
+      "sha256": "2c283769d056746d40a9eba693b0914c897e5b26c77ae69c06bf82db972b5020",
+      "lines": 50,
+      "usedBy": [
+        "pages/student/certificates.html"
+      ],
+      "functions": [
+        "readState",
+        "render"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/change-password.js",
+      "bytes": 4628,
+      "sha256": "07b1b0d835646ea28fbcfe5dbb9fd35e7e498a7f92376e34fd20571d0d0c9ebc",
+      "lines": 156,
+      "usedBy": [
+        "pages/auth/change-password.html"
+      ],
+      "functions": [
+        "clearError",
+        "showError",
+        "hidePasswords"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 147,
+          "text": "            \"and no password was changed. Backend connection is required.\";"
+        }
+      ]
+    },
+    {
+      "path": "js/cm-home.js",
+      "bytes": 9199,
+      "sha256": "e20b8d641409e14bcad26a18256fadae132b091296197468ba5860fe6d2ad302",
+      "lines": 289,
+      "usedBy": [],
+      "functions": [
+        "updateHeaderHeight",
+        "closeMenu",
+        "revealAll",
+        "updateMotion",
+        "showFallback"
+      ],
+      "storageLiterals": [
+        "cm-home",
+        ".cm-header",
+        ".cm-menu",
+        "cm-navigation",
+        "cm-hero-video",
+        "cm-motion",
+        "cm-year",
+        "--cm-header-height",
+        ".cm-step",
+        "cm-step-preview",
+        ".cm-preview-number",
+        "cm-step-label",
+        "cm-step-title",
+        "cm-step-description",
+        "cm-preview-enter",
+        "cm-copy-code",
+        "cm-copy-status",
+        "cm-example-code",
+        ".cm-reveal",
+        "cm-visible",
+        "--cm-delay",
+        "cm-pending",
+        "cm-paused",
+        ".cm-brand img",
+        "cm-logo-fallback"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/code-review.js",
+      "bytes": 4275,
+      "sha256": "9bf183d61c84fc240542455d081ae297bb3111ee21e83f256f928314210b1eb8",
+      "lines": 95,
+      "usedBy": [
+        "pages/student/code-review.html"
+      ],
+      "functions": [
+        "loadDraft"
+      ],
+      "storageLiterals": [
+        "codementor-demo-code-${taskId}",
+        "codementor-demo-learning"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/course-content-store.js",
+      "bytes": 5101,
+      "sha256": "2368036f98e68a7d1c07b71fe84305f815d64d5630e86aa1de8dcf733a986d7a",
+      "lines": 63,
+      "usedBy": [
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/public/course.html",
+        "pages/public/languages.html",
+        "pages/student/lesson.html"
+      ],
+      "functions": [
+        "externalUrl",
+        "validResource",
+        "validLesson",
+        "readContent",
+        "readCourses",
+        "context",
+        "updateLesson"
+      ],
+      "storageLiterals": [
+        "codementor-demo-admin-course-content",
+        "codementor-demo-admin-course-drafts"
+      ],
+      "signals": [
+        {
+          "line": 58,
+          "text": "        window.cmStorage.setItem(contentKey, JSON.stringify(updated));"
+        }
+      ]
+    },
+    {
+      "path": "js/dashboard.js",
+      "bytes": 15500,
+      "sha256": "6b51dd0927d710318f4fd81d1a8e09d32988aded984ed8cf169a01199ded5d76",
+      "lines": 144,
+      "usedBy": [
+        "pages/student/dashboard.html"
+      ],
+      "functions": [
+        "node",
+        "read",
+        "action",
+        "render"
+      ],
+      "storageLiterals": [
+        "codementor-demo-onboarding",
+        "codementor-demo-learning",
+        "codementor-demo-placement"
+      ],
+      "signals": [
+        {
+          "line": 117,
+          "text": "            if (assessment) levels.append(node(\"li\", `Current level quiz best score: ${assessment.score}%.`));"
+        }
+      ]
+    },
+    {
+      "path": "js/hero-background.js",
+      "bytes": 1993,
+      "sha256": "28fa85d55fbcc9e8109f50df24748bf515c3bb344884c9f0a48f530a59be356e",
+      "lines": 86,
+      "usedBy": [
+        "index.html"
+      ],
+      "functions": [
+        "updateButton",
+        "playVideo"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/home-effects.js",
+      "bytes": 8925,
+      "sha256": "41a0b681a10bee56cafdbca1b34697cc255ed7656d28e437dc32fd8614a634b5",
+      "lines": 250,
+      "usedBy": [
+        "index.html"
+      ],
+      "functions": [
+        "revealAll",
+        "sync",
+        "syncServicesOffset"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/language-catalog.js",
+      "bytes": 2401,
+      "sha256": "7e052d3aa0682f9ac5d1015438db4064dde0313974fd2b2631107464c0e969ac",
+      "lines": 29,
+      "usedBy": [
+        "index.html",
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-course-create.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-dashboard.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html",
+        "pages/auth/admin-login.html",
+        "pages/auth/change-password.html",
+        "pages/auth/forgot-password.html",
+        "pages/auth/login.html",
+        "pages/auth/reset-password.html",
+        "pages/auth/signup.html",
+        "pages/public/course.html",
+        "pages/public/demo.html",
+        "pages/public/languages.html",
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/certificates.html",
+        "pages/student/code-review.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/local-portfolio.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/onboarding.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/practice.html",
+        "pages/student/profile.html",
+        "pages/student/progress.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/requests.html",
+        "pages/student/skill-analysis.html",
+        "pages/student/virtual-internship.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "populateSelect"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/languages.js",
+      "bytes": 6502,
+      "sha256": "93934d2906c021b06ffdf00bb2fdfa3f4f5a560de20159b4f9b24143f4af105a",
+      "lines": 65,
+      "usedBy": [
+        "pages/public/course.html",
+        "pages/public/languages.html"
+      ],
+      "functions": [
+        "el",
+        "link",
+        "publicLessons",
+        "render"
+      ],
+      "storageLiterals": [
+        "codementor-demo-onboarding"
+      ],
+      "signals": [
+        {
+          "line": 52,
+          "text": "                            window.cmStorage.setItem(\"codementor-demo-onboarding\", JSON.stringify({ experience: \"beginner\", goal: \"foundations\", ...previous, language: entry.id }));"
+        }
+      ]
+    },
+    {
+      "path": "js/learning-backup.js",
+      "bytes": 4781,
+      "sha256": "c7a6f11f8c2ff526cbd62f551f8fa63f620c50b1c1a889cb91128dc8196bc729",
+      "lines": 48,
+      "usedBy": [
+        "pages/student/progress.html"
+      ],
+      "functions": [],
+      "storageLiterals": [
+        "codementor-demo-learning",
+        "codementor-learning-backup",
+        "codementor-progress.json"
+      ],
+      "signals": [
+        {
+          "line": 25,
+          "text": "                if (!assessments[id] || value.score > assessments[id].score) assessments[id] = { score: value.score, kind: \"imported-browser-record\" };"
+        },
+        {
+          "line": 37,
+          "text": "                    if (!Object.hasOwn(restored, id)) restored[id] = { code: record.code, passed: record.passed, total: record.total, ...(record.cases ? { cases: record.cases } : {}), ...(typeof record.submittedAt === \"string\" && Number.isFinite(Date.parse(record.submittedAt)) ? { submittedAt: record.submittedAt } : {}) };"
+        },
+        {
+          "line": 41,
+          "text": "            window.cmStorage.setItem(key, JSON.stringify(merged));"
+        }
+      ]
+    },
+    {
+      "path": "js/learning-context.js",
+      "bytes": 1941,
+      "sha256": "8940b793f66295b7c8df280ba540d2f64bbe6217939ebbb7eccc8f9381a69353",
+      "lines": 34,
+      "usedBy": [
+        "pages/student/code-review.html",
+        "pages/student/learning-path.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/practice.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/skill-analysis.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "verify"
+      ],
+      "storageLiterals": [
+        "codementor-demo-onboarding"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/learning-path.js",
+      "bytes": 2392,
+      "sha256": "c1a545783908fca3546501a1e6015029e7e408abdeb73b981cc57e086f92e52d",
+      "lines": 33,
+      "usedBy": [
+        "pages/student/learning-path.html"
+      ],
+      "functions": [
+        "render"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/learning-report.js",
+      "bytes": 5886,
+      "sha256": "2308d820c1639254a9e8ca8093c41612db06f3b09f79b5ecf3ba4a0da4913265",
+      "lines": 67,
+      "usedBy": [
+        "pages/student/learning-report.html"
+      ],
+      "functions": [
+        "read",
+        "add",
+        "list",
+        "load"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session",
+        "codementor-demo-onboarding",
+        "codementor-demo-learning"
+      ],
+      "signals": [
+        {
+          "line": 35,
+          "text": "            add(\"p\", `Prepared: ${new Date().toLocaleString(\"en-GB\")}`);"
+        }
+      ]
+    },
+    {
+      "path": "js/learning-storage.js",
+      "bytes": 3070,
+      "sha256": "43cc7e0d618de3eee22d478382b37029dcf9a8bf85c3bf6f110148a340b2aed9",
+      "lines": 65,
+      "usedBy": [
+        "index.html",
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-course-create.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-dashboard.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html",
+        "pages/auth/admin-login.html",
+        "pages/auth/change-password.html",
+        "pages/auth/forgot-password.html",
+        "pages/auth/login.html",
+        "pages/auth/reset-password.html",
+        "pages/auth/signup.html",
+        "pages/public/course.html",
+        "pages/public/demo.html",
+        "pages/public/languages.html",
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/certificates.html",
+        "pages/student/code-review.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/local-portfolio.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/onboarding.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/practice.html",
+        "pages/student/profile.html",
+        "pages/student/progress.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/requests.html",
+        "pages/student/skill-analysis.html",
+        "pages/student/virtual-internship.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "profile",
+        "owner",
+        "storageKey"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session",
+        "codementor-profile-v1",
+        "codementor-demo-learning",
+        "codementor-demo-onboarding",
+        "codementor-demo-placement",
+        "codementor-demo-code-",
+        "codementor-learning-v1:${encodeURIComponent(owner())}:${key}",
+        "codementor-legacy-learning-owner"
+      ],
+      "signals": [
+        {
+          "line": 7,
+          "text": "        const saved = localStorage.getItem(profileKey);"
+        },
+        {
+          "line": 9,
+          "text": "            sessionStorage.removeItem(sessionKey);"
+        },
+        {
+          "line": 12,
+          "text": "        const legacy = sessionStorage.getItem(sessionKey);"
+        },
+        {
+          "line": 14,
+          "text": "            localStorage.setItem(profileKey, legacy);"
+        },
+        {
+          "line": 15,
+          "text": "            sessionStorage.removeItem(sessionKey);"
+        },
+        {
+          "line": 31,
+          "text": "            if (!persistent(key)) return sessionStorage.getItem(key);"
+        },
+        {
+          "line": 32,
+          "text": "            const saved = localStorage.getItem(storageKey(key));"
+        },
+        {
+          "line": 36,
+          "text": "            const previousOwner = sessionStorage.getItem(marker);"
+        },
+        {
+          "line": 37,
+          "text": "            if (previousOwner === null) sessionStorage.setItem(marker, currentOwner);"
+        },
+        {
+          "line": 39,
+          "text": "            const legacy = sessionStorage.getItem(key);"
+        },
+        {
+          "line": 40,
+          "text": "            if (legacy !== null) localStorage.setItem(storageKey(key), legacy);"
+        },
+        {
+          "line": 43,
+          "text": "        setItem(key, value) {"
+        },
+        {
+          "line": 45,
+          "text": "                localStorage.setItem(profileKey, String(value));"
+        },
+        {
+          "line": 46,
+          "text": "                sessionStorage.removeItem(sessionKey);"
+        },
+        {
+          "line": 49,
+          "text": "            if (!persistent(key)) return sessionStorage.setItem(key, value);"
+        },
+        {
+          "line": 50,
+          "text": "            localStorage.setItem(storageKey(key), String(value));"
+        },
+        {
+          "line": 53,
+          "text": "        removeItem(key) {"
+        },
+        {
+          "line": 55,
+          "text": "                sessionStorage.removeItem(sessionKey);"
+        },
+        {
+          "line": 56,
+          "text": "                localStorage.removeItem(profileKey);"
+        },
+        {
+          "line": 59,
+          "text": "            if (!persistent(key)) return sessionStorage.removeItem(key);"
+        },
+        {
+          "line": 60,
+          "text": "            localStorage.removeItem(storageKey(key));"
+        },
+        {
+          "line": 61,
+          "text": "            if (sessionStorage.getItem(\"codementor-legacy-learning-owner\") === owner()) sessionStorage.removeItem(key);"
+        }
+      ]
+    },
+    {
+      "path": "js/learning-support.js",
+      "bytes": 7199,
+      "sha256": "f9271326f705450bc91a11b92f5b575b75b2a67a049c93856d7337f3bf14696e",
+      "lines": 77,
+      "usedBy": [
+        "pages/student/dashboard.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "reviewPlan",
+        "add"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 1,
+          "text": "/* Prepared teaching guidance. No AI requests or automatic completion awards. */"
+        }
+      ]
+    },
+    {
+      "path": "js/lesson-content.js",
+      "bytes": 8599,
+      "sha256": "cf16576da5f3bfb5df616959f3657cb7739bc643dc4caa57476fd5d39d25b418",
+      "lines": 110,
+      "usedBy": [
+        "pages/student/lesson.html"
+      ],
+      "functions": [
+        "node",
+        "sourceKey",
+        "sources",
+        "fail"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 92,
+          "text": "        document.getElementById(\"lesson-output\").textContent = lesson.output || builtin?.output || \"No prepared output added.\";"
+        }
+      ]
+    },
+    {
+      "path": "js/lesson.js",
+      "bytes": 8866,
+      "sha256": "b8b57db8c8323565f65dd31fddf3e9eb10891a6e89599578cc98607023227edb",
+      "lines": 272,
+      "usedBy": [
+        "pages/student/lesson.html"
+      ],
+      "functions": [
+        "showError",
+        "readProgress",
+        "updateCompletion",
+        "renderLesson"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning"
+      ],
+      "signals": [
+        {
+          "line": 210,
+          "text": "        window.cmStorage.setItem(progressKey, JSON.stringify(progress));"
+        },
+        {
+          "line": 244,
+          "text": "        window.cmStorage.setItem(progressKey, JSON.stringify(progress));"
+        }
+      ]
+    },
+    {
+      "path": "js/level-assessment.js",
+      "bytes": 6774,
+      "sha256": "99e4f2593c71ccf7ee517890a32b6b405a3763ef41833bcf0b397ea230412f83",
+      "lines": 74,
+      "usedBy": [
+        "pages/student/level-assessment.html"
+      ],
+      "functions": [
+        "read",
+        "unlocked",
+        "showNextStep",
+        "showResult",
+        "prepare"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning"
+      ],
+      "signals": [
+        {
+          "line": 39,
+          "text": "            notice.textContent = \"Prepared Python demo questions. Answers are checked locally only. No code is executed and no official result or certificate is issued.\";"
+        },
+        {
+          "line": 61,
+          "text": "            const updated = { ...progress, assessments: { ...progress.assessments, [levelId]: { ...previous, score: Math.max(previous.score || 0, score), lastScore: score, answers, bestAnswers: score >= (previous.score || 0) ? answers : previous.bestAnswers || previous.answers, kind: \"local-quiz-demo\", submittedAt: new Date().toISOString() } } };"
+        },
+        {
+          "line": 62,
+          "text": "            window.cmStorage.setItem(key, JSON.stringify(updated)); showResult(score); notice.textContent = `Latest attempt: ${score}%. Best score: ${updated.assessments[levelId].score}%. Your higher scores and completed activities are kept.`;"
+        }
+      ]
+    },
+    {
+      "path": "js/level-challenges.js",
+      "bytes": 1238,
+      "sha256": "64a6336bdc2799064719f9f1e85526c5c19c042813cae1dd84b542cbf46eab64",
+      "lines": 29,
+      "usedBy": [
+        "pages/student/module.html"
+      ],
+      "functions": [
+        "assignmentUrl"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/login.js",
+      "bytes": 5626,
+      "sha256": "1ea48eabe8cce4b6b5a1384b350591fc8defe22d0d512515c1f3067d48eb0b3e",
+      "lines": 161,
+      "usedBy": [
+        "pages/auth/admin-login.html",
+        "pages/auth/login.html"
+      ],
+      "functions": [
+        "setFieldError",
+        "showMessage"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session",
+        "codementor-demo-onboarding"
+      ],
+      "signals": [
+        {
+          "line": 106,
+          "text": "        // Frontend preview only; real admin authorization requires a backend."
+        },
+        {
+          "line": 129,
+          "text": "        window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/main.js",
+      "bytes": 1632,
+      "sha256": "5408eccaadf9548391c2b28bb78143a36867adb6220ff830b68c8d25a79a1255",
+      "lines": 57,
+      "usedBy": [
+        "index.html",
+        "pages/public/course.html",
+        "pages/public/demo.html",
+        "pages/public/languages.html",
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/learning-report.html",
+        "pages/student/requests.html"
+      ],
+      "functions": [
+        "closeMenu"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/mentor.js",
+      "bytes": 12340,
+      "sha256": "2a5f870d4b309c3de1e65fa5c6bbe14121b2905c87a42c430f141bbb6384def0",
+      "lines": 375,
+      "usedBy": [
+        "pages/student/mentor.html"
+      ],
+      "functions": [
+        "currentOwner",
+        "syncConversation",
+        "configureContext",
+        "appendMessage",
+        "renderConversation",
+        "loadConversation",
+        "getDemoReply",
+        "sendMessage"
+      ],
+      "storageLiterals": [
+        "codementor-demo-chat-${contextId}",
+        "codementor-demo-session",
+        "codementor-demo-chat-v2:${owner}:${contextId}",
+        "codementor-demo-code-${taskId}",
+        "codementor-profile-v1"
+      ],
+      "signals": [
+        {
+          "line": 43,
+          "text": "    \"Welcome! This demo uses prepared explanations. \" +"
+        },
+        {
+          "line": 151,
+          "text": "        : \"Mentor · Prepared demo response\";"
+        },
+        {
+          "line": 208,
+          "text": "    Later, replace this function with a backend request."
+        },
+        {
+          "line": 257,
+          "text": "        \"Contextual AI replies will be available after the backend connection.\""
+        },
+        {
+          "line": 299,
+          "text": "        window.cmStorage.setItem("
+        },
+        {
+          "line": 351,
+          "text": "        window.cmStorage.removeItem(conversationKey);"
+        }
+      ]
+    },
+    {
+      "path": "js/module-challenge.js",
+      "bytes": 1333,
+      "sha256": "f59621afee4b5d45f44a2c9c4657079b59661f527dfb8de489c16bec9b491674",
+      "lines": 25,
+      "usedBy": [
+        "pages/student/module.html"
+      ],
+      "functions": [
+        "render"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/module.js",
+      "bytes": 4053,
+      "sha256": "9d760fa45056e23e8f0f48fbd8b640ee3c5e86bc911858bb959d98a02a1bd4d1",
+      "lines": 48,
+      "usedBy": [
+        "pages/student/module.html"
+      ],
+      "functions": [
+        "render"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 34,
+          "text": "            byId('assessment-progress').textContent = Number.isFinite(score) ? `Quiz best score: ${score}% / ${score >= 70 ? 'Passed' : 'Try again'}` : 'Quiz: not attempted';"
+        }
+      ]
+    },
+    {
+      "path": "js/onboarding.js",
+      "bytes": 2998,
+      "sha256": "d22acc2ff5a85a05e518bb875828e816789c541283f31a75bb8d0ebc1d308b05",
+      "lines": 37,
+      "usedBy": [
+        "pages/student/onboarding.html"
+      ],
+      "functions": [
+        "say",
+        "values",
+        "read",
+        "save",
+        "label"
+      ],
+      "storageLiterals": [
+        "codementor-demo-onboarding",
+        "codementor-demo-session"
+      ],
+      "signals": [
+        {
+          "line": 14,
+          "text": "            window.cmStorage.setItem(key, JSON.stringify({ ...previous, ...next })); say(\"Preferences saved in this tab.\"); return true;"
+        }
+      ]
+    },
+    {
+      "path": "js/password-recovery.js",
+      "bytes": 4230,
+      "sha256": "13bf32100d2c0db5cc0d6b5606ac1aab221aa045be8a2dd5c44562441b860a33",
+      "lines": 47,
+      "usedBy": [
+        "pages/auth/forgot-password.html",
+        "pages/auth/reset-password.html"
+      ],
+      "functions": [
+        "say",
+        "read",
+        "validReset"
+      ],
+      "storageLiterals": [
+        "codementor-demo-password-recovery"
+      ],
+      "signals": [
+        {
+          "line": 8,
+          "text": "        if (!value || value.version !== 1 || typeof value.email !== \"string\" || !value.email.trim() || typeof value.nonce !== \"string\" || !value.nonce || !Number.isFinite(value.createdAt) || ![\"prepared\", \"completed\"].includes(value.status)) throw new Error(\"Invalid saved recovery data\");"
+        },
+        {
+          "line": 13,
+          "text": "        if (!record || record.nonce !== token || record.status !== \"prepared\" || Date.now() - record.createdAt > 20 * 60 * 1000 || record.createdAt > Date.now() + 1000) throw new Error(\"This local demo link is missing, expired or already used. Prepare a new simulation from Forgot password.\");"
+        },
+        {
+          "line": 31,
+          "text": "                window.cmStorage.setItem(key, JSON.stringify({ ...record, status: \"completed\", completedAt: Date.now() }));"
+        },
+        {
+          "line": 38,
+          "text": "                const record = { version: 1, email, nonce: crypto.randomUUID(), createdAt: Date.now(), status: \"prepared\" };"
+        },
+        {
+          "line": 39,
+          "text": "                window.cmStorage.setItem(key, JSON.stringify(record));"
+        },
+        {
+          "line": 40,
+          "text": "                say(\"Local reset simulation prepared. No email was sent and no real account was checked. This demo link works in this tab for 20 minutes.\");"
+        }
+      ]
+    },
+    {
+      "path": "js/placement-data.js",
+      "bytes": 2532,
+      "sha256": "f878a0937093dab0f2864d9e2a46137b64d56a0e638d572b6efd1362be5efe86",
+      "lines": 77,
+      "usedBy": [
+        "pages/student/dashboard.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/skill-analysis.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/placement-intro.js",
+      "bytes": 6636,
+      "sha256": "a6a049cc3e447c2991aa99eb4c7723345b6d6578d3315c3b0084c9e54ef27222",
+      "lines": 193,
+      "usedBy": [
+        "pages/student/placement-intro.html"
+      ],
+      "functions": [
+        "showMessage",
+        "hasValidPreferences",
+        "loadPageData"
+      ],
+      "storageLiterals": [
+        "codementor-demo-onboarding",
+        "codementor-demo-placement",
+        "codementor-demo-session"
+      ],
+      "signals": [
+        {
+          "line": 164,
+          "text": "            status: \"in-progress\","
+        },
+        {
+          "line": 167,
+          "text": "            startedAt: new Date().toISOString()"
+        },
+        {
+          "line": 175,
+          "text": "            window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));"
+        }
+      ]
+    },
+    {
+      "path": "js/placement-question.js",
+      "bytes": 7951,
+      "sha256": "9cf689c70a3f134f824d60bb52f5dd735a63d7f985f465a9d3ecc5db2ca8780f",
+      "lines": 275,
+      "usedBy": [
+        "pages/student/placement-question.html"
+      ],
+      "functions": [
+        "showMessage",
+        "isValidAnswer",
+        "loadAttempt",
+        "saveAttempt",
+        "updateNavigation",
+        "renderQuestion",
+        "goToQuestion",
+        "openReview"
+      ],
+      "storageLiterals": [
+        "codementor-demo-placement"
+      ],
+      "signals": [
+        {
+          "line": 97,
+          "text": "        window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));"
+        }
+      ]
+    },
+    {
+      "path": "js/placement-results.js",
+      "bytes": 6925,
+      "sha256": "5231365a82d51b92b9e23ea24915c48aac2279b072962a2f46c084f74859585f",
+      "lines": 225,
+      "usedBy": [
+        "pages/student/placement-results.html"
+      ],
+      "functions": [
+        "showError",
+        "isValidSubmittedAnswer",
+        "loadResults",
+        "renderTopicScores",
+        "renderSubmittedAnswers"
+      ],
+      "storageLiterals": [
+        "codementor-demo-placement"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/placement-review.js",
+      "bytes": 7329,
+      "sha256": "ee32bb11d58d9e451e7a2c0f332c05e931153c58cbd5e740524bb1f8f02363e5",
+      "lines": 254,
+      "usedBy": [
+        "pages/student/placement-review.html"
+      ],
+      "functions": [
+        "showMessage",
+        "isValidAnswer",
+        "loadAttempt",
+        "editQuestion",
+        "renderReview"
+      ],
+      "storageLiterals": [
+        "codementor-demo-placement"
+      ],
+      "signals": [
+        {
+          "line": 87,
+          "text": "        window.cmStorage.setItem(attemptKey, JSON.stringify(attempt));"
+        },
+        {
+          "line": 215,
+          "text": "        status: \"submitted\","
+        },
+        {
+          "line": 216,
+          "text": "        submittedAt: new Date().toISOString()"
+        },
+        {
+          "line": 220,
+          "text": "        window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/practice.js",
+      "bytes": 7478,
+      "sha256": "6e8ce84973dde098ba7636db1a3b53d23cbc73427558579cd762450b503860af",
+      "lines": 226,
+      "usedBy": [
+        "pages/student/practice.html"
+      ],
+      "functions": [
+        "loadTaskStates",
+        "createTaskCard",
+        "renderTasks",
+        "resetFilters"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning",
+        "codementor-demo-code-${task.id}"
+      ],
+      "signals": [
+        {
+          "line": 111,
+          "text": "        return { ...task, status: status };"
+        }
+      ]
+    },
+    {
+      "path": "js/profile.js",
+      "bytes": 8927,
+      "sha256": "67e95b65b66bd4e8af398044575b437c0195845ac4bd64ea03145ab773508415",
+      "lines": 280,
+      "usedBy": [
+        "pages/student/profile.html"
+      ],
+      "functions": [
+        "showMessage",
+        "clearNameError",
+        "fillForm",
+        "updateAccountDisplay",
+        "isValidSession",
+        "isValidPreferences",
+        "loadProfile"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session",
+        "codementor-demo-onboarding"
+      ],
+      "signals": [
+        {
+          "line": 225,
+          "text": "            window.cmStorage.setItem("
+        },
+        {
+          "line": 232,
+          "text": "            window.cmStorage.setItem("
+        },
+        {
+          "line": 249,
+          "text": "                    window.cmStorage.setItem("
+        },
+        {
+          "line": 255,
+          "text": "                        window.cmStorage.removeItem(preferencesKey);"
+        },
+        {
+          "line": 257,
+          "text": "                        window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/progress.js",
+      "bytes": 7664,
+      "sha256": "c57e9cd134daada8c935d227e2e6d71b9319c447d7f47cb3031255776601482a",
+      "lines": 222,
+      "usedBy": [
+        "pages/student/progress.html"
+      ],
+      "functions": [
+        "readProgress",
+        "addActivity",
+        "updateProgress"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/project-evaluation.js",
+      "bytes": 206,
+      "sha256": "3b0fa97044548260ca337f5eb344c055a1037cf49500552e49241c425a57e6ed",
+      "lines": 2,
+      "usedBy": [
+        "pages/student/project-evaluation.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/project.js",
+      "bytes": 1067,
+      "sha256": "574b71adbf0e7750fb4d749ef0ff1ced1dd920ed2552e6cd175e6ea940992610",
+      "lines": 12,
+      "usedBy": [
+        "pages/student/project.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/python-curriculum.js",
+      "bytes": 13262,
+      "sha256": "01f93f700c527c3fb32661235e69d8387252b8c202843842b932c5fd112e7104",
+      "lines": 92,
+      "usedBy": [
+        "pages/admin/admin-level-content.html",
+        "pages/student/certificates.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/module.html",
+        "pages/student/progress.html",
+        "pages/student/project.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "read"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/python-lessons.js",
+      "bytes": 5242,
+      "sha256": "9c380da43754f8024f6f03ec7f3a452e883a20c4660eb2d14777093af99acfb5",
+      "lines": 110,
+      "usedBy": [
+        "pages/admin/admin-level-content.html",
+        "pages/student/certificates.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/module.html",
+        "pages/student/progress.html",
+        "pages/student/project.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/python-runner.js",
+      "bytes": 1814,
+      "sha256": "311108102c4e9dc2c87d66cf7ba7b7dcd6ece8c29d78215315ec2f5c28a33da4",
+      "lines": 32,
+      "usedBy": [
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "execute"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 8,
+          "text": "            const worker = new Worker(workerURL);"
+        }
+      ]
+    },
+    {
+      "path": "js/python-worker.js",
+      "bytes": 2103,
+      "sha256": "7e7900827dcf93cf63ddc5b07f85f61031d4a62652771485f74c81614304c364",
+      "lines": 36,
+      "usedBy": [],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 29,
+          "text": "            await runtime.runPythonAsync(data.code, { globals: scope });"
+        }
+      ]
+    },
+    {
+      "path": "js/signup.js",
+      "bytes": 9443,
+      "sha256": "f8397e1d3233cb19b5db08c4adfb1f00ad0c49e0096a59c3059ce3482a41b2af",
+      "lines": 255,
+      "usedBy": [
+        "pages/auth/signup.html"
+      ],
+      "functions": [
+        "refreshPasswordSuggestion",
+        "closePasswordSuggestion",
+        "openPasswordSuggestion",
+        "setFieldError",
+        "showMessage"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session"
+      ],
+      "signals": [
+        {
+          "line": 220,
+          "text": "        window.cmStorage.setItem("
+        }
+      ]
+    },
+    {
+      "path": "js/skill-analysis.js",
+      "bytes": 6032,
+      "sha256": "d5cf2e29d4c9b5176da1fd36cda4863a850c56075087dca3f1025071c5c4074a",
+      "lines": 204,
+      "usedBy": [
+        "pages/student/skill-analysis.html"
+      ],
+      "functions": [
+        "showError",
+        "isValidAnswer",
+        "renderTopics",
+        "renderPriorities",
+        "loadAnalysis"
+      ],
+      "storageLiterals": [
+        "codementor-demo-placement"
+      ],
+      "signals": []
+    },
+    {
+      "path": "js/student-services-data.js",
+      "bytes": 3479,
+      "sha256": "4578b9dbb0ee92d910daefd1be8aa8e5edcc44134271333e25e958c59ea68862",
+      "lines": 20,
+      "usedBy": [
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/requests.html"
+      ],
+      "functions": [],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/student-services-store.js",
+      "bytes": 3866,
+      "sha256": "d936b7d772c59284eaa1ae87709b6003f56dbe1d7b8f4c2f2d199c8f9321ffa8",
+      "lines": 51,
+      "usedBy": [
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/dashboard.html",
+        "pages/student/local-portfolio.html",
+        "pages/student/requests.html",
+        "pages/student/virtual-internship.html"
+      ],
+      "functions": [
+        "session",
+        "validRecord",
+        "readRecords",
+        "save",
+        "ownRecords"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session",
+        "codementor-demo-peer-bookings",
+        "codementor-demo-service-requests",
+        "codementor-demo-service-drafts"
+      ],
+      "signals": [
+        {
+          "line": 41,
+          "text": "        window.cmStorage.setItem(keys[type], JSON.stringify({ ...store, records: [...store.records, record] }));"
+        }
+      ]
+    },
+    {
+      "path": "js/student-services.js",
+      "bytes": 21962,
+      "sha256": "3b45aa34ce5ff996773a93e08ec788595b7d8f3396311bed979c48d22106c15f",
+      "lines": 256,
+      "usedBy": [
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/requests.html"
+      ],
+      "functions": [
+        "el",
+        "link",
+        "note",
+        "tags",
+        "person",
+        "publicProfile",
+        "field",
+        "option",
+        "message",
+        "result",
+        "requireOwner",
+        "filters",
+        "render",
+        "card",
+        "mentoring",
+        "slotsFor",
+        "mentoringDetails",
+        "showcase",
+        "profile",
+        "freelance",
+        "serviceDetails",
+        "drafts",
+        "render",
+        "history",
+        "render"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 121,
+          "text": "                if (!slot || slot.date <= new Date()) throw new Error(\"Choose a future demo appointment. Reload to refresh the sample slots.\");"
+        },
+        {
+          "line": 122,
+          "text": "                const record = save(\"booking\", { mentorId: item.id, slot: slot.value, notes: notes.value.trim(), status: \"local-simulation\" }, owner);"
+        },
+        {
+          "line": 178,
+          "text": "                const record = save(\"request\", { serviceId: item.id, brief: brief.value.trim(), status: \"local-simulation\" }, owner);"
+        },
+        {
+          "line": 210,
+          "text": "                save(\"draft\", { title: title.value.trim(), language: language.value, description: description.value.trim(), skills: skills.value.trim(), price: Number(price.value), days: Number(days.value), status: \"draft\" }, owner);"
+        }
+      ]
+    },
+    {
+      "path": "js/student-workspace.js",
+      "bytes": 4772,
+      "sha256": "efcf5ea023411825fca37b2f5cb98560f0fd5e3bc8973e5b23f378d50f6dbced",
+      "lines": 149,
+      "usedBy": [
+        "pages/auth/change-password.html",
+        "pages/student/certificates.html",
+        "pages/student/code-review.html",
+        "pages/student/learning-path.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/practice.html",
+        "pages/student/profile.html",
+        "pages/student/progress.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/skill-analysis.html"
+      ],
+      "functions": [
+        "showWorkspaceMessage",
+        "loadProfile",
+        "closeSidebar"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session"
+      ],
+      "signals": [
+        {
+          "line": 135,
+          "text": "                window.cmStorage.removeItem(\"codementor-demo-session\");"
+        }
+      ]
+    },
+    {
+      "path": "js/theme.js",
+      "bytes": 4008,
+      "sha256": "ec9d022551cab1568fdeb44e4ffa4ff556c7bc33c062b12387ecf4c8e5f52c0d",
+      "lines": 68,
+      "usedBy": [
+        "index.html",
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-course-create.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-dashboard.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html",
+        "pages/auth/admin-login.html",
+        "pages/auth/change-password.html",
+        "pages/auth/forgot-password.html",
+        "pages/auth/login.html",
+        "pages/auth/reset-password.html",
+        "pages/auth/signup.html",
+        "pages/public/course.html",
+        "pages/public/demo.html",
+        "pages/public/languages.html",
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/certificates.html",
+        "pages/student/code-review.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/local-portfolio.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/onboarding.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/practice.html",
+        "pages/student/profile.html",
+        "pages/student/progress.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/requests.html",
+        "pages/student/skill-analysis.html",
+        "pages/student/virtual-internship.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "apply"
+      ],
+      "storageLiterals": [
+        "codementor-ui-theme"
+      ],
+      "signals": [
+        {
+          "line": 8,
+          "text": "    try { const saved = localStorage.getItem(key); if (valid(saved)) preference = saved; } catch { /* Device preference remains usable. */ }"
+        },
+        {
+          "line": 21,
+          "text": "            try { localStorage.setItem(key, value); return true; } catch { return false; }"
+        },
+        {
+          "line": 34,
+          "text": "            const saved = localStorage.getItem(key);"
+        }
+      ]
+    },
+    {
+      "path": "js/user-guide.js",
+      "bytes": 14979,
+      "sha256": "bad259067742d42665be9c379038f176888d16fcbc4296cc7591ced54dd238cb",
+      "lines": 178,
+      "usedBy": [],
+      "functions": [
+        "icon",
+        "node",
+        "render",
+        "remember",
+        "unseen",
+        "open",
+        "dismiss"
+      ],
+      "storageLiterals": [
+        "cm-user-guide",
+        "codementor-guide-v1:${role.toLowerCase()}:${encodeURIComponent(script.dataset.owner.trim().toLowerCase())}",
+        "cm-guide-launcher",
+        "cm-guide",
+        "cm-guide-heading",
+        "cm-guide-header",
+        "cm-guide-brand",
+        "cm-guide-close",
+        "cm-guide-layout",
+        "cm-guide-map",
+        "cm-guide-kicker",
+        "cm-guide-road",
+        "cm-guide-road-art",
+        "cm-guide-road-shadow",
+        "cm-guide-road-fill",
+        "cm-guide-road-dashes",
+        "cm-guide-stops",
+        "cm-guide-map-note",
+        "cm-guide-content",
+        "cm-guide-step-title",
+        "cm-guide-meta",
+        "cm-guide-role",
+        "cm-guide-count",
+        "cm-guide-progress",
+        "cm-guide-copy",
+        "cm-guide-step-icon",
+        "cm-guide-kicker cm-guide-step-tag",
+        "cm-guide-description",
+        "cm-guide-action-label",
+        "cm-guide-actions",
+        "cm-guide-tip",
+        "cm-guide-destination",
+        "cm-guide-controls",
+        "cm-guide-previous",
+        "cm-guide-next",
+        "cm-guide-footer",
+        "cm-guide-skip",
+        "cm-guide-stop",
+        "cm-guide-pin",
+        "cm-guide-stop-label",
+        ".cm-guide-stops",
+        ".cm-guide-count",
+        ".cm-guide-progress span",
+        ".cm-guide-step-icon",
+        ".cm-guide-step-tag",
+        "#cm-guide-step-title",
+        ".cm-guide-description",
+        ".cm-guide-actions",
+        ".cm-guide-tip",
+        ".cm-guide-destination",
+        ".cm-guide-previous",
+        ".cm-guide-next",
+        ".cm-guide-close",
+        ".cm-guide-skip"
+      ],
+      "signals": [
+        {
+          "line": 129,
+          "text": "        try { localStorage.setItem(key, value); } catch { try { sessionStorage.setItem(key, value); } catch { /* The guide remains usable without storage. */ } }"
+        },
+        {
+          "line": 132,
+          "text": "        try { return localStorage.getItem(key) === null && sessionStorage.getItem(key) === null; }"
+        }
+      ]
+    },
+    {
+      "path": "js/virtual-internship-store.js",
+      "bytes": 5150,
+      "sha256": "87b875607a044df5b0c4971ffa2ba62f7f637d19a8aa4b486b7a40ea4f642098",
+      "lines": 66,
+      "usedBy": [
+        "pages/student/local-portfolio.html",
+        "pages/student/virtual-internship.html"
+      ],
+      "functions": [
+        "githubUrl",
+        "valid",
+        "read",
+        "session",
+        "own",
+        "update"
+      ],
+      "storageLiterals": [
+        "codementor-demo-virtual-internship"
+      ],
+      "signals": [
+        {
+          "line": 61,
+          "text": "        window.cmStorage.setItem(key, JSON.stringify({ ...data, records: previous ? data.records.map(record => record.owner === owner ? next : record) : [...data.records, next] }));"
+        }
+      ]
+    },
+    {
+      "path": "js/virtual-internship.js",
+      "bytes": 8063,
+      "sha256": "5c61f788fd3818467e6f7db2b2e629a1bdf2e80cc3aef54501958529334eb07f",
+      "lines": 67,
+      "usedBy": [
+        "pages/student/local-portfolio.html",
+        "pages/student/virtual-internship.html"
+      ],
+      "functions": [
+        "el",
+        "link",
+        "status",
+        "external",
+        "time",
+        "save",
+        "render",
+        "field"
+      ],
+      "storageLiterals": [],
+      "signals": [
+        {
+          "line": 41,
+          "text": "                    const label = el(\"label\", `Status: ${task.title}`), select = el(\"select\"); select.id = `task-${task.id}`; label.htmlFor = select.id;"
+        }
+      ]
+    },
+    {
+      "path": "js/workspace-completion.js",
+      "bytes": 3284,
+      "sha256": "fe3ce528d937d273809296b1eba68c21d4705b933508507072bcc8ce28bce824",
+      "lines": 45,
+      "usedBy": [
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "state",
+        "render"
+      ],
+      "storageLiterals": [],
+      "signals": []
+    },
+    {
+      "path": "js/workspace-shell.js",
+      "bytes": 16214,
+      "sha256": "d0c89737fafcf5b79e96d77f323b142220b7236d517507618b55a880f2ccb9a4",
+      "lines": 164,
+      "usedBy": [
+        "index.html",
+        "pages/admin/admin-account-access.html",
+        "pages/admin/admin-analytics.html",
+        "pages/admin/admin-course-content.html",
+        "pages/admin/admin-course-create.html",
+        "pages/admin/admin-courses.html",
+        "pages/admin/admin-dashboard.html",
+        "pages/admin/admin-level-content.html",
+        "pages/admin/admin-level-create.html",
+        "pages/admin/admin-student-details.html",
+        "pages/admin/admin-students.html",
+        "pages/auth/admin-login.html",
+        "pages/auth/change-password.html",
+        "pages/auth/forgot-password.html",
+        "pages/auth/login.html",
+        "pages/auth/reset-password.html",
+        "pages/auth/signup.html",
+        "pages/public/course.html",
+        "pages/public/demo.html",
+        "pages/public/languages.html",
+        "pages/services/community.html",
+        "pages/services/freelance-services.html",
+        "pages/services/mentoring-details.html",
+        "pages/services/peer-mentoring.html",
+        "pages/services/service-details.html",
+        "pages/services/service-draft.html",
+        "pages/services/showcase.html",
+        "pages/services/student-public-profile.html",
+        "pages/student/certificates.html",
+        "pages/student/code-review.html",
+        "pages/student/dashboard.html",
+        "pages/student/learning-path.html",
+        "pages/student/learning-report.html",
+        "pages/student/lesson.html",
+        "pages/student/level-assessment.html",
+        "pages/student/local-portfolio.html",
+        "pages/student/mentor.html",
+        "pages/student/module.html",
+        "pages/student/onboarding.html",
+        "pages/student/placement-intro.html",
+        "pages/student/placement-question.html",
+        "pages/student/placement-results.html",
+        "pages/student/placement-review.html",
+        "pages/student/practice.html",
+        "pages/student/profile.html",
+        "pages/student/progress.html",
+        "pages/student/project-evaluation.html",
+        "pages/student/project.html",
+        "pages/student/requests.html",
+        "pages/student/skill-analysis.html",
+        "pages/student/virtual-internship.html",
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "navIcon",
+        "el",
+        "a",
+        "readAccount",
+        "brand",
+        "close"
+      ],
+      "storageLiterals": [
+        "codementor-demo-session"
+      ],
+      "signals": [
+        {
+          "line": 132,
+          "text": "            try { window.cmStorage.removeItem(\"codementor-demo-session\"); location.href = route(\"login.html\"); } catch { shellMessage.textContent = \"The demo session could not be cleared. Your records were kept.\"; }"
+        }
+      ]
+    },
+    {
+      "path": "js/workspace-support.js",
+      "bytes": 3370,
+      "sha256": "a1af4e6aab094481a07b18e22f5cc19eaff30f5c4f416aebdd6131dbebdda483",
+      "lines": 51,
+      "usedBy": [
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "read",
+        "save",
+        "render"
+      ],
+      "storageLiterals": [
+        "codementor-demo-learning"
+      ],
+      "signals": [
+        {
+          "line": 19,
+          "text": "            window.cmStorage.setItem(\"codementor-demo-learning\", JSON.stringify(progress));"
+        },
+        {
+          "line": 32,
+          "text": "        shown = Number.isInteger(saved?.hintsUsed) ? Math.max(0, Math.min(guide.hints.length, saved.hintsUsed)) : 0;"
+        },
+        {
+          "line": 35,
+          "text": "    hintButton.addEventListener(\"click\", () => { shown = Math.min(guide.hints.length, shown + 1); save({ hintsUsed: shown }); render(); });"
+        },
+        {
+          "line": 41,
+          "text": "        if (opening) save({ solutionViewed: true });"
+        }
+      ]
+    },
+    {
+      "path": "js/workspace.js",
+      "bytes": 17163,
+      "sha256": "c45554dc17f462b1d49eab15108654ed645d39049384bc14cdee40fc2e7ebbdc",
+      "lines": 425,
+      "usedBy": [
+        "pages/student/workspace.html"
+      ],
+      "functions": [
+        "showMessage",
+        "saveDraft",
+        "scheduleSave",
+        "loadTask",
+        "busy",
+        "normalize",
+        "saveTestResult",
+        "execute",
+        "executionStatus"
+      ],
+      "storageLiterals": [
+        "codementor-demo-code-${taskId}",
+        "codementor-demo-learning"
+      ],
+      "signals": [
+        {
+          "line": 113,
+          "text": "        window.cmStorage.setItem("
+        },
+        {
+          "line": 274,
+          "text": "    progress.taskResults = { ...progress.taskResults, [taskId]: { passed, total: task.tests.length, cases, code: solution, submittedAt: new Date().toISOString() } };"
+        },
+        {
+          "line": 275,
+          "text": "    if (passed === task.tests.length) progress.submissions = { ...progress.submissions, [taskId]: { code: solution, passed, total: task.tests.length, submittedAt: progress.taskResults[taskId].submittedAt } };"
+        },
+        {
+          "line": 276,
+          "text": "    window.cmStorage.setItem(\"codementor-demo-learning\", JSON.stringify(progress));"
+        },
+        {
+          "line": 341,
+          "text": "        window.cmStorage.setItem("
+        }
+      ]
+    }
+  ],
+  "inspectionLimits": [
+    {
+      "path": "tmp/proposal/python-libs/bin",
+      "error": "EPERM"
+    },
+    {
+      "path": "tmp/proposal/python-libs/fontTools",
+      "error": "EPERM"
+    },
+    {
+      "path": "tmp/proposal/python-libs/fonttools-4.68.0.dist-info",
+      "error": "EPERM"
+    },
+    {
+      "path": "tmp/proposal/python-libs/share",
+      "error": "EPERM"
+    }
+  ],
+  "counts": {
+    "pages": 52,
+    "studentPages": 24,
+    "adminPages": 10,
+    "javascript": 68
+  }
+}

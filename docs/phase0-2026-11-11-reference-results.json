@@ -1,0 +1,2141 @@
+{
+    "pages":  [
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-courses.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "index.html",
+                      "actual":  "/index.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/placement-question.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/virtual-internship.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/code-review.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/service-details.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/placement-intro.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/peer-mentoring.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/local-portfolio.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/dashboard.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-analytics.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/learning-report.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/change-password.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-account-access.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/placement-results.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/forgot-password.html",
+                      "actual":  "/pages/auth/forgot-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-level-content.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/public/languages.html",
+                      "actual":  "/pages/public/languages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/public/course.html",
+                      "actual":  "/pages/public/course.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/progress.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/mentor.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/learning-path.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/mentoring-details.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/project-evaluation.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/showcase.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/onboarding.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/certificates.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/placement-review.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/service-draft.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/community.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/module.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/login.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-dashboard.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/signup.html",
+                      "actual":  "/pages/auth/signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/reset-password.html",
+                      "actual":  "/pages/auth/reset-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/skill-analysis.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/workspace.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/public/demo.html",
+                      "actual":  "/pages/public/demo.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/student-public-profile.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/practice.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/level-assessment.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/requests.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/subscription.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-course-create.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/services/freelance-services.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-level-create.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-course-content.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/project.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-student-details.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/lesson.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/profile.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-sessions.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-profile.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-schedule.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-bookings.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-dashboard.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/teacher/teacher-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/teacher-signup.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/teacher-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-talent.html",
+                      "actual":  "/pages/company/company-talent.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-dashboard.html",
+                      "actual":  "/pages/company/company-dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-applications.html",
+                      "actual":  "/pages/company/company-applications.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/company-login.html",
+                      "actual":  "/pages/auth/company-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-profile.html",
+                      "actual":  "/pages/company/company-profile.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-jobs.html",
+                      "actual":  "/pages/company/company-jobs.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/company-signup.html",
+                      "actual":  "/pages/auth/company-signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/company/company-messages.html",
+                      "actual":  "/pages/company/company-messages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/career.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/messages.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/auth/admin-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-sessions.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-schedule.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-bookings.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-session-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-community.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-companies.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/admin/admin-peer-mentoring.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "guest",
+                      "route":  "pages/student/mentor-studio.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-courses.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "index.html",
+                      "actual":  "/index.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/placement-question.html",
+                      "actual":  "/pages/student/placement-intro.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/virtual-internship.html",
+                      "actual":  "/pages/student/virtual-internship.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/code-review.html",
+                      "actual":  "/pages/student/code-review.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/service-details.html",
+                      "actual":  "/pages/services/service-details.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/placement-intro.html",
+                      "actual":  "/pages/student/placement-intro.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/peer-mentoring.html",
+                      "actual":  "/pages/services/peer-mentoring.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/local-portfolio.html",
+                      "actual":  "/pages/student/local-portfolio.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/dashboard.html",
+                      "actual":  "/pages/student/dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-analytics.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/learning-report.html",
+                      "actual":  "/pages/student/learning-report.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/change-password.html",
+                      "actual":  "/pages/auth/change-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-account-access.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/placement-results.html",
+                      "actual":  "/pages/student/placement-intro.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/forgot-password.html",
+                      "actual":  "/pages/auth/forgot-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-level-content.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/public/languages.html",
+                      "actual":  "/pages/public/languages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/public/course.html",
+                      "actual":  "/pages/public/course.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/progress.html",
+                      "actual":  "/pages/student/progress.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/mentor.html",
+                      "actual":  "/pages/student/mentor.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/learning-path.html",
+                      "actual":  "/pages/student/learning-path.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/mentoring-details.html",
+                      "actual":  "/pages/services/mentoring-details.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/project-evaluation.html",
+                      "actual":  "/pages/student/code-review.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/showcase.html",
+                      "actual":  "/pages/services/showcase.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/onboarding.html",
+                      "actual":  "/pages/student/onboarding.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/certificates.html",
+                      "actual":  "/pages/student/certificates.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/placement-review.html",
+                      "actual":  "/pages/student/placement-intro.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/service-draft.html",
+                      "actual":  "/pages/services/service-draft.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/community.html",
+                      "actual":  "/pages/services/community.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/module.html",
+                      "actual":  "/pages/student/module.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/login.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-dashboard.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/signup.html",
+                      "actual":  "/pages/auth/signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/reset-password.html",
+                      "actual":  "/pages/auth/reset-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/skill-analysis.html",
+                      "actual":  "/pages/student/skill-analysis.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/workspace.html",
+                      "actual":  "/pages/student/workspace.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/public/demo.html",
+                      "actual":  "/pages/public/demo.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/student-public-profile.html",
+                      "actual":  "/pages/services/student-public-profile.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/practice.html",
+                      "actual":  "/pages/student/practice.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/level-assessment.html",
+                      "actual":  "/pages/student/level-assessment.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/requests.html",
+                      "actual":  "/pages/student/requests.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/subscription.html",
+                      "actual":  "/pages/student/subscription.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-course-create.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/services/freelance-services.html",
+                      "actual":  "/pages/services/freelance-services.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-level-create.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-course-content.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/project.html",
+                      "actual":  "/pages/student/project.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-student-details.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/lesson.html",
+                      "actual":  "/pages/student/lesson.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/profile.html",
+                      "actual":  "/pages/student/profile.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-sessions.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-profile.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-schedule.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-bookings.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-dashboard.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/teacher/teacher-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/teacher-signup.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/teacher-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-talent.html",
+                      "actual":  "/pages/company/company-talent.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-dashboard.html",
+                      "actual":  "/pages/company/company-dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-applications.html",
+                      "actual":  "/pages/company/company-applications.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/company-login.html",
+                      "actual":  "/pages/auth/company-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-profile.html",
+                      "actual":  "/pages/company/company-profile.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-jobs.html",
+                      "actual":  "/pages/company/company-jobs.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/company-signup.html",
+                      "actual":  "/pages/auth/company-signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/company/company-messages.html",
+                      "actual":  "/pages/company/company-messages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/career.html",
+                      "actual":  "/pages/student/career.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/messages.html",
+                      "actual":  "/pages/student/messages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/auth/admin-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-sessions.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-schedule.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-bookings.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-session-students.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-community.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-companies.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/admin/admin-peer-mentoring.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "student",
+                      "route":  "pages/student/mentor-studio.html",
+                      "actual":  "/pages/student/mentor-studio.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-courses.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "index.html",
+                      "actual":  "/index.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/placement-question.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/virtual-internship.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/code-review.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/service-details.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/placement-intro.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/peer-mentoring.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/local-portfolio.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/dashboard.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-analytics.html",
+                      "actual":  "/pages/admin/admin-analytics.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/learning-report.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/change-password.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-account-access.html",
+                      "actual":  "/pages/admin/admin-account-access.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/placement-results.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/forgot-password.html",
+                      "actual":  "/pages/auth/forgot-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-level-content.html",
+                      "actual":  "/pages/admin/admin-level-content.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/public/languages.html",
+                      "actual":  "/pages/public/languages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/public/course.html",
+                      "actual":  "/pages/public/course.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/progress.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/mentor.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/learning-path.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/mentoring-details.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/project-evaluation.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/showcase.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/onboarding.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/certificates.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/placement-review.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/service-draft.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/community.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/module.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/login.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-dashboard.html",
+                      "actual":  "/pages/admin/admin-dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/signup.html",
+                      "actual":  "/pages/auth/signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/reset-password.html",
+                      "actual":  "/pages/auth/reset-password.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/skill-analysis.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/workspace.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/public/demo.html",
+                      "actual":  "/pages/public/demo.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/student-public-profile.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/practice.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/level-assessment.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/requests.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/subscription.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-students.html",
+                      "actual":  "/pages/admin/admin-students.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-course-create.html",
+                      "actual":  "/pages/admin/admin-course-create.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/services/freelance-services.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-level-create.html",
+                      "actual":  "/pages/admin/admin-level-create.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-course-content.html",
+                      "actual":  "/pages/admin/admin-course-content.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/project.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-student-details.html",
+                      "actual":  "/pages/admin/admin-student-details.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/lesson.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/profile.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-sessions.html",
+                      "actual":  "/pages/admin/admin-sessions.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-profile.html",
+                      "actual":  "/pages/admin/admin-sessions.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-schedule.html",
+                      "actual":  "/pages/admin/admin-schedule.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-bookings.html",
+                      "actual":  "/pages/admin/admin-bookings.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-dashboard.html",
+                      "actual":  "/pages/admin/admin-dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/teacher/teacher-students.html",
+                      "actual":  "/pages/admin/admin-session-students.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/teacher-signup.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/teacher-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-talent.html",
+                      "actual":  "/pages/company/company-talent.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-dashboard.html",
+                      "actual":  "/pages/company/company-dashboard.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-applications.html",
+                      "actual":  "/pages/company/company-applications.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/company-login.html",
+                      "actual":  "/pages/auth/company-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-profile.html",
+                      "actual":  "/pages/company/company-profile.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-jobs.html",
+                      "actual":  "/pages/company/company-jobs.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/company-signup.html",
+                      "actual":  "/pages/auth/company-signup.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/company/company-messages.html",
+                      "actual":  "/pages/company/company-messages.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/career.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/messages.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/auth/admin-login.html",
+                      "actual":  "/pages/auth/admin-login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-sessions.html",
+                      "actual":  "/pages/admin/admin-sessions.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-schedule.html",
+                      "actual":  "/pages/admin/admin-schedule.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-bookings.html",
+                      "actual":  "/pages/admin/admin-bookings.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-session-students.html",
+                      "actual":  "/pages/admin/admin-session-students.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-community.html",
+                      "actual":  "/pages/admin/admin-community.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-companies.html",
+                      "actual":  "/pages/admin/admin-companies.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/admin/admin-peer-mentoring.html",
+                      "actual":  "/pages/admin/admin-peer-mentoring.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  },
+                  {
+                      "role":  "admin",
+                      "route":  "pages/student/mentor-studio.html",
+                      "actual":  "/pages/auth/login.html",
+                      "brandsHome":  true,
+                      "brokenImages":  [
+
+                                       ]
+                  }
+              ],
+    "checkedReferences":  263,
+    "missing":  [
+
+                ]
+}
