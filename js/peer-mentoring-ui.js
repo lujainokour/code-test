@@ -41,6 +41,7 @@
     function note(host) { host.append(n("p", "Local workspace: this cycle is shared between accounts in this browser. Cross-device accounts, automatic meeting creation and payments are not connected.", "peer-local-note")); }
     function sessionCard(session) {
         const card = n("article", undefined, "services-card peer-session-card");
+        if (session.sample) card.append(n("p", "SAMPLE SESSION · demonstration only, cannot be booked", "eyebrow"));
         card.append(badge("Reviewed student tutor"), n("h3", session.title), n("p", `${session.mentorName} · ${session.language} · ${session.level}`, "peer-muted"), n("p", session.description), n("p", session.outcome, "peer-outcome"));
         const available = session.slots.filter(slot => slot.available);
         card.append(n("p", `${session.duration} minutes · ${session.price === 0 ? "Free" : `${session.price} JOD (no payment collected)`}`, "peer-price"), n("p", session.reviewCount ? `${session.rating.toFixed(1)} / 5 from ${session.reviewCount} completed-session reviews` : "New student tutor · no completed-session reviews yet", "peer-muted"), n("p", available.length ? `Next available: ${date(available[0].startAt)}` : "No appointments currently available", "peer-muted"), link("View session & appointments", `services/mentoring-details.html?id=${encodeURIComponent(session.id)}`, "button button-primary"));
@@ -87,6 +88,7 @@
                 if (success) { const status = n("p", success, "peer-success"); status.setAttribute("role", "status"); root.append(status, link("Track my booking", "student/requests.html#booking-history", "button button-primary")); }
                 const owner = store.user().email;
                 if (store.ownSessions().some(s => s.id === id)) { root.append(link("Manage my teaching session", "student/mentor-studio.html")); return; }
+                if (session.sample) { empty(root, "This is a SAMPLE session", "It demonstrates a published listing with a confirmed booking and a completed review. Sample sessions cannot be booked."); return; }
                 const section = panel("Request an appointment"); const slots = session.slots.filter(slot => slot.available).sort((a, b) => Date.parse(a.startAt) - Date.parse(b.startAt));
                 if (!slots.length) { empty(section, "All current appointments are reserved", "Check back for more times or explore another mentor."); root.append(section); return; }
                 const form = n("form", undefined, "peer-form"); const slot = field(form, "Available appointment", "peer-slot", "select", "", [{ value: "", label: "Choose an appointment" }, ...slots.map(s => ({ value: s.id, label: date(s.startAt) }))]);
@@ -140,9 +142,23 @@
                 if (application?.status === "Approved" || incoming.length) { const shortcut = n("a", `Learner requests (${incoming.filter(b => b.status === "Requested").length} new)`, "button button-outline"); shortcut.href = "#teaching-bookings"; intro.append(shortcut); }
                 content.append(intro);
                 const steps = n("ol", undefined, "peer-process"); ["Apply to teach", "Admin review", "Publish appointments", "Confirm & teach", "Complete & review"].forEach(text => steps.append(n("li", text))); content.append(steps);
-                if (!application || application.status === "Changes requested") {
-                    const section = panel(application ? "Update your teaching application" : "Apply to teach other students", "Show what you know and how you explain it. Admin approval is required before you can publish sessions.");
-                    if (application?.feedback) section.append(n("p", "Review feedback: " + application.feedback, "services-notice"));
+                const nextSteps = {
+                    Pending: ["An administrator reviews your experience, portfolio and lesson plan.", "You will see the decision on this page; it updates automatically.", "Sessions can be created only after approval."],
+                    Approved: ["Create a session draft below.", "Add at least one future appointment.", "Publish it so other students can request a time."],
+                    "Changes requested": ["Read the reviewer's note.", "Update your application below.", "Resubmit it for another review."],
+                    Rejected: ["Read the reviewer's reason.", "Improve your lesson plan or evidence.", "You may submit a new application below."]
+                };
+                if (application) {
+                    const state = panel("Application status");
+                    if (application.sample) state.append(n("p", "SAMPLE APPLICATION · demonstration data loaded by an administrator", "eyebrow"));
+                    state.append(badge(application.status));
+                    state.dataset.applicationStatus = application.status;
+                    if (application.feedback) state.append(n("p", (application.status === "Rejected" ? "Reviewer's reason: " : "Reviewer's note: ") + application.feedback, application.status === "Approved" ? "peer-outcome" : "services-notice"));
+                    const list = n("ol", undefined, "peer-next-steps"); (nextSteps[application.status] || []).forEach(step => list.append(n("li", step)));
+                    state.append(n("h3", "Next steps"), list); content.append(state);
+                }
+                if (!application || ["Changes requested", "Rejected"].includes(application.status)) {
+                    const section = panel(application?.status === "Rejected" ? "Submit a new teaching application" : application ? "Update your teaching application" : "Apply to teach other students", "Show what you know and how you explain it. Admin approval is required before you can publish sessions.");
                     const form = n("form", undefined, "peer-form"); const language = field(form, "Main teaching language", "mentor-language", "select", application?.language || "Python", window.languageCatalog.names);
                     const topics = field(form, "Topics you can explain", "mentor-topics", "text", application?.topics || ""); topics.maxLength = 300;
                     const bio = field(form, "Introduce yourself to learners", "mentor-bio", "textarea", application?.bio || ""); bio.minLength = 40; bio.maxLength = 1000;
@@ -152,9 +168,6 @@
                     const agreement = n("label", undefined, "peer-agreement"); const check = n("input"); check.type = "checkbox"; check.required = true; check.id = "mentor-agreement";
                     agreement.append(check, document.createTextNode("I will guide learners, respect their privacy and explain concepts instead of completing assessed work for them.")); form.append(agreement);
                     formAction(form, application ? "Resubmit for review" : "Submit mentor application", () => store.apply({ language: language.value, topics: topics.value, bio: bio.value, experience: experience.value, portfolio: portfolio.value, outline: outline.value, agreement: check.checked }, owner, application?.revision), () => { status.textContent = "Application submitted. You can follow its review here."; render(); }); section.append(form); content.append(section);
-                } else {
-                    const section = panel("Your teaching application"); section.append(badge(application.status), n("p", application.status === "Approved" ? "Your application has been reviewed. Create a session draft, add appointments, then publish it." : "Your application is awaiting admin review. Sessions stay unpublished until approval."));
-                    if (application.feedback) section.append(n("p", application.feedback, "peer-outcome")); content.append(section);
                 }
                 if (application?.status === "Approved") {
                     const sessions = store.ownSessions(), existing = sessions.find(s => s.id === editing);
@@ -192,8 +205,18 @@
                 bookings.forEach(b => inbox.append(bookingCard(b, owner, render))); if (application?.status === "Approved" || bookings.length) content.append(inbox); note(content);
             } catch (error) { content.append(n("p", error.message, "services-notice")); }
         }
+        // Re-render immediately when another tab changes records, unless the student is typing in a form here.
+        let dirty = false;
+        content.addEventListener("input", () => { dirty = true; });
+        const fresh = () => { dirty = false; render(); };
         render();
-        window.addEventListener("storage", event => { if (event.key === "codementor-peer-mentoring-v1") { status.textContent = "Mentoring records changed in another tab. Refresh the lists to see the latest status."; if (!root.querySelector("#peer-refresh")) { const refresh = button(root, "Refresh lists", async () => {}, () => { status.textContent = ""; render(); refresh.remove(); }); refresh.id = "peer-refresh"; } } });
+        const changed = () => {
+            if (!dirty) { fresh(); return; }
+            status.textContent = "Mentoring records changed in another tab. Your unsaved text is kept; refresh to see the latest status.";
+            if (!root.querySelector("#peer-refresh")) { const refresh = button(root, "Refresh lists", async () => {}, () => { status.textContent = ""; fresh(); refresh.remove(); }); refresh.id = "peer-refresh"; }
+        };
+        window.addEventListener("storage", event => { if (event.key === "codementor-peer-mentoring-v1") changed(); });
+        window.addEventListener("peer-mentoring-changed", () => { dirty = false; });
         window.addEventListener("student-account-changed", () => { content.replaceChildren(); status.textContent = "Your account changed. Reload before continuing."; });
     }
     function adminPage(root) {
@@ -202,33 +225,60 @@
             content.replaceChildren();
             try {
                 const applications = store.applications().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
-                const stats = n("div", undefined, "peer-review-stats"); ["Pending", "Approved", "Changes requested"].forEach(value => stats.append(n("p", `${value}: ${applications.filter(a => a.status === value).length}`))); content.append(stats);
+                const stats = n("div", undefined, "peer-review-stats"); ["Pending", "Approved", "Changes requested", "Rejected"].forEach(value => stats.append(n("p", `${value}: ${applications.filter(a => a.status === value).length}`))); content.append(stats);
                 if (!applications.length) empty(content, "No mentor applications yet", "Student applications will appear here with their experience, portfolio and sample teaching plan.");
                 applications.forEach(application => {
                     const card = panel(application.name); card.dataset.applicationId = application.id;
-                    if (application.sample) card.append(n("p", "SAMPLE STUDENT APPLICATION · Demonstration data", "eyebrow"), n("p", "This pending example belongs to the sample student account (student@example.com). Use the demo-only details on the student login screen. Its portfolio is a placeholder, not evidence of verified work.", "peer-muted"));
+                    if (application.sample) card.append(n("p", "SAMPLE APPLICATION · Demonstration data", "eyebrow"), n("p", application.owner === "student@example.com" ? "This example belongs to the sample student account (student@example.com). Use the demo-only details on the student login screen. Its portfolio is a placeholder, not evidence of verified work." : "Fictional sample tutor. Its portfolio is a placeholder, not evidence of verified work.", "peer-muted"));
                     card.append(badge(application.status), n("p", `${application.owner} · ${application.language}`, "peer-muted"), n("h3", "Topics & introduction"), n("p", application.topics), n("p", application.bio), n("h3", "Experience"), n("p", application.experience), n("h3", "Sample teaching plan"), n("p", application.outline), external("Open portfolio (new tab)", application.portfolio));
                     if (application.feedback) card.append(n("p", "Last review: " + application.feedback, "peer-outcome"));
                     if (["Pending", "Approved"].includes(application.status)) {
-                        const form = n("form", undefined, "peer-form"); const decision = field(form, "Decision", "decision-" + application.id, "select", application.status === "Pending" ? "Approved" : "Changes requested", application.status === "Pending" ? ["Approved", "Changes requested"] : ["Changes requested"]);
-                        const feedback = field(form, "Review note: explain the approval or the changes needed", "feedback-" + application.id, "textarea"); feedback.minLength = 10; feedback.maxLength = 1000;
+                        const form = n("form", undefined, "peer-form"); const decision = field(form, "Decision", "decision-" + application.id, "select", application.status === "Pending" ? "Approved" : "Changes requested", application.status === "Pending" ? ["Approved", "Changes requested", "Rejected"] : ["Changes requested"]);
+                        const feedback = field(form, "Review note: explain the approval, the changes needed or the reason for rejecting", "feedback-" + application.id, "textarea"); feedback.minLength = 10; feedback.maxLength = 1000;
                         form.append(n("p", "Review the project and teaching plan yourself. Approval does not follow automatically from a course score. Requesting changes hides the mentor's listings until reapproval.", "peer-muted"));
                         formAction(form, "Save review decision", () => store.reviewApplication(application.id, decision.value, feedback.value, application.revision), () => { status.textContent = "Review saved. The student can see the decision in My teaching sessions."; render(); }); card.append(form);
                     } content.append(card);
                 }); note(content);
+                content.append(samplePanel());
             } catch (error) { content.append(n("p", error.message, "services-notice"), link("Admin sign in", "auth/admin-login.html")); }
         }
+        function samplePanel() {
+            const section = panel("Sample data", "Loads a labelled demonstration set: a pending application for the sample student account, an approved fictional tutor with a published session and a confirmed booking, a rejected application with the reviewer's reason, and a completed session with a learner review. Loading twice adds nothing. Removing deletes only SAMPLE records.");
+            section.id = "peer-sample-data";
+            const state = store.sampleStatus();
+            section.append(n("p", state.loaded ? `Loaded: ${state.applications} applications, ${state.sessions} session, ${state.bookings} bookings, ${state.reviews} review.` : "No sample data is loaded.", "peer-muted"));
+            const actions = n("div", undefined, "peer-actions");
+            button(actions, "Load sample data", async () => {
+                const added = await store.loadSample(), total = Object.values(added).reduce((a, b) => a + b, 0);
+                status.textContent = total ? `${total} sample records added.` : "Sample data was already loaded. Nothing was added.";
+            }, fresh);
+            const remove = button(actions, "Remove sample data", async () => {
+                let result;
+                try { result = await store.removeSample(); }
+                catch (error) {
+                    if (!error.dependents) throw error;
+                    if (!window.confirm(error.message)) { status.textContent = "Nothing was removed."; return; }
+                    result = await store.removeSample({ includeDependents: true });
+                }
+                status.textContent = `Sample data removed (${Object.values(result.removed).reduce((a, b) => a + b, 0)} records). Other records were not changed.`;
+            }, fresh);
+            remove.disabled = !state.loaded;
+            section.append(actions); return section;
+        }
+        // Re-render immediately on changes from other tabs unless a review note is being typed here.
+        let dirty = false;
+        content.addEventListener("input", () => { dirty = true; });
+        const fresh = () => { dirty = false; render(); };
         render();
-        // Keep unsaved review notes intact when another tab submits or updates an application.
         window.addEventListener("storage", event => {
             if (event.key !== "codementor-peer-mentoring-v1" && event.key !== null) return;
+            if (!dirty) { fresh(); return; }
             status.textContent = "Teaching applications changed in another tab. Refresh the list to see the latest requests; your unsaved notes are kept until you refresh.";
             if (!root.querySelector("#admin-peer-refresh")) {
-                const refresh = button(root, "Refresh applications", async () => {}, () => { status.textContent = ""; render(); refresh.remove(); });
+                const refresh = button(root, "Refresh applications", async () => {}, () => { status.textContent = ""; fresh(); refresh.remove(); });
                 refresh.id = "admin-peer-refresh";
             }
         });
-        store.prepareSampleApplication().then(result => { if (result) render(); }).catch(error => { status.textContent = error.message; });
     }
     window.peerMentoringUI = Object.freeze({ catalogue, details, learnerBookings, studio, adminPage });
     const pageRoot = document.getElementById("peer-workspace");

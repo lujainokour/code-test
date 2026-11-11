@@ -33,7 +33,7 @@
         let data; try { data = JSON.parse(raw); } catch { throw Error("Mentoring records could not be read. Existing data was kept."); }
         const record = item => item && typeof item.id === "string" && Number.isFinite(item.revision) && item.revision >= 1;
         if (data?.version !== 1 || !["applications", "sessions", "bookings", "reviews"].every(name => Array.isArray(data[name]) && data[name].every(record) && new Set(data[name].map(item => item.id)).size === data[name].length) ||
-            !data.applications.every(a => text(a.owner, 3, 254) && text(a.name, 1, 160) && ["Pending", "Approved", "Changes requested"].includes(a.status)) ||
+            !data.applications.every(a => text(a.owner, 3, 254) && text(a.name, 1, 160) && ["Pending", "Approved", "Changes requested", "Rejected"].includes(a.status)) ||
             !data.sessions.every(s => text(s.owner, 3, 254) && text(s.title, 5, 100) && ["Draft", "Published"].includes(s.status) && Array.isArray(s.slots) && s.slots.every(slot => text(slot.id, 1, 100) && Number.isFinite(Date.parse(slot.startAt))) && [30, 45, 60].includes(s.duration) && Number.isFinite(s.price)) ||
             !data.bookings.every(b => text(b.student, 3, 254) && text(b.mentor, 3, 254) && ["Requested", "Confirmed", "Declined", "Cancelled", "Completed"].includes(b.status) && Number.isFinite(Date.parse(b.startAt)) && [30, 45, 60].includes(b.duration)) ||
             !data.reviews.every(r => Number.isInteger(r.rating) && r.rating >= 1 && r.rating <= 5)) throw Error("Mentoring records are invalid. Existing data was kept.");
@@ -66,10 +66,11 @@
     async function apply(values, expectedOwner, expectedRevision) {
         return transaction(() => user(expectedOwner), data => {
             const account = user(expectedOwner), previous = data.applications.find(a => a.owner === account.email);
-            if (previous) { revision(previous, expectedRevision); if (previous.status !== "Changes requested") throw Error("Your application is already pending or approved."); }
+            if (previous) { revision(previous, expectedRevision); if (!["Changes requested", "Rejected"].includes(previous.status)) throw Error("Your application is already pending or approved."); }
             if (!text(values.bio, 40, 1000) || !text(values.experience, 40, 1500) || !text(values.topics, 5, 300) || !text(values.outline, 40, 1500) || !window.languageCatalog.names.includes(values.language) || values.agreement !== true) throw Error("Complete your experience, teaching topics, sample lesson plan and mentoring agreement.");
             const record = { id: previous?.id || id("mentor"), owner: account.email, name: account.name.trim(), language: values.language, bio: values.bio.trim(), experience: values.experience.trim(), topics: values.topics.trim(), outline: values.outline.trim(), portfolio: url(values.portfolio), status: "Pending", revision: (previous?.revision || 0) + 1, createdAt: previous?.createdAt || stamp(), updatedAt: stamp(), feedback: "" };
-            if (previous) Object.assign(previous, record); else data.applications.push(record); return record;
+            // A student's own resubmission is their own record, no longer sample data.
+            if (previous) { Object.assign(previous, record); delete previous.sample; } else data.applications.push(record); return record;
         });
     }
     function applications() { admin(); return clone(read().applications); }
@@ -79,7 +80,7 @@
             if (data.applications.length) return null;
             const createdAt = stamp();
             const sample = {
-                id: "mentor-sample-student", owner: "student@example.com", name: "Lujain Okour",
+                id: "mentor-sample-student", owner: "student@example.com", name: "Demo Student (SAMPLE)",
                 language: "Python", topics: "Python variables, loops and functions",
                 bio: "I am a student who enjoys explaining Python basics through small examples and guided practice.",
                 experience: "I have practiced Python functions and loops and helped classmates debug beginner exercises.",
@@ -94,8 +95,9 @@
     async function reviewApplication(applicationId, decision, feedback, expectedRevision) {
         return transaction(admin, data => {
             const item = find(data.applications, applicationId, "Application"); revision(item, expectedRevision);
-            if (!["Approved", "Changes requested"].includes(decision) || (decision === "Approved" && item.status !== "Pending")) throw Error("That review action is not available.");
-            if (!text(feedback, 10, 1000)) throw Error("Add a review note explaining the decision (10-1000 characters).");
+            const allowed = { Pending: ["Approved", "Changes requested", "Rejected"], Approved: ["Changes requested"] }[item.status] || [];
+            if (!allowed.includes(decision)) throw Error("That review action is not available.");
+            if (!text(feedback, 10, 1000)) throw Error(decision === "Rejected" ? "Give the reason for rejecting this application (10-1000 characters)." : "Add a review note explaining the decision (10-1000 characters).");
             item.status = decision; item.feedback = feedback.trim(); item.updatedAt = stamp(); item.revision++; return item;
         });
     }
@@ -145,7 +147,7 @@
         const data = read();
         return data.sessions.filter(s => s.status === "Published" && approved(data, s.owner)).map(s => {
             const ratings = data.reviews.filter(r => data.bookings.some(b => b.id === r.bookingId && b.mentor === s.owner));
-            return { id: s.id, mentorName: s.mentorName, title: s.title, language: s.language, description: s.description, outcome: s.outcome, requirements: s.requirements, level: s.level, duration: s.duration, price: s.price, currency: s.currency, rating: ratings.length ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length : null, reviewCount: ratings.length,
+            return { id: s.id, sample: s.sample === true, mentorName: s.mentorName, title: s.title, language: s.language, description: s.description, outcome: s.outcome, requirements: s.requirements, level: s.level, duration: s.duration, price: s.price, currency: s.currency, rating: ratings.length ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length : null, reviewCount: ratings.length,
                 slots: s.slots.filter(slot => Date.parse(slot.startAt) > now()).sort((a, b) => Date.parse(a.startAt) - Date.parse(b.startAt)).map(slot => ({ id: slot.id, startAt: slot.startAt, available: !data.bookings.some(b => b.slotId === slot.id && active(b)) })) };
         });
     }
@@ -154,6 +156,7 @@
         return transaction(() => user(expectedOwner), data => {
             const student = user(expectedOwner), session = find(data.sessions, sessionId, "Session");
             if (session.owner === student.email) throw Error("You cannot book your own session.");
+            if (session.sample) throw Error("This is a SAMPLE session for demonstrations and cannot be booked.");
             if (session.status !== "Published" || !approved(data, session.owner)) throw Error("This session is no longer available for booking.");
             const slot = find(session.slots, slotId, "Appointment");
             if (Date.parse(slot.startAt) <= now()) throw Error("This appointment has passed. Choose a future time.");
@@ -214,5 +217,74 @@
             booking.status = "Cancelled"; booking.reason = "Administrator: " + reason.trim(); booking.meetingUrl = ""; booking.updatedAt = stamp(); booking.revision++; return booking;
         });
     }
-    window.peerMentoringStore = Object.freeze({ user, admin, application, apply, applications, prepareSampleApplication, reviewApplication, ownSessions, saveSession, addSlot, removeSlot, publish, publicSessions, mine, book, updateBooking, rate, adminSnapshot, adminPauseSession, adminReleaseSession, adminCancelBooking });
+    // ---------- SAMPLE data: loaded and removed only by explicit admin buttons ----------
+    const SAMPLE_PENDING = "mentor-sample-student";
+    function sampleRecords(base) {
+        const at = hours => new Date(base + hours * 3600000).toISOString();
+        const app = (id, owner, name, language, status, feedback, hours) => ({ id, owner, name, language, status, feedback, sample: true, revision: status === "Pending" ? 1 : 2, createdAt: at(hours), updatedAt: at(hours + 20),
+            topics: `${language} fundamentals for beginners`, bio: "SAMPLE profile for demonstrations. Fictional student tutor who explains concepts with small examples.",
+            experience: "SAMPLE experience text. Not a real person; used only to demonstrate the review workflow.", outline: "SAMPLE lesson plan: explain one concept, trace an example together, then guide an independent exercise.", portfolio: "https://example.com/sample-portfolio" });
+        const pending = app(SAMPLE_PENDING, "student@example.com", "Demo Student (SAMPLE)", "Python", "Pending", "", -48);
+        pending.topics = "Python variables, loops and functions";
+        const approvedApp = app("mentor-sample-approved", "sample-mentor-a@sample.invalid", "Sample Mentor A (SAMPLE)", "Python", "Approved", "SAMPLE review: portfolio and lesson plan checked; approved for Python beginner sessions.", -240);
+        const rejectedApp = app("mentor-sample-rejected", "sample-mentor-c@sample.invalid", "Sample Mentor C (SAMPLE)", "JavaScript", "Rejected", "SAMPLE review: the lesson plan gives learners full solutions instead of guiding them. Please focus on hints and explanations.", -120);
+        const future1 = at(48), future2 = at(72), past = at(-72);
+        const session = { id: "peer-sample-session", owner: approvedApp.owner, mentorName: approvedApp.name, title: "[SAMPLE] Python functions step by step", language: "Python",
+            description: "SAMPLE session for demonstrations. Parameters, return values and tracing a function call together.", outcome: "Explain what a function returns and why.", requirements: "Basic variables and print().",
+            level: "Beginner", duration: 45, price: 0, currency: "JOD", status: "Published", sample: true, revision: 3, createdAt: at(-200), updatedAt: at(-1),
+            slots: [{ id: "slot-sample-past", startAt: past }, { id: "slot-sample-1", startAt: future1 }, { id: "slot-sample-2", startAt: future2 }] };
+        const booking = (id, slotId, startAt, status, student, studentName) => ({ id, revision: 2, sample: true, sessionId: session.id, slotId, student, studentName, mentor: session.owner, mentorName: session.mentorName, title: session.title,
+            startAt, duration: 45, price: 0, currency: "JOD", notes: "SAMPLE booking note: I would like help understanding return values.", status, meetingUrl: "https://example.com/sample-meeting", reason: "", createdAt: at(-96), updatedAt: at(-2) });
+        const confirmed = booking("peer-booking-sample-confirmed", "slot-sample-1", future1, "Confirmed", "sample-learner-1@sample.invalid", "Sample Learner 1 (SAMPLE)");
+        const completed = booking("peer-booking-sample-completed", "slot-sample-past", past, "Completed", "sample-learner-2@sample.invalid", "Sample Learner 2 (SAMPLE)");
+        const review = { id: "review-sample-completed", revision: 1, sample: true, bookingId: completed.id, owner: completed.student, rating: 5, comment: "SAMPLE review: clear explanation and a good practice exercise.", createdAt: at(-60) };
+        return { applications: [pending, approvedApp, rejectedApp], sessions: [session], bookings: [confirmed, completed], reviews: [review] };
+    }
+    function sampleStatus() {
+        admin();
+        const data = read(), count = name => data[name].filter(item => item.sample === true).length;
+        return { loaded: ["applications", "sessions", "bookings", "reviews"].some(name => count(name) > 0), applications: count("applications"), sessions: count("sessions"), bookings: count("bookings"), reviews: count("reviews") };
+    }
+    // Adds only missing sample records. Never replaces a real record; skips the pending sample if
+    // student@example.com already has an application of their own.
+    async function loadSample() {
+        return transaction(admin, data => {
+            const seed = sampleRecords(now()), added = { applications: 0, sessions: 0, bookings: 0, reviews: 0 };
+            for (const name of Object.keys(added)) for (const item of seed[name]) {
+                if (data[name].some(existing => existing.id === item.id)) continue;
+                if (name === "applications" && data.applications.some(a => a.owner === item.owner)) continue;
+                data[name].push(item); added[name]++;
+            }
+            return added;
+        });
+    }
+    // Real records that would break if the sample records disappeared: sessions created by an owner whose
+    // application is a sample one, and bookings/reviews that reference sample or dependent sessions.
+    function sampleDependents(data) {
+        const sampleOwners = new Set(data.applications.filter(a => a.sample).map(a => a.owner));
+        const sessions = data.sessions.filter(s => !s.sample && sampleOwners.has(s.owner));
+        const sessionIds = new Set([...data.sessions.filter(s => s.sample), ...sessions].map(s => s.id));
+        const bookings = data.bookings.filter(b => !b.sample && sessionIds.has(b.sessionId));
+        const bookingIds = new Set([...data.bookings.filter(b => b.sample), ...bookings].map(b => b.id));
+        const reviews = data.reviews.filter(r => !r.sample && bookingIds.has(r.bookingId));
+        return { sessions, bookings, reviews };
+    }
+    async function removeSample(options = {}) {
+        return transaction(admin, data => {
+            const dependents = sampleDependents(data), total = dependents.sessions.length + dependents.bookings.length + dependents.reviews.length;
+            if (total && options.includeDependents !== true) {
+                const error = Error(`${total} real record(s) were created on top of sample data (${dependents.sessions.length} session(s), ${dependents.bookings.length} booking(s), ${dependents.reviews.length} review(s)). Confirm to remove them together with the sample data.`);
+                error.dependents = total; throw error;
+            }
+            const drop = new Set([...dependents.sessions, ...dependents.bookings, ...dependents.reviews].map(item => item.id));
+            const removed = {};
+            for (const name of ["reviews", "bookings", "sessions", "applications"]) {
+                const before = data[name].length;
+                data[name] = data[name].filter(item => item.sample !== true && !drop.has(item.id));
+                removed[name] = before - data[name].length;
+            }
+            return { removed, dependents: total };
+        });
+    }
+    window.peerMentoringStore = Object.freeze({ sampleStatus, loadSample, removeSample, user, admin, application, apply, applications, prepareSampleApplication, reviewApplication, ownSessions, saveSession, addSlot, removeSlot, publish, publicSessions, mine, book, updateBooking, rate, adminSnapshot, adminPauseSession, adminReleaseSession, adminCancelBooking });
 })();

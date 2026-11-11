@@ -74,12 +74,15 @@ try {
     Check 'Confirmed student appears in follow-up' (Eval "adminSessionsStore.getStudents().some(s=>s.linkedStudent&&s.email==='student@example.com') && document.getElementById('teacher-students-list').textContent.includes('Lujain Okour')")
     Open 'pages/admin/admin-peer-mentoring.html'
     Check 'Admin has student tutor and booking oversight' (Eval "document.getElementById('admin-mentoring-monitor').textContent.includes('Student session bookings') && document.getElementById('peer-workspace')")
-    Check 'Empty review queue receives a labelled pending student sample' (Eval "peerMentoringStore.applications().length===1 && peerMentoringStore.applications()[0].sample===true && peerMentoringStore.applications()[0].status==='Pending' && document.getElementById('peer-workspace').textContent.includes('SAMPLE STUDENT APPLICATION')")
-    Eval "document.querySelector('[id^=feedback-]').value='My unsaved review note';window.dispatchEvent(new StorageEvent('storage',{key:'codementor-peer-mentoring-v1'}));true" | Out-Null
+    Check 'Review queue is not seeded automatically' (Eval "peerMentoringStore.applications().length===0")
+    Eval "[...document.querySelectorAll('#peer-sample-data button')].find(b=>b.textContent==='Load sample data').click();true" | Out-Null
+    Start-Sleep -Milliseconds 300
+    Check 'Load sample data adds labelled pending, approved and rejected samples' (Eval "(()=>{const a=peerMentoringStore.applications();return a.length===3 && a.every(x=>x.sample===true) && ['Pending','Approved','Rejected'].every(s=>a.some(x=>x.status===s)) && document.getElementById('peer-workspace').textContent.includes('SAMPLE APPLICATION')})()")
+    Eval "const note=document.querySelector('[id^=feedback-]');note.value='My unsaved review note';note.dispatchEvent(new Event('input',{bubbles:true}));window.dispatchEvent(new StorageEvent('storage',{key:'codementor-peer-mentoring-v1'}));true" | Out-Null
     Check 'External request updates offer refresh without erasing review notes' (Eval "!!document.getElementById('admin-peer-refresh') && document.querySelector('[id^=feedback-]').value==='My unsaved review note'")
     Eval "document.getElementById('admin-peer-refresh').click();true" | Out-Null
     Start-Sleep -Milliseconds 150
-    Check 'Application refresh clears the notification and retains one sample' (Eval "!document.getElementById('admin-peer-refresh') && peerMentoringStore.applications().length===1")
+    Check 'Application refresh clears the notification and retains the sample set' (Eval "!document.getElementById('admin-peer-refresh') && peerMentoringStore.applications().filter(a=>a.sample).length===3")
     Open 'pages/admin/admin-dashboard.html'
     Check 'Dashboard includes platform bookings and session management' (Eval "document.querySelector('[data-stat=bookings]') && document.querySelector('[data-stat=sessions]') && document.body.textContent.includes('Session follow-up')")
     Eval "document.querySelector('.cm-guide-close')?.click();true" | Out-Null
