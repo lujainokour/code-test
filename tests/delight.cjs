@@ -9,6 +9,7 @@ let count = 0;
 const pending = [];
 async function check(name, body) { await body(); count++; console.log('PASS ' + name); }
 const plain = v => JSON.parse(JSON.stringify(v));
+const deq = (a, b, m) => assert.deepEqual(plain(a), plain(b), m);
 
 // A page context with controllable timers and a reduced-motion switch.
 function kitPage({ reduced = false, local = memory(), session = memory(), owner = 'learner-a@example.test', extra = {} } = {}) {
@@ -146,6 +147,98 @@ const tick = () => new Promise(r => setImmediate(r));
         const ui = fs.readFileSync('js/community.js', 'utf8');
         assert.match(ui, /deleteWithUndo/); assert.match(ui, /store\.undoDelete\(post\.id, owner\)/);
         for (const file of ['js/peer-mentoring-ui.js', 'js/admin-community.js', 'js/admin-companies.js']) assert.ok(!/undo:/.test(fs.readFileSync(file, 'utf8')), `${file} offers no unsafe Undo`);
+    });
+
+    // ================= 2. GETTING-STARTED CHECKLIST =================
+    const CORE = ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'placement-data', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum', 'learning-support', 'progress-insights', 'student-overview', 'student-premium', 'interaction-kit', 'community-membership', 'getting-started'];
+    const lkey = (owner, k, lang = 'python') => `codementor-learning-v1:${encodeURIComponent(owner)}:${lang === 'python' ? k : `${lang}:${k}`}`;
+    function studentPage({ local = memory(), session = memory(), owner = 'learner-a@example.test', language = 'python', reduced = false, extra = [] } = {}) {
+        local.setItem(lkey(owner, 'codementor-demo-onboarding'), JSON.stringify({ language, experience: 'beginner', goal: 'foundations' }));
+        const p = kitPage({ local, session, owner, reduced });
+        p.window.subscriptionStore = { canAccessLevel: id => id <= 5 };
+        p.window.studentServicesStore = { session() { return JSON.parse(p.window.cmStorage.getItem('codementor-demo-session')); }, ownRecords: () => [] };
+        p.window.platformStore = { assertAccess() {}, registerStudent() {}, student(expected) { const a = JSON.parse(p.window.cmStorage.getItem('codementor-demo-session')); if (expected !== undefined && a.email !== expected) throw new Error('Your student account changed.'); return a; } };
+        for (const f of [...CORE, ...extra]) p.load(f);
+        p.build = () => p.window.studentOverview.build();
+        return p;
+    }
+    const approve = (local, owner, channel = 'python') => local.setItem('codementor-community-memberships-v1', JSON.stringify({ version: 1, requests: [...(JSON.parse(local.getItem('codementor-community-memberships-v1') || '{"requests":[]}').requests), { id: 'm-' + owner + channel, channel, owner, name: 'Learner', reason: 'Learning', status: 'approved', updatedAt: new Date().toISOString() }] }));
+    const done = { version: 1, lessons: ['variables'], tasks: ['student-profile'], assessments: {}, taskResults: { 'student-profile': { passed: 3, total: 3, submittedAt: new Date().toISOString() } } };
+
+    await check('Checklist: a new student sees language done and the first lesson as the current step', async () => {
+        const p = studentPage(); const gs = p.window.gettingStarted;
+        const r = gs.compute(gs.inputFrom(p.build()));
+        deq(r.steps.map(s => [s.id, s.state]), [['language', 'done'], ['placement', 'todo'], ['lesson', 'current'], ['run', 'todo'], ['task', 'todo'], ['community', 'todo']]);
+        assert.equal(r.total, 5, 'placement is optional'); assert.equal(r.doneCount, 1); assert.equal(r.percent, 20); assert.equal(r.allDone, false);
+    });
+    await check('Checklist: pure rules for locked, pending community and all-done states', async () => {
+        const p = studentPage(); const gs = p.window.gettingStarted;
+        const locked = gs.compute({ ready: false, lessonsDone: 0, tasksDone: 0, ranCode: false, community: 'none', placementAvailable: true });
+        deq(locked.steps.filter(s => s.state === 'locked').map(s => s.id), ['placement', 'lesson', 'run', 'task']);
+        assert.equal(locked.steps.find(s => s.id === 'language').state, 'current');
+        const pending = gs.compute({ ready: true, lessonsDone: 1, tasksDone: 1, ranCode: true, community: 'pending', placementAvailable: true });
+        assert.equal(pending.steps.find(s => s.id === 'community').note, 'Request sent, waiting for approval'); assert.equal(pending.allDone, false);
+        const all = gs.compute({ ready: true, lessonsDone: 1, tasksDone: 1, ranCode: true, community: 'approved', placementState: 'missing', placementAvailable: true });
+        assert.equal(all.allDone, true, 'optional placement is not required');
+        const ranOnly = gs.compute({ ready: true, lessonsDone: 1, tasksDone: 0, ranCode: true, community: 'none' });
+        assert.equal(ranOnly.steps.find(s => s.id === 'run').state, 'done'); assert.equal(ranOnly.steps.find(s => s.id === 'task').state, 'current');
+    });
+    await check('Checklist: placed-out levels never complete a step', async () => {
+        const p = studentPage({ owner: 'placed@example.test' });
+        const store = p.window.placementStore;
+        let attempt = store.begin(store.capture());
+        attempt = store.save({ answers: store.bank().questions.map(q => q.correct), currentQuestion: store.bank().questions.length - 1 }, JSON.stringify(attempt), store.capture());
+        store.applyRecommended(JSON.stringify(store.submit(JSON.stringify(attempt), store.capture())), store.capture());
+        const r = p.window.gettingStarted.compute(p.window.gettingStarted.inputFrom(p.build()));
+        assert.equal(r.steps.find(s => s.id === 'placement').state, 'done');
+        for (const id of ['lesson', 'run', 'task']) assert.notEqual(r.steps.find(s => s.id === id).state, 'done', id);
+    });
+    await check('Checklist: follows the active language (Python progress never completes JavaScript steps)', async () => {
+        const local = memory();
+        local.setItem(lkey('learner-a@example.test', 'codementor-demo-learning'), JSON.stringify(done));
+        local.setItem(lkey('learner-a@example.test', 'codementor-demo-language'), JSON.stringify('javascript'));
+        const p = studentPage({ local, language: 'javascript' });
+        const r = p.window.gettingStarted.compute(p.window.gettingStarted.inputFrom(p.build()));
+        for (const id of ['lesson', 'run', 'task']) assert.notEqual(r.steps.find(s => s.id === id).state, 'done', id);
+    });
+    await check('Checklist: celebration plays once per account, then collapses to "Setup complete"', async () => {
+        const local = memory();
+        local.setItem(lkey('learner-a@example.test', 'codementor-demo-learning'), JSON.stringify(done)); approve(local, 'learner-a@example.test');
+        const p = studentPage({ local }); const host = p.dom.document.createElement('section');
+        const r = p.window.gettingStarted.render(p.build(), host);
+        assert.equal(r.allDone, true);
+        assert.match(p.dom.document.querySelector('#ik-toasts').textContent, /Setup complete/);
+        assert.ok(p.dom.walk().some(n => n.className === 'ik-rocket'), 'rocket launched');
+        assert.equal(p.window.interactionKit.seenStore('learner-a@example.test').get('checklistCelebrated'), true);
+        p.runTimers(); assert.equal(host.dataset.state, 'complete'); assert.match(host.textContent, /Setup complete/);
+        const again = studentPage({ local }); const host2 = again.dom.document.createElement('section');
+        again.window.gettingStarted.render(again.build(), host2);
+        assert.equal(host2.dataset.state, 'complete'); assert.equal(again.dom.document.querySelector('#ik-toasts'), null, 'never replays');
+        local.setItem(lkey('learner-b@example.test', 'codementor-demo-learning'), JSON.stringify(done)); approve(local, 'learner-b@example.test');
+        const b = studentPage({ local, owner: 'learner-b@example.test' }); const hostB = b.dom.document.createElement('section');
+        b.window.gettingStarted.render(b.build(), hostB);
+        assert.match(b.dom.document.querySelector('#ik-toasts').textContent, /Setup complete/, 'another account gets its own first celebration');
+    });
+    await check('Checklist: reduced motion shows the result without animation; an account switch blocks the celebration', async () => {
+        const local = memory();
+        local.setItem(lkey('learner-a@example.test', 'codementor-demo-learning'), JSON.stringify(done)); approve(local, 'learner-a@example.test');
+        const r = studentPage({ local, reduced: true }); const host = r.dom.document.createElement('section');
+        r.window.gettingStarted.render(r.build(), host);
+        assert.ok(!r.dom.walk().some(n => n.className === 'ik-rocket'));
+        assert.match(r.dom.document.querySelector('#ik-toasts').textContent, /Setup complete/, 'the message is not motion-only');
+        r.runTimers(0); assert.equal(host.dataset.state, 'complete');
+        const local2 = memory();
+        local2.setItem(lkey('learner-a@example.test', 'codementor-demo-learning'), JSON.stringify(done)); approve(local2, 'learner-a@example.test');
+        const s = studentPage({ local: local2 }); const model = s.build();
+        local2.setItem('codementor-profile-v1', JSON.stringify({ name: 'B', email: 'learner-b@example.test', role: 'student', isDemo: true }));
+        const hostS = s.dom.document.createElement('section'); s.window.gettingStarted.render(model, hostS);
+        assert.equal(s.dom.document.querySelector('#ik-toasts'), null);
+        assert.equal(s.window.interactionKit.seenStore('learner-a@example.test').get('checklistCelebrated'), undefined);
+    });
+    await check('Checklist: the dashboard keeps exactly one "Continue" with the checklist present', async () => {
+        const html = fs.readFileSync('pages/student/dashboard.html', 'utf8');
+        assert.match(html, /id="getting-started"/);
+        assert.ok(!/Continue/.test(fs.readFileSync('js/getting-started.js', 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')), 'checklist links never say Continue');
     });
 
     // ===== further sections are appended per item =====
