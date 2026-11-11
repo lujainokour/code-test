@@ -4,6 +4,7 @@
     if (!root) return;
     const node = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
     const link = (text, href, cls = "button button-outline") => { const a = node("a", text, cls); a.href = href; return a; };
+    let range = 7, counted = false; // range tabs state; count-up runs on the first render only
     function section(title) { const n = node("section", undefined, "overview-panel"); n.append(node("h2", title)); return n; }
     function render() {
         root.replaceChildren();
@@ -26,6 +27,45 @@
         [["sessions", "Published platform sessions", platformSessions?.filter(s => s.status === "Active" && !s.sample).length, "admin-sessions.html"], ["bookings", "Platform bookings awaiting review", pendingBookings?.length, "admin-bookings.html"], ["students", "Registered students", students?.length, "admin-students.html"], ["enabled", "Enabled accounts", students?.filter(s => s.status === "enabled").length, "admin-students.html"], ["pending", "Awaiting tutor review", pending?.length, "admin-peer-mentoring.html"], ["approved", "Approved student tutors", applications?.filter(a => a.status === "Approved").length, "admin-peer-mentoring.html"], ["published", "Published authored lessons", lessons?.filter(l => l.status === "published").length, "admin-courses.html"], ["drafts", "Draft lessons", drafts?.length, "admin-courses.html"]].forEach(([id, label, value, href]) => {
             const a = link("", href, "overview-stat"); a.append(node("span", label), node("strong", value === undefined ? "Unavailable" : String(value))); a.dataset.stat = id; stats.append(a);
         }); root.append(stats);
+        const kit = window.interactionKit, ai = window.adminInsights;
+        if (kit && !counted) stats.querySelectorAll("strong").forEach(s => { const v = Number(s.textContent); if (Number.isInteger(v)) kit.countUp(s, v); });
+        counted = true;
+        const realApps = (applications || []).filter(a => !a.sample);
+        const studentDates = (students || []).map(s => s.createdAt), appDates = realApps.map(a => a.createdAt);
+        // Range tabs and trends only when real timestamped records support them.
+        if (ai && ai.supportsRanges(studentDates, appDates)) {
+            const activity = section("New activity");
+            const tabs = node("div", undefined, "overview-range"); tabs.setAttribute("role", "group"); tabs.setAttribute("aria-label", "Time range");
+            [7, 30].forEach(days => {
+                const b = node("button", `${days} days`, "overview-range-tab"); b.type = "button"; b.dataset.days = String(days); b.setAttribute("aria-pressed", String(range === days));
+                b.addEventListener("click", () => { range = days; render(); root.querySelector(`.overview-range-tab[data-days="${days}"]`)?.focus(); });
+                tabs.append(b);
+            });
+            const grid = node("div", undefined, "overview-trends");
+            [["registrations", "New student registrations", studentDates], ["applications", "Teaching applications submitted", appDates]].forEach(([id, label, dates]) => {
+                const c = ai.windowCounts(dates, range);
+                const tile = node("div", undefined, "overview-stat overview-trend"); tile.dataset.trend = id;
+                tile.append(node("span", `${label} · last ${range} days`), node("strong", String(c.current)));
+                const delta = c.delta === null ? node("small", "No earlier history to compare yet", "overview-delta")
+                    : node("small", c.delta === 0 ? `Same as the previous ${range} days` : `${c.delta > 0 ? "▲ +" : "▼ "}${c.delta} vs the previous ${range} days`, "overview-delta");
+                delta.dataset.direction = c.delta === null ? "none" : c.delta > 0 ? "up" : c.delta < 0 ? "down" : "flat";
+                tile.append(delta); grid.append(tile);
+            });
+            activity.append(tabs, grid, node("p", "Counts use the saved creation time of each record. Sample records are not counted.", "overview-source-note"));
+            root.append(activity);
+        }
+        const dist = section("Teaching applications by status");
+        if (applications === null) dist.append(node("p", "Application data is unavailable. Existing records have been kept."));
+        else {
+            const d = ai ? ai.distribution(realApps, "status", ["Pending", "Approved", "Changes requested", "Rejected"]) : { total: 0, rows: [] };
+            if (!d.total) dist.append(node("p", "No real teaching applications yet. Sample applications are not counted.", "overview-source-note"));
+            else {
+                const list = node("ul", undefined, "overview-bars"); list.setAttribute("aria-label", `${d.total} teaching applications by status`);
+                d.rows.forEach(r => { const li = node("li"); li.dataset.status = r.label; li.append(node("span", r.label), node("span", `${r.count} · ${r.percent}%`, "overview-bar-value")); const bar = node("span", undefined, "overview-bar"); bar.style.setProperty("--w", `${r.percent}%`); bar.setAttribute("aria-hidden", "true"); li.append(bar); list.append(li); });
+                dist.append(list, node("p", "Real applications only; sample applications are not counted.", "overview-source-note"));
+            }
+        }
+        root.append(dist);
         const attention = section("Needs your attention"); const queue = node("div", undefined, "overview-queue");
         [[pendingBookings?.length, "platform booking requests awaiting an administrator decision", "Manage bookings", "admin-bookings.html"], [pending?.length, "teaching applications awaiting review", "Review applications", "admin-peer-mentoring.html"], [students?.filter(s => s.status === "suspended").length, "student accounts currently suspended", "Review account access", "admin-students.html"], [drafts?.length, "lesson drafts to prepare for publication", "Continue content editing", "admin-courses.html"]].forEach(([count, label, action, href]) => { const row = node("div", undefined, "overview-queue-row"); row.append(node("p", `${count === undefined ? "Unavailable" : count} ${label}`), link(action, href, "overview-text-link")); queue.append(row); }); attention.append(queue); root.append(attention);
         const companies = section("Companies & opportunities");

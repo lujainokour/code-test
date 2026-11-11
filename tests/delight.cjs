@@ -367,6 +367,76 @@ const tick = () => new Promise(r => setImmediate(r));
         for (const page of ['pages/student/lesson.html', 'pages/student/level-assessment.html']) assert.match(fs.readFileSync(page, 'utf8'), /completion-moments\.js/);
     });
 
+    // ================= 5. ADMIN DASHBOARD POLISH =================
+    const DAY = 86400000, ago = d => new Date(Date.now() - d * DAY).toISOString();
+    await check('Admin: ranges need dated records; trends need history before the current period', async () => {
+        const p = kitPage({ owner: null }); p.load('admin-insights'); const ai = p.window.adminInsights;
+        assert.equal(ai.supportsRanges([], [undefined, 'bad']), false);
+        assert.equal(ai.supportsRanges([ago(1)]), true);
+        deq(ai.windowCounts([ago(1), ago(2)], 7), { current: 2, previous: 0, hasHistory: false, delta: null }, 'new install: no fake trend');
+        deq(ai.windowCounts([ago(1), ago(2), ago(9), ago(30)], 7), { current: 2, previous: 1, hasHistory: true, delta: 1 });
+        deq(ai.windowCounts([ago(1), ago(40)], 30), { current: 1, previous: 1, hasHistory: true, delta: 0 });
+        const d = ai.distribution([{ status: 'Pending' }, { status: 'Pending' }, { status: 'Approved' }], 'status', ['Pending', 'Approved', 'Rejected']);
+        deq(d, { total: 3, rows: [{ label: 'Pending', count: 2, percent: 67 }, { label: 'Approved', count: 1, percent: 33 }, { label: 'Rejected', count: 0, percent: 0 }] });
+    });
+    function adminPage({ students = [], applications = [] } = {}) {
+        const p = kitPage({ owner: null });
+        const root = p.dom.document.createElement('div'); root.id = 'admin-overview-content'; p.dom.body.append(root);
+        Object.assign(p.window, {
+            peerMentoringStore: { admin() {}, applications: () => applications },
+            platformStore: { getStudents: () => students },
+            courseContentStore: { readContent: () => ({ courses: {} }) },
+            companyStore: { getAdminSnapshot: () => null },
+            adminSessionsStore: { getBookings: () => [], getSessions: () => [] }
+        });
+        for (const f of ['interaction-kit', 'admin-insights', 'admin-overview']) p.load(f);
+        p.root = root; return p;
+    }
+    await check('Admin: no dated records means no range tabs and no trend', async () => {
+        const p = adminPage();
+        assert.ok(!p.dom.walk().some(n => n.className === 'overview-range-tab'));
+        assert.ok(!p.dom.walk().some(n => n.className?.includes?.('overview-trend')));
+        assert.match(p.root.textContent, /No real teaching applications yet/);
+    });
+    await check('Admin: tabs switch 7/30 days; trend only with earlier history; sample rows excluded', async () => {
+        const students = [{ name: 'A', status: 'enabled', createdAt: ago(1) }, { name: 'B', status: 'enabled', createdAt: ago(3) }];
+        const applications = [{ name: 'X', status: 'Pending', createdAt: ago(2), updatedAt: ago(2), language: 'Python' }, { name: 'S', status: 'Approved', createdAt: ago(1), updatedAt: ago(1), language: 'Python', sample: true }];
+        const p = adminPage({ students, applications });
+        const tabs = p.dom.walk().filter(n => n.className === 'overview-range-tab');
+        deq(tabs.map(t => [t.textContent, t.getAttribute('aria-pressed')]), [['7 days', 'true'], ['30 days', 'false']]);
+        const reg = () => p.dom.walk().find(n => n.dataset?.trend === 'registrations');
+        assert.match(reg().textContent, /last 7 days2No earlier history to compare yet/);
+        const app = p.dom.walk().find(n => n.dataset?.trend === 'applications');
+        assert.match(app.textContent, /last 7 days1/, 'sample application not counted');
+        const bars = p.dom.walk().find(n => n.className === 'overview-bars');
+        deq(bars.children.map(li => [li.dataset.status, li.children[1].textContent]), [['Pending', '1 · 100%'], ['Approved', '0 · 0%'], ['Changes requested', '0 · 0%'], ['Rejected', '0 · 0%']]);
+        await tabs[1].fire('click');
+        assert.equal(p.dom.walk().find(n => n.dataset?.days === '30').getAttribute('aria-pressed'), 'true');
+        assert.match(reg().textContent, /last 30 days2/);
+        const history = adminPage({ students: [...students, { name: 'Old', status: 'enabled', createdAt: ago(10) }] });
+        const regH = history.dom.walk().find(n => n.dataset?.trend === 'registrations');
+        assert.match(regH.textContent, /▲ \+1 vs the previous 7 days/);
+        assert.equal(regH.children.find(n => n.className === 'overview-delta').dataset.direction, 'up');
+    });
+    await check('Admin: stat count-up runs only on the first render', async () => {
+        const p = adminPage({ students: [{ name: 'A', status: 'enabled', createdAt: ago(1) }] });
+        const framesAfterFirst = p.frames.length;
+        assert.ok(framesAfterFirst >= 1);
+        p.window.fire('storage', { key: 'x' });
+        assert.equal(p.frames.length, framesAfterFirst, 'later renders never re-animate');
+        const r = kitPage({ owner: null, reduced: true });
+        assert.equal(r.window.matchMedia('(prefers-reduced-motion: reduce)').matches, true);
+    });
+    await check('Admin: grouped sidebar keeps every admin link once; glass cards have a solid fallback', async () => {
+        const shell = fs.readFileSync('js/workspace-shell.js', 'utf8');
+        const links = [...shell.match(/const adminLinks = (\[[^\n]*\]);/)[1].matchAll(/\["(admin-[a-z-]+\.html)"/g)].map(m => m[1]);
+        const groups = [...shell.match(/const groups = (\[\[[^\n]*\]\]);/)[1].matchAll(/"(admin-[a-z-]+\.html)"/g)].map(m => m[1]);
+        assert.ok(links.every(l => groups.includes(l)) || /leftovers/.test(shell), 'every link is grouped or placed in More');
+        assert.equal(new Set(groups).size, groups.length, 'no duplicates');
+        const css = fs.readFileSync('css/admin-overview.css', 'utf8');
+        assert.match(css, /background: var\(--card\)[\s\S]*@supports \(\(backdrop-filter: blur\(1px\)\)/);
+    });
+
     // ===== further sections are appended per item =====
     console.log(`${count} delight checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });

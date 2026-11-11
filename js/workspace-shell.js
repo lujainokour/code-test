@@ -108,7 +108,20 @@ const route = value => new URL(routes[value] || value, appRoot).href;
         sidebar.append(a("CodeMentor AI", "index.html", "logo"), el("p", admin ? "ADMIN PREVIEW" : company ? "COMPANY WORKSPACE" : account ? "STUDENT WORKSPACE" : "STUDENT DEMO PREVIEW", "sidebar-label"));
         const nav = el("nav", "", "workspace-navigation"); nav.setAttribute("aria-label", admin ? "Admin navigation" : company ? "Company navigation" : "Student navigation");
         const active = activeMap[filename] || filename;
-        if (admin) adminLinks.forEach(([href, label]) => { const item = a(label, href); if (active === href) item.setAttribute("aria-current", "page"); nav.append(item); });
+        if (admin) {
+            // Grouped admin sections (same links and order as before), each with a visible label.
+            const lookup = Object.fromEntries(adminLinks);
+            const groups = [["Overview", ["admin-dashboard.html", "admin-analytics.html"]], ["People", ["admin-students.html", "admin-companies.html", "admin-community.html"]], ["Learning", ["admin-courses.html", "admin-peer-mentoring.html"]], ["Platform sessions", ["admin-sessions.html", "admin-schedule.html", "admin-bookings.html", "admin-session-students.html"]]];
+            const grouped = new Set(groups.flatMap(([, hrefs]) => hrefs));
+            const leftovers = adminLinks.map(([href]) => href).filter(href => !grouped.has(href));
+            if (leftovers.length) groups.push(["More", leftovers]);
+            groups.forEach(([title, hrefs]) => {
+                const section = el("div", "", "shell-nav-group admin-nav-group"); section.append(el("p", title, "shell-group-label"));
+                const items = el("div", "", "shell-group-links");
+                hrefs.filter(href => lookup[href]).forEach(href => { const item = a(lookup[href], href); if (active === href) item.setAttribute("aria-current", "page"); items.append(item); });
+                section.append(items); nav.append(section);
+            });
+        }
         else if (company) companyLinks.forEach(([href, label]) => { const item = a("", href); item.append(navIcon(href), el("span", label)); if (active === href) item.setAttribute("aria-current", "page"); nav.append(item); });
         else studentGroups.forEach((group, index) => {
             const section = el(index ? "details" : "div", "", "shell-nav-group");

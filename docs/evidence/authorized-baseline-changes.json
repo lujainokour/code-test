@@ -54,7 +54,7 @@
     {
       "file": "js/workspace-shell.js",
       "part": "Part 4",
-      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; neutral fallback company name."
+      "reason": "Follow-up fix 1: CloudPeak demo data only via the admin Load sample company data button; neutral fallback company name. Delight 5: admin navigation grouped into labelled sections (same links)."
     },
     {
       "file": "pages/auth/company-login.html",
