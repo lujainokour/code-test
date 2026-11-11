@@ -1,0 +1,14 @@
+# Keep checkouts byte-identical to the repository on every OS.
+# Tests compare generated Markdown byte-for-byte, so CRLF conversion breaks clean clones.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.mp4 binary
+*.webm binary
+*.wasm binary
+*.zip binary
+*.pdf binary
