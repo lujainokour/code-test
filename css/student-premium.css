@@ -275,6 +275,10 @@ dialog.lang-availability .button { margin: var(--cm-s1) var(--cm-s1) 0 0; }
     body.student-premium .workspace-main { padding: var(--cm-s3) var(--cm-s3) var(--cm-s5); }
     .sp-row { grid-template-columns: minmax(0, 1fr); }
     .workspace-sidebar .lang-switch { display: block; }
+    body.student-premium .workspace-topbar { flex-wrap: nowrap; }
+    body.student-premium .workspace-topbar-left { min-width: 0; }
+    body.student-premium .workspace-topbar-left > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    body.student-premium .workspace-topbar .account-pill #account-name { display: none; }
 }
 @media (max-width: 600px) {
     body.student-premium .workspace-main { padding: var(--cm-s2) var(--cm-s2) var(--cm-s5); gap: var(--cm-s2); }

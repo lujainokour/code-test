@@ -108,7 +108,7 @@ Motion is limited to the ring, bars and badge shine on first render, plus a hove
 
 ## Verification
 
-**Node:** `node tools/verify-local.cjs` passed 301 assertions in 16 suites. The new `tests/dashboard-redesign.cjs` has 18 checks covering:
+**Node:** `node tools/verify-local.cjs` passed 302 assertions in 16 suites. The new `tests/dashboard-redesign.cjs` has 19 checks covering:
 
 - KPI values and ring percentage
 - achievement rules
@@ -117,8 +117,9 @@ Motion is limited to the ring, bars and badge shine on first render, plus a hove
 - placed-out exclusion
 - exactly one "Continue"
 - the switcher's keyboard, ARIA, toast and availability behaviour, and a stale-account guard
+- a clear error state when saved preferences are unreadable (previously the dashboard script threw)
 
-**Browser (headless Chrome, normal permissions):** `tests/dashboard-redesign-browser.ps1 -Phase after` passed all 21 checks:
+**Browser (headless Chrome, normal permissions):** `tests/dashboard-redesign-browser.ps1 -Phase after` passed all 21 checks. Screenshots exist for 1440, 1024, 768 and 390 px.
 
 - no horizontal scroll at 1440, 1024, 768 and 390 px on both pages
 - one Continue
@@ -136,5 +137,12 @@ Motion is limited to the ring, bars and badge shine on first render, plus a hove
 1. Screen-reader announcement of the switcher and of the toast.
 2. Real touch interaction with the drawer switcher at 390 px.
 3. Hover tooltips with a mouse.
-4. Visual review at 1024 and 768 px. Only overflow was checked automatically; screenshots exist for 1440 and 390.
-5. The HTML suites `requests-dashboard.html` and `learning-support` were updated for the moved IDs but not rerun. The README notes several historical HTML suites already fail.
+
+**Follow-up browser runs (12 November):**
+
+- `tests/learning-support.ps1` (needs a server on port 8879): all 22 checks passed, including topics to revisit on My progress.
+- `requests-dashboard.html` via `verify-structure.ps1` (server on 8765): **41 of 46** passed, and the suite now runs to the end.
+  - For comparison, the commit just before the redesign (`78546b6`) scored 23 of 27 and stopped at the Rust check.
+  - Two outdated expectations were updated. A coming-soon language shows the honest availability page (the behaviour since Phase 1). A visitor without a session is redirected to sign-in by the access guard.
+  - The 5 remaining failures also failed on 11 November, before this work: guest request history, empty states on the requests page, and three next-action routing expectations ("quiz before practice task", "send new students to placement first", "resume placement"). Routing was left unchanged pending a product decision.
+  - Its link check found 0 missing links. Three JavaScript errors remain, from older scripts (`placement-data.js`, `python-curriculum.js`, `learning-support.js`) when saved preferences are corrupt.

@@ -53,8 +53,10 @@ try {
             Size $w 900
             Open 'pages/student/dashboard.html'
             Check "Dashboard $w px has no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth')
+            if ($w -eq 1024 -or $w -eq 768) { Shot "dashboard-after-$w" }
             Open 'pages/student/progress.html'
             Check "My progress $w px has no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth')
+            if ($w -eq 1024 -or $w -eq 768) { Shot "progress-after-$w" }
         }
         Size 1440 1000
         Open 'pages/student/dashboard.html'
