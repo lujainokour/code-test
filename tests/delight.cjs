@@ -241,6 +241,68 @@ const tick = () => new Promise(r => setImmediate(r));
         assert.ok(!/Continue/.test(fs.readFileSync('js/getting-started.js', 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')), 'checklist links never say Continue');
     });
 
+    // ================= 3. ACHIEVEMENT UNLOCK MOMENTS =================
+    await check('Unlocks: pure diff initialises silently, announces new badges once, shines once on My progress', async () => {
+        const p = studentPage({ extra: ['achievement-moments'] }); const am = p.window.achievementMoments;
+        const first = am.diff(['first-lesson'], undefined);
+        assert.equal(first.initialised, true); deq(first.announce, []); deq(first.next, { notified: ['first-lesson'], shined: ['first-lesson'] });
+        const second = am.diff(['first-lesson', 'first-task'], first.next);
+        deq(second.announce, ['first-task']); deq(second.shine, [], 'no shine outside My progress');
+        const onProgress = am.diff(['first-lesson', 'first-task'], second.next, { shineHere: true });
+        deq(onProgress.announce, [], 'never announced twice'); deq(onProgress.shine, ['first-task']);
+        const later = am.diff(['first-lesson', 'first-task'], onProgress.next, { shineHere: true });
+        deq(later.announce, []); deq(later.shine, [], 'shine plays once');
+    });
+    await check('Unlocks: existing badges are never replayed; a real new unlock gets a toast and a badge shine', async () => {
+        const local = memory(); const owner = 'learner-a@example.test';
+        local.setItem(lkey(owner, 'codementor-demo-learning'), JSON.stringify({ version: 1, lessons: ['variables'], tasks: [], assessments: {} }));
+        const first = studentPage({ local, extra: ['achievement-moments'] });
+        first.window.achievementMoments.run(first.build());
+        assert.equal(first.dom.document.querySelector('#ik-toasts'), null, 'first visit: old unlocks stay quiet');
+        local.setItem(lkey(owner, 'codementor-demo-learning'), JSON.stringify(done));
+        const dash = studentPage({ local, extra: ['achievement-moments'] });
+        const r = dash.window.achievementMoments.run(dash.build(), { page: 'dashboard' });
+        deq(r.announce, ['first-task']);
+        assert.match(dash.dom.document.querySelector('#ik-toasts').textContent, /Badge unlocked: First passing code/);
+        const prog = studentPage({ local, extra: ['achievement-moments', 'progress-overview'] });
+        const card = prog.dom.walk().find(n => n.dataset.achievement === 'first-task');
+        assert.ok(card.classList.contains('ik-shine'), 'one-time shine in My progress');
+        assert.equal(prog.dom.document.querySelector('#ik-toasts'), null, 'not announced twice');
+        const again = studentPage({ local, extra: ['achievement-moments', 'progress-overview'] });
+        assert.ok(!again.dom.walk().find(n => n.dataset.achievement === 'first-task').classList.contains('ik-shine'));
+    });
+    await check('Unlocks: placed-out levels never fire', async () => {
+        const local = memory(); const owner = 'placed@example.test';
+        const p = studentPage({ local, owner, extra: ['achievement-moments'] });
+        p.window.achievementMoments.run(p.build());
+        const store = p.window.placementStore;
+        let attempt = store.begin(store.capture());
+        attempt = store.save({ answers: store.bank().questions.map(q => q.correct), currentQuestion: store.bank().questions.length - 1 }, JSON.stringify(attempt), store.capture());
+        store.applyRecommended(JSON.stringify(store.submit(JSON.stringify(attempt), store.capture())), store.capture());
+        const after = studentPage({ local, owner, extra: ['achievement-moments'] });
+        const r = after.window.achievementMoments.run(after.build());
+        deq(r.announce, ['placement'], 'only the real placement badge');
+        assert.ok(!r.announce.some(id => id.startsWith('level-')));
+    });
+    await check('Unlocks: never fire on another account after an account switch; seen lists are per account and language', async () => {
+        const local = memory(); const owner = 'learner-a@example.test';
+        local.setItem(lkey(owner, 'codementor-demo-learning'), JSON.stringify({ version: 1, lessons: [], tasks: [], assessments: {} }));
+        const a = studentPage({ local, extra: ['achievement-moments'] });
+        a.window.achievementMoments.run(a.build());
+        local.setItem(lkey(owner, 'codementor-demo-learning'), JSON.stringify(done));
+        const stale = studentPage({ local, extra: ['achievement-moments'] }); const model = stale.build();
+        local.setItem('codementor-profile-v1', JSON.stringify({ name: 'B', email: 'learner-b@example.test', role: 'student', isDemo: true }));
+        assert.equal(stale.window.achievementMoments.run(model), null);
+        assert.equal(stale.dom.document.querySelector('#ik-toasts'), null, 'no toast for A shown to B');
+        local.setItem(lkey('learner-b@example.test', 'codementor-demo-onboarding'), JSON.stringify({ language: 'python', experience: 'beginner', goal: 'foundations' }));
+        const b = studentPage({ local, owner: 'learner-b@example.test', extra: ['achievement-moments'] });
+        const rb = b.window.achievementMoments.run(b.build());
+        assert.equal(rb.initialised, true, 'B starts its own list');
+        const seenA = a.window.interactionKit.seenStore(owner);
+        assert.ok(Array.isArray(seenA.get('achievements:python').notified));
+        assert.equal(seenA.get('achievements:javascript'), undefined, 'lists are per language');
+    });
+
     // ===== further sections are appended per item =====
     console.log(`${count} delight checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });

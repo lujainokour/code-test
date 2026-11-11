@@ -119,6 +119,7 @@
         const m = $("workspace-message"); if (m.dataset.base === undefined) m.dataset.base = m.textContent;
         m.textContent = [m.dataset.base, ...model.issues].filter(Boolean).join(" "); m.classList.toggle("is-error", Boolean(model.issues.length) || m.classList.contains("is-error"));
         window.progressModel = model;
+        try { window.achievementMoments?.run(model, { page: "progress" }); } catch { /* moments never block the page */ }
     }
     render();
     window.addEventListener("pageshow", () => { document.getElementById("roadmap-choice")?.remove(); render(); });

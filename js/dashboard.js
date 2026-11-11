@@ -104,6 +104,7 @@
         const model = window.studentOverview.build();
         renderHero(model); renderKpis(model); renderRing(model); renderWeek(model); renderRecent(model);
         try { window.gettingStarted?.render(model); } catch { /* the checklist never blocks the dashboard */ }
+        try { window.achievementMoments?.run(model, { page: "dashboard" }); } catch { /* moments never block the page */ }
         $("dashboard-message").textContent = model.issues.join(" "); $("dashboard-message").classList.toggle("is-error", model.issues.length > 0);
         $("dashboard-main").setAttribute("aria-busy", "false");
         document.body.classList.add("sp-ready");
