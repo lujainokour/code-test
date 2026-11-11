@@ -1,0 +1,37 @@
+# Dependencies and secrets
+node_modules/
+.env
+.env.*
+!.env.example
+
+# Local browser profiles / scratch folders created by test harnesses
+.chrome-profile*/
+*-chrome-profile/
+browser-profile*/
+tmp/
+.tmp/
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+desktop.ini
+.vscode/
+*.log.tmp
+
+# Generated verification output and screenshots in docs/ (top level only).
+# These are reproducible outputs of tests/*.ps1 and tools/*.cjs, not product source.
+# Files already committed (phase0-2 evidence) stay tracked; new evidence that is
+# meant to be committed lives in docs/evidence/ (not matched by these patterns).
+docs/*-results.json
+docs/*-results-*.json
+docs/*-suites.json
+docs/*-js-errors.json
+docs/*-harness-results.json
+docs/*-reference-results.json
+docs/*-static.json
+docs/*-supplemental.json
+docs/audit-*.json
+docs/database-phase2-proposed-tables.json
+docs/*.png
+docs/*-git-status.txt
+docs/*-git-diff-stat.txt
