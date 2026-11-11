@@ -90,6 +90,14 @@
         });
         return form;
     }
+    // Deleting your own post is reversible for a few seconds (real restore of the same post).
+    async function deleteWithUndo(post) {
+        const kit = window.interactionKit;
+        if (!kit) { if (window.confirm("Delete this post and its replies? This cannot be undone.")) act(() => store.deletePost(post.id, owner), "Post deleted."); return; }
+        const ok = await act(() => store.deletePost(post.id, owner), "Post deleted. You can undo this for a few seconds.");
+        if (!ok) return;
+        kit.toast("Post deleted.", { duration: store.UNDO_WINDOW_MS, undo: async () => { await store.undoDelete(post.id, owner); say("Post restored."); render(); } });
+    }
     function postCard(post) {
         const card = node("article", undefined, "community-post"); card.dataset.postId = post.id;
         if (post.solved) card.classList.add("is-solved");
@@ -128,7 +136,7 @@
             actions.append(
                 button(post.solved ? "Mark as not solved" : "Mark as solved", () => act(() => store.setSolved(post.id, !post.solved, owner), post.solved ? "Marked as not solved." : "Marked as solved."), "community-owner-action"),
                 button("Edit post", () => { editing.add(post.id); render(); }, "community-owner-action"),
-                button("Delete post", () => { if (window.confirm("Delete this post and its replies? This cannot be undone.")) act(() => store.deletePost(post.id, owner), "Post deleted."); }, "community-delete"));
+                button("Delete post", () => deleteWithUndo(post), "community-delete"));
         } else if (post.reportedByMe) actions.append(node("span", "Reported", "community-edited"));
         else actions.append(button("Report", () => { reporting.add(post.id); render(); }, "community-report-button"));
         card.append(actions);

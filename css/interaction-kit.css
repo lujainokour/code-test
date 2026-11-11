@@ -1,0 +1,86 @@
+/* =========================================================================
+   Interaction kit — tactile buttons, card lift, staggered entrance, count-up,
+   skeletons, toasts and celebrations. Shared by every page that loads
+   js/interaction-kit.js (which adds the .ik class to <html>).
+   Brand: existing light blue + burgundy. All motion is off under
+   prefers-reduced-motion (section 9).
+   ========================================================================= */
+
+/* 1. TOKENS */
+:root {
+    --ik-burgundy: #70151c;
+    --ik-burgundy-900: #260204;
+    --ik-ink: #1d1416;
+    --ik-blue: #b1d4e1;
+    --ik-surface: #daeaf0;
+    --ik-success: #176139;
+    --ik-ease: cubic-bezier(.2, .7, .2, 1);
+    --ik-shadow-rest: 0 1px 0 rgb(38 2 4 / 14%), 0 2px 6px rgb(38 2 4 / 8%);
+    --ik-shadow-hover: 0 2px 0 rgb(38 2 4 / 12%), 0 10px 22px rgb(38 2 4 / 12%);
+    --ik-shadow-lift: 0 4px 10px rgb(38 2 4 / 8%), 0 16px 32px rgb(38 2 4 / 12%);
+}
+
+/* 2. TACTILE BUTTONS: press depth, soft shadow, visible focus */
+.ik .button {
+    transition: transform .12s var(--ik-ease), box-shadow .18s var(--ik-ease), background-color .18s, border-color .18s, color .18s;
+    box-shadow: var(--ik-shadow-rest);
+}
+.ik .button:hover { transform: translateY(-1px); box-shadow: var(--ik-shadow-hover); }
+.ik .button:active { transform: translateY(2px); box-shadow: inset 0 2px 4px rgb(38 2 4 / 18%); }
+.ik .button:focus-visible { outline: 3px solid var(--ik-burgundy); outline-offset: 3px; }
+.ik .button:disabled, .ik .button[aria-disabled="true"] { transform: none; box-shadow: none; cursor: not-allowed; }
+
+/* 3. CARD HOVER LIFT (~4px) */
+.ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post) {
+    transition: transform .22s var(--ik-ease), box-shadow .22s var(--ik-ease);
+}
+.ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post):is(:hover, :focus-within) {
+    transform: translateY(-4px);
+    box-shadow: var(--ik-shadow-lift);
+}
+
+/* 4. STAGGERED ENTRANCE (first render only; JS sets --ik-i) */
+.ik .ik-stagger > * { animation: ik-rise .45s var(--ik-ease) both; animation-delay: calc(var(--ik-i, 0) * 60ms); }
+@keyframes ik-rise { from { opacity: 0; transform: translateY(10px); } }
+
+/* 5. SKELETON */
+.ik-skeleton { display: block; min-height: 1em; border-radius: 8px; background: linear-gradient(90deg, rgb(255 255 255 / 35%), rgb(255 255 255 / 75%), rgb(255 255 255 / 35%)); background-size: 200% 100%; animation: ik-shimmer 1.3s linear infinite; }
+@keyframes ik-shimmer { to { background-position: -200% 0; } }
+
+/* 6. TOASTS (aria-live region, optional Undo) */
+.ik-toasts { position: fixed; left: 50%; bottom: 24px; z-index: 300; transform: translateX(-50%); display: grid; gap: 8px; width: min(520px, calc(100vw - 32px)); pointer-events: none; }
+.ik-toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 16px; border-radius: 12px; background: var(--ik-ink); color: #fff; font-size: 14px; line-height: 1.4; box-shadow: 0 12px 30px rgb(29 20 22 / 28%); border-left: 4px solid var(--ik-blue); animation: ik-toast-in .26s var(--ik-ease) both; }
+.ik-toast[data-tone="success"] { border-left-color: #5fbf8f; }
+.ik-toast[data-tone="celebrate"] { border-left-color: #f2c14e; }
+.ik-toast[data-tone="error"] { border-left-color: #e36d6d; }
+.ik-toast-text { flex: 1; }
+.ik-toast button { flex-shrink: 0; border: 1px solid rgb(255 255 255 / 40%); background: transparent; color: #fff; border-radius: 8px; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+.ik-toast button:hover { background: rgb(255 255 255 / 12%); }
+.ik-toast button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ik-toast.is-leaving { animation: ik-toast-out .2s ease both; }
+@keyframes ik-toast-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes ik-toast-out { to { opacity: 0; transform: translateY(8px); } }
+
+/* 7. SHINE (one-time, e.g. a newly unlocked badge) */
+.ik-shine { position: relative; overflow: hidden; }
+.ik-shine::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 85%) 50%, transparent 70%); transform: translateX(-120%); animation: ik-shine 1.4s .2s var(--ik-ease) 2 both; }
+.ik-shine { box-shadow: 0 0 0 3px #f2c14e, var(--ik-shadow-lift); }
+@keyframes ik-shine { to { transform: translateX(120%); } }
+
+/* 8. CELEBRATION LAYER (confetti canvas, rocket, check ring) */
+.ik-celebrate-canvas { position: fixed; inset: 0; z-index: 250; pointer-events: none; }
+.ik-rocket { position: fixed; left: 50%; bottom: -60px; z-index: 251; font-size: 44px; pointer-events: none; animation: ik-rocket 1.6s var(--ik-ease) forwards; }
+@keyframes ik-rocket { 0% { transform: translate(-50%, 0) rotate(-8deg); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(-50%, -110vh) rotate(4deg); opacity: 0; } }
+.ik-check { width: 72px; height: 72px; }
+.ik-check circle { fill: none; stroke: var(--ik-success); stroke-width: 6; stroke-dasharray: 202; stroke-dashoffset: 202; animation: ik-draw .7s var(--ik-ease) forwards; }
+.ik-check path { fill: none; stroke: var(--ik-success); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 60; stroke-dashoffset: 60; animation: ik-draw .45s .55s var(--ik-ease) forwards; }
+@keyframes ik-draw { to { stroke-dashoffset: 0; } }
+
+/* 9. REDUCED MOTION: everything still works, nothing moves */
+@media (prefers-reduced-motion: reduce) {
+    .ik .button, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post) { transition: none !important; }
+    .ik .button:hover, .ik .button:active, .ik :is(.ik-lift, .kpi-tile, .sp-links a, .badge-card, .overview-stat, .overview-shortcut, .community-post):is(:hover, :focus-within) { transform: none !important; }
+    .ik .ik-stagger > *, .ik-skeleton, .ik-toast, .ik-toast.is-leaving, .ik-shine::before, .ik-rocket { animation: none !important; }
+    .ik-rocket, .ik-celebrate-canvas { display: none !important; }
+    .ik-check circle, .ik-check path { animation: none !important; stroke-dashoffset: 0; }
+}

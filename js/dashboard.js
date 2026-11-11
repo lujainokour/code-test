@@ -26,13 +26,14 @@
     }
     function renderKpis(model) {
         const ok = !model.learningError, t = model.totals;
-        $("recorded-lessons").textContent = ok ? `${t.lessonsDone} / ${t.lessonsTotal}` : "Unavailable";
+        const kit = window.interactionKit, count = (id, value, format) => { if (kit) kit.countUp($(id), value, { format }); else $(id).textContent = format(value); };
+        if (ok) count("recorded-lessons", t.lessonsDone, v => `${v} / ${t.lessonsTotal}`); else $("recorded-lessons").textContent = "Unavailable";
         $("kpi-lessons-sub").textContent = ok ? `${model.course.name} · ${model.overallPercent}% of all lessons` : "Saved progress could not be read";
-        $("recorded-tasks").textContent = ok ? `${t.tasksDone} / ${t.tasksTotal}` : "Unavailable";
+        if (ok) count("recorded-tasks", t.tasksDone, v => `${v} / ${t.tasksTotal}`); else $("recorded-tasks").textContent = "Unavailable";
         $("kpi-tasks-sub").textContent = !ok ? "Task records unavailable" : model.tasksLast7 === null ? "No dated task runs yet" : model.tasksLast7 ? `+${model.tasksLast7} passed in the last 7 days` : "None passed in the last 7 days";
-        $("kpi-streak").textContent = `${model.streak.current} ${model.streak.current === 1 ? "day" : "days"}`;
+        count("kpi-streak", model.streak.current, v => `${v} ${v === 1 ? "day" : "days"}`);
         $("kpi-streak-sub").textContent = model.events.length ? `Best: ${model.streak.longest} ${model.streak.longest === 1 ? "day" : "days"}` : "Start today with one lesson check";
-        $("kpi-days").textContent = String(model.activeDays.thisMonth);
+        count("kpi-days", model.activeDays.thisMonth, v => String(v));
         // Comparison only when dated history reaches back before this month.
         const d = model.activeDays;
         $("kpi-days-sub").textContent = d.hasHistoryBefore ? (d.thisMonth === d.previousMonth ? `Same as last month (${d.previousMonth})` : `${d.thisMonth > d.previousMonth ? "▲" : "▼"} vs ${d.previousMonth} last month`) : "This calendar month";

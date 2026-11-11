@@ -153,11 +153,29 @@
             return true;
         });
     }
+    // Deleted posts can be restored by their author from the same tab for a short window (Undo).
+    // The snapshot is kept in memory only, so it can never be forged from storage or another tab.
+    const UNDO_WINDOW_MS = 6000;
+    const recentlyDeleted = new Map();
     function deletePost(id, expected) {
         return transaction(() => studentOf(expected), (data, me) => {
             const post = findPost(data, id, me.email);
             if (post.owner !== me.email) throw Error("You can only delete your own posts.");
             data.posts.splice(data.posts.indexOf(post), 1);
+            recentlyDeleted.set(id, { snapshot: JSON.parse(JSON.stringify(post)), owner: me.email, at: Date.now() });
+        });
+    }
+    function undoDelete(id, expected, now = Date.now()) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            const entry = recentlyDeleted.get(id);
+            if (!entry || entry.owner !== me.email) throw Error("This post can no longer be restored.");
+            if (now - entry.at > UNDO_WINDOW_MS) { recentlyDeleted.delete(id); throw Error("The undo window has closed. The post stays deleted."); }
+            if (data.posts.some(p => p.id === id)) throw Error("This post already exists. Nothing was changed.");
+            membership().assertMember(entry.snapshot.channel, me.email);
+            if (!validPost(entry.snapshot)) throw Error("This post can no longer be restored.");
+            data.posts.push(entry.snapshot);
+            recentlyDeleted.delete(id);
+            return true;
         });
     }
     function reply(id, body, expected) {
@@ -352,7 +370,7 @@
 
     window.communityStore = Object.freeze({
         key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE,
-        createPost, editPost, deletePost, reply, deleteReply, react, toggleSaved, setSolved, report, contactPolicy,
+        UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, react, toggleSaved, setSolved, report, contactPolicy,
         query, notifications, markNotificationsRead,
         queue, moderate, auditLog, sampleStatus, loadSample, removeSample, subscribe
     });

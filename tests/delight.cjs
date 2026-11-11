@@ -1,0 +1,153 @@
+/* Delight layer: interaction kit (toasts/Undo, count-up, stagger, reduced motion, seen store),
+   getting-started checklist, achievement unlock seen-lists, completion moments, admin polish,
+   certificate reveal. Real saved state only; account-switch isolation. */
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const { makeDocument, memory, eventWindow } = require('./helpers/fake-dom.cjs');
+let count = 0;
+const pending = [];
+async function check(name, body) { await body(); count++; console.log('PASS ' + name); }
+const plain = v => JSON.parse(JSON.stringify(v));
+
+// A page context with controllable timers and a reduced-motion switch.
+function kitPage({ reduced = false, local = memory(), session = memory(), owner = 'learner-a@example.test', extra = {} } = {}) {
+    const dom = makeDocument();
+    dom.document.documentElement = dom.document.createElement('html');
+    dom.document.currentScript = { src: 'http://local.test/js/x.js' };
+    const timers = [];
+    const window = eventWindow({ matchMedia: q => ({ matches: reduced && /reduce/.test(q) }), ...extra });
+    const frames = [];
+    window.requestAnimationFrame = fn => frames.push(fn);
+    const context = vm.createContext({ window, document: dom.document, localStorage: local, sessionStorage: session, crypto: globalThis.crypto, structuredClone,
+        setTimeout: (fn, ms) => { timers.push({ fn, ms }); return timers.length; }, clearTimeout: id => { if (timers[id - 1]) timers[id - 1].fn = null; },
+        requestAnimationFrame: fn => frames.push(fn), performance: { now: () => 0 }, URL, URLSearchParams, Event: class { constructor(t) { this.type = t; } }, CustomEvent: class { constructor(t, o = {}) { this.type = t; this.detail = o.detail; } }, console, innerWidth: 1000, innerHeight: 800, location: { pathname: '/pages/student/dashboard.html', search: '' } });
+    if (owner) local.setItem('codementor-profile-v1', JSON.stringify({ name: 'Test Learner', email: owner, role: 'student', isDemo: true }));
+    const load = file => vm.runInContext(fs.readFileSync(`js/${file}.js`, 'utf8'), context, { filename: file });
+    return { window, dom, timers, frames, load, local, session, runTimers(ms = Infinity) { for (const t of timers) if (t.fn && t.ms <= ms) { const f = t.fn; t.fn = null; f(); } } };
+}
+const tick = () => new Promise(r => setImmediate(r));
+
+(async () => {
+    // ================= 1. INTERACTION KIT =================
+    await check('Kit: toasts live in an aria-live region and expire after their window', async () => {
+        const p = kitPage(); p.load('interaction-kit');
+        let expired = 0;
+        const t = p.window.interactionKit.toast('Saved.', { onExpire: () => expired++ });
+        const region = p.dom.document.getElementById('ik-toasts');
+        assert.equal(region.getAttribute('aria-live'), 'polite'); assert.equal(region.getAttribute('role'), 'status');
+        assert.match(region.textContent, /Saved\./);
+        assert.ok(p.dom.document.documentElement.classList.contains('ik'));
+        p.runTimers(5000);
+        assert.equal(expired, 1); assert.equal(t.settled, true);
+    });
+    await check('Kit: Undo runs the real restore once and cancels expiry; an expired toast cannot undo', async () => {
+        const p = kitPage(); p.load('interaction-kit');
+        let restored = 0, expired = 0;
+        const t = p.window.interactionKit.toast('Deleted.', { undo: async () => { restored++; }, onExpire: () => expired++ });
+        const button = t.element.children.find(n => n.tagName === 'BUTTON');
+        assert.equal(button.textContent, 'Undo');
+        await button.fire('click'); await button.fire('click');
+        assert.equal(restored, 1); assert.equal(t.undone, true); assert.equal(expired, 0);
+        p.runTimers(); assert.equal(expired, 0, 'expiry never runs after an undo');
+        const late = p.window.interactionKit.toast('Deleted.', { undo: async () => { restored++; }, onExpire: () => expired++ });
+        p.runTimers(p.window.interactionKit.UNDO_MS);
+        const lateButton = late.element.children.find(n => n.tagName === 'BUTTON');
+        await lateButton.fire('click');
+        assert.equal(restored, 1, 'no undo after the window closed'); assert.equal(expired, 1);
+    });
+    await check('Kit: a failing restore is reported, never shown as restored', async () => {
+        const p = kitPage(); p.load('interaction-kit');
+        const t = p.window.interactionKit.toast('Deleted.', { undo: async () => { throw new Error('The undo window has closed. The post stays deleted.'); } });
+        await t.element.children.find(n => n.tagName === 'BUTTON').fire('click');
+        assert.equal(t.undone, false); assert.match(t.element.textContent, /window has closed/); assert.equal(t.element.dataset.tone, 'error');
+    });
+    await check('Kit: count-up animates only on first render and shows the final value under reduced motion', async () => {
+        const p = kitPage(); p.load('interaction-kit');
+        const el = p.dom.document.createElement('p');
+        p.window.interactionKit.countUp(el, 4, { format: v => `${v} / 24` });
+        assert.equal(el.textContent, '0 / 24'); assert.equal(el.getAttribute('aria-label'), '4 / 24', 'screen readers get the real value at once');
+        assert.equal(p.frames.length, 1);
+        p.window.interactionKit.countUp(el, 5, { format: v => `${v} / 24` });
+        assert.equal(el.textContent, '5 / 24', 'updates never re-animate'); assert.equal(p.frames.length, 1);
+        const r = kitPage({ reduced: true }); r.load('interaction-kit');
+        const el2 = r.dom.document.createElement('p');
+        r.window.interactionKit.countUp(el2, 4, { format: v => `${v} / 24` });
+        assert.equal(el2.textContent, '4 / 24'); assert.equal(r.frames.length, 0);
+    });
+    await check('Kit: reduced motion skips stagger, confetti and rocket but keeps toasts', async () => {
+        const r = kitPage({ reduced: true }); r.load('interaction-kit');
+        const box = r.dom.document.createElement('div'); box.append(r.dom.document.createElement('p'));
+        r.window.interactionKit.stagger(box);
+        assert.ok(!box.classList.contains('ik-stagger'));
+        assert.equal(r.window.interactionKit.confetti(), false); assert.equal(r.window.interactionKit.rocket(), false);
+        r.window.interactionKit.toast('Still announced.');
+        assert.match(r.dom.document.getElementById('ik-toasts').textContent, /Still announced/);
+        const css = fs.readFileSync('css/interaction-kit.css', 'utf8');
+        assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*animation: none !important[\s\S]*transition: none !important|@media \(prefers-reduced-motion: reduce\)[\s\S]*transition: none !important[\s\S]*animation: none !important/);
+    });
+    await check('Kit: the seen store is per account and refuses writes after an account switch', async () => {
+        const local = memory();
+        const p = kitPage({ local }); p.load('learning-storage'); p.load('interaction-kit');
+        const a = p.window.interactionKit.seenStore('learner-a@example.test');
+        assert.equal(a.set('checklistCelebrated', true), true);
+        assert.equal(a.get('checklistCelebrated'), true);
+        const b = p.window.interactionKit.seenStore('learner-b@example.test');
+        assert.equal(b.get('checklistCelebrated'), undefined, 'another account has its own list');
+        assert.equal(b.set('x', 1), false, 'not the signed-in account');
+        local.setItem('codementor-profile-v1', JSON.stringify({ name: 'B', email: 'learner-b@example.test', role: 'student', isDemo: true }));
+        assert.equal(a.set('checklistCelebrated', false), false, 'stale page cannot write after the account changed');
+        assert.equal(a.get('checklistCelebrated'), true);
+        assert.equal(p.window.interactionKit.seenStore('guest'), null);
+        local.setItem(a.key, '{broken');
+        local.setItem('codementor-profile-v1', JSON.stringify({ name: 'A', email: 'learner-a@example.test', role: 'student', isDemo: true }));
+        assert.equal(a.set('x', 1), false); assert.equal(local.getItem(a.key), '{broken', 'unreadable data is kept');
+    });
+
+    // Undo correctness against the real community store
+    function communityTab(shared, account, { admin = false } = {}) {
+        const session = memory();
+        if (admin) session.setItem('codementor-admin-session', JSON.stringify({ role: 'admin', isDemo: true, signedInAt: Date.now() - 1000 }));
+        const state = { account };
+        const window = eventWindow({ platformStore: { student(expected) { if (!state.account) throw new Error('Sign in'); if (expected !== undefined && state.account.email !== expected) throw new Error('Your student account changed.'); return state.account; } } });
+        const ctx = vm.createContext({ window, localStorage: shared, sessionStorage: session, navigator: globalThis.navigator, crypto: globalThis.crypto, structuredClone, Event: class { constructor(t) { this.type = t; } }, console });
+        for (const f of ['community-membership', 'community-store']) vm.runInContext(fs.readFileSync(`js/${f}.js`, 'utf8'), ctx);
+        return { state, m: window.communityMembership, s: window.communityStore };
+    }
+    const A = { name: 'Learner A', email: 'learner-a@example.test', role: 'student', isDemo: true }, B = { name: 'Learner B', email: 'learner-b@example.test', role: 'student', isDemo: true };
+    const cshared = memory();
+    const ca = communityTab(cshared, A), cb = communityTab(cshared, B), cadmin = communityTab(cshared, null, { admin: true });
+    await ca.m.request('python', 'Learning Python', A.email); await cb.m.request('python', 'Learning Python', B.email);
+    for (const r of cadmin.m.requests()) await cadmin.m.decide(r.id, 'approved');
+    await check('Undo: deleting your own post is restored exactly (replies, reactions and id)', async () => {
+        const id = await ca.s.createPost({ channel: 'python', title: 'Undo me', body: 'Body', code: 'print(1)', language: 'python', tags: 'undo' }, A.email);
+        await cb.s.reply(id, 'A reply from B', B.email); await cb.s.react(id, 'helpful', B.email);
+        const before = JSON.stringify(JSON.parse(cshared.getItem('codementor-community-v1')).posts.find(p => p.id === id));
+        await ca.s.deletePost(id, A.email);
+        assert.ok(!cshared.getItem('codementor-community-v1').includes('Undo me'));
+        assert.equal(await ca.s.undoDelete(id, A.email), true);
+        assert.equal(JSON.stringify(JSON.parse(cshared.getItem('codementor-community-v1')).posts.find(p => p.id === id)), before);
+        await assert.rejects(ca.s.undoDelete(id, A.email), /no longer be restored/, 'a second undo does nothing');
+    });
+    await check('Undo: closed window, another account and another tab can never restore', async () => {
+        const id = await ca.s.createPost({ channel: 'python', title: 'Gone', body: 'Body' }, A.email);
+        await ca.s.deletePost(id, A.email);
+        await assert.rejects(ca.s.undoDelete(id, A.email, Date.now() + ca.s.UNDO_WINDOW_MS + 1), /window has closed/);
+        assert.ok(!cshared.getItem('codementor-community-v1').includes('"Gone"'));
+        const id2 = await ca.s.createPost({ channel: 'python', title: 'Gone two', body: 'Body' }, A.email);
+        await ca.s.deletePost(id2, A.email);
+        await assert.rejects(cb.s.undoDelete(id2, B.email), /no longer be restored/, 'another tab or account has no snapshot');
+        ca.state.account = B;
+        await assert.rejects(ca.s.undoDelete(id2, A.email), /account changed/, 'account switch blocks the restore');
+        ca.state.account = A;
+        assert.equal(await ca.s.undoDelete(id2, A.email), true, 'the author can still restore within the window');
+    });
+    await check('Undo is offered only where the restore is real (community post deletion)', async () => {
+        const ui = fs.readFileSync('js/community.js', 'utf8');
+        assert.match(ui, /deleteWithUndo/); assert.match(ui, /store\.undoDelete\(post\.id, owner\)/);
+        for (const file of ['js/peer-mentoring-ui.js', 'js/admin-community.js', 'js/admin-companies.js']) assert.ok(!/undo:/.test(fs.readFileSync(file, 'utf8')), `${file} offers no unsafe Undo`);
+    });
+
+    // ===== further sections are appended per item =====
+    console.log(`${count} delight checks passed.`);
+})().catch(error => { console.error(error); process.exit(1); });
