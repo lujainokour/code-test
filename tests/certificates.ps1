@@ -1,5 +1,8 @@
 param([string]$BaseUrl = "http://127.0.0.1:8899/")
 $ErrorActionPreference = 'Stop'
+# Screenshots and the print-test PDF go to docs/evidence/ (created if missing).
+$evidence = Join-Path (Split-Path $PSScriptRoot) 'docs/evidence'
+New-Item -ItemType Directory -Force $evidence | Out-Null
 $profile = Join-Path $env:TEMP ('cm-services-input-' + [guid]::NewGuid().ToString('N'))
 $chrome = Start-Process -FilePath 'C:\Program Files\Google\Chrome\Application\chrome.exe' -ArgumentList @('--headless','--no-sandbox','--disable-software-rasterizer','--disable-gpu','--remote-allow-origins=*','--no-first-run','--remote-debugging-port=0',('--user-data-dir=' + $profile),'about:blank') -WindowStyle Hidden -PassThru
 Add-Type -Path (Join-Path $PSScriptRoot 'CdpSocket.cs')
@@ -42,14 +45,14 @@ try {
     Check 'Print button invokes browser print' (Eval 'window.printCalls===1')
     Cdp 'Emulation.setDeviceMetricsOverride' @{width=1366;height=1000;deviceScaleFactor=1;mobile=$false}|Out-Null
     $shot=Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$false}
-    [IO.File]::WriteAllBytes((Join-Path (Split-Path $PSScriptRoot) 'previews/certificate-live-desktop.png'),[Convert]::FromBase64String($shot.data))
+    [IO.File]::WriteAllBytes((Join-Path $evidence 'certificate-live-desktop.png'),[Convert]::FromBase64String($shot.data))
     Cdp 'Emulation.setEmulatedMedia' @{media='print'}|Out-Null
     Check 'Print layout excludes navigation and actions' (Eval "getComputedStyle(document.querySelector('.workspace-sidebar')).display==='none'&&getComputedStyle(document.querySelector('.certificate-readiness')).display==='none'")
     $shot=Cdp 'Page.captureScreenshot' @{format='png';captureBeyondViewport=$true}
-    [IO.File]::WriteAllBytes((Join-Path (Split-Path $PSScriptRoot) 'previews/certificate-print-layout.png'),[Convert]::FromBase64String($shot.data))
+    [IO.File]::WriteAllBytes((Join-Path $evidence 'certificate-print-layout.png'),[Convert]::FromBase64String($shot.data))
     Check 'Printed footer and signature fit inside the certificate border' (Eval "(()=>{const sheet=document.querySelector('.certificate-document'),label=document.getElementById('certificate-preview-label');return label.getBoundingClientRect().bottom<sheet.getBoundingClientRect().bottom&&sheet.scrollHeight<=sheet.clientHeight+1})()")
     $pdf=Cdp 'Page.printToPDF' @{printBackground=$true;preferCSSPageSize=$true;displayHeaderFooter=$false}
-    [IO.File]::WriteAllBytes((Join-Path (Split-Path $PSScriptRoot) 'previews/certificate-print-test.pdf'),[Convert]::FromBase64String($pdf.data))
+    [IO.File]::WriteAllBytes((Join-Path $evidence 'certificate-print-test.pdf'),[Convert]::FromBase64String($pdf.data))
     Cdp 'Emulation.setEmulatedMedia' @{media='screen'}|Out-Null
     Cdp 'Emulation.setDeviceMetricsOverride' @{width=390;height=844;deviceScaleFactor=1;mobile=$true}|Out-Null
     Check 'Certificate preview fits a phone viewport' (Eval 'document.documentElement.scrollWidth<=innerWidth')
