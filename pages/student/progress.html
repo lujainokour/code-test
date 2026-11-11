@@ -10,13 +10,13 @@
 
     <title>My Progress | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/progress-page.css">
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/progress-page.css"><link rel="stylesheet" href="../../css/student-premium.css">
     <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
     <script src="../../js/student-workspace.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/progress.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/subscription-store.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/progress.js" defer></script><script src="../../js/placement-data.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/progress-insights.js" defer></script><script src="../../js/student-overview.js" defer></script><script src="../../js/student-premium.js" defer></script><script src="../../js/progress-overview.js" defer></script>
 </head>
-<body class="workspace-page">
+<body class="workspace-page student-premium sp-progress-page">
     <a href="#progress-main" class="skip-link">Skip to content</a>
 
     <aside class="workspace-sidebar" id="workspace-sidebar">
@@ -69,12 +69,40 @@
             <h1>My learning progress</h1>
 
             <p class="workspace-intro">
-                Review completed activities and what remains
-                in Python Foundations.
+                Everything you achieved in your active language, where to improve, and the road ahead.
             </p>
 
             <p id="workspace-message" class="form-message"
                role="status" aria-live="polite"></p>
+
+            <section class="sp-card" aria-labelledby="badges-title" id="achievements">
+                <div class="sp-card-head"><h2 class="sp-card-title" id="badges-title">Achievements</h2><p class="sp-small" id="badges-summary"></p></div>
+                <p class="sp-muted">Badges come only from your own completed work in the active language. Levels you placed out of never count as completed.</p>
+                <ul class="badge-grid" id="badge-gallery" aria-busy="true"><li class="badge-card is-loading"><span class="sp-skeleton sp-skeleton-badge"></span></li></ul>
+            </section>
+
+            <div class="sp-row">
+                <section class="sp-card" aria-labelledby="insights-title" id="insights">
+                    <h2 class="sp-card-title" id="insights-title">Learning insights</h2>
+                    <dl class="sp-insights" id="insight-list"></dl>
+                    <h3 class="sp-subtitle" id="review-title">Topics to revisit</h3>
+                    <div id="dashboard-review"></div>
+                </section>
+                <section class="sp-card" aria-labelledby="snapshot-title" id="placement-panel">
+                    <div class="sp-card-head"><h2 class="sp-card-title" id="snapshot-title">Placement</h2><span class="sp-chip sp-chip-soft" id="placement-score">—</span></div>
+                    <div id="skill-snapshot"></div>
+                    <a id="placement-link" class="button button-outline" href="../../pages/student/onboarding.html">Choose learning preferences</a>
+                    <p class="sp-small">Placement suggests where to start and which topics to practise. It never marks levels as completed.</p>
+                </section>
+            </div>
+
+            <section class="sp-card" aria-labelledby="roadmap-title">
+                <div class="sp-card-head"><h2 class="sp-card-title" id="roadmap-title">Your level roadmap</h2><a class="sp-text-link" href="../../pages/student/learning-path.html">Open learning path</a></div>
+                <ol class="sp-roadmap" id="level-roadmap" aria-describedby="roadmap-legend"></ol>
+                <p class="sp-small" id="roadmap-legend">Completed · Current · Available · Locked · Placed out (reviewable, not completed, earns no badge)</p>
+            </section>
+
+            <h2 class="sp-section-title">Current level details</h2>
 
             <div class="dashboard-stats">
                 <article class="dashboard-stat">
@@ -152,6 +180,13 @@
                         <ul id="completed-activities" class="completed-activities"></ul>
                     </section>
             </div>
+
+            <section class="sp-card" aria-labelledby="activity-title" id="requests-panel">
+                <h2 class="sp-card-title" id="activity-title">Bookings &amp; service requests</h2>
+                <p class="sp-muted">Only records owned by the signed-in account are counted. No request has been sent to another person or confirmed.</p>
+                <dl class="sp-counts"><div><dt>Booking requests</dt><dd id="booking-count">—</dd></div><div><dt>Service requests</dt><dd id="request-count">—</dd></div><div><dt>Private service drafts</dt><dd id="draft-count">—</dd></div></dl>
+                <div class="sp-inline-links"><a class="button button-outline" href="../../pages/student/requests.html">View my local requests</a><a class="sp-text-link" href="../../pages/services/service-draft.html">View my private drafts</a></div>
+            </section>
 
             <section class="progress-tools" aria-labelledby="progress-tools-title">
                 <div class="progress-report-link"><div><h2 id="progress-tools-title">Learning report</h2><p>Progress saves automatically on this device. View your completed lessons, quiz results and practice activity in the report.</p></div><a class="button button-outline" href="learning-report.html">View learning report</a></div>

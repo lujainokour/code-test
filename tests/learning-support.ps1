@@ -47,8 +47,8 @@ try {
     Check 'Solution does not replace the student draft' (Eval "document.getElementById('code-editor').value==='print(0)'")
     Go 'pages/student/workspace.html?task=receipt'
     Check 'Solution is hidden again on reopening while attempt access persists' (Eval "document.getElementById('task-solution').hidden&&!document.getElementById('reveal-solution').disabled")
-    Go 'pages/student/dashboard.html'
-    Check 'Failed task adds targeted lesson and retry links to review plan' (Eval "document.querySelector('#dashboard-review a[href*=numbers]')!==null&&document.querySelector('#dashboard-review a[href*=receipt]')!==null")
+    Go 'pages/student/progress.html'
+    Check 'Failed task adds targeted lesson and retry links to review plan on My progress' (Eval "document.querySelector('#dashboard-review a[href*=numbers]')!==null&&document.querySelector('#dashboard-review a[href*=receipt]')!==null")
     Check 'Review plan removes task-only flags after a successful retry' (Eval "(()=>{const p=pythonCurriculum.read();p.taskResults.receipt.passed=p.taskResults.receipt.total;p.taskResults.receipt.cases=[{passed:true}];return learningSupport.reviewPlan(p,pythonCurriculum).length===0})()")
     Check 'Review plan detects latest quiz errors despite an earlier passing best score' (Eval "(()=>{const p={version:1,lessons:[],tasks:[],assessments:{'1':{score:100,lastScore:0,answers:[0,0,0,0],submittedAt:'2026-01-01T00:00:00Z'}}};return learningSupport.reviewPlan(p,pythonCurriculum).some(t=>t.id==='variables')})()")
     Check 'A corrected lesson clears an older quiz weakness' (Eval "(()=>{const p={version:1,lessons:[],tasks:[],checks:{variables:{correct:true,checkedAt:'2026-01-02T00:00:00Z'}},assessments:{'1':{score:100,answers:[0,2,1,1],submittedAt:'2026-01-01T00:00:00Z'}}};return !learningSupport.reviewPlan(p,pythonCurriculum).some(t=>t.id==='variables')})()")
