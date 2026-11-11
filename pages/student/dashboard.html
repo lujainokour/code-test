@@ -10,11 +10,11 @@
 
     <title>Dashboard | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/dashboard-insights.css">
     <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/placement-data.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/dashboard.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script><script src="../../js/student-services-store.js" defer></script><script src="../../js/learning-support.js" defer></script><script src="../../js/dashboard.js" defer></script><script src="../../js/progress-insights.js" defer></script><script src="../../js/dashboard-insights.js" defer></script>
 </head>
 <body class="workspace-page">
     <a href="#dashboard-main" class="skip-link">Skip to content</a>
@@ -72,7 +72,10 @@
     <p class="eyebrow">YOUR NEXT STEP</p><h1 id="dashboard-greeting">Your demo workspace.</h1>
     <p class="workspace-intro">Continue your next lesson, check your progress and revisit topics that need practice.</p>
     <p id="dashboard-message" class="form-message" role="status" aria-live="polite"></p>
+    <section class="dashboard-card dashboard-continue" id="continue-card" aria-labelledby="continue-title" hidden><p class="eyebrow">CONTINUE WHERE YOU LEFT OFF</p><h2 id="continue-title">Loading your progress…</h2><p id="continue-context"></p><div id="continue-actions" class="dashboard-actions"></div></section>
     <section class="dashboard-card dashboard-next-step" aria-labelledby="next-title"><p class="eyebrow">1 / CONTINUE LEARNING</p><h2 id="next-title">Next step</h2><p id="next-description"></p><div id="next-actions" class="dashboard-actions"></div></section>
+    <section class="dashboard-card dashboard-week" id="weekly-activity" aria-labelledby="week-title" hidden><div class="dashboard-card-heading"><h2 id="week-title">This week</h2><p id="streak-summary" class="dashboard-streak"></p></div><div id="week-chart" class="week-chart" role="img"></div><ul id="week-table" class="week-table"></ul><p class="dashboard-footnote" id="week-note">Counts lesson checks, coding-task runs, quiz attempts and placement from the times saved with each record on this device. Lesson completions have no saved time and are not counted here.</p></section>
+    <section class="dashboard-card" id="achievements" aria-labelledby="achievements-title" hidden><h2 id="achievements-title">Achievements</h2><p class="dashboard-footnote">Earned only from your own completed work. Levels you placed out of do not count.</p><ul id="achievement-list" class="achievement-list"></ul></section>
     <div class="dashboard-stats">
         <article class="dashboard-stat"><p>SELECTED LANGUAGE</p><h2 id="selected-language">Not loaded</h2></article>
         <article class="dashboard-stat"><p>PYTHON LESSONS COMPLETED</p><h2 id="recorded-lessons">Not loaded</h2><p id="recorded-tasks"></p></article>

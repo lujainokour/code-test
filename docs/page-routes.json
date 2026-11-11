@@ -77,5 +77,6 @@
   "admin-community.html": "pages/admin/admin-community.html",
   "admin-companies.html": "pages/admin/admin-companies.html",
   "admin-peer-mentoring.html": "pages/admin/admin-peer-mentoring.html",
-  "mentor-studio.html": "pages/student/mentor-studio.html"
+  "mentor-studio.html": "pages/student/mentor-studio.html",
+  "admin-demo-tour.html": "pages/admin/admin-demo-tour.html"
 }
