@@ -770,3 +770,18 @@ body.student-ui .workspace-body > main.container:is(.onboarding-layout, .assessm
         body.glass-ui::before { display: none; }
     }
 }
+
+/* 20. LAYOUT AUDIT FIXES (Part B) ------------------------------------------
+   Found in docs/evidence/layout-audit/before; see docs/PAGE-LOGIC-AUDIT.md. Layout and copy only. */
+/* Virtual internship task board: empty columns no longer stretch to the tallest column. */
+body.student-ui .internship-board { align-items: start; }
+/* Placement intro: the "What to expect" facts were half-styled (serif numbers, text on the tile edge). */
+body.student-ui .assessment-facts > div { padding: 12px 14px; }
+body.student-ui .assessment-facts strong { font-family: var(--cm-font); font-weight: 800; }
+/* Profile: two topics in one side card (portfolio link, then "About this demo") get a clear divider. */
+body.student-ui .dashboard-card > .dashboard-text-link + h2 { margin-top: var(--cm-s3); padding-top: var(--cm-s2); border-top: 1px solid var(--cm-line); }
+/* Mentor: the hint shows only while no code is attached. */
+body.student-ui .mentor-code-hint { display: none; }
+body.student-ui .dashboard-card:has(> #code-context-note:empty):has(> #context-code[hidden]) .mentor-code-hint { display: block; }
+/* Career and company inbox empty states: actions sit inside the panel. */
+body.student-ui .career-empty-actions { display: flex; flex-wrap: wrap; gap: var(--cm-s1); margin-top: var(--cm-s2); }
