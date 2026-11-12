@@ -11280,3 +11280,12 @@ a.site-brand > img { flex-shrink: 0; width: 44px; height: 44px; object-fit: cont
  .certificate-document .certificate-preview-label { margin-top: .5cqw; }
  .certificate-document-footer { min-height: 0; }
 }
+
+/* QA sweep: 44px touch-target floor on phones (docs/QA-SWEEP.md). min-height only;
+   !important because several page rules (some ID-scoped) set 36-42px. */
+@media (max-width: 600px) {
+    .button, .auth-video-toggle, .password-toggle, .teacher-filter-btn, .workspace-menu-toggle,
+    #company-chat-input, #talent-skill-filter, .auth-layout select, .services-main button { min-height: 44px !important; }
+    .slot-badge { display: inline-flex; align-items: center; gap: 4px; }
+    .btn-remove-slot { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px !important; }
+}
