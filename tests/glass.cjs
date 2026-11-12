@@ -95,4 +95,13 @@ check('Applied first to Community, student Dashboard, My progress and the admin 
         assert.ok(html.indexOf('css/student-premium.css') > html.indexOf('css/style.css'), page + ' loads the design layer after style.css');
     }
 });
+check('Rolled out: every student, services, admin and company page opts in and loads the design layer (public and auth pages do not)', () => {
+    for (const dir of ['student', 'services', 'admin', 'company']) for (const name of fs.readdirSync('pages/' + dir).filter(f => f.endsWith('.html'))) {
+        const html = fs.readFileSync(`pages/${dir}/${name}`, 'utf8');
+        assert.match(html, /<body[^>]*class="[^"]*\bglass-ui\b/, `${dir}/${name}`);
+        assert.ok(html.includes('css/student-premium.css'), `${dir}/${name} design layer`);
+    }
+    for (const dir of ['auth', 'public']) for (const name of fs.readdirSync('pages/' + dir).filter(f => f.endsWith('.html')))
+        assert.ok(!/\bglass-ui\b/.test(fs.readFileSync(`pages/${dir}/${name}`, 'utf8')), `${dir}/${name} stays as it is`);
+});
 console.log(`${count} glass checks passed.`);
