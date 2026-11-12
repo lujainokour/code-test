@@ -127,6 +127,9 @@ async function approve(adminTab, owner, channel) {
     await check('XSS payloads render as text in the real page script (no element injected)', async () => {
         a.run('js/community.js');
         // Community v2: feed cards are compact; the full post (body, code, actions) opens from the title.
+        // Groups model (intentional): a student who is not in their language group lands on its Request to join
+        // screen, so switch to "All discussions" first.
+        await a.dom.walk().find(n => n.tagName === 'BUTTON' && n.className.includes('community-channel') && n.textContent.includes('All discussions')).fire('click');
         // The post view is a drawer showing one discussion at a time, so open each card and collect what it shows.
         const nodes = [...a.dom.walk()];
         for (const opener of a.dom.walk().filter(n => n.tagName === 'BUTTON' && n.className.includes('community-card-open'))) { await opener.fire('click'); nodes.push(...a.dom.walk()); }
@@ -297,18 +300,24 @@ async function approve(adminTab, owner, channel) {
         deq(admin.s.sampleStatus(), { loaded: true, posts: 30, replies: 19 });
     });
     // Community v2 (intentional): sample posts sit in OPEN channels, so every signed-in student sees them, labelled SAMPLE.
-    await check('Sample data: open-channel samples visible as SAMPLE to every signed-in student; study-group samples only to members', async () => {
+    // Groups model (intentional): every group needs approval, so SAMPLE posts are visible only to members of
+    // their group; loading also creates SAMPLE members and demo requests (pending, declined, removed).
+    await check('Sample data: SAMPLE posts visible only to members of their group; sample members and demo requests created', async () => {
         const view = a.s.query({ search: '[SAMPLE]', pageSize: 50 }, A.email), other = b.s.query({ search: '[SAMPLE]', pageSize: 50 }, B.email);
-        assert.ok(view.items.length > 0 && view.items.every(p => p.sample));
-        assert.ok(other.items.every(p => p.sample && Object.hasOwn(b.s.OPEN, p.channel)), 'B (not a study-group member) sees open-channel samples only');
-        assert.equal(other.total, view.items.filter(p => Object.hasOwn(a.s.OPEN, p.channel)).length);
-        assert.equal(view.total - other.total, view.items.filter(p => p.channel === 'study-python').length, 'only the study-group samples differ');
+        assert.ok(view.items.length > 0 && view.items.every(p => p.sample && a.m.state(p.channel, A.email) === 'approved'));
+        assert.equal(view.items.filter(p => p.channel === 'study-python').length, 2);
+        assert.ok(!view.items.some(p => p.channel === 'python'), 'A has not joined the Python group');
+        assert.ok(other.items.every(p => b.m.state(p.channel, B.email) === 'approved'));
+        const reqs = admin.m.requests().filter(r => r.sample);
+        assert.ok(reqs.some(r => r.status === 'approved' && r.channel === 'python' && r.name.endsWith('(SAMPLE)')));
+        deq([...new Set(reqs.filter(r => r.status !== 'approved').map(r => r.status))].sort(), ['pending', 'rejected', 'revoked']);
         a.dom.ids.get('community-search').value = '[SAMPLE]';
         a.window.fire('community-changed');
         assert.ok(a.dom.walk().some(n => n.className === 'community-sample-badge' && n.textContent === 'SAMPLE'));
     });
     await check('Sample data: removal never touches real records and asks before losing real replies', async () => {
         const sampleId = 'sample-community-py-2';
+        await a.m.request('python', 'Joining the Python group.', A.email); await approve(admin, A.email, 'python');
         await a.s.reply(sampleId, 'Real reply on a sample post', A.email);
         const realBefore = JSON.parse(shared.getItem('codementor-community-v1')).posts.filter(p => !p.sample);
         const hasReal = JSON.parse(shared.getItem('codementor-community-v1')).posts.find(p => p.id === sampleId).replies.some(r => !r.sample);

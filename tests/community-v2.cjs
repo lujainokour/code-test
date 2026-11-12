@@ -10,6 +10,11 @@ const deq = (actual, expected, message) => assert.deepEqual(plain(actual), plain
 let beforeEach = () => {};
 async function check(name, body) { beforeEach(); await body(); count++; console.log('PASS ' + name); }
 const EXTRA = ['js/community-challenges.js', 'js/community-highlight.js'];
+// Groups model (intentional change): every group needs approval by default. These checks test community
+// FEATURES, so each store first has the topic and the original language groups OPENED by an administrator
+// (the explicit, audited switch). Access rules are tested in tests/community-groups.cjs.
+const FEATURE_GROUPS = ['general', 'help', 'projects', 'python', 'javascript', 'csharp', 'cpp'];
+async function opened(mem) { const ad = tab(mem, null, { admin: true }); for (const id of FEATURE_GROUPS) await ad.s.setGroupMode(id, 'open', 'Feature tests run with open groups'); return mem; }
 
 function curricula() {
     const ctx = { window: {} }; ctx.window.window = ctx.window; vm.createContext(ctx);
@@ -32,9 +37,8 @@ function curricula() {
         assert.equal(ch.weekly('csharp'), null); assert.equal(ch.weekly('cpp'), null);
     });
 
-    const shared = memory();
+    const shared = await opened(memory());
     const a = tab(shared, A, { extraScripts: EXTRA }), b = tab(shared, B, { extraScripts: EXTRA }), admin = tab(shared, null, { admin: true });
-    // Group 3: 'python' is an OPEN channel, so no request or approval is needed to post there.
     // Tests that are not about rate limits start with an empty rate window (the limit itself is tested separately).
     beforeEach = () => { const raw = shared.getItem('codementor-community-v1'); if (!raw) return; const d = JSON.parse(raw); d.activity = {}; shared.setItem('codementor-community-v1', JSON.stringify(d)); };
 
@@ -42,7 +46,7 @@ function curricula() {
         a.run('js/community.js');
         const nodes = a.dom.walk(), labels = nodes.filter(n => n.tagName === 'BUTTON').map(n => n.textContent);
         assert.ok(nodes.some(n => n.className === 'community-welcome'));
-        for (const label of ['Ask your first question', 'Introduce yourself', 'Browse open channels']) assert.ok(labels.includes(label), label);
+        for (const label of ['Ask your first question', 'Introduce yourself', 'Browse groups']) assert.ok(labels.includes(label), label);
         const tabs = a.dom.ids.get('community-tabs').children;
         deq(tabs.map(t => t.textContent), ['Latest', 'Unanswered', 'Solved', 'Top', 'My posts']);
         deq(tabs.map(t => t.getAttribute('aria-selected')), ['true', 'false', 'false', 'false', 'false']);
@@ -213,10 +217,9 @@ function curricula() {
     });
 
     // ---------- group 3: open channels and permissions ----------
-    await check('Open channels: any signed-in, enabled student reads and posts at once, in every open channel incl. C# and C++', async () => {
+    await check('Groups an administrator opened: any signed-in, enabled student reads and posts at once (incl. C# and C++)', async () => {
         const d = tab(shared, { name: 'Test Learner D', email: 'learner-d@example.test', role: 'student', isDemo: true }, { extraScripts: EXTRA });
-        deq(Object.keys(d.s.OPEN), ['general', 'help', 'projects', 'python', 'javascript', 'csharp', 'cpp']);
-        assert.equal(d.s.OPEN.csharp.comingSoon, true); assert.equal(d.s.OPEN.cpp.comingSoon, true);
+        assert.equal(d.m.groups.csharp.comingSoon, true); assert.equal(d.m.groups.cpp.comingSoon, true);
         for (const channel of ['general', 'cpp']) {
             beforeEach();
             const id = await d.s.createPost({ channel, title: `Hello from ${channel}`, body: 'First post' }, 'learner-d@example.test');
@@ -224,7 +227,7 @@ function curricula() {
             await a.s.reply(id, 'Welcome!', A.email);
         }
         assert.equal(d.m.state('general', 'learner-d@example.test'), 'none', 'no membership record is needed or created');
-        await assert.rejects(d.s.createPost({ channel: 'secret-channel', title: 't', body: 'b' }, 'learner-d@example.test'), /Choose a discussion channel/);
+        await assert.rejects(d.s.createPost({ channel: 'secret-channel', title: 't', body: 'b' }, 'learner-d@example.test'), /Choose a discussion group/);
     });
 
     await check('Suspended accounts and guests can neither read nor post in open channels', async () => {
@@ -265,11 +268,11 @@ function curricula() {
         assert.equal(ob.s.query({}, B.email).total, 0, 'a student who was never approved still cannot see it');
         assert.equal(ob.s.query({ channel: 'python' }, B.email).total, 0, 'it did not become public in the open Python channel');
         await oa.s.toggleSaved('old-1', A.email);
-        assert.equal(JSON.parse(old.getItem('codementor-community-v1')).version, 3, 'saved in the new form on the next write');
+        assert.equal(JSON.parse(old.getItem('codementor-community-v1')).version, 4, 'saved in the new form (v4, groups) on the next write');
     });
 
     await check('Unread badges: posts and replies by others since I last opened the channel; my own never count', async () => {
-        const e = tab(memory(), A, { extraScripts: EXTRA }), mem = e.context.localStorage;
+        const e = tab(await opened(memory()), A, { extraScripts: EXTRA }), mem = e.context.localStorage;
         const f = tab(mem, B, { extraScripts: EXTRA });
         await e.s.markChannelSeen('help', A.email);
         assert.equal(e.s.channelSummary(A.email).help.unread, 0);
@@ -287,7 +290,7 @@ function curricula() {
     });
 
     await check('Account switch: a tab signed in as A cannot write as A after the session became B', async () => {
-        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const mem = await opened(memory()), t = tab(mem, A, { extraScripts: EXTRA });
         const id = await t.s.createPost({ channel: 'general', title: 'Before switch', body: 'b' }, A.email);
         t.state.account = B;
         await assert.rejects(t.s.createPost({ channel: 'general', title: 'stale', body: 'b' }, A.email), /account changed/);
@@ -306,8 +309,8 @@ function curricula() {
         assert.ok(!a.dom.walk().some(n => n.tagName === 'BUTTON' && /message|contact|dm\b/i.test(n.textContent)));
     });
 
-    await check('Corrupt membership records lock study groups only (fail closed, never overwritten); open channels keep working', async () => {
-        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+    await check('Corrupt membership records lock approval groups (fail closed, never overwritten); groups an admin opened keep working', async () => {
+        const mem = await opened(memory()), t = tab(mem, A, { extraScripts: EXTRA });
         const open = await t.s.createPost({ channel: 'general', title: 'Open post survives', body: 'b' }, A.email);
         mem.setItem('codementor-community-memberships-v1', 'broken-records');
         assert.equal(t.s.get(open, A.email).title, 'Open post survives');
@@ -330,7 +333,7 @@ function curricula() {
 
     // ---------- group 4: reputation and badges ----------
     const people = n => ({ name: `Rep Learner ${n}`, email: `rep-${n}@example.test`, role: 'student', isDemo: true });
-    const repMem = memory(), R = [1, 2, 3, 4, 5, 6].map(n => { const p = people(n); return { p, t: tab(repMem, p, { extraScripts: EXTRA }) }; });
+    const repMem = await opened(memory()), R = [1, 2, 3, 4, 5, 6].map(n => { const p = people(n); return { p, t: tab(repMem, p, { extraScripts: EXTRA }) }; });
     const clearRate = () => { const raw = repMem.getItem('codementor-community-v1'); if (!raw) return; const d = JSON.parse(raw); d.activity = {}; repMem.setItem('codementor-community-v1', JSON.stringify(d)); };
     await check('Reputation: exact points from accepted answers and Helpful reactions; self-reactions and self-answers earn nothing', async () => {
         const [one, two, three] = R;
@@ -409,7 +412,7 @@ function curricula() {
         assert.equal(d.owner, A.email); assert.equal(d.channel, 'python'); assert.equal(d.title, 'Help with: Build a simple receipt');
         assert.equal(d.code, 'price = float(input())\nprint(price)'); assert.equal(d.language, 'python');
         deq(d.related, { kind: 'task', id: 'receipt', title: 'Build a simple receipt' });
-        assert.ok(ws.els['mentor-link'].afterNodes[0].textContent === 'Ask the community' && ws.els['mentor-link'].afterNodes[0].href === '../services/community.html?compose=1');
+        assert.ok(ws.els['mentor-link'].afterNodes[0].textContent === 'Ask the community' && ws.els['mentor-link'].afterNodes[0].href === '../services/community.html?group=python&compose=1', 'opens the language group (groups model)');
         ws.listeners[0]();
         assert.equal(JSON.parse(ws.session.getItem('codementor-community-draft')).related.id, 'receipt', 'clicking hands the draft over; it never posts');
         const lesson = askPage('?lesson=variables', { 'lesson-mentor-link': {}, 'lesson-title': { textContent: 'Variables and values' } }, A, 'javascript');
@@ -422,7 +425,7 @@ function curricula() {
         for (const page of ['lesson', 'workspace', 'code-review']) assert.ok(fs.readFileSync(`pages/student/${page}.html`, 'utf8').includes('<script src="../../js/community-ask.js" defer></script>'), page);
     });
     await check('Community page: a draft for this account prefills the composer once and posts nothing; other accounts and stale drafts are ignored', async () => {
-        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const mem = await opened(memory()), t = tab(mem, A, { extraScripts: EXTRA });
         const draft = { owner: A.email, at: Date.now(), channel: 'python', title: 'Help with: Build a simple receipt', body: 'What I tried:', code: 'print(1)', language: 'python', tags: 'task', related: { kind: 'task', id: 'receipt', title: 'Build a simple receipt' } };
         t.context.sessionStorage.setItem('codementor-community-draft', JSON.stringify(draft));
         t.run('js/community.js');
@@ -439,7 +442,7 @@ function curricula() {
         }
     });
     await check('Related lesson/task links: stored and shown; invalid ids or kinds are refused', async () => {
-        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const mem = await opened(memory()), t = tab(mem, A, { extraScripts: EXTRA });
         const id = await t.s.createPost({ channel: 'python', title: 'Receipt rounding', body: 'b', related: { kind: 'task', id: 'receipt', title: '<b>Build a simple receipt</b>' } }, A.email);
         deq(t.s.get(id, A.email).related, { kind: 'task', id: 'receipt', title: '<b>Build a simple receipt</b>' });
         for (const related of [{ kind: 'task', id: '../admin', title: 'x' }, { kind: 'admin', id: 'receipt', title: 'x' }, { kind: 'lesson', id: 'variables', title: '' }])
@@ -451,7 +454,7 @@ function curricula() {
     });
 
     // ---------- group 6: admin and sample data ----------
-    const adminMem = memory(), adm = tab(adminMem, null, { admin: true }), st = tab(adminMem, A, { extraScripts: EXTRA }), other = tab(adminMem, B, { extraScripts: EXTRA });
+    const adminMem = await opened(memory()), adm = tab(adminMem, null, { admin: true }), st = tab(adminMem, A, { extraScripts: EXTRA }), other = tab(adminMem, B, { extraScripts: EXTRA });
     await check('Sample data: idempotent load (posts and replies), removable, reloadable; real posts untouched; all labelled SAMPLE', async () => {
         const real = await st.s.createPost({ channel: 'general', title: 'A real post', body: 'b' }, A.email);
         assert.equal(await adm.s.loadSample(), 30);
@@ -475,7 +478,7 @@ function curricula() {
     await check('Channel stats: exact counts per open channel and study group; admin only', async () => {
         assert.throws(() => st.s.channelStats(), /administrator/);
         const rows = adm.s.channelStats(), data = JSON.parse(adminMem.getItem('codementor-community-v1')).posts;
-        deq(rows.map(r => r.id), ['general', 'help', 'projects', 'python', 'javascript', 'csharp', 'cpp', 'study-python', 'study-javascript', 'study-general', 'study-projects', 'study-help']);
+        deq(rows.map(r => r.id), ['python', 'javascript', 'csharp', 'cpp', 'typescript', 'java', 'c', 'go', 'rust', 'php', 'ruby', 'swift', 'kotlin', 'general', 'help', 'projects', 'study-python', 'study-javascript', 'study-general', 'study-projects', 'study-help']);
         for (const r of rows) {
             const list = data.filter(p => p.channel === r.id && p.moderation.state === 'visible');
             assert.equal(r.posts, list.length, r.id); assert.equal(r.replies, list.reduce((n, p) => n + p.replies.length, 0), r.id);
@@ -483,7 +486,8 @@ function curricula() {
         }
         assert.equal(rows.find(r => r.id === 'python').posts, 8); assert.equal(rows.find(r => r.id === 'general').posts, 5, '4 sample + 1 real');
         assert.equal(rows.find(r => r.id === 'csharp').comingSoon, true);
-        assert.equal(rows.find(r => r.id === 'general').members, null, 'open channels have no member list');
+        assert.equal(rows.find(r => r.id === 'general').mode, 'open'); assert.equal(rows.find(r => r.id === 'java').mode, 'approval');
+        assert.equal(rows.find(r => r.id === 'java').pending, 1, 'SAMPLE pending request'); assert.ok(rows.find(r => r.id === 'python').members >= 6, 'SAMPLE members');
     });
     await check('Pin and lock: admin only, audited; pinned first in Latest; locked threads refuse new replies until unlocked', async () => {
         const target = 'sample-community-py-8';
@@ -505,7 +509,7 @@ function curricula() {
         const page = tab(adminMem, null, { admin: true });
         page.run('js/admin-community.js');
         const rows = page.dom.ids.get('channel-stats').children;
-        assert.equal(rows.length, 12); assert.equal(rows[0].dataset.channel, 'general');
+        assert.equal(rows.length, 21); assert.equal(rows[0].dataset.channel, 'python');
         assert.ok(page.dom.walk().some(n => n.tagName === 'H3' && n.textContent === '<img src=x onerror=alert(1)> admin title'));
         assert.ok(!page.dom.walk().some(n => ['IMG', 'SCRIPT'].includes(n.tagName)));
         const card = page.dom.ids.get('thread-list').children.find(c => c.dataset.postId && !c.dataset.postId.startsWith('sample-community-py-8'));

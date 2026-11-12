@@ -4,21 +4,24 @@
    and must be rendered with textContent, never parsed as HTML. */
 (() => {
     "use strict";
-    const key = "codementor-community-v1"; // payload version 3; versions 1 and 2 are migrated on read
-    // OPEN channels: every signed-in, enabled student reads and posts at once (no approval). Private
-    // study groups live in js/community-membership.js and still need administrator approval.
-    const OPEN = Object.freeze({
-        general: Object.freeze({label: "General", icon: "#", description: "Introductions, study habits and everything else."}),
-        help: Object.freeze({label: "Help", icon: "?", description: "Stuck? Ask here and include what you tried."}),
-        projects: Object.freeze({label: "Show your project", icon: "★", description: "Share what you are building and get feedback."}),
-        python: Object.freeze({label: "Python", icon: "Py", language: "python", description: "Python questions, tips and code reviews."}),
-        javascript: Object.freeze({label: "JavaScript", icon: "JS", language: "javascript", description: "JavaScript questions, tips and code reviews."}),
-        csharp: Object.freeze({label: "C#", icon: "C#", language: "csharp", comingSoon: true, description: "C# space. The learning path is coming soon; questions are welcome now."}),
-        cpp: Object.freeze({label: "C++", icon: "C++", language: "cpp", comingSoon: true, description: "C++ space. The learning path is coming soon; questions are welcome now."})
-    });
-    const isChannel = id => Object.hasOwn(OPEN, id) || Object.hasOwn(membership().catalogue, id);
-    const channelLabel = id => OPEN[id]?.label || membership().catalogue[id] || id;
+    const key = "codementor-community-v1"; // payload version 4; versions 1-3 are migrated on read
     const membership = () => window.communityMembership;
+    // GROUPS: one per catalog language plus General, Help and Show your project, and private study
+    // groups (all listed in js/community-membership.js). Every group needs administrator approval
+    // unless an administrator explicitly opens it (audited). Study groups always need approval.
+    const groupsMeta = () => membership().groups;
+    const isChannel = id => Object.hasOwn(membership().catalogue, id);
+    const channelLabel = id => membership().catalogue[id] || id;
+    const TOPIC_TEXT = Object.freeze({general: "Introductions, study habits and everything else.", help: "Stuck? Ask here and include what you tried.", projects: "Share what you are building and get feedback."});
+    function describe(id) {
+        const g = groupsMeta()[id];
+        if (!g) return "";
+        if (g.kind === "language") return g.comingSoon ? `${g.label} learners. The learning path is coming soon; questions are welcome.` : `${g.label} questions, tips and code reviews.`;
+        if (g.kind === "study") return "A small private study group.";
+        return TOPIC_TEXT[id] || "";
+    }
+    // Before groups needed approval, these channels were open to every student.
+    const FORMERLY_OPEN = Object.freeze(["general", "help", "projects", "python", "javascript", "csharp", "cpp"]);
     const LIMITS = Object.freeze({title: 140, body: 5000, code: 4000, reply: 2000, tags: 5, tag: 24, report: 500, reason: 500});
     const RATE = Object.freeze({windowMs: 5 * 60 * 1000, posts: 3, replies: 10});
     const LANGUAGES = Object.freeze({python: "Python", javascript: "JavaScript", csharp: "C#", cpp: "C++", text: "Plain text"});
@@ -98,15 +101,26 @@
         const map = membership().legacy;
         return {...data, version: 3, channelSeen: {}, posts: data.posts.map(p => ({...p, channel: map[p.channel] || p.channel}))};
     }
+    function migrateV3(data) {
+        const at = new Date().toISOString(), groupModes = {}, audit = [...data.audit];
+        for (const id of FORMERLY_OPEN) {
+            if (!data.posts.some(p => p.channel === id && p.moderation.state !== "removed")) continue;
+            groupModes[id] = {mode: "open", at, by: "migration"};
+            audit.push({id: crypto.randomUUID(), at, actor: "system", action: "group-kept-open", targetType: "group", targetId: id, channel: id, reason: "Had posts while every channel was open; kept open so no student loses access. An administrator can switch it to approval required."});
+        }
+        return {...data, version: 4, groupModes, audit};
+    }
+    const validModes = m => m && typeof m === "object" && Object.entries(m).every(([id, v]) => isChannel(id) && groupsMeta()[id].kind !== "study" && ["open", "approval"].includes(v?.mode) && isDate(v.at));
     function read() {
         let data;
         try {
             const raw = localStorage.getItem(key);
-            if (raw === null) return {version: 3, posts: [], audit: [], seen: {}, activity: {}, channelSeen: {}};
+            if (raw === null) return {version: 4, posts: [], audit: [], seen: {}, activity: {}, channelSeen: {}, groupModes: {}};
             data = JSON.parse(raw);
             if (data?.version === 1 && Array.isArray(data.posts)) data = migrateV1(data);
             if (data?.version === 2 && Array.isArray(data.posts)) data = migrateV2(data);
-            if (data?.version !== 3 || !Array.isArray(data.posts) || !data.posts.every(validPost) || new Set(data.posts.map(p => p.id)).size !== data.posts.length ||
+            if (data?.version === 3 && Array.isArray(data.posts) && Array.isArray(data.audit)) data = migrateV3(data);
+            if (data?.version !== 4 || !validModes(data.groupModes) || !Array.isArray(data.posts) || !data.posts.every(validPost) || new Set(data.posts.map(p => p.id)).size !== data.posts.length ||
                 !Array.isArray(data.audit) || typeof data.seen !== "object" || !data.seen || typeof data.activity !== "object" || !data.activity ||
                 typeof data.channelSeen !== "object" || !data.channelSeen) throw Error();
             return data;
@@ -136,17 +150,18 @@
         return {email: "admin"};
     }
     const approved = (channel, owner) => { try { return membership().state(channel, owner) === "approved"; } catch { return false; } };
-    // Open channels: the signed-in, enabled student (checked by studentOf) may read and post.
-    // Study groups: administrator approval required.
-    function assertAccess(channel, owner) {
-        if (Object.hasOwn(OPEN, channel)) return;
-        if (!Object.hasOwn(membership().catalogue, channel)) throw Error("Choose a discussion channel.");
+    function modeOf(data, id) { return groupsMeta()[id]?.kind === "study" ? "approval" : data.groupModes?.[id]?.mode === "open" ? "open" : "approval"; }
+    // Approval-required groups: approved members only. Groups an administrator opened: any signed-in,
+    // enabled student (checked by studentOf).
+    function assertAccess(data, channel, owner) {
+        if (!isChannel(channel)) throw Error("Choose a discussion group.");
+        if (modeOf(data, channel) === "open") return;
         membership().assertMember(channel, owner);
     }
     function findPost(data, id, owner) {
         const post = data.posts.find(p => p.id === id);
         if (!post || post.moderation.state === "removed") throw Error("This post was removed. Refresh the discussions and try again.");
-        assertAccess(post.channel, owner);
+        assertAccess(data, post.channel, owner);
         if (post.moderation.state === "hidden" && post.owner !== owner) throw Error("This post is hidden by a moderator.");
         return post;
     }
@@ -168,7 +183,7 @@
     function createPost(fields, expected) {
         return transaction(() => studentOf(expected), (data, me) => {
             const channel = fields?.channel;
-            assertAccess(channel, me.email);
+            assertAccess(data, channel, me.email);
             const post = {
                 id: crypto.randomUUID(), channel, owner: me.email, name: me.name, createdAt: new Date().toISOString(), editedAt: null,
                 title: plain(fields.title, LIMITS.title, "Title"), body: plain(fields.body, LIMITS.body, "Post", {allowEmpty: Boolean(String(fields.code || "").trim())}),
@@ -209,7 +224,7 @@
             if (!entry || entry.owner !== me.email) throw Error("This post can no longer be restored.");
             if (now - entry.at > UNDO_WINDOW_MS) { recentlyDeleted.delete(id); throw Error("The undo window has closed. The post stays deleted."); }
             if (data.posts.some(p => p.id === id)) throw Error("This post already exists. Nothing was changed.");
-            assertAccess(entry.snapshot.channel, me.email);
+            assertAccess(data, entry.snapshot.channel, me.email);
             if (!validPost(entry.snapshot)) throw Error("This post can no longer be restored.");
             data.posts.push(entry.snapshot);
             recentlyDeleted.delete(id);
@@ -339,16 +354,16 @@
         };
     }
     // Only channels the student may read; hidden posts only for their author; removed posts never.
-    const readable = owner => new Set([...Object.keys(OPEN), ...Object.keys(membership().catalogue).filter(c => approved(c, owner))]);
+    const readable = (data, owner) => new Set(Object.keys(membership().catalogue).filter(c => modeOf(data, c) === "open" || approved(c, owner)));
     function accessible(data, owner) {
-        const allowed = readable(owner);
+        const allowed = readable(data, owner);
         return data.posts.filter(p => allowed.has(p.channel) && p.moderation.state !== "removed" && (p.moderation.state === "visible" || p.owner === owner));
     }
     const top = p => helpful(p) * 2 + p.reactions.thanks.length + p.replies.length;
     function query(options = {}, expected) {
         const me = studentOf(expected), data = read();
         const {channel = "all", search = "", tag = "", status = "all", sort = "latest", mine = false, page = 1, pageSize = PAGE_SIZE} = options;
-        const allowed = readable(me.email);
+        const allowed = readable(data, me.email);
         let posts = accessible(data, me.email);
         const tags = [...new Set(posts.flatMap(p => p.tags))].sort();
         if (channel === "saved") posts = posts.filter(p => p.saved.includes(me.email));
@@ -466,7 +481,7 @@
     function channelSummary(expected, now = Date.now()) {
         const me = studentOf(expected), data = read(), seen = data.channelSeen[me.email] || {}, posts = accessible(data, me.email).filter(p => p.moderation.state === "visible");
         const out = {};
-        for (const id of readable(me.email)) {
+        for (const id of readable(data, me.email)) {
             const since = Date.parse(seen[id] || 0) || now - 7 * 86400000, mine = posts.filter(p => p.channel === id);
             out[id] = {
                 total: mine.length,
@@ -477,8 +492,19 @@
     }
     function markChannelSeen(channel, expected) {
         return transaction(() => studentOf(expected), (data, me) => {
-            assertAccess(channel, me.email);
+            assertAccess(data, channel, me.email);
             (data.channelSeen[me.email] ||= {})[channel] = new Date().toISOString();
+        });
+    }
+
+    // Every group with its access mode and this student's membership state (never other students' data).
+    function groupsFor(expected) {
+        const me = studentOf(expected), data = read();
+        return Object.entries(groupsMeta()).map(([id, g]) => {
+            let state = "none", error = "";
+            try { state = membership().state(id, me.email); } catch (e) { state = "unavailable"; error = e.message; }
+            const mode = modeOf(data, id);
+            return {id, label: g.label, kind: g.kind, language: g.language || null, comingSoon: g.comingSoon, description: describe(id), mode, state, error, readable: mode === "open" || state === "approved"};
         });
     }
 
@@ -525,19 +551,45 @@
         });
     }
     function auditLog() { adminSession(); return structuredClone(read().audit); }
-    // Admin overview of channels: every count is computed from saved posts.
+    // Admin overview of groups: every count is computed from saved posts and membership records.
     function channelStats() {
         adminSession();
-        const posts = read().posts.filter(p => p.moderation.state !== "removed");
-        let members = {};
-        try { for (const r of membership().requests()) if (r.status === "approved") members[r.channel] = (members[r.channel] || 0) + 1; } catch { members = null; }
-        const row = (id, kind) => {
+        const data = read(), posts = data.posts.filter(p => p.moderation.state !== "removed");
+        let members = {}, pending = {};
+        try { for (const r of membership().requests()) if (r.status === "approved") members[r.channel] = (members[r.channel] || 0) + 1; pending = membership().pendingCounts(); } catch { members = null; pending = null; }
+        return Object.entries(groupsMeta()).map(([id, g]) => {
             const list = posts.filter(p => p.channel === id), visible = list.filter(p => p.moderation.state === "visible");
-            return {id, label: channelLabel(id), kind, comingSoon: OPEN[id]?.comingSoon === true, posts: visible.length, hidden: list.length - visible.length,
-                replies: visible.reduce((n, p) => n + p.replies.length, 0), solved: visible.filter(p => p.solved).length,
-                pinned: visible.filter(p => p.pinned).length, locked: visible.filter(p => p.locked).length, members: kind === "study" ? (members ? members[id] || 0 : null) : null};
-        };
-        return [...Object.keys(OPEN).map(id => row(id, "open")), ...Object.keys(membership().catalogue).map(id => row(id, "study"))];
+            return {id, label: g.label, kind: g.kind, comingSoon: g.comingSoon, mode: modeOf(data, id), modeBy: data.groupModes[id]?.by || "default",
+                posts: visible.length, hidden: list.length - visible.length, replies: visible.reduce((n, p) => n + p.replies.length, 0), solved: visible.filter(p => p.solved).length,
+                pinned: visible.filter(p => p.pinned).length, locked: visible.filter(p => p.locked).length,
+                members: members ? members[id] || 0 : null, pending: pending ? pending[id] || 0 : null};
+        });
+    }
+    // Explicit, audited switch between "Approval required" (default) and "Open". Opening needs a note.
+    // Switching back to approval first keeps everyone who posted or replied there as an approved member,
+    // so nobody silently loses access to their own discussions.
+    async function setGroupMode(id, mode, note = "") {
+        adminSession();
+        if (!isChannel(id)) throw Error("Choose a group.");
+        if (groupsMeta()[id].kind === "study") throw Error("Study groups are private and always need approval.");
+        if (!["open", "approval"].includes(mode)) throw Error("Choose Open or Approval required.");
+        const why = plain(note, LIMITS.reason, "Reason", {allowEmpty: mode === "approval"});
+        const current = modeOf(read(), id);
+        if (current === mode) return {mode, changed: false, kept: 0};
+        let kept = 0;
+        if (mode === "approval") {
+            const people = new Map();
+            for (const p of read().posts) if (p.channel === id && p.moderation.state !== "removed") {
+                people.set(p.owner, {owner: p.owner, name: p.name, sample: p.sample === true});
+                for (const r of p.replies) people.set(r.owner, {owner: r.owner, name: r.name, sample: r.sample === true});
+            }
+            kept = await membership().grantMany([...people.values()], id, why || "Kept as a member when the group changed to approval required.");
+        }
+        await transaction(adminSession, data => {
+            data.groupModes[id] = {mode, at: new Date().toISOString(), by: "admin"};
+            audit(data, {action: mode === "open" ? "group-opened" : "group-approval-required", targetType: "group", targetId: id, channel: id, reason: why, detail: mode === "approval" ? `${kept} existing participant(s) kept as members` : "Any signed-in student can now read and post"});
+        });
+        return {mode, changed: true, kept};
     }
     function adminThreads({channel = "all", limit = 25} = {}) {
         adminSession();
@@ -639,19 +691,38 @@
         const posts = read().posts.filter(p => p.sample === true);
         return {loaded: posts.length > 0, posts: posts.length, replies: posts.reduce((n, p) => n + p.replies.filter(r => r.sample === true).length, 0)};
     }
-    function loadSample() {
-        return transaction(adminSession, data => {
+    // SAMPLE members: approved in every group they post or reply in, plus demo requests in other states.
+    function sampleMemberships(now) {
+        const at = new Date(now).toISOString(), out = new Map();
+        const add = (n, channel, status, reason, note) => {
+            const a = sampleAuthor(n), id = `sample-membership-${n}-${channel}`;
+            if (!out.has(id)) out.set(id, {id, channel, owner: a.owner, name: a.name, reason, status, updatedAt: at, ...(note ? {decisionNote: note} : {}), sample: true});
+        };
+        for (const p of samplePosts(now)) {
+            add(Number(p.owner.match(/(\d+)@/)[1]), p.channel, "approved", "SAMPLE member for demonstrations.");
+            for (const r of p.replies) add(Number(r.owner.match(/(\d+)@/)[1]), p.channel, "approved", "SAMPLE member for demonstrations.");
+        }
+        add(2, "csharp", "pending", "SAMPLE request: I want to start C# with others.");
+        add(7, "java", "pending", "SAMPLE request: preparing for a Java course.");
+        add(5, "go", "rejected", "SAMPLE request: interested in Go.", "SAMPLE decision: please try again when the Go path opens.");
+        add(8, "rust", "revoked", "SAMPLE request: learning Rust.", "SAMPLE removal: inactive for a long time.");
+        return [...out.values()];
+    }
+    async function loadSample() {
+        const added = await transaction(adminSession, data => {
             let added = 0;
             for (const p of samplePosts(Date.now())) if (!data.posts.some(x => x.id === p.id)) { data.posts.push(p); added++; }
             // Idempotent for replies too: a sample reply already present is never duplicated.
             audit(data, {action: "sample-loaded", targetType: "sample", targetId: "community", reason: `${added} sample post(s) added`});
             return added;
         });
+        await membership().addSample(sampleMemberships(Date.now()));
+        return added;
     }
     // Removes sample posts and sample replies only. Real replies on a sample post would be lost with it,
     // so that requires an explicit confirmation flag.
-    function removeSample({includeRealReplies = false} = {}) {
-        return transaction(adminSession, data => {
+    async function removeSample({includeRealReplies = false} = {}) {
+        const result = await transaction(adminSession, data => {
             const samples = data.posts.filter(p => p.sample === true);
             const realReplies = samples.reduce((n, p) => n + p.replies.filter(r => r.sample !== true).length, 0);
             if (realReplies && !includeRealReplies) {
@@ -663,6 +734,8 @@
             audit(data, {action: "sample-removed", targetType: "sample", targetId: "community", reason: `${samples.length} sample post(s) removed`});
             return {posts: samples.length, realReplies};
         });
+        result.memberships = await membership().removeSample();
+        return result;
     }
 
     function subscribe(callback) {
@@ -672,7 +745,7 @@
     }
 
     window.communityStore = Object.freeze({
-        key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE, OPEN, channelLabel, channelSummary, markChannelSeen,
+        key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE, channelLabel, describe, groupsFor, channelSummary, markChannelSeen, setGroupMode,
         UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, editReply, reactReply, acceptAnswer, restoreAcceptance,
         react, toggleSaved, setSolved, report, contactPolicy,
         query, get, similar, highlights, reputation, BADGES, POINTS, notifications, markNotificationsRead,

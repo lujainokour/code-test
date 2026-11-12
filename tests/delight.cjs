@@ -118,7 +118,9 @@ const tick = () => new Promise(r => setImmediate(r));
     const A = { name: 'Learner A', email: 'learner-a@example.test', role: 'student', isDemo: true }, B = { name: 'Learner B', email: 'learner-b@example.test', role: 'student', isDemo: true };
     const cshared = memory();
     const ca = communityTab(cshared, A), cb = communityTab(cshared, B), cadmin = communityTab(cshared, null, { admin: true });
-    // Community v2: 'python' is an open channel, so no join request or approval is needed (intentional model change).
+    // Groups model: the Python group needs approval again, so both learners request and are approved (as before v2).
+    await ca.m.request('python', 'Learning Python', A.email); await cb.m.request('python', 'Learning Python', B.email);
+    for (const r of cadmin.m.requests()) await cadmin.m.decide(r.id, 'approved');
     await check('Undo: deleting your own post is restored exactly (replies, reactions and id)', async () => {
         const id = await ca.s.createPost({ channel: 'python', title: 'Undo me', body: 'Body', code: 'print(1)', language: 'python', tags: 'undo' }, A.email);
         await cb.s.reply(id, 'A reply from B', B.email); await cb.s.react(id, 'helpful', B.email);

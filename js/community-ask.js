@@ -23,7 +23,7 @@
         const related = /^[a-z0-9-]{1,60}$/.test(id) ? { kind: place.kind, id, title: name } : null;
         return {
             owner: account.email.trim().toLowerCase(), at: Date.now(),
-            channel: ["python", "javascript"].includes(language) ? language : "help",
+            channel: window.communityMembership?.groups?.[language] || /^[a-z][a-z0-9-]*$/.test(language) ? language : "help",
             title: clean(`${place.kind === "lesson" ? "Question about" : "Help with"}: ${name}`, 140),
             body: "What I tried:\n\nWhat happened:\n\nWhat I expected:\n",
             code: code.trim() ? code : "", language: ["python", "javascript"].includes(language) ? language : "text",
@@ -36,12 +36,14 @@
             if (!anchor || $("community-ask-link")) continue;
             const link = document.createElement("a");
             link.id = "community-ask-link"; link.className = "button button-outline community-ask-link";
-            link.href = "../services/community.html?compose=1"; link.textContent = "Ask the community";
+            // Opens the active language group: a member gets the prefilled draft, anyone else its Request to join screen.
+            const groupOf = () => { try { return draft(place).channel; } catch { return "help"; } };
+            link.href = `../services/community.html?group=${encodeURIComponent(groupOf())}&compose=1`; link.textContent = "Ask the community";
             link.setAttribute("aria-describedby", "community-ask-note");
             const note = document.createElement("span"); note.id = "community-ask-note"; note.className = "community-ask-note";
-            note.textContent = place.kind === "lesson" ? "Opens a prefilled question you can edit. Nothing is posted until you publish." : "Opens a prefilled question with your current code. You can edit or remove it; nothing is posted until you publish.";
+            note.textContent = place.kind === "lesson" ? "Opens your language group with a question you can edit (members only; otherwise you can request to join). Nothing is posted until you publish." : "Opens your language group with a question and your current code (members only; otherwise you can request to join). Nothing is posted until you publish.";
             link.addEventListener("click", () => {
-                try { sessionStorage.setItem(KEY, JSON.stringify(draft(place))); }
+                try { const d = draft(place); sessionStorage.setItem(KEY, JSON.stringify(d)); link.href = `../services/community.html?group=${encodeURIComponent(d.channel)}&compose=1`; }
                 catch { /* Without a draft the composer simply opens empty. */ }
             });
             anchor.after(link, note);
