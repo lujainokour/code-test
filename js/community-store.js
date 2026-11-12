@@ -48,6 +48,14 @@
         for (const tag of unique) if (tag.length > LIMITS.tag || !/^[a-z0-9][a-z0-9+#.-]*$/.test(tag)) throw Error(`Tags use letters, numbers, + # . - only (up to ${LIMITS.tag} characters): "${tag.slice(0, 30)}".`);
         return unique;
     }
+    // "Related lesson/task" link on a post: an id from the curriculum and a short title, shown as a link.
+    const validRelated = r => r && ["lesson", "task"].includes(r.kind) && typeof r.id === "string" && /^[a-z0-9-]{1,60}$/.test(r.id) && isText(r.title, LIMITS.title);
+    function relatedOf(value) {
+        if (value === undefined || value === null || value === "") return null;
+        const related = {kind: value.kind, id: value.id, title: typeof value.title === "string" ? value.title.trim() : value.title};
+        if (!validRelated(related)) throw Error("The related lesson or task link is not valid. Remove it and try again.");
+        return related;
+    }
     function codeOf(code, language) {
         const text = plain(code, LIMITS.code, "Code block", {allowEmpty: true, keepIndent: true});
         if (!text) return null;
@@ -67,7 +75,8 @@
             (p.acceptedReplyId === undefined || p.acceptedReplyId === null || isText(p.acceptedReplyId, 100)) &&
             Array.isArray(p.reports) && p.reports.every(r => isText(r.id, 100) && isText(r.reporter, 254) && isText(r.reason, LIMITS.report) && ["open", "resolved"].includes(r.status)) &&
             p.moderation && MODERATION.includes(p.moderation.state) &&
-            (p.solvedAt === undefined || p.solvedAt === null || isDate(p.solvedAt));
+            (p.solvedAt === undefined || p.solvedAt === null || isDate(p.solvedAt)) &&
+            (p.related === undefined || p.related === null || validRelated(p.related));
     }
     function migrateV1(data) {
         const map = membership().legacy;
@@ -162,7 +171,7 @@
             const post = {
                 id: crypto.randomUUID(), channel, owner: me.email, name: me.name, createdAt: new Date().toISOString(), editedAt: null,
                 title: plain(fields.title, LIMITS.title, "Title"), body: plain(fields.body, LIMITS.body, "Post", {allowEmpty: Boolean(String(fields.code || "").trim())}),
-                code: codeOf(fields.code, fields.language), tags: tagsOf(fields.tags), reactions: {helpful: [], thanks: []}, saved: [], solved: false,
+                code: codeOf(fields.code, fields.language), tags: tagsOf(fields.tags), related: relatedOf(fields.related), reactions: {helpful: [], thanks: []}, saved: [], solved: false,
                 replies: [], reports: [], moderation: {state: "visible"}
             };
             rateCheck(data, me.email, "post");

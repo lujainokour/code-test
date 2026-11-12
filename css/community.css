@@ -227,3 +227,9 @@ body.student-ui .community-v2 .community-tabs [role="tab"]:focus-visible { outli
 .community-rank { min-width:18px; font-weight:800; color:var(--cm-burgundy-700); font-variant-numeric:tabular-nums; }
 .community-helper-name { flex:1 1 auto; min-width:0; overflow-wrap:anywhere; }
 .community-helper-points { font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+/* learning integration */
+.community-related-draft { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:-4px 0 12px; padding:8px 12px; border-radius:12px; background:var(--cm-burgundy-50); color:var(--cm-burgundy-700); font-size:14px; font-weight:650; }
+.community-related-draft[hidden] { display:none; }
+.community-ask-link { margin-top:8px; }
+.community-ask-note { display:block; margin-top:6px; font-size:12px; color:var(--cm-ink-2, var(--muted)); }

@@ -19,7 +19,7 @@
     const TABS = [["latest", "Latest"], ["unanswered", "Unanswered"], ["solved", "Solved"], ["top", "Top"], ["mine", "My posts"]];
     let selected = "all", view = "latest", page = 1;
     const editing = new Set(), reporting = new Set(), editingReplies = new Set();
-    let openId = null, lastOpener = null, replyTo = null;
+    let openId = null, lastOpener = null, replyTo = null, pendingRelated = null;
 
     function node(tag, content, cls) {
         const el = document.createElement(tag);
@@ -528,6 +528,28 @@
         form.addEventListener("submit", async event => { event.preventDefault(); submit.disabled = true; await act(() => membership.request(channel, reason.value, owner), "Request sent. An administrator will review it."); submit.disabled = false; });
         gate.append(form);
     }
+    // "Ask the community" from a lesson, task or review: a one-time draft for this account, never auto-posted.
+    function renderRelated() {
+        const host = $("community-related");
+        host.hidden = !pendingRelated; host.replaceChildren();
+        if (!pendingRelated) return;
+        host.append(node("span", `Related ${pendingRelated.kind}: ${pendingRelated.title}`), button("Remove link", () => { pendingRelated = null; renderRelated(); }, "community-mini"));
+    }
+    function applyDraft() {
+        let raw = null;
+        try { raw = sessionStorage.getItem("codementor-community-draft"); sessionStorage.removeItem("codementor-community-draft"); } catch { raw = null; }
+        if (!raw) return;
+        let d;
+        try { d = JSON.parse(raw); } catch { return; }
+        if (!d || d.owner !== owner || !(Date.now() - d.at < 30 * 60000)) return; // another account or a stale draft: ignore it
+        focusComposer({ channel: d.channel, title: d.title });
+        $("post-body").value = String(d.body || "").slice(0, store.LIMITS.body);
+        $("post-tags").value = String(d.tags || "");
+        if (d.code) { $("post-code").value = String(d.code).slice(0, store.LIMITS.code); if (Object.hasOwn(store.LANGUAGES, d.language)) $("post-language").value = d.language; $("community-composer").querySelector?.(".community-code-details")?.setAttribute("open", ""); }
+        try { pendingRelated = d.related && store.OPEN && typeof d.related === "object" ? { kind: d.related.kind, id: d.related.id, title: d.related.title } : null; } catch { pendingRelated = null; }
+        renderRelated(); renderSimilar();
+        say(d.code ? "Draft ready with your code. Edit or remove anything before publishing — nothing is posted until you press Publish." : "Draft ready. Edit it before publishing — nothing is posted until you press Publish.");
+    }
     function renderSimilar() {
         const host = $("community-similar");
         let items = [];
@@ -544,12 +566,12 @@
     $("community-composer").addEventListener("submit", async event => {
         event.preventDefault();
         const form = event.currentTarget, submit = form.querySelector("button[type=submit]"); submit.disabled = true;
-        const fields = { channel: $("post-channel").value, title: $("post-title").value, body: $("post-body").value, code: $("post-code").value, language: $("post-language").value, tags: $("post-tags").value };
+        const fields = { channel: $("post-channel").value, title: $("post-title").value, body: $("post-body").value, code: $("post-code").value, language: $("post-language").value, tags: $("post-tags").value, related: pendingRelated };
         let id = null;
         const ok = await act(async () => { id = await store.createPost(fields, owner); }, "Your discussion is published.");
         submit.disabled = false;
         if (!ok) return;
-        form.reset(); renderSimilar(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render();
+        form.reset(); pendingRelated = null; renderRelated(); renderSimilar(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render();
         kit()?.toast("Your discussion is published.", { undo: async () => { await store.deletePost(id, owner); say("Post removed."); render(); } });
         $("community-feed-title").scrollIntoView({ block: "center" });
     });
@@ -566,6 +588,7 @@
     store.subscribe(render);
     window.addEventListener("pageshow", render);
     render();
+    applyDraft();
     // Deep link: community.html?post=<id> opens that discussion if the student can read it.
     try { const id = new URLSearchParams(location.search).get("post"); if (id) openPost(id); } catch { /* no deep link */ }
 })();

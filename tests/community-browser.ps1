@@ -127,6 +127,16 @@ try {
     Eval "cmStorage.setItem('codementor-demo-session',sessionStorage.getItem('qa-demo-session'));true" | Out-Null
     Open 'pages/services/community.html'
     Shot 'reputation-1440'
+    # Learning integration: Ask the community from the coding workspace opens a prefilled, unposted draft.
+    Open 'pages/student/workspace.html?task=receipt'
+    Wait 1500
+    Eval "document.getElementById('code-editor').value='price = float(input())\nprint(price)';true" | Out-Null
+    Check 'Workspace shows Ask the community next to the study assistant' (Eval "document.getElementById('community-ask-link')?.textContent==='Ask the community'")
+    Eval "sessionStorage.setItem('qa-posts-before',localStorage.getItem('codementor-community-v1')||'');document.getElementById('community-ask-link').click();true" | Out-Null
+    Wait 1200
+    Check 'Composer is prefilled with the task, the current code and a related link; nothing posted' (Eval "location.pathname.endsWith('/services/community.html') && document.getElementById('post-title').value==='Help with: Build a simple receipt' && document.getElementById('post-code').value==='price = float(input())\nprint(price)' && document.getElementById('community-related').textContent.includes('Related task') && (localStorage.getItem('codementor-community-v1')||'')===sessionStorage.getItem('qa-posts-before')")
+    Shot 'ask-from-workspace-1440'
+    Eval "document.getElementById('community-composer').reset();true" | Out-Null
     # Layout at four widths, touch targets, mobile tabs.
     foreach ($w in @(1440, 1024, 768, 390)) { Size $w; Check "$w px: no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth+1') }
     Size 1440; Shot 'feed-1440'

@@ -393,5 +393,62 @@ function curricula() {
         assert.equal(calls.confetti, 1, 'celebrated once, not on every render');
     });
 
+    // ---------- group 5: learning integration ----------
+    function askPage(search, elements, account = A, language = 'python') {
+        const els = {}, session = memory(), listeners = [];
+        for (const [id, props] of Object.entries(elements)) els[id] = { id, ...props, after(...nodes) { this.afterNodes = nodes; } };
+        const document = { readyState: 'interactive', getElementById: id => els[id] || null, createElement: () => ({ setAttribute() {}, addEventListener(t, fn) { listeners.push(fn); } }), addEventListener() {} };
+        const window = { platformStore: { student: () => account }, cmStorage: { activeLanguage: () => language } };
+        const ctx = vm.createContext({ window, document, location: { search }, sessionStorage: session, URLSearchParams });
+        vm.runInContext(fs.readFileSync('js/community-ask.js', 'utf8'), ctx, { filename: 'js/community-ask.js' });
+        return { window, els, session, listeners };
+    }
+    await check('Ask the community: workspace draft carries the task, language and current code; lesson and empty review carry no code', async () => {
+        const ws = askPage('?task=receipt', { 'mentor-link': {}, 'task-title': { textContent: 'Build a simple receipt' }, 'code-editor': { value: 'price = float(input())\nprint(price)' } });
+        const d = plain(ws.window.communityAsk.draft(ws.window.communityAsk.PLACES[1]));
+        assert.equal(d.owner, A.email); assert.equal(d.channel, 'python'); assert.equal(d.title, 'Help with: Build a simple receipt');
+        assert.equal(d.code, 'price = float(input())\nprint(price)'); assert.equal(d.language, 'python');
+        deq(d.related, { kind: 'task', id: 'receipt', title: 'Build a simple receipt' });
+        assert.ok(ws.els['mentor-link'].afterNodes[0].textContent === 'Ask the community' && ws.els['mentor-link'].afterNodes[0].href === '../services/community.html?compose=1');
+        ws.listeners[0]();
+        assert.equal(JSON.parse(ws.session.getItem('codementor-community-draft')).related.id, 'receipt', 'clicking hands the draft over; it never posts');
+        const lesson = askPage('?lesson=variables', { 'lesson-mentor-link': {}, 'lesson-title': { textContent: 'Variables and values' } }, A, 'javascript');
+        const ld = plain(lesson.window.communityAsk.draft(lesson.window.communityAsk.PLACES[0]));
+        assert.equal(ld.title, 'Question about: Variables and values'); assert.equal(ld.code, ''); assert.equal(ld.channel, 'javascript');
+        deq(ld.related, { kind: 'lesson', id: 'variables', title: 'Variables and values' });
+        const review = askPage('', { 'review-mentor-link': {}, 'review-task-name': { textContent: '' }, 'review-code': { textContent: 'No saved draft yet. Open the workspace to write your solution.' } });
+        const rd = plain(review.window.communityAsk.draft(review.window.communityAsk.PLACES[2]));
+        assert.equal(rd.code, '', 'the placeholder is not posted as code'); assert.equal(rd.related, null, 'no task id, no link');
+        for (const page of ['lesson', 'workspace', 'code-review']) assert.ok(fs.readFileSync(`pages/student/${page}.html`, 'utf8').includes('<script src="../../js/community-ask.js" defer></script>'), page);
+    });
+    await check('Community page: a draft for this account prefills the composer once and posts nothing; other accounts and stale drafts are ignored', async () => {
+        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const draft = { owner: A.email, at: Date.now(), channel: 'python', title: 'Help with: Build a simple receipt', body: 'What I tried:', code: 'print(1)', language: 'python', tags: 'task', related: { kind: 'task', id: 'receipt', title: 'Build a simple receipt' } };
+        t.context.sessionStorage.setItem('codementor-community-draft', JSON.stringify(draft));
+        t.run('js/community.js');
+        const ids = t.dom.ids;
+        assert.equal(ids.get('post-title').value, 'Help with: Build a simple receipt'); assert.equal(ids.get('post-code').value, 'print(1)'); assert.equal(ids.get('post-tags').value, 'task');
+        assert.match(ids.get('community-related').textContent, /Related task: Build a simple receipt/);
+        assert.match(ids.get('community-status').textContent, /nothing is posted until you press Publish/);
+        assert.equal(t.s.query({}, A.email).total, 0, 'never auto-posted');
+        assert.equal(t.context.sessionStorage.getItem('codementor-community-draft'), null, 'used once');
+        for (const bad of [{ ...draft, owner: B.email }, { ...draft, at: Date.now() - 31 * 60000 }]) {
+            const u = tab(memory(), A, { extraScripts: EXTRA });
+            u.context.sessionStorage.setItem('codementor-community-draft', JSON.stringify(bad)); u.run('js/community.js');
+            assert.equal(u.dom.ids.get('post-title').value, '', 'ignored');
+        }
+    });
+    await check('Related lesson/task links: stored and shown; invalid ids or kinds are refused', async () => {
+        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const id = await t.s.createPost({ channel: 'python', title: 'Receipt rounding', body: 'b', related: { kind: 'task', id: 'receipt', title: '<b>Build a simple receipt</b>' } }, A.email);
+        deq(t.s.get(id, A.email).related, { kind: 'task', id: 'receipt', title: '<b>Build a simple receipt</b>' });
+        for (const related of [{ kind: 'task', id: '../admin', title: 'x' }, { kind: 'admin', id: 'receipt', title: 'x' }, { kind: 'lesson', id: 'variables', title: '' }])
+            await assert.rejects(t.s.createPost({ channel: 'python', title: 'Bad link', body: 'b', related }, A.email), /related lesson or task link is not valid/);
+        t.run('js/community.js');
+        await t.dom.walk().find(n => n.tagName === 'BUTTON' && n.className.includes('community-card-open')).fire('click');
+        const link = t.dom.walk().find(n => n.tagName === 'A' && n.className === 'community-related');
+        assert.equal(link.textContent, 'Related task: <b>Build a simple receipt</b>'); assert.equal(link.href, '../student/workspace.html?task=receipt');
+    });
+
     console.log(`${count} community v2 checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });
