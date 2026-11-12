@@ -612,6 +612,40 @@ body.student-ui .results-review summary { min-height: 44px; display: flex; align
     body.student-ui #learning-report .services-notice { border-left: 4px solid var(--cm-amber); background: var(--cm-amber-bg); color: var(--cm-ink); }
 }
 
+/* 18. PAGE GROUP — ACCOUNT, SERVICES, MENTOR, PROJECT ---------------------- */
+/* 18.1 Choice cards (onboarding, profile preferences): clear checked state, 44px */
+body.student-ui .choice-card .choice-content { min-height: 44px; background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); transition: border-color .15s var(--cm-ease), box-shadow .15s var(--cm-ease); }
+body.student-ui .choice-card:hover .choice-content { border-color: var(--cm-burgundy-500); }
+body.student-ui .choice-card input:checked + .choice-content { border-color: var(--cm-burgundy-700); background: var(--cm-burgundy-50); box-shadow: inset 0 0 0 1px var(--cm-burgundy-700); }
+body.student-ui .choice-card input:focus-visible + .choice-content { outline: 3px solid var(--cm-focus); outline-offset: 2px; }
+body.student-ui :is(.profile-fields, .profile-form-actions, .preferences-actions) { gap: var(--cm-s2); }
+body.student-ui .field-error:not(:empty) { color: #8a1c1c; font-weight: 650; }
+
+/* 18.2 Subscription: plan cards as tiles; the recommended plan is the one highlight */
+body.student-ui .subscription-plan-card { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-1); }
+body.student-ui .subscription-plan-premium { border: 2px solid var(--cm-burgundy-700); box-shadow: var(--cm-shadow-2); }
+body.student-ui .subscription-price { font-variant-numeric: tabular-nums; color: var(--cm-ink); }
+body.student-ui .subscription-recommended, body.student-ui .subscription-plan-label { border-radius: var(--cm-radius-pill); }
+body.student-ui :is(.subscription-notice, .subscription-content-note) { border-left: 4px solid var(--cm-amber); background: var(--cm-amber-bg); color: var(--cm-ink); border-radius: var(--cm-radius-sm); }
+
+/* 18.3 Services, career, internship, portfolio, requests: cards, tags as chips, empty states */
+body.student-ui .services-card { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); }
+body.student-ui .services-tag { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: var(--cm-radius-pill); background: var(--cm-surface-soft); color: var(--cm-ink-2); font-size: 13px; font-weight: 700; }
+body.student-ui .services-meta { color: var(--cm-ink-2); font-size: 14px; overflow-wrap: anywhere; }
+body.student-ui :is(.services-notice, .mentor-demo-notice) { border-left: 4px solid var(--cm-amber); background: var(--cm-amber-bg); color: var(--cm-ink); border-radius: var(--cm-radius-sm); }
+body.student-ui :is(.request-empty, .peer-empty) { text-align: center; border: 1px dashed var(--cm-line-strong); border-radius: var(--cm-radius); background: var(--cm-surface); }
+body.student-ui :is(.service-request-actions, .requests-toolbar-actions, .peer-actions) { display: flex; flex-wrap: wrap; gap: var(--cm-s1); }
+body.student-ui :is(.services-panel, .peer-panel, .dashboard-card) :is(h2, h3, p, li) { overflow-wrap: anywhere; }
+
+/* 18.4 Mentor chat: readable bubbles, 44px suggestions, sticky composer feel */
+body.student-ui .mentor-chat { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-2); }
+body.student-ui .chat-message { border-radius: 14px; background: #fff; border: 1px solid var(--cm-line); }
+body.student-ui .chat-message-label { color: var(--cm-burgundy-700); font-weight: 700; }
+body.student-ui .chat-suggestions :is(button, .button) { min-height: 44px; border-radius: var(--cm-radius-pill); background: #fff; border: 1px solid var(--cm-line-strong); color: var(--cm-ink); }
+body.student-ui .chat-suggestions :is(button, .button):hover { border-color: var(--cm-burgundy-700); }
+body.student-ui #chat-input { min-height: 96px; }
+body.student-ui .mentor-code { border-radius: 12px; font-size: 14px; line-height: 1.7; }
+
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     .sp-skeleton, .week-bar, .badge-card.is-earned::after, .cm-toast { animation: none !important; }

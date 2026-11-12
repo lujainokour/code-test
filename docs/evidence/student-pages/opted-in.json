@@ -12,6 +12,18 @@
     "placement-review",
     "placement-results",
     "skill-analysis",
-    "learning-report"
+    "learning-report",
+    "profile",
+    "onboarding",
+    "subscription",
+    "career",
+    "virtual-internship",
+    "requests",
+    "messages",
+    "local-portfolio",
+    "mentor",
+    "mentor-studio",
+    "project",
+    "project-evaluation"
   ]
 }
