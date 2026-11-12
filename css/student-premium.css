@@ -719,8 +719,9 @@ body.student-ui .workspace-body > main.container:is(.onboarding-layout, .assessm
         border-right: 1px solid rgba(255, 255, 255, .14); box-shadow: 8px 0 32px rgba(38, 2, 4, .18);
         -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%); backdrop-filter: blur(var(--glass-blur)) saturate(150%);
     }
-    body.glass-ui .workspace-sidebar :is(.workspace-navigation a, .sidebar-bottom a, .sidebar-bottom button, .sidebar-group-toggle, summary) { color: var(--glass-sidebar-text); }
-    body.glass-ui .workspace-sidebar :is(.sidebar-label, .sidebar-group-label) { color: var(--glass-sidebar-muted); opacity: 1; }
+    /* The shell dims group labels (opacity .5) and toggles (.8); on glass they are fully opaque text colours instead. */
+    body.glass-ui .workspace-sidebar :is(.workspace-navigation a, .sidebar-bottom a, .sidebar-bottom button, .shell-group-toggle, summary) { color: var(--glass-sidebar-text); opacity: 1; }
+    body.glass-ui .workspace-sidebar :is(.sidebar-label, .shell-group-label) { color: var(--glass-sidebar-muted); opacity: 1; }
     body.glass-ui .workspace-sidebar .workspace-navigation a:hover { background: rgba(255, 255, 255, .12); }
     body.glass-ui .workspace-sidebar .workspace-navigation a[aria-current="page"] { background: rgba(255, 255, 255, .9); color: #3a0610; }
 

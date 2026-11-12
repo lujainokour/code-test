@@ -58,6 +58,12 @@ check('WCAG AA: sidebar nav text on the translucent burgundy glass against the L
         assert.ok(contrast(parse('#3a0610'), current) >= 4.5, 'current page item');
     }
 });
+check('Sidebar group labels and toggles are not dimmed on glass (the shell uses opacity .5/.8)', () => {
+    assert.match(section, /body\.glass-ui \.workspace-sidebar :is\(\.workspace-navigation a, \.sidebar-bottom a, \.sidebar-bottom button, \.shell-group-toggle, summary\) \{ color: var\(--glass-sidebar-text\); opacity: 1; \}/);
+    assert.match(section, /body\.glass-ui \.workspace-sidebar :is\(\.sidebar-label, \.shell-group-label\) \{ color: var\(--glass-sidebar-muted\); opacity: 1; \}/);
+    const shellCss = fs.readFileSync('css/style.css', 'utf8');
+    assert.match(shellCss, /\.shell-group-label \{[^}]*opacity: \.5;/, 'the dimming this overrides still exists');
+});
 check('The guard really fails on a weak surface (sanity check of the method)', () => {
     const tooThin = Math.min(...backdropSamples().map(bg => contrast(parse('#4a5b63'), over(parse('rgba(255, 255, 255, .05)'), over(parse('rgba(122, 31, 61, .9)'), bg)))));
     assert.ok(tooThin < 4.5);
