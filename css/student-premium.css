@@ -785,3 +785,13 @@ body.student-ui .mentor-code-hint { display: none; }
 body.student-ui .dashboard-card:has(> #code-context-note:empty):has(> #context-code[hidden]) .mentor-code-hint { display: block; }
 /* Career and company inbox empty states: actions sit inside the panel. */
 body.student-ui .career-empty-actions { display: flex; flex-wrap: wrap; gap: var(--cm-s1); margin-top: var(--cm-s2); }
+/* Admin: the grouped sidebar styling lived only in admin-overview.css (3 of 18 admin pages), so most admin
+   pages showed a different, larger navigation. Same rules for every admin page (originals kept). */
+body.glass-ui.admin-page .admin-nav-group { margin-bottom: 14px; }
+body.glass-ui.admin-page .admin-nav-group .shell-group-label { margin: 0 0 6px 12px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
+body.glass-ui.admin-page .admin-nav-group a { display: block; border-radius: 9px; padding: 9px 12px; border-left: 3px solid transparent; }
+body.glass-ui.admin-page .admin-nav-group a[aria-current="page"] { border-left-color: #b1d4e1; font-weight: 700; }
+/* Admin overview: 8 KPI tiles fill two rows of four on wide screens (no lone empty slot). */
+@media (min-width: 1200px) { body.glass-ui .overview-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Company messages: the message field fills the composer bar and meets 44px. */
+body.glass-ui .company-chat-input-bar #company-chat-input { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--cm-line); border-radius: 10px; background: #fff; color: var(--cm-ink); font: inherit; }
