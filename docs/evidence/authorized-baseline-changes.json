@@ -82,6 +82,26 @@
       "reason": "Honest wording: the earned item is a \"Completion badge (local demo)\", not a verifiable credential; text only, earning rules unchanged."
     },
     {
+      "file": "pages/auth/login.html",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: add the site favicon link (one <link rel=\"icon\">); no text, form or script change."
+    },
+    {
+      "file": "pages/auth/admin-login.html",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: add the site favicon link (one <link rel=\"icon\">); no text, form or script change."
+    },
+    {
+      "file": "pages/auth/teacher-login.html",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: add the site favicon link (one <link rel=\"icon\">); no text, form or script change."
+    },
+    {
+      "file": "pages/auth/teacher-signup.html",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: add the site favicon link (one <link rel=\"icon\">); no text, form or script change."
+    },
+    {
       "file": "pages/auth/company-login.html",
       "part": "Part 6",
       "reason": "Owner-approved QA follow-up: replace the unsupported claim \"verified university student portfolios\" with accurate wording; markup otherwise unchanged."

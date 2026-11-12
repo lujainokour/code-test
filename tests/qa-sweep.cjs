@@ -13,6 +13,18 @@ check('Every page that may be edited links the CodeMentor favicon', () => {
     const missing = editable.filter(page => !/<link rel="icon" href="(\.\.\/\.\.\/)?assets\/images\/Burgundy CMA cherry monogram logo\.png"/.test(fs.readFileSync(page, 'utf8')) && !/rel="icon"/.test(fs.readFileSync(page, 'utf8')));
     assert.deepEqual(missing, []);
 });
+check('The four protected sign-in pages changed only by the favicon link (owner-approved), byte for byte', () => {
+    const crypto = require('node:crypto');
+    const baseline = JSON.parse(fs.readFileSync('docs/phase2-protected-baseline.json', 'utf8'));
+    const link = '<link rel="icon" href="../../assets/images/Burgundy CMA cherry monogram logo.png" type="image/png">';
+    for (const page of ['pages/auth/login.html', 'pages/auth/admin-login.html', 'pages/auth/teacher-login.html', 'pages/auth/teacher-signup.html']) {
+        const text = fs.readFileSync(page, 'utf8').replace(/\r\n/g, '\n');
+        assert.equal(text.split(link).length, 2, page + ' has exactly one favicon link');
+        const withoutLink = crypto.createHash('sha256').update(text.replace(link, '')).digest('hex');
+        assert.equal(withoutLink, baseline.find(entry => entry.file === page).sha256Lf, page + ' differs from its baseline by more than the favicon');
+        assert.ok(authorised.includes(page), page + ' is listed as an approved change');
+    }
+});
 check('Phones get a 44px floor for the controls the sweep found at 27-42px', () => {
     const css = fs.readFileSync('css/style.css', 'utf8');
     const block = css.slice(css.indexOf('/* QA sweep: 44px touch-target floor on phones'));
