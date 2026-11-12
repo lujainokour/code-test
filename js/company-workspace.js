@@ -94,7 +94,7 @@
         const talent = store.getTalentPool();
 
         if (greetingEl) {
-            greetingEl.textContent = `Welcome back, ${profile.name}`;
+            greetingEl.textContent = profile.name?.trim() ? `Welcome back, ${profile.name}` : "Welcome back";
         }
 
         const underReview = apps.filter(a => a.status === "Under Review");
@@ -170,6 +170,7 @@
                 `;
                 activeJobsRoot.appendChild(card);
             });
+            if (!activeJobsRoot.children.length) activeJobsRoot.innerHTML = `<p class="workspace-empty">No active postings yet. Use “Post an opportunity” to publish an internship or project; it will appear here.</p>`;
         }
 
         // Recent student applications in Dashboard
@@ -201,6 +202,7 @@
                 `;
                 recentAppsRoot.appendChild(row);
             });
+            if (!recentAppsRoot.children.length) recentAppsRoot.innerHTML = `<p class="workspace-empty">No applications yet. Students’ pitches appear here after they apply to one of your published opportunities.</p>`;
         }
 
         // Talent pool spotlight in Dashboard
@@ -234,6 +236,7 @@
                 `;
                 talentPreviewRoot.appendChild(card);
             });
+            if (!talentPreviewRoot.children.length) talentPreviewRoot.innerHTML = `<p class="workspace-empty">No student profiles are published yet. Profiles appear here once students choose to share them.</p>`;
         }
     }
 

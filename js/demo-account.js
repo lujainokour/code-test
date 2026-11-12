@@ -81,7 +81,9 @@
                 }
                 session(profile);
                 password.value = "";
-                location.href = `../${role}/${role}-dashboard.html`;
+                // Return to the guarded company page that sent the visitor here (access-guard.js sets ?next=).
+                const next = role === "company" ? new URLSearchParams(location.search).get("next") : null;
+                location.href = next && /^pages\/company\/company-[a-z0-9-]+\.html(\?[^#\s]*)?(#[\w-]*)?$/.test(next) ? `../../${next}` : `../${role}/${role}-dashboard.html`;
             } catch (error) { say(error.message || "The local account could not be opened.", true); reset(); }
         });
         window.addEventListener("pageshow", reset);

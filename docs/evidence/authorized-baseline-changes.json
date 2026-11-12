@@ -80,6 +80,21 @@
       "file": "js/workspace-completion.js",
       "part": "Part 6",
       "reason": "Honest wording: the earned item is a \"Completion badge (local demo)\", not a verifiable credential; text only, earning rules unchanged."
+    },
+    {
+      "file": "pages/auth/company-login.html",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: replace the unsupported claim \"verified university student portfolios\" with accurate wording; markup otherwise unchanged."
+    },
+    {
+      "file": "js/demo-account.js",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: after company sign-in, return to the guarded company page named in ?next= (only pages/company/company-*.html); otherwise the dashboard as before."
+    },
+    {
+      "file": "js/company-workspace.js",
+      "part": "Part 6",
+      "reason": "Owner-approved QA follow-up: empty-state messages for empty dashboard lists and no dangling comma in the greeting when the profile has no name; data unchanged."
     }
   ]
 }

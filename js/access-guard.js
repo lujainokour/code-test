@@ -40,6 +40,12 @@
             if (!allowed) { document.documentElement.style.visibility = "hidden"; const login = new URL("pages/auth/admin-login.html", root); login.searchParams.set("next", adminPage); location.replace(login.href); return false; }
             document.documentElement.style.removeProperty("visibility"); return true;
         }
+        // Company workspace pages: same pattern as the admin branch, with the company session.
+        const companyPage = current.origin === root.origin && current.pathname.startsWith(root.pathname) && /^pages\/company\/company-[a-z0-9-]+\.html$/.test(adminPath) ? adminPath : null;
+        if (companyPage) {
+            if (!company()) { document.documentElement.style.visibility = "hidden"; const login = new URL("pages/auth/company-login.html", root); login.searchParams.set("next", companyPage + current.search + current.hash); location.replace(login.href); return false; }
+            document.documentElement.style.removeProperty("visibility"); return true;
+        }
         if (!protectedRoute(current)) return true;
         const path = current.pathname.slice(root.pathname.length);
         if (student() || (path.startsWith("pages/services/") && companyPages.has(path.split("/").pop()) && company())) {
