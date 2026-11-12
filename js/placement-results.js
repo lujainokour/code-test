@@ -48,7 +48,7 @@
             const result = window.placementEngine.evaluate(bank, attempt), name = window.languageCatalog.get(context.language).name;
             document.title = `${name} placement results | CodeMentor AI`;
             document.querySelector(".results-intro").textContent = `Your ${name} assessment recommends a starting level using topic scores. Applying placement does not award course completion.`;
-            document.querySelector(".onboarding-footer").textContent = `CodeMentor AI · Frontend demo · ${name} placement results`;
+            { const footer = document.querySelector(".onboarding-footer"); if (footer) footer.textContent = `CodeMentor AI · Frontend demo · ${name} placement results`; }
             byId("score-percentage").textContent = `${result.percentage}%`; byId("score-count").textContent = `${result.correct} of ${result.total} correct`;
             byId("response-summary").textContent = `${result.total - result.unsure} options selected · ${result.unsure} marked “I’m not sure”`;
             const topics = byId("topic-results"); topics.replaceChildren();

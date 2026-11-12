@@ -56,7 +56,7 @@
             snapshot = JSON.stringify(attempt); saved = true; byId("save-status").textContent = "Answers loaded.";
             document.querySelector(".eyebrow").textContent = `${window.languageCatalog.get(context.language).name.toUpperCase()} PLACEMENT`;
             document.title = `${window.languageCatalog.get(context.language).name} placement | CodeMentor AI`;
-            document.querySelector(".onboarding-footer").textContent = `CodeMentor AI · Frontend demo · ${window.languageCatalog.get(context.language).name} placement`;
+            { const footer = document.querySelector(".onboarding-footer"); if (footer) footer.textContent = `CodeMentor AI · Frontend demo · ${window.languageCatalog.get(context.language).name} placement`; }
             render();
         } catch (error) { message(error.message, true); ["previous-question", "next-question", "review-answers"].forEach(id => { byId(id).disabled = true; }); }
     }
