@@ -485,6 +485,8 @@
             const locked = isGroup(selected) && !info(selected)?.readable;
             $("community-count").textContent = `${result.total} ${result.total === 1 ? "discussion" : "discussions"}`;
             feed.replaceChildren(...result.items.map(postCard));
+            // A group you cannot read shows only its gate: no empty tabs, search or feed heading under it.
+            document.querySelector(".community-toolbar").hidden = locked; document.querySelector(".community-feed-heading").hidden = locked;
             if (locked) { $("community-count").textContent = ""; }
             else if (!result.items.length) {
                 const filtered = $("community-search").value.trim() || currentTag || view !== "latest" || selected !== "all";

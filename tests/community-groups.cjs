@@ -61,6 +61,8 @@ const groupButton = (t, label) => walk(t.dom.ids.get('community-channels')).find
         deq(submits.map(n => n.textContent), ['Request to join']);
         assert.ok(walk(gate).some(n => n.id === 'join-reason'));
         assert.equal(a.dom.ids.get('community-composer').hidden, true, 'no composer before approval');
+        assert.equal(a.dom.document.querySelector('.community-toolbar').hidden, true, 'no empty tabs or search under the gate');
+        assert.equal(a.dom.document.querySelector('.community-feed-heading').hidden, true);
     });
 
     await check('Non-members can neither read nor post: no post content reaches them in any view', async () => {
