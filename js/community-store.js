@@ -313,15 +313,17 @@
 
     // ---------- reading ----------
     const helpful = p => p.reactions.helpful.length;
-    function view(p, owner) {
+    function view(p, owner, people = null) {
+        const badgesOf = who => people?.get(who)?.badges ? [...people.get(who).badges] : [];
         return {
+            authorBadges: badgesOf(p.owner),
             id: p.id, channel: p.channel, name: p.name, mine: p.owner === owner, sample: p.sample === true, createdAt: p.createdAt, editedAt: p.editedAt,
             title: p.title, body: p.body, code: p.code ? {...p.code} : null, tags: [...p.tags], solved: p.solved, solvedAt: p.solvedAt || null,
             reactions: Object.fromEntries(Object.keys(REACTIONS).map(r => [r, {count: p.reactions[r].length, mine: p.reactions[r].includes(owner)}])),
             saved: p.saved.includes(owner), hidden: p.moderation.state === "hidden", hiddenReason: p.moderation.state === "hidden" ? p.moderation.reason || "" : "",
             reportedByMe: p.reports.some(r => r.reporter === owner && r.status === "open"),
             acceptedReplyId: p.acceptedReplyId || null, locked: p.locked === true, pinned: p.pinned === true, related: p.related ? {...p.related} : null,
-            replies: p.replies.map(r => ({id: r.id, name: r.name, mine: r.owner === owner, sample: r.sample === true, createdAt: r.createdAt, body: r.body,
+            replies: p.replies.map(r => ({id: r.id, name: r.name, mine: r.owner === owner, badges: badgesOf(r.owner), sample: r.sample === true, createdAt: r.createdAt, body: r.body,
                 parentId: r.parentId || null, editedAt: r.editedAt || null, accepted: p.acceptedReplyId === r.id,
                 helpful: {count: (r.helpful || []).length, mine: (r.helpful || []).includes(owner)}}))
         };
@@ -352,13 +354,14 @@
         posts.sort(sort === "helpful" ? (a, b) => helpful(b) - helpful(a) || latest(a, b) : sort === "replies" ? (a, b) => b.replies.length - a.replies.length || latest(a, b) : sort === "top" ? (a, b) => top(b) - top(a) || latest(a, b) : latest);
         const size = Math.max(1, Math.min(50, Number(pageSize) || PAGE_SIZE)), pages = Math.max(1, Math.ceil(posts.length / size));
         const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), pages);
-        return {items: posts.slice((current - 1) * size, current * size).map(p => view(p, me.email)), total: posts.length, page: current, pages, tags, channels: [...allowed]};
+        const people = scores(accessible(data, me.email));
+        return {items: posts.slice((current - 1) * size, current * size).map(p => view(p, me.email, people)), total: posts.length, page: current, pages, tags, channels: [...allowed]};
     }
 
     function get(id, expected) {
-        const me = studentOf(expected), post = accessible(read(), me.email).find(p => p.id === id);
+        const me = studentOf(expected), posts = accessible(read(), me.email), post = posts.find(p => p.id === id);
         if (!post) throw Error("This discussion is not available. It may have been removed, or you do not have access.");
-        return view(post, me.email);
+        return view(post, me.email, scores(posts));
     }
     // "Similar questions": plain keyword and tag matching over saved posts the student can read. Not AI.
     const STOP = new Set("a an and are as at be but by can do does for from how i if in is it its me my no not of on or so that the this to was what when where which why with you your have has get got use using".split(" "));
@@ -377,6 +380,56 @@
             return {post: p, score};
         }).filter(x => x.score >= 4).sort((a, b) => b.score - a.score || Date.parse(b.post.createdAt) - Date.parse(a.post.createdAt)).slice(0, limit)
             .map(({post, score}) => ({id: post.id, title: post.title, channel: post.channel, solved: post.solved, replies: post.replies.length, score}));
+    }
+
+    // ---------- reputation (computed from saved data; never stored, never estimated) ----------
+    // Points: an accepted answer 10, a "Helpful" on your reply 2, a "Helpful" on your post 1.
+    // Reactions or answers on your own posts never count. Only posts the viewer can read are used,
+    // so activity inside a private study group is invisible to non-members.
+    const POINTS = Object.freeze({accepted: 10, replyHelpful: 2, postHelpful: 1});
+    const BADGES = Object.freeze({
+        "first-answer": Object.freeze({label: "First answer", icon: "1", description: "Replied to another member's question."}),
+        "helper": Object.freeze({label: "Helper", icon: "H", description: "Replied to 5 posts by other members."}),
+        "problem-solver": Object.freeze({label: "Problem solver", icon: "✓", description: "Had an answer accepted."}),
+        "welcome-wagon": Object.freeze({label: "Welcome wagon", icon: "W", description: "Replied to the first post of 3 different members."})
+    });
+    const WEEK_MS = 7 * 86400000;
+    function scores(posts, now = Date.now()) {
+        const visible = posts.filter(p => p.moderation.state === "visible"), people = new Map();
+        const person = (owner, name, sample) => {
+            if (!people.has(owner)) people.set(owner, {name, sample: sample === true, points: 0, weekPoints: 0, accepted: 0, helpfulReceived: 0, answers: 0, welcomed: new Set(), acceptedReplyIds: []});
+            return people.get(owner);
+        };
+        const firstPost = new Map();
+        for (const p of [...visible].sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt))) if (!firstPost.has(p.owner)) firstPost.set(p.owner, p.id);
+        const add = (who, points, at) => { who.points += points; if (now - Date.parse(at) <= WEEK_MS) who.weekPoints += points; };
+        for (const p of visible) {
+            const author = person(p.owner, p.name, p.sample);
+            const postHelpful = p.reactions.helpful.filter(x => x !== p.owner).length;
+            author.helpfulReceived += postHelpful; add(author, postHelpful * POINTS.postHelpful, p.createdAt);
+            for (const r of p.replies) {
+                const who = person(r.owner, r.name, r.sample);
+                const helpfulOnReply = (r.helpful || []).filter(x => x !== r.owner).length;
+                who.helpfulReceived += helpfulOnReply; add(who, helpfulOnReply * POINTS.replyHelpful, r.createdAt);
+                if (r.owner === p.owner) continue;
+                who.answers++;
+                if (firstPost.get(p.owner) === p.id) who.welcomed.add(p.owner);
+                if (p.acceptedReplyId === r.id) { who.accepted++; who.acceptedReplyIds.push(r.id); add(who, POINTS.accepted, r.createdAt); }
+            }
+        }
+        for (const who of people.values()) {
+            who.badges = [who.answers >= 1 && "first-answer", who.answers >= 5 && "helper", who.accepted >= 1 && "problem-solver", who.welcomed.size >= 3 && "welcome-wagon"].filter(Boolean);
+            delete who.welcomed;
+        }
+        return people;
+    }
+    function reputation(expected, now = Date.now()) {
+        const me = studentOf(expected), people = scores(accessible(read(), me.email), now);
+        const mine = people.get(me.email) || {points: 0, weekPoints: 0, accepted: 0, helpfulReceived: 0, answers: 0, badges: [], acceptedReplyIds: []};
+        const helpers = [...people.entries()].filter(([, p]) => p.weekPoints > 0)
+            .sort((a, b) => b[1].weekPoints - a[1].weekPoints || b[1].accepted - a[1].accepted || a[1].name.localeCompare(b[1].name)).slice(0, 5)
+            .map(([owner, p]) => ({name: p.name, sample: p.sample, points: p.weekPoints, badges: [...p.badges], me: owner === me.email}));
+        return {me: {name: me.name, points: mine.points, weekPoints: mine.weekPoints, accepted: mine.accepted, helpfulReceived: mine.helpfulReceived, answers: mine.answers, badges: [...mine.badges], acceptedReplyIds: [...mine.acceptedReplyIds]}, helpers, POINTS, BADGES};
     }
 
     // Side panels. Every number is counted from the saved posts the student can read; nothing is estimated.
@@ -526,7 +579,7 @@
         key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE, OPEN, channelLabel, channelSummary, markChannelSeen,
         UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, editReply, reactReply, acceptAnswer, restoreAcceptance,
         react, toggleSaved, setSolved, report, contactPolicy,
-        query, get, similar, highlights, notifications, markNotificationsRead,
+        query, get, similar, highlights, reputation, BADGES, POINTS, notifications, markNotificationsRead,
         queue, moderate, auditLog, sampleStatus, loadSample, removeSample, subscribe
     });
 })();

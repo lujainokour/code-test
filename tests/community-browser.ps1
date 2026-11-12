@@ -29,7 +29,15 @@ try {
     function Eval($e) { $x=Cdp 'Runtime.evaluate' @{expression=$e;returnByValue=$true;awaitPromise=$true}; if($x.exceptionDetails){throw ($x.exceptionDetails|ConvertTo-Json -Depth 6)}; return $x.result.value }
     function Open($p) { $n = Cdp 'Page.navigate' @{url=('http://127.0.0.1:8876/' + $p)}; if ($n.errorText) {throw $n.errorText}; Start-Sleep -Milliseconds 900; Eval "document.querySelector('#cm-user-guide[open] .cm-guide-skip')?.click();true" | Out-Null }
     function Size($w) { Cdp 'Emulation.setDeviceMetricsOverride' @{width=$w;height=900;deviceScaleFactor=1;mobile=($w -lt 600)} | Out-Null; Start-Sleep -Milliseconds 250 }
-    function Shot($n) { $s=Cdp 'Page.captureScreenshot' @{format='jpeg';quality=70;captureBeyondViewport=$true}; [IO.File]::WriteAllBytes((Join-Path $out "$Shots-$n.jpg"),[Convert]::FromBase64String($s.data)) }
+    # Full-page shot without captureBeyondViewport (it hung for 120 s at 390 px under mobile emulation in the group-4 run):
+    # grow the viewport to the page height, capture, then restore 900 px.
+    function Shot($n) {
+        $w = [int](Eval 'innerWidth'); $h = [int](Eval 'Math.min(Math.max(document.documentElement.scrollHeight, innerHeight), 8000)')
+        Cdp 'Emulation.setDeviceMetricsOverride' @{width=$w;height=$h;deviceScaleFactor=1;mobile=($w -lt 600)} | Out-Null; Start-Sleep -Milliseconds 300
+        $s=Cdp 'Page.captureScreenshot' @{format='jpeg';quality=70}
+        [IO.File]::WriteAllBytes((Join-Path $out "$Shots-$n.jpg"),[Convert]::FromBase64String($s.data))
+        Cdp 'Emulation.setDeviceMetricsOverride' @{width=$w;height=900;deviceScaleFactor=1;mobile=($w -lt 600)} | Out-Null; Start-Sleep -Milliseconds 200
+    }
     function Check($name,$ok) { if ($ok) { $script:passes++; Write-Output "PASS $name" } else { $script:failures += $name; Write-Output "FAIL $name" } }
     function Wait($ms) { Start-Sleep -Milliseconds $ms }
     Cdp 'Runtime.enable' @{} | Out-Null
@@ -107,6 +115,18 @@ try {
     Check 'Author accepts the answer: accepted badge, Solved, Undo toast' (Eval "!!document.querySelector('#community-post-dialog .community-reply.is-accepted') && document.querySelector('#community-post-dialog').textContent.includes('Solved') && [...document.querySelectorAll('.ik-toast button')].some(b=>b.textContent==='Undo')")
     Eval "document.querySelector('.community-drawer-close').click();true" | Out-Null
     Wait 200
+    # Reputation: the answerer sees a one-time celebration and real numbers; badges show next to names.
+    Eval "sessionStorage.setItem('qa-demo-session',cmStorage.getItem('codementor-demo-session'));cmStorage.setItem('codementor-demo-session',JSON.stringify({name:'Other Student',email:'community-other@example.com',role:'student',isDemo:true}));true" | Out-Null
+    Open 'pages/services/community.html'
+    Wait 300
+    Check 'Answerer: one-time celebration, profile shows the accepted answer and 10 points' (Eval "[...document.querySelectorAll('.ik-toast')].some(t=>t.textContent.includes('Your answer was accepted')) && document.getElementById('community-profile').textContent.includes('Accepted answers1') && document.getElementById('community-profile').textContent.includes('Helpful points10')")
+    Check 'Badges appear next to the answerer in Top helpers' (Eval "!!document.querySelector('#community-helpers .community-badge-chip[data-badge=problem-solver]')")
+    Open 'pages/services/community.html'
+    Wait 300
+    Check 'Celebration does not repeat on the next visit' (Eval "![...document.querySelectorAll('.ik-toast')].some(t=>t.textContent.includes('Your answer was accepted'))")
+    Eval "cmStorage.setItem('codementor-demo-session',sessionStorage.getItem('qa-demo-session'));true" | Out-Null
+    Open 'pages/services/community.html'
+    Shot 'reputation-1440'
     # Layout at four widths, touch targets, mobile tabs.
     foreach ($w in @(1440, 1024, 768, 390)) { Size $w; Check "$w px: no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth+1') }
     Size 1440; Shot 'feed-1440'

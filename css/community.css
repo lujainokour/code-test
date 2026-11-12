@@ -91,7 +91,7 @@ body.student-ui .community-v2 .community-mobile-tabs { display:none; }
 .community-v2 .community-feed :is(input,textarea,select) { display:block; width:100%; min-width:0; min-height:44px; border:1px solid var(--cm-line); border-radius:10px; padding:10px 12px; background:#fff; color:var(--cm-ink); font:inherit; font-size:14px; margin:6px 0 12px; }
 .community-v2 .community-feed :is(input,textarea,select):focus-visible { outline:3px solid var(--cm-focus); outline-offset:1px; }
 .community-v2 .community-feed textarea { resize:vertical; }
-.community-hint { font-weight:400; color:var(--cm-ink-2); }
+.community-hint { font-weight:400; font-size:13px; line-height:1.5; color:var(--cm-ink-2); }
 .community-code-details { margin:0 0 12px; }
 .community-code-details summary { display:inline-flex; align-items:center; min-height:44px; cursor:pointer; font-weight:650; color:var(--cm-burgundy-700); }
 .community-code-fields { display:grid; grid-template-columns:160px minmax(0,1fr); gap:12px; }
@@ -114,7 +114,7 @@ body.student-ui .community-v2 .community-tabs [role="tab"]:focus-visible { outli
 .community-card.is-solved { border-left:4px solid var(--cm-success); }
 .community-card.is-pinned { border-top:3px solid var(--cm-burgundy-700); }
 @media (hover:hover) { .community-card:hover { transform:translateY(-2px); box-shadow:var(--cm-shadow-2); } }
-.community-card-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--cm-ink-2); }
+.community-card-meta { display:flex; align-items:center; justify-content:flex-start; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--cm-ink-2); }
 .community-card-meta b { color:var(--cm-ink); }
 .community-avatar { flex:0 0 auto; display:grid; place-items:center; width:34px; height:34px; border-radius:50%; font-size:13px; font-weight:800; color:var(--cm-ink); background:var(--cm-surface-soft); }
 .community-avatar[data-tone="0"] { background:#f3dfe4; color:#6e1b2c; } .community-avatar[data-tone="1"] { background:#dcebf2; color:#1f4f66; }
@@ -210,3 +210,20 @@ body.student-ui .community-v2 .community-tabs [role="tab"]:focus-visible { outli
 .community-similar-title { margin:0; font-weight:700; }
 .community-similar .community-hint { margin:2px 0 0; font-size:12px; }
 .community-notification-list .community-widget-link { margin:0; }
+
+/* reputation and badges (computed from saved data) */
+.community-badges { display:inline-flex; gap:3px; }
+.community-badge-chip { display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 5px; border-radius:999px; background:var(--cm-amber-bg); color:var(--cm-amber); font-size:11px; font-weight:800; }
+.community-badge-chip[data-badge="problem-solver"] { background:var(--cm-success-bg); color:var(--cm-success); }
+.community-profile { border-top:4px solid var(--cm-burgundy-700); }
+.community-profile-head { display:flex; align-items:center; gap:10px; margin-bottom:10px; overflow-wrap:anywhere; }
+.community-profile-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin:0 0 10px; }
+.community-profile-stats > div { padding:8px; border-radius:10px; background:#fff; border:1px solid var(--cm-line); text-align:center; }
+.community-profile-stats dt { font-size:11px; color:var(--cm-ink-2); }
+.community-profile-stats dd { margin:2px 0 0; font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--cm-burgundy-700); }
+.community-badge-list { list-style:none; padding:0; margin:0; display:flex !important; flex-wrap:wrap; gap:6px !important; }
+.community-badge-list li { display:inline-flex; align-items:center; gap:6px; padding:4px 10px 4px 4px; border-radius:999px; background:#fff; border:1px solid var(--cm-line); font-size:13px; font-weight:650; }
+.community-helpers-list li { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:10px; background:#fff; border:1px solid var(--cm-line); font-size:14px; }
+.community-rank { min-width:18px; font-weight:800; color:var(--cm-burgundy-700); font-variant-numeric:tabular-nums; }
+.community-helper-name { flex:1 1 auto; min-width:0; overflow-wrap:anywhere; }
+.community-helper-points { font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }

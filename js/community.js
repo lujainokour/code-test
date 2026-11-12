@@ -52,6 +52,17 @@
     function tone(name) { let h = 0; for (const ch of String(name)) h = (h * 31 + ch.codePointAt(0)) >>> 0; return String(h % 6); }
     function avatar(name) { const a = node("span", initialsOf(name), "community-avatar"); a.dataset.tone = tone(name); a.setAttribute("aria-hidden", "true"); return a; }
     const channelLabel = id => store.channelLabel(id);
+    // Badges are computed by the store from saved posts; each chip has a text label for screen readers.
+    function badgeChips(ids) {
+        const wrap = node("span", undefined, "community-badges");
+        for (const id of ids || []) {
+            const info = store.BADGES[id]; if (!info) continue;
+            const chip = node("span", info.icon, "community-badge-chip"); chip.dataset.badge = id;
+            chip.title = `${info.label}: ${info.description}`; chip.setAttribute("role", "img"); chip.setAttribute("aria-label", `Badge: ${info.label}`);
+            wrap.append(chip);
+        }
+        return wrap;
+    }
     const isGroup = id => Object.hasOwn(membership.catalogue, id);
     // Study-group access fails closed per group: unreadable membership records lock the groups only;
     // open channels need no membership and stay usable.
@@ -126,6 +137,7 @@
     function meta(post) {
         const row = node("div", undefined, "community-card-meta community-post-meta");
         row.append(avatar(post.name), node("b", post.name));
+        if (post.authorBadges?.length) row.append(badgeChips(post.authorBadges));
         if (post.sample) row.append(node("span", "SAMPLE", "community-sample-badge"));
         row.append(node("span", channelLabel(post.channel), "community-lang-badge"));
         const time = node("time", ago(post.createdAt)); time.dateTime = post.createdAt; time.title = new Date(post.createdAt).toLocaleString(); row.append(time);
@@ -159,6 +171,7 @@
         if (reply.parentId) row.classList.add("is-nested");
         if (reply.accepted) row.classList.add("is-accepted");
         const head = node("div", undefined, "community-reply-meta"); head.append(avatar(reply.name), node("b", reply.name));
+        if (reply.badges?.length) head.append(badgeChips(reply.badges));
         if (reply.sample) head.append(node("span", "SAMPLE", "community-sample-badge"));
         if (reply.accepted) head.append(node("span", "Accepted answer ✓", "community-solved-badge"));
         const t = node("time", ago(reply.createdAt)); t.dateTime = reply.createdAt; t.title = new Date(reply.createdAt).toLocaleString(); head.append(t);
@@ -385,6 +398,42 @@
         const link = node("a", "Open the task", "button button-outline"); link.href = challenge.href;
         host.replaceChildren(node("p", `Week ${challenge.week}: ${challenge.title}`), node("p", "Solve it, then share what you learned (not the full answer) in the community.", "community-widget-empty"), link);
     }
+    function renderReputation() {
+        const rep = store.reputation(owner), profile = $("community-profile");
+        const head = node("div", undefined, "community-profile-head");
+        head.append(avatar(me.name.trim()), node("b", me.name.trim()));
+        const stats = node("dl", undefined, "community-profile-stats");
+        for (const [label, value] of [["Helpful points", rep.me.points], ["This week", rep.me.weekPoints], ["Accepted answers", rep.me.accepted]]) {
+            const box = node("div"); box.append(node("dt", label), node("dd", String(value))); stats.append(box);
+        }
+        profile.replaceChildren(head, stats);
+        if (rep.me.badges.length) {
+            const list = node("ul", undefined, "community-badge-list");
+            rep.me.badges.forEach(id => { const li = node("li"); li.append(badgeChips([id]), node("span", store.BADGES[id].label)); list.append(li); });
+            profile.append(list);
+        } else profile.append(node("p", "Answer a question to earn your first badge. Points come from accepted answers and Helpful reactions.", "community-widget-empty"));
+        const helpers = $("community-helpers");
+        if (!rep.helpers.length) helpers.replaceChildren(node("p", "No helpful points this week yet. Accepted answers and Helpful reactions count.", "community-widget-empty"));
+        else {
+            const ol = node("ol", undefined, "community-helpers-list");
+            rep.helpers.forEach((h, i) => {
+                const li = node("li"); li.append(node("span", String(i + 1), "community-rank"), avatar(h.name), node("span", h.me ? `${h.name} (you)` : h.name, "community-helper-name"), badgeChips(h.badges), node("span", `${h.points} pts`, "community-helper-points"));
+                ol.append(li);
+            });
+            helpers.replaceChildren(ol);
+        }
+        celebrate(rep);
+    }
+    // A subtle celebration the first time each of your answers is accepted (once per answer, per account).
+    function celebrate(rep) {
+        const seen = kit()?.seenStore?.(owner);
+        if (!seen) return;
+        const fresh = rep.me.acceptedReplyIds.find(id => !seen.get(`community-accepted-${id}`));
+        if (!fresh) return;
+        rep.me.acceptedReplyIds.forEach(id => seen.set(`community-accepted-${id}`, true));
+        kit().toast(`Your answer was accepted. +${store.POINTS.accepted} helpful points!`, { tone: "success" });
+        kit().confetti?.({ pieces: 60, duration: 1200 });
+    }
     function firstRun() {
         const box = node("div", undefined, "community-welcome");
         box.append(node("h3", `Welcome, ${me.name.trim()}!`), node("p", "Nothing here yet. Start the conversation."));
@@ -437,6 +486,7 @@
             renderPagination(result);
             renderChannels();
             renderHighlights();
+            renderReputation();
             try { renderNotifications(); } catch (error) { groupError ||= error.message; }
             renderDrawer();
             if (groupError && !status.textContent) say(groupError);

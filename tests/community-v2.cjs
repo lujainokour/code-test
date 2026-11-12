@@ -328,5 +328,70 @@ function curricula() {
         assert.ok(!/\.community-sidebar,\.community-info \{[^}]*overflow:auto/.test(css), 'no nested scrolling side columns');
     });
 
+    // ---------- group 4: reputation and badges ----------
+    const people = n => ({ name: `Rep Learner ${n}`, email: `rep-${n}@example.test`, role: 'student', isDemo: true });
+    const repMem = memory(), R = [1, 2, 3, 4, 5, 6].map(n => { const p = people(n); return { p, t: tab(repMem, p, { extraScripts: EXTRA }) }; });
+    const clearRate = () => { const raw = repMem.getItem('codementor-community-v1'); if (!raw) return; const d = JSON.parse(raw); d.activity = {}; repMem.setItem('codementor-community-v1', JSON.stringify(d)); };
+    await check('Reputation: exact points from accepted answers and Helpful reactions; self-reactions and self-answers earn nothing', async () => {
+        const [one, two, three] = R;
+        const q = await one.t.s.createPost({ channel: 'help', title: 'Reputation question', body: 'b' }, one.p.email);
+        const answer = await two.t.s.reply(q, 'An answer', two.p.email);
+        await one.t.s.reply(q, 'My own follow-up', one.p.email);
+        await one.t.s.acceptAnswer(q, answer, one.p.email);                // two: +10
+        await three.t.s.reactReply(q, answer, three.p.email);              // two: +2
+        await one.t.s.reactReply(q, answer, one.p.email);                  // two: +2
+        await two.t.s.react(q, 'helpful', two.p.email);                    // one: +1
+        await one.t.s.react(q, 'helpful', one.p.email);                    // own post: +0
+        const r2 = two.t.s.reputation(two.p.email), r1 = one.t.s.reputation(one.p.email);
+        deq([r2.me.points, r2.me.weekPoints, r2.me.accepted, r2.me.helpfulReceived, r2.me.answers], [14, 14, 1, 2, 1]);
+        deq(r2.me.badges, ['first-answer', 'problem-solver']);
+        deq(r2.me.acceptedReplyIds, [answer]);
+        deq([r1.me.points, r1.me.answers, r1.me.badges], [1, 0, []], 'replying to your own post is not an answer');
+        deq(r1.helpers.map(h => [h.name, h.points]), [['Rep Learner 2', 14], ['Rep Learner 1', 1]]);
+        deq(r1.POINTS, { accepted: 10, replyHelpful: 2, postHelpful: 1 });
+    });
+    await check('Badges: Helper after 5 answers to others; Welcome wagon after replying to 3 members’ first posts', async () => {
+        const helper = R[2];
+        const firsts = [];
+        for (const other of [R[3], R[4], R[5]]) { clearRate(); firsts.push(await other.t.s.createPost({ channel: 'general', title: `Hello from ${other.p.name}`, body: 'Hi all' }, other.p.email)); }
+        for (const id of firsts) { clearRate(); await helper.t.s.reply(id, 'Welcome!', helper.p.email); }
+        assert.ok(helper.t.s.reputation(helper.p.email).me.badges.includes('welcome-wagon'));
+        assert.ok(!helper.t.s.reputation(helper.p.email).me.badges.includes('helper'), '3 answers are not yet Helper');
+        clearRate(); const extra = await R[3].t.s.createPost({ channel: 'general', title: 'Second post', body: 'b' }, R[3].p.email);
+        clearRate(); await helper.t.s.reply(extra, 'Answer 4', helper.p.email);
+        clearRate(); await helper.t.s.reply(extra, 'Answer 5', helper.p.email);
+        deq(helper.t.s.reputation(helper.p.email).me.badges, ['first-answer', 'helper', 'welcome-wagon']);
+    });
+    await check('Weekly helpers use the last 7 days; all-time points stay', async () => {
+        const later = Date.now() + 8 * 86400000, r = R[1].t.s.reputation(R[1].p.email, later);
+        assert.equal(r.me.points, 14); assert.equal(r.me.weekPoints, 0); deq(r.helpers, []);
+    });
+    await check('Hidden posts and private study groups never feed reputation for people who cannot read them', async () => {
+        const admin2 = tab(repMem, null, { admin: true });
+        await R[0].t.m.request('study-help', 'Group', R[0].p.email); await approve(admin2, R[0].p.email, 'study-help');
+        await R[1].t.m.request('study-help', 'Group', R[1].p.email); await approve(admin2, R[1].p.email, 'study-help');
+        clearRate(); const g = await R[0].t.s.createPost({ channel: 'study-help', title: 'Group question', body: 'b' }, R[0].p.email);
+        const ga = await R[1].t.s.reply(g, 'Group answer', R[1].p.email);
+        await R[0].t.s.acceptAnswer(g, ga, R[0].p.email);
+        assert.equal(R[1].t.s.reputation(R[1].p.email).me.points, 24, 'a member sees the group answer counted');
+        assert.equal(R[5].t.s.reputation(R[5].p.email).helpers.find(h => h.name === 'Rep Learner 2').points, 14, 'a non-member does not');
+        const q = R[0].t.s.query({ search: 'Reputation question' }, R[0].p.email).items[0].id;
+        await R[5].t.s.report(q, 'Testing hidden posts in reputation.', R[5].p.email); await admin2.s.moderate(q, 'hide', 'Test');
+        assert.equal(R[5].t.s.reputation(R[5].p.email).helpers.some(h => h.name === 'Rep Learner 1'), false, 'hidden post no longer counts');
+        await admin2.s.moderate(q, 'restore', 'Test');
+    });
+    await check('Page: badges next to names, a profile card with real numbers, and the accepted-answer celebration only once', async () => {
+        const two = R[1], calls = { toast: [], confetti: 0 }, seen = {};
+        two.t.window.interactionKit = { toast: (m) => calls.toast.push(m), confetti: () => { calls.confetti++; }, stagger: () => {}, seenStore: () => ({ get: k => seen[k], set: (k, v) => { seen[k] = v; return true; } }) };
+        two.t.run('js/community.js');
+        const text = two.t.dom.ids.get('community-profile').textContent;
+        assert.match(text, /Helpful points24/); assert.match(text, /Accepted answers2/);
+        assert.ok(two.t.dom.walk().some(n => n.className === 'community-badge-chip' && n.getAttribute('aria-label') === 'Badge: Problem solver'));
+        assert.match(two.t.dom.ids.get('community-helpers').textContent, /Rep Learner 2 \(you\)/);
+        assert.equal(calls.confetti, 1); assert.match(calls.toast.join(), /Your answer was accepted/);
+        two.t.window.dispatchEvent({ type: 'community-changed' });
+        assert.equal(calls.confetti, 1, 'celebrated once, not on every render');
+    });
+
     console.log(`${count} community v2 checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });
