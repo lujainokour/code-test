@@ -51,7 +51,8 @@
             p.reactions && Object.keys(REACTIONS).every(r => ownerList(p.reactions[r])) && ownerList(p.saved) && typeof p.solved === "boolean" &&
             (p.editedAt === null || isDate(p.editedAt)) && Array.isArray(p.replies) && p.replies.every(r => isText(r.id, 100) && isText(r.owner, 254) && isText(r.name, 160) && isDate(r.createdAt) && isText(r.body, LIMITS.reply)) &&
             Array.isArray(p.reports) && p.reports.every(r => isText(r.id, 100) && isText(r.reporter, 254) && isText(r.reason, LIMITS.report) && ["open", "resolved"].includes(r.status)) &&
-            p.moderation && MODERATION.includes(p.moderation.state);
+            p.moderation && MODERATION.includes(p.moderation.state) &&
+            (p.solvedAt === undefined || p.solvedAt === null || isDate(p.solvedAt));
     }
     function migrateV1(data) {
         const map = membership().legacy;
@@ -213,7 +214,7 @@
         return transaction(() => studentOf(expected), (data, me) => {
             const post = findPost(data, id, me.email);
             if (post.owner !== me.email) throw Error("Only the author can mark a post as solved.");
-            post.solved = Boolean(solved); return post.solved;
+            post.solved = Boolean(solved); post.solvedAt = post.solved ? new Date().toISOString() : null; return post.solved;
         });
     }
     function report(id, reason, expected) {
@@ -235,19 +236,25 @@
     function view(p, owner) {
         return {
             id: p.id, channel: p.channel, name: p.name, mine: p.owner === owner, sample: p.sample === true, createdAt: p.createdAt, editedAt: p.editedAt,
-            title: p.title, body: p.body, code: p.code ? {...p.code} : null, tags: [...p.tags], solved: p.solved,
+            title: p.title, body: p.body, code: p.code ? {...p.code} : null, tags: [...p.tags], solved: p.solved, solvedAt: p.solvedAt || null,
             reactions: Object.fromEntries(Object.keys(REACTIONS).map(r => [r, {count: p.reactions[r].length, mine: p.reactions[r].includes(owner)}])),
             saved: p.saved.includes(owner), hidden: p.moderation.state === "hidden", hiddenReason: p.moderation.state === "hidden" ? p.moderation.reason || "" : "",
             reportedByMe: p.reports.some(r => r.reporter === owner && r.status === "open"),
             replies: p.replies.map(r => ({id: r.id, name: r.name, mine: r.owner === owner, sample: r.sample === true, createdAt: r.createdAt, body: r.body}))
         };
     }
-    // Only channels the student is approved for; hidden posts only for their author; removed posts never.
+    // Only channels the student may read; hidden posts only for their author; removed posts never.
+    const readable = owner => new Set(Object.keys(membership().catalogue).filter(c => approved(c, owner)));
+    function accessible(data, owner) {
+        const allowed = readable(owner);
+        return data.posts.filter(p => allowed.has(p.channel) && p.moderation.state !== "removed" && (p.moderation.state === "visible" || p.owner === owner));
+    }
+    const top = p => helpful(p) * 2 + p.reactions.thanks.length + p.replies.length;
     function query(options = {}, expected) {
         const me = studentOf(expected), data = read();
-        const {channel = "all", search = "", tag = "", status = "all", sort = "latest", page = 1, pageSize = PAGE_SIZE} = options;
-        const allowed = new Set(Object.keys(membership().catalogue).filter(c => approved(c, me.email)));
-        let posts = data.posts.filter(p => allowed.has(p.channel) && p.moderation.state !== "removed" && (p.moderation.state === "visible" || p.owner === me.email));
+        const {channel = "all", search = "", tag = "", status = "all", sort = "latest", mine = false, page = 1, pageSize = PAGE_SIZE} = options;
+        const allowed = readable(me.email);
+        let posts = accessible(data, me.email);
         const tags = [...new Set(posts.flatMap(p => p.tags))].sort();
         if (channel === "saved") posts = posts.filter(p => p.saved.includes(me.email));
         else if (channel !== "all") posts = posts.filter(p => p.channel === channel);
@@ -257,11 +264,30 @@
         if (status === "solved") posts = posts.filter(p => p.solved);
         if (status === "unsolved") posts = posts.filter(p => !p.solved);
         if (status === "unanswered") posts = posts.filter(p => p.replies.length === 0);
+        if (mine) posts = posts.filter(p => p.owner === me.email);
         const latest = (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt);
-        posts.sort(sort === "helpful" ? (a, b) => helpful(b) - helpful(a) || latest(a, b) : sort === "replies" ? (a, b) => b.replies.length - a.replies.length || latest(a, b) : latest);
+        posts.sort(sort === "helpful" ? (a, b) => helpful(b) - helpful(a) || latest(a, b) : sort === "replies" ? (a, b) => b.replies.length - a.replies.length || latest(a, b) : sort === "top" ? (a, b) => top(b) - top(a) || latest(a, b) : latest);
         const size = Math.max(1, Math.min(50, Number(pageSize) || PAGE_SIZE)), pages = Math.max(1, Math.ceil(posts.length / size));
         const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), pages);
         return {items: posts.slice((current - 1) * size, current * size).map(p => view(p, me.email)), total: posts.length, page: current, pages, tags, channels: [...allowed]};
+    }
+
+    // Side panels. Every number is counted from the saved posts the student can read; nothing is estimated.
+    function highlights(expected, now = Date.now()) {
+        const me = studentOf(expected), posts = accessible(read(), me.email).filter(p => p.moderation.state === "visible");
+        const day = new Date(now); day.setHours(0, 0, 0, 0);
+        const brief = p => ({id: p.id, title: p.title, channel: p.channel, name: p.name, sample: p.sample === true, createdAt: p.createdAt, replies: p.replies.length});
+        const latest = (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt);
+        const open = posts.filter(p => p.owner !== me.email && p.replies.length === 0 && !p.solved).sort(latest);
+        const solved = posts.filter(p => p.solved && p.solvedAt && Date.parse(p.solvedAt) >= day.getTime()).sort((a, b) => Date.parse(b.solvedAt) - Date.parse(a.solvedAt));
+        const counts = new Map();
+        for (const p of posts) if (now - Date.parse(p.createdAt) <= 14 * 86400000) for (const t of p.tags) counts.set(t, (counts.get(t) || 0) + 1);
+        return {
+            unanswered: open.slice(0, 3).map(brief), unansweredCount: open.length,
+            solvedToday: solved.slice(0, 3).map(brief), solvedTodayCount: solved.length,
+            trending: [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6).map(([tag, count]) => ({tag, count})),
+            total: posts.length
+        };
     }
 
     // ---------- notifications ----------
@@ -371,7 +397,7 @@
     window.communityStore = Object.freeze({
         key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE,
         UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, react, toggleSaved, setSolved, report, contactPolicy,
-        query, notifications, markNotificationsRead,
+        query, highlights, notifications, markNotificationsRead,
         queue, moderate, auditLog, sampleStatus, loadSample, removeSample, subscribe
     });
 })();
