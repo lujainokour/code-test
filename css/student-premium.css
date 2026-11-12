@@ -657,3 +657,115 @@ body.student-ui .workspace-body > main.container:is(.onboarding-layout, .assessm
     .ring-arc, .sp-progress::-webkit-progress-value, .kpi-tile, .sp-links a, .badge-card, .student-premium .button, .kpi-tip { transition: none !important; }
     .kpi-tile:hover, .sp-links a:hover, .badge-card:hover { transform: none; }
 }
+
+/* 19. GLASS DESIGN LANGUAGE ------------------------------------------------
+   Opt-in with body.glass-ui. Screen only: print (including the Completion badge
+   print view) never sees any of this. See docs/DESIGN-GLASS.md.
+   Rules: glass on ELEVATED surfaces only (hero, KPI tiles, feed cards, composer,
+   right-rail widgets, top bar, toasts, dialogs). Long text, forms, tables, code
+   and the code editor use --glass-bg-strong or solid white; code stays opaque.
+   Blur is applied to containers, never to every item of a long list.
+   tests/glass.cjs checks contrast against the WORST point of the backdrop. */
+:root {
+    --glass-bg: rgba(255, 255, 255, .62);          /* elevated surfaces */
+    --glass-bg-strong: rgba(255, 255, 255, .86);   /* text-heavy areas, forms, dialogs */
+    --glass-bg-item: rgba(255, 255, 255, .72);     /* repeated list items: no blur */
+    --glass-border: rgba(255, 255, 255, .55);
+    --glass-border-top: rgba(255, 255, 255, .92);
+    --glass-blur: 16px;
+    --glass-shadow: 0 1px 2px rgba(23, 32, 38, .06), 0 8px 24px rgba(23, 32, 38, .08), 0 24px 48px rgba(23, 32, 38, .05);
+    --glass-radius: 18px;
+    --glass-sidebar: rgba(52, 6, 14, .88);         /* deep translucent burgundy */
+    --glass-sidebar-text: #ffffff;
+    --glass-sidebar-muted: rgba(255, 255, 255, .82);
+    /* backdrop: soft blue -> teal, plus very blurred burgundy and blue blobs (low contrast) */
+    --glass-backdrop-top: #c2e0ea;
+    --glass-backdrop-bottom: #a9d6d0;
+    --glass-blob-burgundy: rgba(122, 31, 61, .16);
+    --glass-blob-blue: rgba(52, 120, 168, .18);
+    --glass-blob-teal: rgba(40, 140, 130, .14);
+}
+@media screen {
+    /* Backdrop: CSS only, fixed, behind everything. */
+    body.glass-ui { background-color: var(--glass-backdrop-top); }
+    body.glass-ui::before {
+        content: ""; display: block; position: fixed; inset: -10vmax; z-index: -1; pointer-events: none;
+        background:
+            radial-gradient(38vmax 38vmax at 18% 22%, var(--glass-blob-burgundy), transparent 70%),
+            radial-gradient(44vmax 44vmax at 82% 30%, var(--glass-blob-blue), transparent 70%),
+            radial-gradient(40vmax 40vmax at 60% 88%, var(--glass-blob-teal), transparent 70%),
+            linear-gradient(160deg, var(--glass-backdrop-top), var(--glass-backdrop-bottom));
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        body.glass-ui::before { animation: glass-drift 90s ease-in-out infinite alternate; }
+    }
+    @keyframes glass-drift { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(2vmax, -1.5vmax, 0); } }
+    body.glass-ui :is(.workspace-body, .services-main, .workspace-main) { background: transparent; }
+
+    /* Components */
+    body.glass-ui :is(.glass, .glass-card, .glass-panel, .glass-bar) {
+        background: var(--glass-bg); border: 1px solid var(--glass-border); border-top-color: var(--glass-border-top);
+        box-shadow: var(--glass-shadow);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%); backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    }
+    body.glass-ui .glass-card { border-radius: var(--glass-radius); }
+    body.glass-ui .glass-panel { background: var(--glass-bg-strong); border-radius: var(--glass-radius); }
+    body.glass-ui .glass-bar { background: var(--glass-bg-strong); border-radius: 0; border-inline: 0; border-top: 0; }
+    body.glass-ui .glass-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: var(--glass-bg-item); border: 1px solid var(--glass-border); color: var(--cm-ink); }
+
+    /* Sidebar: deeper translucent burgundy glass, high-contrast nav text */
+    body.glass-ui .workspace-sidebar {
+        background: var(--glass-sidebar); color: var(--glass-sidebar-text);
+        border-right: 1px solid rgba(255, 255, 255, .14); box-shadow: 8px 0 32px rgba(38, 2, 4, .18);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%); backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    }
+    body.glass-ui .workspace-sidebar :is(.workspace-navigation a, .sidebar-bottom a, .sidebar-bottom button, .sidebar-group-toggle, summary) { color: var(--glass-sidebar-text); }
+    body.glass-ui .workspace-sidebar :is(.sidebar-label, .sidebar-group-label) { color: var(--glass-sidebar-muted); opacity: 1; }
+    body.glass-ui .workspace-sidebar .workspace-navigation a:hover { background: rgba(255, 255, 255, .12); }
+    body.glass-ui .workspace-sidebar .workspace-navigation a[aria-current="page"] { background: rgba(255, 255, 255, .9); color: #3a0610; }
+
+    /* Top bar */
+    body.glass-ui .workspace-topbar {
+        background: var(--glass-bg-strong); border-bottom: 1px solid var(--glass-border);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%); backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    }
+
+    /* Elevated surfaces: light glass (few per page, blur allowed) */
+    body.glass-ui :is(.sp-next, .kpi-tile, .community-widget, .overview-stat, .overview-shortcut, .company-panel, .dashboard-stat) {
+        background: var(--glass-bg); border: 1px solid var(--glass-border); border-top-color: var(--glass-border-top); box-shadow: var(--glass-shadow);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%); backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    }
+    /* Repeated items (feed cards, list rows): lighter translucent, NO blur (performance). */
+    body.glass-ui :is(.community-card, .practice-task-card, .roadmap-card, .badge-card, .company-talent-mini-card) {
+        background: var(--glass-bg-item); border: 1px solid var(--glass-border); border-top-color: var(--glass-border-top);
+    }
+    /* Text-heavy cards, forms and panels: strong glass (blur on the container only). */
+    body.glass-ui :is(.dashboard-card, .services-panel, .peer-panel, .module-section, .sp-card, .community-panel, .community-composer, .overview-panel,
+        .preferences-panel, .question-panel, .coding-task-panel, .coding-editor-panel, .onboarding-sidebar .journey-card, .placement-info, .subscription-plan-card) {
+        background: var(--glass-bg-strong); border-color: var(--glass-border); border-top-color: var(--glass-border-top);
+        -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+    }
+    /* Side rails of the community page */
+    body.glass-ui :is(.community-sidebar, .community-info) { border-radius: var(--glass-radius); }
+    /* Overlays: toasts and dialogs are strong glass */
+    body.glass-ui :is(.ik-toast, dialog.confirmation-dialog, dialog.lang-availability, .community-drawer) {
+        background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+        -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%); backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    }
+    /* Never translucent: code, the editor, tables, long reading text and form fields stay opaque. */
+    body.glass-ui :is(pre, code, .community-code, .question-code, .code-editor, .program-input, table, #learning-report, #lesson-explanation, input, textarea, select) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+    body.glass-ui :is(.community-code, .community-code pre, .coding-output-panel pre, #learning-report, table) { background: #fff; }
+
+    /* Fallback: without backdrop-filter, every glass surface becomes solid. */
+    @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+        body.glass-ui { --glass-bg: #f3f8fa; --glass-bg-strong: #ffffff; --glass-bg-item: #f7fafb; --glass-sidebar: #3a0610; }
+    }
+    /* User preferences: less transparency, more contrast. */
+    @media (prefers-reduced-transparency: reduce) {
+        body.glass-ui { --glass-bg: #f3f8fa; --glass-bg-strong: #ffffff; --glass-bg-item: #f7fafb; --glass-sidebar: #3a0610; --glass-blur: 0px; }
+    }
+    @media (prefers-contrast: more) {
+        body.glass-ui { --glass-bg: #ffffff; --glass-bg-strong: #ffffff; --glass-bg-item: #ffffff; --glass-sidebar: #2a0409; --glass-border: #5b6b72; --glass-border-top: #5b6b72; --glass-blur: 0px; }
+        body.glass-ui::before { display: none; }
+    }
+}
