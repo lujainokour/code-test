@@ -53,7 +53,7 @@
                 const openReports = item.reports.filter(r => r.status === "open");
                 card.append(node("span", item.moderation.state === "visible" ? `${openReports.length} OPEN REPORT${openReports.length === 1 ? "" : "S"}` : item.moderation.state.toUpperCase(), "community-badge"));
                 if (item.sample) card.append(node("span", "SAMPLE", "community-sample-badge"));
-                card.append(node("h3", item.title), node("p", `${item.author} · ${membership.catalogue[item.channel]} · ${new Date(item.createdAt).toLocaleString()}`, "community-storage-note"));
+                card.append(node("h3", item.title), node("p", `${item.author} · ${store.channelLabel(item.channel)} · ${new Date(item.createdAt).toLocaleString()}`, "community-storage-note"));
                 if (item.body) { const b = node("p", item.body, "community-post-body"); b.dir = "auto"; card.append(b); }
                 if (item.code) { const pre = node("pre", undefined, "community-code"); pre.append(node("code", item.code.text)); pre.dir = "ltr"; card.append(pre); }
                 if (item.moderation.reason) card.append(node("p", `Moderator reason: ${item.moderation.reason}`, "community-moderation-note"));
@@ -85,7 +85,7 @@
             const entries = [...membership.audit(), ...store.auditLog()].sort((a, b) => Date.parse(b.at) - Date.parse(a.at)).slice(0, 200);
             host.replaceChildren(...entries.map(e => {
                 const li = node("li"); li.dataset.action = e.action;
-                const where = e.channel ? ` · ${membership.catalogue[e.channel] || e.channel}` : "";
+                const where = e.channel ? ` · ${store.channelLabel(e.channel)}` : "";
                 const who = e.subject ? ` · ${e.subject}` : "";
                 li.append(node("b", actionLabels[e.action] || e.action), node("span", `${where}${who} · ${new Date(e.at).toLocaleString()}`));
                 if (e.reason) li.append(node("p", `Reason: ${e.reason}`, "community-storage-note"));

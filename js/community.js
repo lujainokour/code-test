@@ -14,14 +14,8 @@
     try { activeLanguage = window.cmStorage.activeLanguage(); } catch { activeLanguage = null; }
     const kit = () => window.interactionKit;
     const later = (fn, ms) => (typeof setTimeout === "function" ? setTimeout(fn, ms) : fn());
-    const icons = { all: "All", python: "Py", javascript: "JS", general: "#", projects: "★", help: "?", saved: "♥" };
-    const descriptions = {
-        python: "Python questions, notes and code reviews.",
-        javascript: "JavaScript questions, notes and code reviews.",
-        general: "Study habits, introductions and everything else.",
-        projects: "Show what you are building and get feedback.",
-        help: "Stuck? Ask here. Include what you tried."
-    };
+    const OPEN = store.OPEN;
+    const icon = id => OPEN[id]?.icon || (id === "all" ? "All" : id === "saved" ? "♥" : "G");
     const TABS = [["latest", "Latest"], ["unanswered", "Unanswered"], ["solved", "Solved"], ["top", "Top"], ["mine", "My posts"]];
     let selected = "all", view = "latest", page = 1;
     const editing = new Set(), reporting = new Set(), editingReplies = new Set();
@@ -57,7 +51,12 @@
     // Deterministic soft colour from the display name; never a photo.
     function tone(name) { let h = 0; for (const ch of String(name)) h = (h * 31 + ch.codePointAt(0)) >>> 0; return String(h % 6); }
     function avatar(name) { const a = node("span", initialsOf(name), "community-avatar"); a.dataset.tone = tone(name); a.setAttribute("aria-hidden", "true"); return a; }
-    const channelLabel = id => membership.catalogue[id] || id;
+    const channelLabel = id => store.channelLabel(id);
+    const isGroup = id => Object.hasOwn(membership.catalogue, id);
+    // Study-group access fails closed per group: unreadable membership records lock the groups only;
+    // open channels need no membership and stay usable.
+    let groupError = "";
+    function groupState(id) { try { return membership.state(id, owner); } catch (error) { groupError = error.message; return "unavailable"; } }
 
     function codeBlock(code) {
         const figure = node("figure", undefined, "community-code");
@@ -329,24 +328,41 @@
             tab.setAttribute("aria-selected", String(view === id)); tab.dataset.view = id; return tab;
         }));
     }
-    function channelButton(id, label, extra) {
-        const item = button("", () => { selected = id; page = 1; render(); if (narrow()) showSection("feed"); }, "community-channel");
-        item.append(node("span", icons[id] || "#", "community-channel-icon"), node("span", label, "community-channel-label"));
+    function selectChannel(id) {
+        selected = id; page = 1; render(); if (narrow()) showSection("feed");
+        if (OPEN[id] || (isGroup(id) && groupState(id) === "approved")) store.markChannelSeen(id, owner).catch(() => {});
+    }
+    function channelButton(id, label, extra, unread = 0) {
+        const item = button("", () => selectChannel(id), "community-channel");
+        item.append(node("span", icon(id), "community-channel-icon"), node("span", label, "community-channel-label"));
         if (extra) item.append(extra);
+        if (unread > 0 && selected !== id) { const badge = node("span", unread > 99 ? "99+" : String(unread), "community-channel-badge"); badge.setAttribute("aria-label", `${unread} new`); item.append(badge); }
         item.setAttribute("aria-pressed", String(selected === id));
-        if (id === activeLanguage) item.classList.add("is-active-language");
+        if (OPEN[id]?.language && OPEN[id].language === activeLanguage) item.classList.add("is-active-language");
         return item;
     }
-    function renderChannels(result) {
-        const list = [channelButton("all", "All my channels")];
-        const ids = Object.keys(membership.catalogue).sort((a, b) => (b === activeLanguage) - (a === activeLanguage));
+    function renderChannels() {
+        let summary = {};
+        try { summary = store.channelSummary(owner); } catch { summary = {}; }
+        // Your active language is pinned first, then the topic channels, then other languages; coming soon last.
+        const rank = id => (OPEN[id].language === activeLanguage ? 0 : !OPEN[id].language ? 1 : OPEN[id].comingSoon ? 3 : 2);
+        const ids = Object.keys(OPEN).sort((a, b) => rank(a) - rank(b));
+        const list = [channelButton("all", "All discussions")];
         for (const id of ids) {
-            const state = membership.state(id, owner);
-            const note = id === activeLanguage ? node("span", "Your language", "community-language-mark") : state === "approved" ? null : node("span", state === "pending" ? "Pending" : "Private", "community-channel-note");
-            list.push(channelButton(id, channelLabel(id), note));
+            const note = OPEN[id].language === activeLanguage ? node("span", "Your language", "community-language-mark") : OPEN[id].comingSoon ? node("span", "Path coming soon", "community-channel-note") : null;
+            list.push(channelButton(id, OPEN[id].label, note, summary[id]?.unread || 0));
         }
         list.push(node("div", undefined, "community-channel-divider"), channelButton("saved", "Saved posts"));
         $("community-channels").replaceChildren(...list);
+        const groups = $("community-directory");
+        groups.hidden = false;
+        const heading = node("h2", "Study groups", "community-side-title");
+        const intro = node("p", groupError || "Private groups. An administrator approves each request.", "community-hint");
+        groups.replaceChildren(heading, intro, ...Object.keys(membership.catalogue).map(id => {
+            const state = groupState(id);
+            const note = node("span", state === "approved" ? "Member" : state === "pending" ? "Pending" : "Private", "community-channel-note");
+            return channelButton(id, channelLabel(id), note, state === "approved" ? summary[id]?.unread || 0 : 0);
+        }));
     }
     function widgetLink(item, extra) {
         const b = button("", () => openPost(item.id, b), "community-widget-link");
@@ -376,12 +392,12 @@
         actions.append(
             button("Ask your first question", () => focusComposer({ channel: "help" }), "button button-primary"),
             button("Introduce yourself", () => focusComposer({ channel: "general", title: `Hi, I'm ${me.name.trim()}` }), "button button-outline"),
-            button("Browse channels", () => { showSection("channels"); $("community-channels").querySelector("button")?.focus(); }, "button button-outline"));
+            button("Browse open channels", () => { showSection("channels"); $("community-channels").querySelector("button")?.focus(); }, "button button-outline"));
         box.append(actions); return box;
     }
     function focusComposer(prefill = {}) {
         const composer = $("community-composer");
-        if (composer.hidden) { say("Join or open a channel to post. Choose one from the channel list."); showSection("channels"); return; }
+        if (composer.hidden) { selected = "all"; render(); }
         showSection("feed");
         if (prefill.channel && [...$("post-channel").options].some(o => o.value === prefill.channel)) $("post-channel").value = prefill.channel;
         if (prefill.title !== undefined) $("post-title").value = prefill.title;
@@ -394,6 +410,7 @@
     }
 
     function render() {
+        groupError = "";
         try {
             renderAccess();
             renderTabs();
@@ -404,6 +421,7 @@
             tagSelect.replaceChildren(Object.assign(node("option", "All tags"), { value: "" }), ...result.tags.map(t => Object.assign(node("option", "#" + t), { value: t })));
             tagSelect.value = result.tags.includes(currentTag) ? currentTag : "";
             $("community-feed-title").textContent = selected === "all" ? "All discussions" : selected === "saved" ? "Saved posts" : channelLabel(selected);
+            $("community-feed-title").title = OPEN[selected]?.description || "";
             $("community-count").textContent = `${result.total} ${result.total === 1 ? "discussion" : "discussions"}`;
             feed.replaceChildren(...result.items.map(postCard));
             if (!result.items.length) {
@@ -411,43 +429,48 @@
                 if (result.channels.length && !filtered) feed.append(firstRun());
                 else {
                     const empty = node("div", undefined, "community-empty");
-                    empty.append(node("p", result.channels.length ? "No discussions match. Try another tab or search, or start one yourself." : "Open a channel from the list to read and post."));
+                    empty.append(node("p", isGroup(selected) && groupState(selected) !== "approved" ? "Discussions in this study group open after an administrator approves your request." : "No discussions match. Try another tab or search, or start one yourself."));
                     feed.append(empty);
                 }
             }
             kit()?.stagger(feed);
             renderPagination(result);
-            renderChannels(result);
+            renderChannels();
             renderHighlights();
-            renderNotifications();
+            try { renderNotifications(); } catch (error) { groupError ||= error.message; }
             renderDrawer();
+            if (groupError && !status.textContent) say(groupError);
         } catch (error) {
             say(error.message); feed.replaceChildren(); $("community-composer").hidden = true;
             document.querySelector(".community-toolbar").hidden = true;
             $("community-access").replaceChildren(); $("community-access").hidden = true; $("community-count").textContent = ""; $("community-pagination").hidden = true;
         }
     }
+    // Open channels: read and post at once. Study groups: request with a reason, administrator approval.
     function renderAccess() {
         window.platformStore.student(owner);
-        const allowed = Object.keys(membership.catalogue).filter(id => membership.state(id, owner) === "approved");
+        const groups = Object.keys(membership.catalogue).filter(id => groupState(id) === "approved");
+        const writable = [...Object.keys(OPEN), ...groups];
         const composer = $("community-composer"), picker = $("post-channel"), previous = picker.value;
-        picker.replaceChildren(...allowed.filter(id => ["all", "saved"].includes(selected) || id === selected).map(id => { const option = node("option", channelLabel(id)); option.value = id; return option; }));
+        const options = ["all", "saved"].includes(selected) ? writable : writable.filter(id => id === selected);
+        picker.replaceChildren(...options.map(id => { const option = node("option", isGroup(id) ? `${channelLabel(id)} (private)` : channelLabel(id)); option.value = id; return option; }));
         if ([...picker.options].some(o => o.value === previous)) picker.value = previous;
         else if ([...picker.options].some(o => o.value === activeLanguage)) picker.value = activeLanguage;
         composer.hidden = !picker.options.length;
-        document.querySelector(".community-toolbar").hidden = !allowed.length;
+        document.querySelector(".community-toolbar").hidden = false;
         const gate = $("community-access");
         gate.hidden = true; gate.replaceChildren();
-        if (!Object.hasOwn(membership.catalogue, selected)) return;
-        const state = membership.state(selected, owner);
+        if (!isGroup(selected)) return;
+        const state = groupState(selected);
         gate.hidden = false;
-        gate.append(node("span", "PRIVATE CHANNEL", "community-badge"), node("h2", channelLabel(selected)), node("p", descriptions[selected] || ""));
+        if (state === "unavailable") { gate.append(node("span", "PRIVATE STUDY GROUP", "community-badge"), node("h2", channelLabel(selected)), node("p", groupError)); return; }
+        gate.append(node("span", "PRIVATE STUDY GROUP", "community-badge"), node("h2", channelLabel(selected)));
         if (state === "approved") {
-            gate.append(button("Leave channel", () => act(() => membership.withdraw(selected, owner, state), "You left the channel. Request approval to join again."), "button button-outline"));
+            gate.append(node("p", "You are a member. Discussions here are visible to approved members only."), button("Leave study group", () => act(() => membership.withdraw(selected, owner, state), "You left the study group. Request approval to join again."), "button button-outline"));
             return;
         }
-        const copy = { pending: "Your request is waiting for administrator approval. Discussions stay private until you are accepted.", rejected: "Your request was declined. You can submit a new request with more information.", revoked: "An administrator removed your access. You may request to join again.", left: "You left this channel. Request approval to join again.", cancelled: "Your request was cancelled. You can request to join again." };
-        gate.append(node("p", copy[state] || "This channel is private. Tell the administrator why you would like to join. Posts and replies open after approval."));
+        const copy = { pending: "Your request is waiting for administrator approval. Discussions stay private until you are accepted.", rejected: "Your request was declined. You can submit a new request with more information.", revoked: "An administrator removed your access. You may request to join again.", left: "You left this study group. Request approval to join again.", cancelled: "Your request was cancelled. You can request to join again." };
+        gate.append(node("p", copy[state] || "This study group is private. Tell the administrator why you would like to join. Posts and replies open after approval. Open channels need no approval."));
         if (state === "pending") { gate.append(button("Cancel request", () => act(() => membership.withdraw(selected, owner, state), "Join request cancelled."), "button button-outline")); return; }
         const form = node("form"), label = node("label", "Why would you like to join?"), reason = node("textarea"), submit = node("button", "Send join request", "button button-primary");
         reason.id = "join-reason"; reason.required = true; reason.maxLength = 1000; reason.rows = 3; reason.dir = "auto"; label.htmlFor = reason.id; submit.type = "submit"; form.append(label, reason, submit);
@@ -455,7 +478,6 @@
         form.addEventListener("submit", async event => { event.preventDefault(); submit.disabled = true; await act(() => membership.request(channel, reason.value, owner), "Request sent. An administrator will review it."); submit.disabled = false; });
         gate.append(form);
     }
-
     function renderSimilar() {
         const host = $("community-similar");
         let items = [];

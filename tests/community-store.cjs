@@ -1,4 +1,6 @@
-/* Part 2: community membership isolation, XSS-as-text, ownership, moderation, two-tab sync, sample seed. */
+/* Part 2: community membership isolation, XSS-as-text, ownership, moderation, two-tab sync, sample seed.
+   Community v2: the formerly private channels are private STUDY GROUPS (study-*); open channels are
+   covered in tests/community-v2.cjs. The privacy rules tested here apply to study groups unchanged. */
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -87,40 +89,40 @@ async function approve(adminTab, owner, channel) {
     const a = tab(shared, A), b = tab(shared, B), admin = tab(shared, null, { admin: true });
 
     await check('Membership: a request is pending and grants nothing', async () => {
-        await a.m.request('python', 'I am learning Python.', A.email);
-        assert.equal(a.m.state('python', A.email), 'pending');
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 'Hi', body: 'x' }, A.email), /approval is required/);
+        await a.m.request('study-python', 'I am learning Python.', A.email);
+        assert.equal(a.m.state('study-python', A.email), 'pending');
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 'Hi', body: 'x' }, A.email), /approval is required/);
     });
     await check('Membership isolation: approved member posts; non-member sees nothing and cannot act', async () => {
-        await approve(admin, A.email, 'python');
-        const id = await a.s.createPost({ channel: 'python', title: 'Loop question', body: 'Why?', code: 'for i in range(3):\n    print(i)', language: 'python', tags: 'loops, Range' }, A.email);
+        await approve(admin, A.email, 'study-python');
+        const id = await a.s.createPost({ channel: 'study-python', title: 'Loop question', body: 'Why?', code: 'for i in range(3):\n    print(i)', language: 'python', tags: 'loops, Range' }, A.email);
         assert.equal(a.s.query({}, A.email).total, 1);
         assert.equal(b.s.query({}, B.email).total, 0);
-        assert.equal(b.s.query({ channel: 'python' }, B.email).total, 0);
+        assert.equal(b.s.query({ channel: 'study-python' }, B.email).total, 0);
         await assert.rejects(b.s.reply(id, 'sneaky', B.email), /approval is required/);
         await assert.rejects(b.s.react(id, 'helpful', B.email), /approval is required/);
-        await assert.rejects(b.s.createPost({ channel: 'python', title: 't', body: 'b' }, B.email), /approval is required/);
+        await assert.rejects(b.s.createPost({ channel: 'study-python', title: 't', body: 'b' }, B.email), /approval is required/);
         const post = a.s.query({}, A.email).items[0];
         deq(post.tags, ['loops', 'range']);
         deq(post.code, { language: 'python', text: 'for i in range(3):\n    print(i)' });
     });
     await check('Membership in one channel does not unlock another', async () => {
-        await b.m.request('javascript', 'JS learner', B.email); await approve(admin, B.email, 'javascript');
-        await b.s.createPost({ channel: 'javascript', title: 'JS only', body: 'b' }, B.email);
+        await b.m.request('study-javascript', 'JS learner', B.email); await approve(admin, B.email, 'study-javascript');
+        await b.s.createPost({ channel: 'study-javascript', title: 'JS only', body: 'b' }, B.email);
         deq(b.s.query({}, B.email).items.map(p => p.title), ['JS only']);
         deq(a.s.query({}, A.email).items.map(p => p.title), ['Loop question']);
     });
 
     await check('XSS payloads are stored and returned as literal text', async () => {
-        await b.m.request('python', 'Join', B.email); await approve(admin, B.email, 'python');
+        await b.m.request('study-python', 'Join', B.email); await approve(admin, B.email, 'study-python');
         const payload = '<img src=x onerror="alert(1)">';
-        const id = await a.s.createPost({ channel: 'python', title: payload, body: '<script>alert("x")</script>\u0000', code: '</code><script>alert(2)</script>', language: 'javascript', tags: [] }, A.email);
+        const id = await a.s.createPost({ channel: 'study-python', title: payload, body: '<script>alert("x")</script>\u0000', code: '</code><script>alert(2)</script>', language: 'javascript', tags: [] }, A.email);
         await b.s.reply(id, '<a href="javascript:alert(3)">click</a>', B.email);
         const post = a.s.query({ search: 'onerror' }, A.email).items[0];
         assert.equal(post.title, payload);
         assert.equal(post.body, '<script>alert("x")</script>', 'control characters stripped, tags kept literally');
         assert.equal(post.replies[0].body, '<a href="javascript:alert(3)">click</a>');
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 't', body: 'b', tags: '<b>' }, A.email), /Tags use letters/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 't', body: 'b', tags: '<b>' }, A.email), /Tags use letters/);
     });
     await check('XSS payloads render as text in the real page script (no element injected)', async () => {
         a.run('js/community.js');
@@ -139,17 +141,17 @@ async function approve(adminTab, owner, channel) {
         }
     });
     await check('Length limits are enforced', async () => {
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 'x'.repeat(141), body: 'b' }, A.email), /Title must contain 1–140/);
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 't', body: 'x'.repeat(5001) }, A.email), /Post must contain 1–5000/);
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 't', body: '', code: '' }, A.email), /Post must contain/);
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 't', body: 'b', tags: 'a,b,c,d,e,f' }, A.email), /at most 5 tags/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 'x'.repeat(141), body: 'b' }, A.email), /Title must contain 1–140/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 't', body: 'x'.repeat(5001) }, A.email), /Post must contain 1–5000/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 't', body: '', code: '' }, A.email), /Post must contain/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 't', body: 'b', tags: 'a,b,c,d,e,f' }, A.email), /at most 5 tags/);
         const id = a.s.query({}, A.email).items[0].id;
         await assert.rejects(b.s.reply(id, 'x'.repeat(2001), B.email), /Reply must contain 1–2000/);
     });
     await check('Rate limit: a fourth post within five minutes is refused', async () => {
         // A already created 2 posts in this window.
-        await a.s.createPost({ channel: 'python', title: 'Third', body: 'b' }, A.email);
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 'Fourth', body: 'b' }, A.email), /posting quickly/);
+        await a.s.createPost({ channel: 'study-python', title: 'Third', body: 'b' }, A.email);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 'Fourth', body: 'b' }, A.email), /posting quickly/);
         assert.equal(a.s.query({ search: 'Fourth' }, A.email).total, 0);
     });
 
@@ -196,7 +198,7 @@ async function approve(adminTab, owner, channel) {
     await check('Notifications: replies to my posts and membership decisions; mark as read', async () => {
         const n = a.s.notifications(A.email);
         assert.ok(n.items.some(i => i.type === 'reply' && i.name === B.name));
-        assert.ok(n.items.some(i => i.type === 'membership' && i.status === 'approved' && i.channel === 'python'));
+        assert.ok(n.items.some(i => i.type === 'membership' && i.status === 'approved' && i.channel === 'study-python'));
         await a.s.markNotificationsRead(A.email);
         assert.equal(a.s.notifications(A.email).count, 0);
         await new Promise(r => setTimeout(r, 5));
@@ -238,11 +240,11 @@ async function approve(adminTab, owner, channel) {
         assert.ok(admin.s.auditLog().every(e => e.reason && e.at && e.targetId === target));
     });
     await check('Member removal requires a reason, is audited and locks the channel', async () => {
-        const r = admin.m.requests().find(x => x.owner === B.email && x.channel === 'python');
+        const r = admin.m.requests().find(x => x.owner === B.email && x.channel === 'study-python');
         await assert.rejects(admin.m.decide(r.id, 'revoked', ''), /reason/);
         await admin.m.decide(r.id, 'revoked', 'Repeated off-topic posts.');
-        assert.equal(b.m.state('python', B.email), 'revoked');
-        assert.equal(b.s.query({ channel: 'python' }, B.email).total, 0);
+        assert.equal(b.m.state('study-python', B.email), 'revoked');
+        assert.equal(b.s.query({ channel: 'study-python' }, B.email).total, 0);
         const entry = admin.m.audit().find(e => e.action === 'member-removed');
         assert.equal(entry.reason, 'Repeated off-topic posts.'); assert.equal(entry.subject, B.email);
         assert.ok(b.s.notifications(B.email).items.some(i => i.type === 'membership' && i.status === 'revoked' && i.note === 'Repeated off-topic posts.'));
@@ -254,7 +256,7 @@ async function approve(adminTab, owner, channel) {
         let signalled = 0; a2.s.subscribe(() => signalled++);
         // Test setup: A used its post allowance earlier; clear the rate window so this post is allowed.
         shared.setItem('codementor-community-v1', JSON.stringify({ ...JSON.parse(shared.getItem('codementor-community-v1')), activity: {} }));
-        const id = await a.s.createPost({ channel: 'python', title: 'From tab one', body: 'b' }, A.email);
+        const id = await a.s.createPost({ channel: 'study-python', title: 'From tab one', body: 'b' }, A.email);
         a2.window.fire('storage', { key: 'codementor-community-v1' });
         a2.window.fire('storage', { key: 'unrelated-key' });
         assert.equal(signalled, 1);
@@ -263,7 +265,7 @@ async function approve(adminTab, owner, channel) {
     await check('Two-tab sync: an account switch in another tab stops stale writes', async () => {
         const before = shared.getItem('codementor-community-v1');
         a.state.account = B; // the shared profile now belongs to B
-        await assert.rejects(a.s.createPost({ channel: 'python', title: 'stale', body: 'b' }, A.email), /account changed/);
+        await assert.rejects(a.s.createPost({ channel: 'study-python', title: 'stale', body: 'b' }, A.email), /account changed/);
         assert.equal(shared.getItem('codementor-community-v1'), before);
         a.state.account = A;
     });
@@ -292,9 +294,11 @@ async function approve(adminTab, owner, channel) {
         deq(JSON.parse(shared.getItem('codementor-community-v1')).posts, JSON.parse(before).posts);
         deq(admin.s.sampleStatus(), { loaded: true, posts: 7, replies: 5 });
     });
-    await check('Sample data: visible as SAMPLE to approved members only', async () => {
+    // Community v2 (intentional): sample posts sit in OPEN channels, so every signed-in student sees them, labelled SAMPLE.
+    await check('Sample data: visible as SAMPLE in open channels to every signed-in student', async () => {
         const view = a.s.query({ search: '[SAMPLE]' }, A.email);
-        assert.ok(view.items.length > 0 && view.items.every(p => p.sample && p.channel === 'python'));
+        assert.ok(view.items.length > 0 && view.items.every(p => p.sample && Object.hasOwn(a.s.OPEN, p.channel)));
+        assert.equal(b.s.query({ search: '[SAMPLE]' }, B.email).total, view.total);
         a.dom.ids.get('community-search').value = '[SAMPLE]';
         a.window.fire('community-changed');
         assert.ok(a.dom.walk().some(n => n.className === 'community-sample-badge' && n.textContent === 'SAMPLE'));
@@ -327,17 +331,17 @@ async function approve(adminTab, owner, channel) {
             { id: 'p1', channel: 'notes', owner: A.email, name: A.name, createdAt: '2026-01-03T00:00:00.000Z', title: 'Mine', body: 'b', likes: [B.email], saved: [], replies: [] }
         ] }));
         const t = tab(old, A);
-        assert.equal(t.m.state('help', A.email), 'approved');
-        assert.equal(t.m.state('general', A.email), 'approved', 'the stronger of notes/resources wins');
+        assert.equal(t.m.state('study-help', A.email), 'approved');
+        assert.equal(t.m.state('study-general', A.email), 'approved', 'the stronger of notes/resources wins');
         const posts = t.s.query({}, A.email).items;
-        deq(posts.map(p => [p.id, p.channel, p.sample]), [['p1', 'general', false], ['guide-questions', 'help', true]]);
+        deq(posts.map(p => [p.id, p.channel, p.sample]), [['p1', 'study-general', false], ['guide-questions', 'study-help', true]]);
         assert.equal(posts[0].reactions.helpful.count, 1);
         assert.equal(old.getItem('codementor-community-v1').includes('"version":1'), true, 'reading never rewrites storage');
     });
     await check('Corrupt community storage fails closed and is never overwritten', async () => {
         const broken = memory(); broken.setItem('codementor-community-v1', '{broken');
         const t = tab(broken, A);
-        await t.m.request('python', 'x', A.email);
+        await t.m.request('study-python', 'x', A.email);
         assert.throws(() => t.s.query({}, A.email), /could not be read/);
         await assert.rejects(t.s.loadSample(), /administrator|could not be read/);
         assert.equal(broken.getItem('codementor-community-v1'), '{broken');

@@ -378,7 +378,7 @@ body.student-ui :is(.services-tag, .peer-status, .sp-chip, .status-chip) { displ
 
 /* 13.7 Tabs */
 body.student-ui [role="tablist"] { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: var(--cm-radius-pill); background: var(--cm-surface-soft); }
-body.student-ui [role="tablist"] [role="tab"] { min-height: 40px; padding: 8px 16px; border: 0; border-radius: var(--cm-radius-pill); background: transparent; color: var(--cm-ink); font: inherit; font-weight: 600; cursor: pointer; }
+body.student-ui [role="tablist"] [role="tab"] { min-height: 44px; padding: 8px 16px; border: 0; border-radius: var(--cm-radius-pill); background: transparent; color: var(--cm-ink); font: inherit; font-weight: 600; cursor: pointer; }
 body.student-ui [role="tablist"] [role="tab"][aria-selected="true"] { background: var(--cm-burgundy-700); color: #fff; }
 
 /* 13.8 Lists and tables */

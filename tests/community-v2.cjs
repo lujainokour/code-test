@@ -34,16 +34,15 @@ function curricula() {
 
     const shared = memory();
     const a = tab(shared, A, { extraScripts: EXTRA }), b = tab(shared, B, { extraScripts: EXTRA }), admin = tab(shared, null, { admin: true });
-    await a.m.request('python', 'Learning Python.', A.email); await b.m.request('python', 'Learning Python too.', B.email);
-    await approve(admin, A.email, 'python'); await approve(admin, B.email, 'python');
+    // Group 3: 'python' is an OPEN channel, so no request or approval is needed to post there.
     // Tests that are not about rate limits start with an empty rate window (the limit itself is tested separately).
     beforeEach = () => { const raw = shared.getItem('codementor-community-v1'); if (!raw) return; const d = JSON.parse(raw); d.activity = {}; shared.setItem('codementor-community-v1', JSON.stringify(d)); };
 
-    await check('First run: an approved student with no posts sees a welcome with three ways in, never a dead end', async () => {
+    await check('First run: a signed-in student with no posts sees a welcome with three ways in, never a dead end', async () => {
         a.run('js/community.js');
         const nodes = a.dom.walk(), labels = nodes.filter(n => n.tagName === 'BUTTON').map(n => n.textContent);
         assert.ok(nodes.some(n => n.className === 'community-welcome'));
-        for (const label of ['Ask your first question', 'Introduce yourself', 'Browse channels']) assert.ok(labels.includes(label), label);
+        for (const label of ['Ask your first question', 'Introduce yourself', 'Browse open channels']) assert.ok(labels.includes(label), label);
         const tabs = a.dom.ids.get('community-tabs').children;
         deq(tabs.map(t => t.textContent), ['Latest', 'Unanswered', 'Solved', 'Top', 'My posts']);
         deq(tabs.map(t => t.getAttribute('aria-selected')), ['true', 'false', 'false', 'false', 'false']);
@@ -169,7 +168,6 @@ function curricula() {
     await check('Rate limit: an 11th reply within five minutes is refused and not saved', async () => {
         const post = await a.s.createPost({ channel: 'python', title: 'Reply rate test', body: 'b' }, A.email);
         const c = tab(shared, { name: 'Test Learner C', email: 'learner-c@example.test', role: 'student', isDemo: true }, { extraScripts: EXTRA });
-        await c.m.request('python', 'Learning.', 'learner-c@example.test'); await approve(admin, 'learner-c@example.test', 'python');
         for (let i = 0; i < 10; i++) await c.s.reply(post, `Reply ${i}`, 'learner-c@example.test');
         await assert.rejects(c.s.reply(post, 'One too many', 'learner-c@example.test'), /posting quickly/);
         assert.equal(a.s.get(post, A.email).replies.length, 10);
@@ -181,8 +179,8 @@ function curricula() {
         assert.equal(found[0].id, target); assert.ok(found.length <= 3); assert.ok(found[0].score >= 4);
         deq(a.s.similar({ title: 'How do classes work?' }, A.email).filter(x => x.id === target), [], 'unrelated words do not match');
         deq(a.s.similar({ title: 'loop' }, A.email), [], 'a single word is not enough');
-        await a.m.request('javascript', 'JS too.', A.email); await approve(admin, A.email, 'javascript');
-        const privateOne = await a.s.createPost({ channel: 'javascript', title: 'Private loop number skip question', body: 'x', tags: 'loops' }, A.email);
+        await a.m.request('study-javascript', 'JS too.', A.email); await approve(admin, A.email, 'study-javascript');
+        const privateOne = await a.s.createPost({ channel: 'study-javascript', title: 'Private loop number skip question', body: 'x', tags: 'loops' }, A.email);
         assert.ok(!b.s.similar({ title: 'loop number skip', tags: 'loops' }, B.email).some(x => x.id === privateOne), 'no posts from channels B cannot read');
         await b.s.report(target, 'Testing hidden posts.', B.email).catch(() => {});
         await a.s.report(target, 'Testing hidden posts.', A.email);
@@ -212,6 +210,122 @@ function curricula() {
         b.run('js/community.js');
         await b.dom.walk().find(n => n.tagName === 'BUTTON' && n.className.includes('community-card-open') && n.textContent === 'Drawer code question').fire('click');
         assert.ok(!b.dom.walk().some(n => n.tagName === 'BUTTON' && n.textContent === 'Accept answer'), 'others cannot accept');
+    });
+
+    // ---------- group 3: open channels and permissions ----------
+    await check('Open channels: any signed-in, enabled student reads and posts at once, in every open channel incl. C# and C++', async () => {
+        const d = tab(shared, { name: 'Test Learner D', email: 'learner-d@example.test', role: 'student', isDemo: true }, { extraScripts: EXTRA });
+        deq(Object.keys(d.s.OPEN), ['general', 'help', 'projects', 'python', 'javascript', 'csharp', 'cpp']);
+        assert.equal(d.s.OPEN.csharp.comingSoon, true); assert.equal(d.s.OPEN.cpp.comingSoon, true);
+        for (const channel of ['general', 'cpp']) {
+            beforeEach();
+            const id = await d.s.createPost({ channel, title: `Hello from ${channel}`, body: 'First post' }, 'learner-d@example.test');
+            assert.equal(a.s.get(id, A.email).channel, channel, 'others read it immediately');
+            await a.s.reply(id, 'Welcome!', A.email);
+        }
+        assert.equal(d.m.state('general', 'learner-d@example.test'), 'none', 'no membership record is needed or created');
+        await assert.rejects(d.s.createPost({ channel: 'secret-channel', title: 't', body: 'b' }, 'learner-d@example.test'), /Choose a discussion channel/);
+    });
+
+    await check('Suspended accounts and guests can neither read nor post in open channels', async () => {
+        const s = tab(shared, { name: 'Suspended Learner', email: 'suspended@example.test', role: 'student', isDemo: true }, { extraScripts: EXTRA });
+        s.window.platformStore.student = () => { throw new Error('This student account is suspended. Ask the administrator to restore access.'); };
+        assert.throws(() => s.s.query({}, 'suspended@example.test'), /suspended/);
+        await assert.rejects(s.s.createPost({ channel: 'general', title: 't', body: 'b' }, 'suspended@example.test'), /suspended/);
+        const guest = tab(shared, null, { extraScripts: EXTRA });
+        assert.throws(() => guest.s.query({}), /Sign in/);
+        assert.throws(() => guest.s.highlights(), /Sign in/);
+        guest.run('js/community.js');
+        assert.equal(guest.dom.ids.get('community-composer').hidden, true);
+        assert.ok(!guest.dom.walk().some(n => n.tagName === 'ARTICLE'), 'a guest sees no posts');
+    });
+
+    await check('Study groups stay private in every view: feed, get, highlights, similar, unread counts', async () => {
+        await a.m.request('study-python', 'Deep dive group', A.email); await approve(admin, A.email, 'study-python');
+        const id = await a.s.createPost({ channel: 'study-python', title: 'Private study group plan for loops week', body: 'Members only', tags: 'loops' }, A.email);
+        await assert.rejects(b.s.createPost({ channel: 'study-python', title: 'x', body: 'y' }, B.email), /approval is required/);
+        assert.ok(!b.s.query({}, B.email).items.some(p => p.id === id));
+        assert.equal(b.s.query({ channel: 'study-python' }, B.email).total, 0);
+        assert.throws(() => b.s.get(id, B.email), /not available/);
+        assert.ok(!b.s.highlights(B.email).unanswered.some(p => p.id === id));
+        assert.ok(!b.s.similar({ title: 'study group plan loops week', tags: 'loops' }, B.email).some(p => p.id === id));
+        assert.equal(b.s.channelSummary(B.email)['study-python'], undefined);
+        await assert.rejects(b.s.reply(id, 'sneaky', B.email), /approval is required/);
+        assert.equal(a.s.get(id, A.email).title, 'Private study group plan for loops week');
+    });
+
+    await check('Migration v2 -> v3: old private-channel posts and approvals move to the matching study group (no audience widens)', async () => {
+        const old = memory();
+        old.setItem('codementor-community-memberships-v1', JSON.stringify({ version: 1, requests: [{ id: 'm1', channel: 'python', owner: A.email, name: A.name, reason: 'x', status: 'approved', updatedAt: '2026-01-01T00:00:00.000Z' }], audit: [] }));
+        const post = { id: 'old-1', channel: 'python', owner: A.email, name: A.name, createdAt: '2026-01-02T00:00:00.000Z', editedAt: null, title: 'Old private post', body: 'b', code: null, tags: [], reactions: { helpful: [], thanks: [] }, saved: [], solved: false, replies: [], reports: [], moderation: { state: 'visible' } };
+        old.setItem('codementor-community-v1', JSON.stringify({ version: 2, posts: [post], audit: [], seen: {}, activity: {} }));
+        const oa = tab(old, A, { extraScripts: EXTRA }), ob = tab(old, B, { extraScripts: EXTRA });
+        assert.equal(oa.m.state('study-python', A.email), 'approved');
+        assert.equal(oa.s.get('old-1', A.email).channel, 'study-python');
+        assert.equal(ob.s.query({}, B.email).total, 0, 'a student who was never approved still cannot see it');
+        assert.equal(ob.s.query({ channel: 'python' }, B.email).total, 0, 'it did not become public in the open Python channel');
+        await oa.s.toggleSaved('old-1', A.email);
+        assert.equal(JSON.parse(old.getItem('codementor-community-v1')).version, 3, 'saved in the new form on the next write');
+    });
+
+    await check('Unread badges: posts and replies by others since I last opened the channel; my own never count', async () => {
+        const e = tab(memory(), A, { extraScripts: EXTRA }), mem = e.context.localStorage;
+        const f = tab(mem, B, { extraScripts: EXTRA });
+        await e.s.markChannelSeen('help', A.email);
+        assert.equal(e.s.channelSummary(A.email).help.unread, 0);
+        await new Promise(r => setTimeout(r, 5));
+        const p = await f.s.createPost({ channel: 'help', title: 'New help question', body: 'b' }, B.email);
+        await e.s.createPost({ channel: 'help', title: 'My own question', body: 'b' }, A.email);
+        assert.equal(e.s.channelSummary(A.email).help.unread, 1);
+        await f.s.reply(p, 'More detail', B.email);
+        assert.equal(e.s.channelSummary(A.email).help.unread, 2);
+        assert.equal(e.s.channelSummary(A.email).help.total, 2);
+        await new Promise(r => setTimeout(r, 5));
+        await e.s.markChannelSeen('help', A.email);
+        assert.equal(e.s.channelSummary(A.email).help.unread, 0);
+        await assert.rejects(e.s.markChannelSeen('study-help', A.email), /approval is required/);
+    });
+
+    await check('Account switch: a tab signed in as A cannot write as A after the session became B', async () => {
+        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const id = await t.s.createPost({ channel: 'general', title: 'Before switch', body: 'b' }, A.email);
+        t.state.account = B;
+        await assert.rejects(t.s.createPost({ channel: 'general', title: 'stale', body: 'b' }, A.email), /account changed/);
+        await assert.rejects(t.s.reply(id, 'stale reply', A.email), /account changed/);
+        await assert.rejects(t.s.markChannelSeen('general', A.email), /account changed/);
+        assert.equal(t.s.query({ mine: true }, B.email).total, 0, "B does not inherit A's posts as 'mine'");
+        assert.equal(t.s.get(id, B.email).mine, false);
+    });
+
+    await check('Under-18 rules unchanged: no private contact anywhere; views never expose email addresses', async () => {
+        deq(a.s.contactPolicy(15), { allowed: false, reason: 'Learners under 18 cannot be contacted privately.' });
+        assert.equal(a.s.contactPolicy(30).allowed, false);
+        const json = JSON.stringify([a.s.query({ pageSize: 50 }, A.email), a.s.highlights(A.email)]);
+        assert.ok(!json.includes(B.email) && !json.includes('@example.test'), 'no emails in what the page receives');
+        a.window.dispatchEvent({ type: 'community-changed' });
+        assert.ok(!a.dom.walk().some(n => n.tagName === 'BUTTON' && /message|contact|dm\b/i.test(n.textContent)));
+    });
+
+    await check('Corrupt membership records lock study groups only (fail closed, never overwritten); open channels keep working', async () => {
+        const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA });
+        const open = await t.s.createPost({ channel: 'general', title: 'Open post survives', body: 'b' }, A.email);
+        mem.setItem('codementor-community-memberships-v1', 'broken-records');
+        assert.equal(t.s.get(open, A.email).title, 'Open post survives');
+        await assert.rejects(t.s.createPost({ channel: 'study-python', title: 'x', body: 'y' }, A.email), /could not be read|Access is locked/);
+        assert.ok(!t.s.query({}, A.email).channels.some(c => c.startsWith('study-')));
+        t.run('js/community.js');
+        assert.match(t.dom.ids.get('community-status').textContent, /Access is locked/);
+        assert.equal(t.dom.ids.get('community-composer').hidden, false, 'open channels can still be posted to');
+        assert.equal(mem.getItem('codementor-community-memberships-v1'), 'broken-records');
+    });
+
+    await check('Layout CSS: phone tabs hidden on desktop despite the shared tab style; shared tabs are 44px; side columns do not scroll inside', async () => {
+        const css = fs.readFileSync('css/community.css', 'utf8'), shared = fs.readFileSync('css/student-premium.css', 'utf8');
+        assert.ok(css.includes('body.student-ui .community-v2 .community-mobile-tabs { display:none; }'), 'hidden by default (beats the shared [role=tablist] style)');
+        const phone = css.slice(css.indexOf('@media (max-width:760px) {\n    .community-header'));
+        assert.ok(phone.includes('body.student-ui .community-v2 .community-mobile-tabs { display:grid;'), 'shown on phones only');
+        assert.ok(shared.includes('body.student-ui [role="tablist"] [role="tab"] { min-height: 44px;'), 'shared tabs meet 44px');
+        assert.ok(!/\.community-sidebar,\.community-info \{[^}]*overflow:auto/.test(css), 'no nested scrolling side columns');
     });
 
     console.log(`${count} community v2 checks passed.`);

@@ -1,11 +1,13 @@
-﻿/* Browser-local membership workflow. Production privacy requires server enforcement. */
+﻿/* Browser-local membership workflow for PRIVATE study groups. Open channels need no membership
+   (see js/community-store.js). Production privacy requires server enforcement. */
 (() => {
     "use strict";
     const key = "codementor-community-memberships-v1";
-    // Part 2: channels per language plus General, Projects and Help.
-    const catalogue = Object.freeze({python: "Python", javascript: "JavaScript", general: "General", projects: "Projects", help: "Help"});
-    // Older records used topic channels; they are mapped on read and saved in the new form on the next write.
-    const legacy = Object.freeze({questions: "help", notes: "general", resources: "general", projects: "projects"});
+    // Community v2: private study groups (request + administrator approval). Before v2 the five
+    // channels themselves were private; each maps 1:1 to a study group so no audience widens.
+    const catalogue = Object.freeze({"study-python": "Python study group", "study-javascript": "JavaScript study group", "study-general": "General study group", "study-projects": "Project builders", "study-help": "Help circle"});
+    // Older records (v1 topic channels and the pre-v2 private channels) are mapped on read and saved in the new form on the next write.
+    const legacy = Object.freeze({python: "study-python", javascript: "study-javascript", general: "study-general", projects: "study-projects", help: "study-help", questions: "study-help", notes: "study-general", resources: "study-general"});
     const states = ["pending", "approved", "rejected", "revoked", "cancelled", "left"];
     const priority = ["approved", "pending", "rejected", "revoked", "left", "cancelled"];
     function admin() {
@@ -45,7 +47,7 @@
         return read().requests.find(r => r.owner === a.email.trim().toLowerCase() && r.channel === channel)?.status || "none";
     }
     function assertMember(channel, expected) {
-        if (!Object.hasOwn(catalogue, channel) || state(channel, expected) !== "approved") throw Error("Administrator approval is required to enter this channel.");
+        if (!Object.hasOwn(catalogue, channel) || state(channel, expected) !== "approved") throw Error("Administrator approval is required to enter this study group.");
     }
     async function transaction(check, change) {
         check();
@@ -58,9 +60,9 @@
     }
     function request(channel, reason, expected) {
         return transaction(() => student(expected), (data, a) => {
-            if (!Object.hasOwn(catalogue, channel) || typeof reason !== "string" || !reason.trim() || reason.length > 1000) throw Error("Choose a channel and explain why you would like to join (up to 1000 characters).");
+            if (!Object.hasOwn(catalogue, channel) || typeof reason !== "string" || !reason.trim() || reason.length > 1000) throw Error("Choose a study group and explain why you would like to join (up to 1000 characters).");
             const owner = a.email.trim().toLowerCase(), prior = data.requests.find(r => r.owner === owner && r.channel === channel);
-            if (prior && ["pending", "approved"].includes(prior.status)) throw Error("You already have a pending request or membership for this channel.");
+            if (prior && ["pending", "approved"].includes(prior.status)) throw Error("You already have a pending request or membership for this study group.");
             const record = {id: crypto.randomUUID(), channel, owner, name: a.name, reason: reason.trim(), status: "pending", updatedAt: new Date().toISOString()};
             if (prior) data.requests.splice(data.requests.indexOf(prior), 1, record); else data.requests.push(record);
         });

@@ -4,7 +4,20 @@
    and must be rendered with textContent, never parsed as HTML. */
 (() => {
     "use strict";
-    const key = "codementor-community-v1"; // payload version 2; version 1 is migrated on read
+    const key = "codementor-community-v1"; // payload version 3; versions 1 and 2 are migrated on read
+    // OPEN channels: every signed-in, enabled student reads and posts at once (no approval). Private
+    // study groups live in js/community-membership.js and still need administrator approval.
+    const OPEN = Object.freeze({
+        general: Object.freeze({label: "General", icon: "#", description: "Introductions, study habits and everything else."}),
+        help: Object.freeze({label: "Help", icon: "?", description: "Stuck? Ask here and include what you tried."}),
+        projects: Object.freeze({label: "Show your project", icon: "★", description: "Share what you are building and get feedback."}),
+        python: Object.freeze({label: "Python", icon: "Py", language: "python", description: "Python questions, tips and code reviews."}),
+        javascript: Object.freeze({label: "JavaScript", icon: "JS", language: "javascript", description: "JavaScript questions, tips and code reviews."}),
+        csharp: Object.freeze({label: "C#", icon: "C#", language: "csharp", comingSoon: true, description: "C# space. The learning path is coming soon; questions are welcome now."}),
+        cpp: Object.freeze({label: "C++", icon: "C++", language: "cpp", comingSoon: true, description: "C++ space. The learning path is coming soon; questions are welcome now."})
+    });
+    const isChannel = id => Object.hasOwn(OPEN, id) || Object.hasOwn(membership().catalogue, id);
+    const channelLabel = id => OPEN[id]?.label || membership().catalogue[id] || id;
     const membership = () => window.communityMembership;
     const LIMITS = Object.freeze({title: 140, body: 5000, code: 4000, reply: 2000, tags: 5, tag: 24, report: 500, reason: 500});
     const RATE = Object.freeze({windowMs: 5 * 60 * 1000, posts: 3, replies: 10});
@@ -44,7 +57,7 @@
 
     // ---------- storage ----------
     function validPost(p) {
-        return isText(p.id, 100) && isText(p.owner, 254) && isText(p.name, 160) && isDate(p.createdAt) && Object.hasOwn(membership().catalogue, p.channel) &&
+        return isText(p.id, 100) && isText(p.owner, 254) && isText(p.name, 160) && isDate(p.createdAt) && isChannel(p.channel) &&
             isText(p.title, LIMITS.title) && typeof p.body === "string" && p.body.length <= LIMITS.body &&
             (p.code === null || (p.code && Object.hasOwn(LANGUAGES, p.code.language) && isText(p.code.text, LIMITS.code))) &&
             Array.isArray(p.tags) && p.tags.length <= LIMITS.tags && p.tags.every(t => isText(t, LIMITS.tag)) &&
@@ -71,15 +84,21 @@
             })
         };
     }
+    function migrateV2(data) {
+        const map = membership().legacy;
+        return {...data, version: 3, channelSeen: {}, posts: data.posts.map(p => ({...p, channel: map[p.channel] || p.channel}))};
+    }
     function read() {
         let data;
         try {
             const raw = localStorage.getItem(key);
-            if (raw === null) return {version: 2, posts: [], audit: [], seen: {}, activity: {}};
+            if (raw === null) return {version: 3, posts: [], audit: [], seen: {}, activity: {}, channelSeen: {}};
             data = JSON.parse(raw);
             if (data?.version === 1 && Array.isArray(data.posts)) data = migrateV1(data);
-            if (data?.version !== 2 || !Array.isArray(data.posts) || !data.posts.every(validPost) || new Set(data.posts.map(p => p.id)).size !== data.posts.length ||
-                !Array.isArray(data.audit) || typeof data.seen !== "object" || !data.seen || typeof data.activity !== "object" || !data.activity) throw Error();
+            if (data?.version === 2 && Array.isArray(data.posts)) data = migrateV2(data);
+            if (data?.version !== 3 || !Array.isArray(data.posts) || !data.posts.every(validPost) || new Set(data.posts.map(p => p.id)).size !== data.posts.length ||
+                !Array.isArray(data.audit) || typeof data.seen !== "object" || !data.seen || typeof data.activity !== "object" || !data.activity ||
+                typeof data.channelSeen !== "object" || !data.channelSeen) throw Error();
             return data;
         } catch { throw Error("Saved discussions could not be read. Existing data was kept. Restore browser storage before posting."); }
     }
@@ -107,10 +126,17 @@
         return {email: "admin"};
     }
     const approved = (channel, owner) => { try { return membership().state(channel, owner) === "approved"; } catch { return false; } };
+    // Open channels: the signed-in, enabled student (checked by studentOf) may read and post.
+    // Study groups: administrator approval required.
+    function assertAccess(channel, owner) {
+        if (Object.hasOwn(OPEN, channel)) return;
+        if (!Object.hasOwn(membership().catalogue, channel)) throw Error("Choose a discussion channel.");
+        membership().assertMember(channel, owner);
+    }
     function findPost(data, id, owner) {
         const post = data.posts.find(p => p.id === id);
         if (!post || post.moderation.state === "removed") throw Error("This post was removed. Refresh the discussions and try again.");
-        membership().assertMember(post.channel, owner);
+        assertAccess(post.channel, owner);
         if (post.moderation.state === "hidden" && post.owner !== owner) throw Error("This post is hidden by a moderator.");
         return post;
     }
@@ -132,8 +158,7 @@
     function createPost(fields, expected) {
         return transaction(() => studentOf(expected), (data, me) => {
             const channel = fields?.channel;
-            if (!Object.hasOwn(membership().catalogue, channel)) throw Error("Choose a discussion channel.");
-            membership().assertMember(channel, me.email);
+            assertAccess(channel, me.email);
             const post = {
                 id: crypto.randomUUID(), channel, owner: me.email, name: me.name, createdAt: new Date().toISOString(), editedAt: null,
                 title: plain(fields.title, LIMITS.title, "Title"), body: plain(fields.body, LIMITS.body, "Post", {allowEmpty: Boolean(String(fields.code || "").trim())}),
@@ -174,7 +199,7 @@
             if (!entry || entry.owner !== me.email) throw Error("This post can no longer be restored.");
             if (now - entry.at > UNDO_WINDOW_MS) { recentlyDeleted.delete(id); throw Error("The undo window has closed. The post stays deleted."); }
             if (data.posts.some(p => p.id === id)) throw Error("This post already exists. Nothing was changed.");
-            membership().assertMember(entry.snapshot.channel, me.email);
+            assertAccess(entry.snapshot.channel, me.email);
             if (!validPost(entry.snapshot)) throw Error("This post can no longer be restored.");
             data.posts.push(entry.snapshot);
             recentlyDeleted.delete(id);
@@ -302,7 +327,7 @@
         };
     }
     // Only channels the student may read; hidden posts only for their author; removed posts never.
-    const readable = owner => new Set(Object.keys(membership().catalogue).filter(c => approved(c, owner)));
+    const readable = owner => new Set([...Object.keys(OPEN), ...Object.keys(membership().catalogue).filter(c => approved(c, owner))]);
     function accessible(data, owner) {
         const allowed = readable(owner);
         return data.posts.filter(p => allowed.has(p.channel) && p.moderation.state !== "removed" && (p.moderation.state === "visible" || p.owner === owner));
@@ -370,6 +395,27 @@
             trending: [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 6).map(([tag, count]) => ({tag, count})),
             total: posts.length
         };
+    }
+
+    // Unread per channel: posts and replies by others since the student last opened that channel
+    // (first visit: the last 7 days). Counted from saved data only.
+    function channelSummary(expected, now = Date.now()) {
+        const me = studentOf(expected), data = read(), seen = data.channelSeen[me.email] || {}, posts = accessible(data, me.email).filter(p => p.moderation.state === "visible");
+        const out = {};
+        for (const id of readable(me.email)) {
+            const since = Date.parse(seen[id] || 0) || now - 7 * 86400000, mine = posts.filter(p => p.channel === id);
+            out[id] = {
+                total: mine.length,
+                unread: mine.reduce((n, p) => n + (p.owner !== me.email && Date.parse(p.createdAt) > since ? 1 : 0) + p.replies.filter(r => r.owner !== me.email && Date.parse(r.createdAt) > since).length, 0)
+            };
+        }
+        return out;
+    }
+    function markChannelSeen(channel, expected) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            assertAccess(channel, me.email);
+            (data.channelSeen[me.email] ||= {})[channel] = new Date().toISOString();
+        });
     }
 
     // ---------- notifications ----------
@@ -477,7 +523,7 @@
     }
 
     window.communityStore = Object.freeze({
-        key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE,
+        key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE, OPEN, channelLabel, channelSummary, markChannelSeen,
         UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, editReply, reactReply, acceptAnswer, restoreAcceptance,
         react, toggleSaved, setSolved, report, contactPolicy,
         query, get, similar, highlights, notifications, markNotificationsRead,
