@@ -249,3 +249,17 @@ body.student-ui .community-v2 .community-tabs [role="tab"]:focus-visible { outli
 .membership-select { width:22px; height:22px; margin:0 8px 8px 0; vertical-align:middle; accent-color:var(--primary); }
 .community-mode-open { background:#e3f1e8; color:#176139; }
 #channel-stats td .button { min-height:44px; margin-top:6px; font-size:13px; padding:8px 12px; }
+
+/* Layout audit (Part B): no blank left column beside a long feed, and channel labels that never break. */
+/* The channel list follows the reader on tall desktop screens while it fits (no nested scrolling:
+   not sticky while "Browse other languages" is expanded, or on short screens). */
+@media (min-width: 1200px) and (min-height: 860px) {
+    .community-v2 .community-sidebar:not(:has(#community-other-languages:not([hidden]))) { position: sticky; top: 88px; align-self: start; }
+}
+/* Icon | label (full width) | unread badge; state notes on a second line under the label. */
+.community-channel { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 10px; row-gap: 2px; align-items: center; }
+.community-channel > .community-channel-icon { grid-row: 1 / span 2; }
+.community-channel > .community-channel-label { grid-column: 2; grid-row: 1; }
+.community-channel > :is(.community-channel-notes, .community-channel-note, .community-language-mark) { grid-column: 2; grid-row: 2; justify-self: start; }
+.community-channel > .community-channel-badge { grid-column: 3; grid-row: 1 / span 2; }
+.community-channel-notes { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
