@@ -88,4 +88,11 @@ check('Backdrop is CSS only: gradient + radial blobs, fixed, no images, video or
     assert.match(before, /position: fixed/); assert.match(before, /linear-gradient\(160deg/); assert.equal((before.match(/radial-gradient/g) || []).length, 3);
     assert.ok(!/url\(|<img|video/.test(section));
 });
+check('Applied first to Community, student Dashboard, My progress and the admin dashboard (opt-in body class + design layer)', () => {
+    for (const page of ['pages/services/community.html', 'pages/student/dashboard.html', 'pages/student/progress.html', 'pages/admin/admin-dashboard.html']) {
+        const html = fs.readFileSync(page, 'utf8');
+        assert.match(html, /<body[^>]*class="[^"]*\bglass-ui\b/, page);
+        assert.ok(html.indexOf('css/student-premium.css') > html.indexOf('css/style.css'), page + ' loads the design layer after style.css');
+    }
+});
 console.log(`${count} glass checks passed.`);
