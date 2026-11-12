@@ -346,7 +346,7 @@ body.student-ui .workspace-main > h1, body.student-ui .services-main > h1, body.
 body.student-ui .workspace-intro { color: var(--cm-ink-2); max-width: 64ch; font-size: var(--cm-text-md); line-height: 1.55; }
 
 /* 13.2 Cards: large (section card) and small (stat/choice tile) */
-body.student-ui :is(.dashboard-card, .services-panel, .peer-panel, .module-section, .onboarding-sidebar) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-1); }
+body.student-ui :is(.dashboard-card, .services-panel, .peer-panel, .module-section) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-1); }
 body.student-ui :is(.dashboard-stat, .services-card, .choice-card, .roadmap-card) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: 14px; box-shadow: var(--cm-shadow-1); }
 body.student-ui .dashboard-sage { background: var(--cm-surface-soft); }
 body.student-ui .dashboard-stat h2 { color: var(--cm-burgundy-900); font-variant-numeric: tabular-nums; }
@@ -525,6 +525,7 @@ body.student-ui .review-page-actions { gap: var(--cm-s2); }
 body.student-ui :is(.onboarding-layout, .assessment-layout) { gap: var(--cm-s3); align-items: start; }
 body.student-ui :is(.preferences-panel, .question-panel) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-2); }
 body.student-ui :is(.onboarding-sidebar, .assessment-sidebar) :is(.journey-card, .onboarding-note, .placement-info) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: none; }
+body.student-ui .onboarding-sidebar .onboarding-note { padding: var(--cm-s3); }
 body.student-ui .journey-steps .is-current .journey-number { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
 body.student-ui .journey-steps .is-current { font-weight: 700; }
 body.student-ui :is(.placement-summary, .assessment-facts) > div { background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); }
@@ -645,6 +646,10 @@ body.student-ui .chat-suggestions :is(button, .button) { min-height: 44px; borde
 body.student-ui .chat-suggestions :is(button, .button):hover { border-color: var(--cm-burgundy-700); }
 body.student-ui #chat-input { min-height: 96px; }
 body.student-ui .mentor-code { border-radius: 12px; font-size: 14px; line-height: 1.7; }
+
+/* 16.5 Placement and onboarding inside the shell: same padded frame as .workspace-main (QA sweep) */
+body.student-ui .workspace-body > main.container:is(.onboarding-layout, .assessment-layout, .results-page) { box-sizing: border-box; width: 100%; max-width: 1320px; margin-inline: 0; padding: 28px; }
+@media (max-width: 600px) { body.student-ui .workspace-body > main.container:is(.onboarding-layout, .assessment-layout, .results-page) { padding: 18px 16px; } }
 
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
