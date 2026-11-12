@@ -25,9 +25,18 @@
         try {
             const records = membership.requests().filter(r => ($("membership-filter").value === "all" || r.status === $("membership-filter").value) && ($("membership-channel").value === "all" || r.channel === $("membership-channel").value)).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
             $("membership-count").textContent = `${records.length} ${records.length === 1 ? "record" : "records"}`;
+            const pendingShown = records.filter(r => r.status === "pending");
+            $("bulk-actions").hidden = !pendingShown.length; $("bulk-select-all").checked = false;
             root.replaceChildren(...records.map(r => {
                 const card = node("article", undefined, "community-panel"); card.dataset.requestId = r.id;
-                card.append(node("span", labels[r.status], "community-badge"), node("h3", r.name), node("p", r.owner), node("b", membership.catalogue[r.channel]));
+                if (r.status === "pending") {
+                    const pick = node("input", undefined, "membership-select"); pick.type = "checkbox"; pick.dataset.requestId = r.id;
+                    pick.setAttribute("aria-label", `Select the request from ${r.name} for ${membership.catalogue[r.channel]}`);
+                    card.append(pick);
+                }
+                card.append(node("span", labels[r.status], "community-badge"));
+                if (r.sample) card.append(node("span", "SAMPLE", "community-sample-badge"));
+                card.append(node("h3", r.name), node("p", r.owner), node("b", membership.catalogue[r.channel]));
                 const reason = node("p", r.reason, "community-post-body"); reason.dir = "auto"; card.append(reason);
                 if (r.decisionNote) card.append(node("p", `Decision note: ${r.decisionNote}`, "community-storage-note"));
                 card.append(node("p", `Updated ${new Date(r.updatedAt).toLocaleString()}`, "community-storage-note"));
@@ -79,16 +88,36 @@
         } catch (error) { msg.textContent = error.message; host.replaceChildren(); }
     }
     // Channels table and pin/lock controls. Counts come from the store; text is set with textContent.
+    // Explicit, audited access switch per group (study groups always need approval).
+    async function switchMode(row) {
+        const to = row.mode === "open" ? "approval" : "open", note = $("access-note").value;
+        const question = to === "open" ? `Open ${row.label}? Any signed-in student will be able to read and post without approval.` : `Require approval for ${row.label}? Everyone who already posted or replied there is kept as a member; others will need to request.`;
+        if (!window.confirm(question)) { $("access-status").textContent = "Nothing was changed."; return; }
+        try {
+            const result = await store.setGroupMode(row.id, to, note);
+            $("access-status").textContent = to === "open" ? `${row.label} is now open. The change is in the audit log.` : `${row.label} now requires approval. ${result.kept} existing participant(s) kept as members. The change is in the audit log.`;
+            $("access-note").value = "";
+        } catch (error) { $("access-status").textContent = error.message; }
+        renderAll();
+    }
     function renderChannels() {
         const body = $("channel-stats");
         try {
             const rows = store.channelStats();
             body.replaceChildren(...rows.map(r => {
-                const tr = node("tr"); tr.dataset.channel = r.id;
+                const tr = node("tr"); tr.dataset.channel = r.id; tr.dataset.mode = r.mode;
                 const name = node("th", r.label + (r.comingSoon ? " (path coming soon)" : "")); name.scope = "row";
-                tr.append(name, node("td", r.kind === "open" ? "Open" : "Study group"), ...[r.posts, r.replies, r.solved, r.hidden, r.pinned, r.locked].map(v => node("td", String(v))), node("td", r.members === null ? (r.kind === "open" ? "Everyone" : "Unavailable") : String(r.members)));
+                const access = node("td");
+                access.append(node("span", r.mode === "open" ? "Open" : "Approval required", r.mode === "open" ? "community-badge community-mode-open" : "community-badge"));
+                if (r.kind !== "study") { const b = btn(r.mode === "open" ? "Require approval" : "Open group", () => switchMode(r)); b.dataset.modeSwitch = r.id; access.append(b); }
+                if (r.modeBy === "migration") access.append(node("small", "Kept open from before approval was required", "community-storage-note"));
+                const pending = node("td");
+                if (r.pending) { const badge = node("span", String(r.pending), "community-count-badge"); badge.setAttribute("aria-label", `${r.pending} pending`); pending.append(badge); } else pending.textContent = r.pending === null ? "?" : "0";
+                const type = {language: "Language", topic: "Topic", study: "Study group"}[r.kind];
+                tr.append(name, node("td", type), access, pending, node("td", r.members === null ? "Unavailable" : String(r.members)), ...[r.posts, r.replies, r.solved, r.hidden, r.pinned, r.locked].map(v => node("td", String(v))));
                 return tr;
             }));
+            for (const option of $("membership-channel").options || []) { const r = rows.find(x => x.id === option.value); if (r) option.textContent = r.pending ? `${r.label} (${r.pending} pending)` : r.label; }
             const select = $("thread-channel"), current = select.value || "all";
             select.replaceChildren(Object.assign(node("option", "All channels"), {value: "all"}), ...rows.map(r => Object.assign(node("option", r.label), {value: r.id})));
             select.value = rows.some(r => r.id === current) ? current : "all";
@@ -119,7 +148,7 @@
             if (!items.length) host.append(node("p", "No posts in this channel yet.", "community-empty"));
         } catch (error) { msg.textContent = error.message; host.replaceChildren(); }
     }
-    const actionLabels = {"post-pinned": "Post pinned", "post-unpinned": "Post unpinned", "thread-locked": "Thread locked", "thread-unlocked": "Thread unlocked", "membership-approved": "Membership approved", "membership-rejected": "Membership declined", "member-removed": "Member removed", "post-hidden": "Post hidden", "post-restored": "Post restored", "post-removed": "Post removed", "post-reports-dismissed": "Reports dismissed", "sample-loaded": "Sample data loaded", "sample-removed": "Sample data removed"};
+    const actionLabels = {"group-opened": "Group opened", "group-approval-required": "Group requires approval", "group-kept-open": "Group kept open (migration)", "membership-kept": "Member kept (access change)", "post-pinned": "Post pinned", "post-unpinned": "Post unpinned", "thread-locked": "Thread locked", "thread-unlocked": "Thread unlocked", "membership-approved": "Membership approved", "membership-rejected": "Membership declined", "member-removed": "Member removed", "post-hidden": "Post hidden", "post-restored": "Post restored", "post-removed": "Post removed", "post-reports-dismissed": "Reports dismissed", "sample-loaded": "Sample data loaded", "sample-removed": "Sample data removed"};
     function renderAudit() {
         const host = $("audit-log");
         try {
@@ -164,6 +193,16 @@
     });
     Object.entries(membership.catalogue).forEach(([id, label]) => { const o = node("option", label); o.value = id; $("membership-channel").append(o); });
     $("thread-channel").addEventListener("change", renderThreads);
+    // Bulk approve/decline: all selected pending requests, one shared optional note, each audited.
+    async function bulk(status) {
+        const ids = [...document.querySelectorAll("#membership-requests .membership-select")].filter(c => c.checked).map(c => c.dataset.requestId);
+        try { const n = await membership.decideMany(ids, status, $("bulk-note").value); $("membership-status").textContent = `${n} request${n === 1 ? "" : "s"} ${status === "approved" ? "approved" : "declined"}.`; $("bulk-note").value = ""; }
+        catch (error) { $("membership-status").textContent = error.message; }
+        renderAll();
+    }
+    $("bulk-approve").addEventListener("click", () => bulk("approved"));
+    $("bulk-decline").addEventListener("click", () => bulk("rejected"));
+    $("bulk-select-all").addEventListener("change", event => { for (const c of document.querySelectorAll("#membership-requests .membership-select")) c.checked = event.currentTarget.checked; });
     $("membership-filter").addEventListener("change", renderMembership); $("membership-channel").addEventListener("change", renderMembership);
     window.addEventListener("community-membership-changed", renderAll);
     window.addEventListener("community-changed", renderAll);

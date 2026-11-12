@@ -233,3 +233,19 @@ body.student-ui .community-v2 .community-tabs [role="tab"]:focus-visible { outli
 .community-related-draft[hidden] { display:none; }
 .community-ask-link { margin-top:8px; }
 .community-ask-note { display:block; margin-top:6px; font-size:12px; color:var(--cm-ink-2, var(--muted)); }
+
+/* groups model: browse other languages, state notes, gate, admin bulk and access switch */
+.community-browse { display:flex; align-items:center; width:100%; min-height:44px; margin-top:4px; padding:8px 10px; border:1px dashed var(--cm-line-strong, var(--border)); border-radius:12px; background:transparent; color:var(--cm-burgundy-700, var(--primary)); font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+.community-browse:focus-visible { outline:3px solid var(--cm-focus); outline-offset:2px; }
+.community-other-languages { display:grid; gap:4px; margin-top:4px; }
+.community-other-languages[hidden] { display:none; }
+.community-channel-notes { display:inline-flex; flex-direction:column; align-items:flex-end; gap:2px; }
+.community-gate-description { margin:4px 0 8px; }
+.community-gate-state { font-weight:650; color:var(--cm-ink, var(--primary)) !important; }
+.community-gate-welcome { padding:10px 12px; border-radius:10px; background:var(--cm-burgundy-50, var(--surface-alt)); color:var(--cm-burgundy-700, var(--primary)) !important; font-weight:650; }
+.community-bulk { max-width:900px; margin:12px 0 18px; padding:14px; border:1px solid var(--border); border-radius:12px; background:var(--card); }
+.community-bulk[hidden] { display:none; }
+.community-bulk-all { display:flex; align-items:center; gap:8px; min-height:44px; font-weight:650; }
+.membership-select { width:22px; height:22px; margin:0 8px 8px 0; vertical-align:middle; accent-color:var(--primary); }
+.community-mode-open { background:#e3f1e8; color:#176139; }
+#channel-stats td .button { min-height:44px; margin-top:6px; font-size:13px; padding:8px 12px; }
