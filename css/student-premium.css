@@ -520,6 +520,70 @@ body.student-ui .review-empty-state > p { margin: 12px 0 0; color: var(--cm-ink-
 body.student-ui .review-page-actions { gap: var(--cm-s2); }
 @media (min-width: 1101px) { body.student-ui #review-main .module-aside { position: sticky; top: 88px; align-self: start; } }
 
+/* 16. PAGE GROUP — PLACEMENT (INTRO, QUESTION, REVIEW, RESULTS) ------------ */
+/* 16.1 Calm two-column layout: context on the left, one focused card on the right */
+body.student-ui :is(.onboarding-layout, .assessment-layout) { gap: var(--cm-s3); align-items: start; }
+body.student-ui :is(.preferences-panel, .question-panel) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-2); }
+body.student-ui :is(.onboarding-sidebar, .assessment-sidebar) :is(.journey-card, .onboarding-note, .placement-info) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); box-shadow: none; }
+body.student-ui .journey-steps .is-current .journey-number { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
+body.student-ui .journey-steps .is-current { font-weight: 700; }
+body.student-ui :is(.placement-summary, .assessment-facts) > div { background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); }
+body.student-ui .assessment-facts strong { color: var(--cm-burgundy-700); font-variant-numeric: tabular-nums; }
+body.student-ui .assessment-instructions li::marker { color: var(--cm-burgundy-700); }
+body.student-ui .edit-preferences { display: inline-flex; align-items: center; min-height: 44px; color: var(--cm-burgundy-700); text-underline-offset: 3px; }
+body.student-ui .preferences-actions { gap: var(--cm-s2); }
+
+/* 16.2 One question at a time: visible progress, large answers, clear navigation states */
+body.student-ui #question-progress { inline-size: 100%; block-size: 10px; border-radius: var(--cm-radius-pill); }
+body.student-ui #question-position { color: var(--cm-burgundy-700); font-variant-numeric: tabular-nums; }
+body.student-ui #question-title { font-size: clamp(20px, 2vw, 26px); line-height: 1.3; }
+body.student-ui #question-title:focus-visible { outline: 3px solid var(--cm-focus); outline-offset: 4px; }
+body.student-ui .question-panel .question-code { border-radius: 12px; font-size: 14px; line-height: 1.7; }
+body.student-ui .question-panel .question-code:has(code:empty) { display: none; }
+body.student-ui .question-options { border: 0; padding: 0; margin: 0; }
+body.student-ui .question-options legend { font-weight: 700; color: var(--cm-ink-2); margin-bottom: var(--cm-s1); }
+body.student-ui .answer-option { min-height: 52px; background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); transition: border-color .15s var(--cm-ease), box-shadow .15s var(--cm-ease); }
+body.student-ui .answer-option:hover { border-color: var(--cm-burgundy-500); }
+body.student-ui .answer-option.is-selected { border-color: var(--cm-burgundy-700); background: var(--cm-burgundy-50); box-shadow: inset 0 0 0 1px var(--cm-burgundy-700); }
+body.student-ui .answer-option:focus-within { outline: 3px solid var(--cm-focus); outline-offset: 2px; }
+body.student-ui .answer-option span { font-size: 15px; color: var(--cm-ink); }
+body.student-ui .question-navigation { grid-template-columns: repeat(5, minmax(44px, 1fr)); }
+body.student-ui .question-number { min-height: 44px; border-color: var(--cm-line); background: #fff; color: var(--cm-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+body.student-ui .question-number.is-answered { background: var(--cm-success-bg); border-color: var(--cm-success); color: var(--cm-success); }
+body.student-ui .question-number[aria-current="step"] { background: var(--cm-burgundy-700); border-color: var(--cm-burgundy-700); color: #fff; }
+body.student-ui .question-number:focus-visible { outline: 3px solid var(--cm-focus); outline-offset: 2px; }
+body.student-ui #save-status { font-size: 13px; color: var(--cm-ink-2); }
+body.student-ui .question-actions { gap: var(--cm-s2); padding-top: var(--cm-s2); border-top: 1px solid var(--cm-line); }
+body.student-ui .review-button { min-height: 44px; }
+
+/* 16.3 Review: summary tiles and one row per answer */
+body.student-ui .review-summary li { background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); }
+body.student-ui .review-summary strong { color: var(--cm-burgundy-700); font-variant-numeric: tabular-nums; }
+body.student-ui .review-row { background: #fff; border: 1px solid var(--cm-line); border-radius: var(--cm-radius-sm); margin-bottom: var(--cm-s1); }
+body.student-ui .review-row:first-child { border-top: 1px solid var(--cm-line); }
+body.student-ui .review-number { color: var(--cm-burgundy-700); font-variant-numeric: tabular-nums; }
+body.student-ui .review-edit { min-height: 44px; }
+
+/* 16.4 Results: score ring (--score is a styling hook) and the recommended start level as a badge */
+body.student-ui .score-card { background: var(--cm-burgundy-900); border-color: var(--cm-burgundy-900); border-radius: var(--cm-radius); }
+body.student-ui .score-circle { border: 0; background: radial-gradient(closest-side, var(--cm-burgundy-900) 79%, transparent 80% 100%), conic-gradient(var(--cm-surface) calc(var(--score, 0) * 1%), rgba(255, 255, 255, .18) 0); }
+body.student-ui .score-circle strong { font-family: var(--cm-font); font-weight: 800; font-variant-numeric: tabular-nums; }
+body.student-ui .skills-card { background: var(--cm-surface); border-color: var(--cm-line); border-radius: var(--cm-radius); }
+body.student-ui .topic-result progress { block-size: 10px; border-radius: var(--cm-radius-pill); }
+body.student-ui .starting-level { position: relative; align-items: flex-start; background: var(--cm-surface); border: 1px solid var(--cm-line); border-left: 6px solid var(--cm-burgundy-700); border-radius: var(--cm-radius); box-shadow: var(--cm-shadow-2); }
+body.student-ui .starting-level[data-recommended-start]::before { content: attr(data-recommended-start) / ""; flex: 0 0 auto; display: grid; place-items: center; inline-size: 88px; block-size: 88px; border-radius: 50%; background: var(--cm-burgundy-700); color: #fff; font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; box-shadow: 0 0 0 6px var(--cm-burgundy-50); }
+body.student-ui .starting-level > div:first-of-type { flex: 1 1 auto; min-width: 0; }
+body.student-ui .starting-level #level-title { color: var(--cm-burgundy-700); }
+body.student-ui #placement-topic-reasons { padding-left: 1.1em; }
+body.student-ui #placement-topic-reasons li { margin-block: 4px; overflow-wrap: anywhere; }
+body.student-ui .starting-level .button { min-height: 44px; }
+body.student-ui :is(.results-explanation, .results-review) { background: var(--cm-surface); border: 1px solid var(--cm-line); border-radius: var(--cm-radius); }
+body.student-ui .results-review summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; font-weight: 700; }
+@media (max-width: 760px) {
+    body.student-ui .starting-level { flex-direction: column; }
+    body.student-ui .starting-level[data-recommended-start]::before { inline-size: 64px; block-size: 64px; font-size: 28px; }
+}
+
 /* 12. REDUCED MOTION ---------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
     .sp-skeleton, .week-bar, .badge-card.is-earned::after, .cm-toast { animation: none !important; }

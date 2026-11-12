@@ -20,7 +20,7 @@
     window.addEventListener("learning-language-changed", () => dialog.close());
     window.addEventListener("storage", () => { if (dialog.open) dialog.close(); });
     function recommendation(result) {
-        const card = document.querySelector(".starting-level"); card.replaceChildren();
+        const card = document.querySelector(".starting-level"); card.replaceChildren(); card.setAttribute("data-recommended-start", String(result.recommendedStart)); /* styling hook only */
         const info = node("div"), title = node("h2", `Recommended start: Level ${result.recommendedStart}`); title.id = "level-title";
         info.append(node("p", "PLACEMENT RECOMMENDATION · NOT COMPLETION", "eyebrow"), title);
         info.append(node("p", `Every topic of a level needs at least ${result.threshold}%. Levels are considered in order; at most ${result.maxSkip} levels can be placed out.`));
@@ -49,7 +49,7 @@
             document.title = `${name} placement results | CodeMentor AI`;
             document.querySelector(".results-intro").textContent = `Your ${name} assessment recommends a starting level using topic scores. Applying placement does not award course completion.`;
             { const footer = document.querySelector(".onboarding-footer"); if (footer) footer.textContent = `CodeMentor AI · Frontend demo · ${name} placement results`; }
-            byId("score-percentage").textContent = `${result.percentage}%`; byId("score-count").textContent = `${result.correct} of ${result.total} correct`;
+            byId("score-percentage").textContent = `${result.percentage}%`; { const ring = document.querySelector(".score-circle"); if (ring && ring.style && ring.style.setProperty) ring.style.setProperty("--score", String(result.percentage)); } /* styling hook only (score ring) */ byId("score-count").textContent = `${result.correct} of ${result.total} correct`;
             byId("response-summary").textContent = `${result.total - result.unsure} options selected · ${result.unsure} marked “I’m not sure”`;
             const topics = byId("topic-results"); topics.replaceChildren();
             result.topicScores.forEach(score => {
