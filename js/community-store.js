@@ -76,7 +76,8 @@
             Array.isArray(p.reports) && p.reports.every(r => isText(r.id, 100) && isText(r.reporter, 254) && isText(r.reason, LIMITS.report) && ["open", "resolved"].includes(r.status)) &&
             p.moderation && MODERATION.includes(p.moderation.state) &&
             (p.solvedAt === undefined || p.solvedAt === null || isDate(p.solvedAt)) &&
-            (p.related === undefined || p.related === null || validRelated(p.related));
+            (p.related === undefined || p.related === null || validRelated(p.related)) &&
+            (p.pinned === undefined || typeof p.pinned === "boolean") && (p.locked === undefined || typeof p.locked === "boolean");
     }
     function migrateV1(data) {
         const map = membership().legacy;
@@ -360,7 +361,8 @@
         if (status === "unanswered") posts = posts.filter(p => p.replies.length === 0);
         if (mine) posts = posts.filter(p => p.owner === me.email);
         const latest = (a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt);
-        posts.sort(sort === "helpful" ? (a, b) => helpful(b) - helpful(a) || latest(a, b) : sort === "replies" ? (a, b) => b.replies.length - a.replies.length || latest(a, b) : sort === "top" ? (a, b) => top(b) - top(a) || latest(a, b) : latest);
+        const pinnedFirst = (a, b) => (b.pinned === true) - (a.pinned === true);
+        posts.sort(sort === "latest" ? (a, b) => pinnedFirst(a, b) || latest(a, b) : sort === "helpful" ? (a, b) => helpful(b) - helpful(a) || latest(a, b) : sort === "replies" ? (a, b) => b.replies.length - a.replies.length || latest(a, b) : sort === "top" ? (a, b) => top(b) - top(a) || latest(a, b) : latest);
         const size = Math.max(1, Math.min(50, Number(pageSize) || PAGE_SIZE)), pages = Math.max(1, Math.ceil(posts.length / size));
         const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), pages);
         const people = scores(accessible(data, me.email));
@@ -523,30 +525,114 @@
         });
     }
     function auditLog() { adminSession(); return structuredClone(read().audit); }
+    // Admin overview of channels: every count is computed from saved posts.
+    function channelStats() {
+        adminSession();
+        const posts = read().posts.filter(p => p.moderation.state !== "removed");
+        let members = {};
+        try { for (const r of membership().requests()) if (r.status === "approved") members[r.channel] = (members[r.channel] || 0) + 1; } catch { members = null; }
+        const row = (id, kind) => {
+            const list = posts.filter(p => p.channel === id), visible = list.filter(p => p.moderation.state === "visible");
+            return {id, label: channelLabel(id), kind, comingSoon: OPEN[id]?.comingSoon === true, posts: visible.length, hidden: list.length - visible.length,
+                replies: visible.reduce((n, p) => n + p.replies.length, 0), solved: visible.filter(p => p.solved).length,
+                pinned: visible.filter(p => p.pinned).length, locked: visible.filter(p => p.locked).length, members: kind === "study" ? (members ? members[id] || 0 : null) : null};
+        };
+        return [...Object.keys(OPEN).map(id => row(id, "open")), ...Object.keys(membership().catalogue).map(id => row(id, "study"))];
+    }
+    function adminThreads({channel = "all", limit = 25} = {}) {
+        adminSession();
+        return read().posts.filter(p => p.moderation.state !== "removed" && (channel === "all" || p.channel === channel))
+            .sort((a, b) => (b.pinned === true) - (a.pinned === true) || Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, Math.max(1, Math.min(100, limit)))
+            .map(p => ({id: p.id, title: p.title, channel: p.channel, author: p.name, sample: p.sample === true, createdAt: p.createdAt, replies: p.replies.length,
+                pinned: p.pinned === true, locked: p.locked === true, state: p.moderation.state}));
+    }
+    function pinPost(id, pinned, reason = "") {
+        return transaction(adminSession, data => {
+            const post = data.posts.find(p => p.id === id);
+            if (!post || post.moderation.state === "removed") throw Error("This post no longer exists.");
+            if (Boolean(post.pinned) === Boolean(pinned)) return false;
+            post.pinned = Boolean(pinned);
+            audit(data, {action: pinned ? "post-pinned" : "post-unpinned", targetType: "post", targetId: id, channel: post.channel, reason: plain(reason, LIMITS.reason, "Reason", {allowEmpty: true})});
+            return true;
+        });
+    }
+    // Locking closes new replies (existing replies, reactions and reports stay). A reason is required.
+    function lockPost(id, locked, reason) {
+        return transaction(adminSession, data => {
+            const post = data.posts.find(p => p.id === id);
+            if (!post || post.moderation.state === "removed") throw Error("This post no longer exists.");
+            const why = plain(reason, LIMITS.reason, "Reason");
+            if (Boolean(post.locked) === Boolean(locked)) return false;
+            post.locked = Boolean(locked);
+            audit(data, {action: locked ? "thread-locked" : "thread-unlocked", targetType: "post", targetId: id, channel: post.channel, reason: why});
+            return true;
+        });
+    }
 
     // ---------- SAMPLE data (explicit admin action only) ----------
     const S = "sample-community-";
     const sampleAuthor = n => ({owner: `sample-learner-${n}@sample.invalid`, name: `Sample Learner ${n} (SAMPLE)`});
+    // About 30 posts across open channels and one study group, 8 fictional members, replies, accepted
+    // answers and Helpful reactions. Everything is labelled SAMPLE and removable; ids are fixed so
+    // loading twice adds nothing.
     function samplePosts(now) {
         const at = hours => new Date(now - hours * 3600000).toISOString();
-        const post = (id, channel, n, hours, title, body, code, tags, extra = {}) => ({
-            id: S + id, channel, ...sampleAuthor(n), createdAt: at(hours), editedAt: null, title: "[SAMPLE] " + title, body, code, tags,
-            reactions: {helpful: [], thanks: []}, saved: [], solved: false, replies: [], reports: [], moderation: {state: "visible"}, sample: true, ...extra
-        });
-        const reply = (id, n, hours, body) => ({id: S + id, ...sampleAuthor(n), createdAt: at(hours), body, sample: true});
+        const owners = n => sampleAuthor(n).owner;
+        const reply = (id, n, hours, body, helpfulBy = []) => ({id: S + id, ...sampleAuthor(n), createdAt: at(hours), body, sample: true, parentId: null, editedAt: null, helpful: helpfulBy.map(owners)});
+        const post = (id, channel, n, hours, title, body, code, tags, extra = {}) => {
+            const {replies = [], accepted = null, helpfulBy = [], solved = Boolean(accepted)} = extra;
+            const list = replies.map(([rid, rn, rh, text, by]) => reply(rid, rn, rh, text, by));
+            return {
+                id: S + id, channel, ...sampleAuthor(n), createdAt: at(hours), editedAt: null, title: "[SAMPLE] " + title, body, code, tags,
+                reactions: {helpful: helpfulBy.map(owners), thanks: []}, saved: [], solved, solvedAt: solved ? at(Math.max(0.5, (replies[0]?.[2] || hours) - 1)) : null,
+                acceptedReplyId: accepted ? S + accepted : null, replies: list, reports: [], moderation: {state: "visible"}, sample: true
+            };
+        };
+        const py = (text) => ({language: "python", text}), js = (text) => ({language: "javascript", text});
         return [
-            post("py-1", "python", 1, 30, "Why does my loop print one number too few?", "Sample post for demonstrations. I expected 1 to 5.", {language: "python", text: "for i in range(1, 5):\n    print(i)"}, ["loops", "range"],
-                {solved: true, replies: [reply("py-1-r1", 2, 29, "range(1, 5) stops before 5. Use range(1, 6) to include it.")]}),
-            post("py-2", "python", 3, 20, "Study note: f-strings in one minute", "Sample note. Put an f before the quotes and wrap names in braces.", {language: "python", text: "name = \"Ada\"\nprint(f\"Hello, {name}!\")"}, ["strings", "notes"]),
-            post("py-3", "python", 2, 6, "KeyError when reading a dictionary", "Sample question. How do I avoid the error when a key is missing?", {language: "python", text: "scores = {\"a\": 1}\nprint(scores[\"b\"])"}, ["dict", "errors"],
-                {replies: [reply("py-3-r1", 1, 5, "Try scores.get(\"b\", 0) to return a default instead.")]}),
+            post("py-1", "python", 1, 30, "Why does my loop print one number too few?", "Sample post for demonstrations. I expected 1 to 5.", py("for i in range(1, 5):\n    print(i)"), ["loops", "range"],
+                {replies: [["py-1-r1", 2, 29, "range(1, 5) stops before 5. Use range(1, 6) to include it.", [1, 3, 4]]], accepted: "py-1-r1", helpfulBy: [3]}),
+            post("py-2", "python", 3, 20, "Study note: f-strings in one minute", "Sample note. Put an f before the quotes and wrap names in braces.", py("name = \"Ada\"\nprint(f\"Hello, {name}!\")"), ["strings", "notes"], {helpfulBy: [1, 2, 5]}),
+            post("py-3", "python", 2, 6, "KeyError when reading a dictionary", "Sample question. How do I avoid the error when a key is missing?", py("scores = {\"a\": 1}\nprint(scores[\"b\"])"), ["dict", "errors"],
+                {replies: [["py-3-r1", 1, 5, "Try scores.get(\"b\", 0) to return a default instead.", [2]]]}),
+            post("py-4", "python", 5, 50, "input() always gives me a string", "Sample question. 2 + 3 printed 23.", py("a = input()\nb = input()\nprint(a + b)"), ["input", "types"],
+                {replies: [["py-4-r1", 6, 49, "Convert first: int(input()). input() returns text.", [5, 7]], ["py-4-r2", 7, 48, "And float(input()) if you need decimals.", [5]]], accepted: "py-4-r1"}),
+            post("py-5", "python", 7, 70, "When should I use a while loop?", "Sample discussion. for vs while for beginners.", null, ["loops"],
+                {replies: [["py-5-r1", 3, 69, "Use while when you do not know how many steps you need, like reading until the user types quit.", [7, 8]]], accepted: "py-5-r1"}),
+            post("py-6", "python", 8, 4, "My function returns None", "Sample question. I print inside the function but the result is None.", py("def double(n):\n    print(n * 2)\n\nx = double(4)\nprint(x)"), ["functions"], {}),
+            post("py-7", "python", 4, 90, "Tip: use enumerate instead of range(len())", "Sample tip.", py("for i, name in enumerate([\"a\", \"b\"]):\n    print(i, name)"), ["loops", "tips"], {helpfulBy: [1, 6, 8]}),
+            post("py-8", "python", 6, 2, "How do I read a file line by line?", "Sample question.", null, ["files"], {}),
             post("js-1", "javascript", 4, 26, "let vs const: which should I use?", "Sample discussion. When do you pick each one?", null, ["variables"],
-                {replies: [reply("js-1-r1", 5, 25, "Default to const; use let only when you reassign the variable.")]}),
-            post("js-2", "javascript", 5, 8, "Array.map returns undefined values", "Sample question about a missing return.", {language: "javascript", text: "const doubled = [1, 2, 3].map(n => { n * 2 });"}, ["arrays", "functions"],
-                {solved: true, replies: [reply("js-2-r1", 4, 7, "Braces need an explicit return: n => { return n * 2; } or n => n * 2.")]}),
-            post("help-1", "help", 6, 12, "How do I ask a good question here?", "Sample guidance post. Share the lesson, what you expected, what happened and a small code example.", null, ["guide"]),
+                {replies: [["js-1-r1", 5, 25, "Default to const; use let only when you reassign the variable.", [4, 6]]], accepted: "js-1-r1"}),
+            post("js-2", "javascript", 5, 8, "Array.map returns undefined values", "Sample question about a missing return.", js("const doubled = [1, 2, 3].map(n => { n * 2 });"), ["arrays", "functions"],
+                {replies: [["js-2-r1", 4, 7, "Braces need an explicit return: n => { return n * 2; } or n => n * 2.", [5, 2]]], accepted: "js-2-r1"}),
+            post("js-3", "javascript", 6, 40, "== vs === in comparisons", "Sample question.", js("console.log(0 == \"0\");\nconsole.log(0 === \"0\");"), ["operators"],
+                {replies: [["js-3-r1", 2, 39, "=== also compares types, so prefer it. == converts first.", [6]]]}),
+            post("js-4", "javascript", 2, 12, "Why is my for loop variable undefined after the loop?", "Sample question about let scope.", js("for (let i = 0; i < 3; i++) {}\nconsole.log(i);"), ["scope", "loops"], {}),
+            post("js-5", "javascript", 8, 60, "Tip: template literals", "Sample tip. Backticks let you put values inside text.", js("const name = \"Ada\";\nconsole.log(`Hi ${name}`);"), ["strings", "tips"], {helpfulBy: [4, 5]}),
+            post("js-6", "javascript", 3, 3, "How do I sort numbers correctly?", "Sample question. [10, 9, 1].sort() gives [1, 10, 9].", js("[10, 9, 1].sort((a, b) => a - b);"), ["arrays"], {}),
+            post("help-1", "help", 6, 12, "How do I ask a good question here?", "Sample guidance post. Share the lesson, what you expected, what happened and a small code example.", null, ["guide"], {helpfulBy: [1, 2, 3, 4]}),
             post("help-2", "help", 3, 2, "Placement test: can I retake it?", "Sample question. I placed lower than I hoped.", null, ["placement"],
-                {replies: [reply("help-2-r1", 6, 1, "Yes. A retake updates the recommendation; your completed work is kept.")]})
+                {replies: [["help-2-r1", 6, 1, "Yes. A retake updates the recommendation; your completed work is kept.", [3]]], accepted: "help-2-r1"}),
+            post("help-3", "help", 1, 16, "My code works but Submit says a test fails", "Sample question.", null, ["submit", "tests"],
+                {replies: [["help-3-r1", 7, 15, "Check spaces and capital letters. The expected output must match exactly.", [1, 2]]], accepted: "help-3-r1"}),
+            post("help-4", "help", 4, 1, "Where do I see my saved code?", "Sample question.", null, ["workspace"], {}),
+            post("help-5", "help", 8, 30, "How long should each lesson take?", "Sample question.", null, ["study"], {replies: [["help-5-r1", 5, 29, "About 15 minutes, plus practice. Go at your own pace.", []]]}),
+            post("gen-1", "general", 1, 100, "Introduce yourself here", "Sample thread. Say hi and share what you are learning.", null, ["introductions"],
+                {replies: [["gen-1-r1", 2, 99, "Hi! Learning Python for data work.", []], ["gen-1-r2", 3, 98, "Hello from a JavaScript beginner.", []], ["gen-1-r3", 4, 97, "Hi all, starting from zero.", []]]}),
+            post("gen-2", "general", 2, 36, "What helps you study every day?", "Sample discussion.", null, ["study", "habits"],
+                {replies: [["gen-2-r1", 8, 35, "Small goals: one lesson and one practice task.", [2, 1]]]}),
+            post("gen-3", "general", 5, 9, "Weekly challenge: what did you learn?", "Sample thread. Share what you learned, not the full answer.", null, ["challenge"], {helpfulBy: [7]}),
+            post("gen-4", "general", 7, 5, "Note-taking apps for coding?", "Sample question.", null, ["tools"], {}),
+            post("proj-1", "projects", 3, 44, "My study task manager (Level 3 project)", "Sample project post. Feedback welcome on how I store tasks.", py("tasks = []\ntasks.append({\"title\": \"Read\", \"done\": False})"), ["project", "lists"],
+                {replies: [["proj-1-r1", 1, 43, "Nice! A small function for adding tasks would make it easier to test.", [3]]], helpfulBy: [1, 2]}),
+            post("proj-2", "projects", 6, 20, "A tiny tip calculator in JavaScript", "Sample project.", js("const total = (bill, pct) => bill * (1 + pct / 100);"), ["project"], {helpfulBy: [4]}),
+            post("proj-3", "projects", 8, 7, "Quiz game idea", "Sample project idea. What should I build first?", null, ["project", "ideas"], {replies: [["proj-3-r1", 2, 6, "Start with one question and a score variable.", [8]]], accepted: "proj-3-r1"}),
+            post("cs-1", "csharp", 4, 22, "Anyone learning C# already?", "Sample post in the C# space (the path is coming soon).", {language: "csharp", text: "Console.WriteLine(\"Hello\");"}, ["csharp"], {}),
+            post("cpp-1", "cpp", 7, 28, "C++: why do I need #include <iostream>?", "Sample question in the C++ space (the path is coming soon).", {language: "cpp", text: "#include <iostream>\nint main() { std::cout << \"Hi\"; }"}, ["cpp"],
+                {replies: [["cpp-1-r1", 6, 27, "It brings in std::cout. Without it the compiler does not know cout.", [7]]], accepted: "cpp-1-r1"}),
+            post("grp-1", "study-python", 2, 18, "Study group plan: loops week", "Sample post visible to approved members of the Python study group only.", null, ["plan"], {}),
+            post("grp-2", "study-python", 5, 10, "Group check-in: dictionaries", "Sample post for the Python study group.", null, ["dict"], {replies: [["grp-2-r1", 2, 9, "Done with the lesson; practising get() now.", []]]})
         ];
     }
     function sampleStatus() {
@@ -557,6 +643,7 @@
         return transaction(adminSession, data => {
             let added = 0;
             for (const p of samplePosts(Date.now())) if (!data.posts.some(x => x.id === p.id)) { data.posts.push(p); added++; }
+            // Idempotent for replies too: a sample reply already present is never duplicated.
             audit(data, {action: "sample-loaded", targetType: "sample", targetId: "community", reason: `${added} sample post(s) added`});
             return added;
         });
@@ -589,6 +676,6 @@
         UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, editReply, reactReply, acceptAnswer, restoreAcceptance,
         react, toggleSaved, setSolved, report, contactPolicy,
         query, get, similar, highlights, reputation, BADGES, POINTS, notifications, markNotificationsRead,
-        queue, moderate, auditLog, sampleStatus, loadSample, removeSample, subscribe
+        queue, moderate, auditLog, channelStats, adminThreads, pinPost, lockPost, sampleStatus, loadSample, removeSample, subscribe
     });
 })();

@@ -276,14 +276,16 @@ async function approve(adminTab, owner, channel) {
         assert.equal(a.s.contactPolicy(undefined).allowed, false, 'unknown age is treated as a minor');
     });
 
-    await check('Sample data: only an admin can load; labelled; 3 channels; 8-12 records', async () => {
+    // Community v2 (intentional): a richer SAMPLE set — 30 posts across the open channels and one study group, 8 fictional members.
+    await check('Sample data: only an admin can load; labelled; 30 posts, 19 replies, 8 fictional members across channels', async () => {
         await assert.rejects(a.s.loadSample(), /administrator/);
         const realBefore = JSON.parse(shared.getItem('codementor-community-v1')).posts.filter(p => !p.sample);
-        assert.equal(await admin.s.loadSample(), 7);
+        assert.equal(await admin.s.loadSample(), 30);
         const posts = JSON.parse(shared.getItem('codementor-community-v1')).posts.filter(p => p.sample);
         const replies = posts.flatMap(p => p.replies);
-        assert.ok(posts.length + replies.length >= 8 && posts.length + replies.length <= 12);
-        deq([...new Set(posts.map(p => p.channel))].sort(), ['help', 'javascript', 'python']);
+        assert.equal(posts.length, 30); assert.equal(replies.length, 19);
+        assert.equal(new Set([...posts.map(p => p.owner), ...replies.map(r => r.owner)]).size, 8);
+        deq([...new Set(posts.map(p => p.channel))].sort(), ['cpp', 'csharp', 'general', 'help', 'javascript', 'projects', 'python', 'study-python']);
         assert.ok(posts.every(p => p.title.startsWith('[SAMPLE] ') && /\(SAMPLE\)$/.test(p.name) && p.owner.endsWith('@sample.invalid')));
         assert.ok(replies.every(r => r.sample && /\(SAMPLE\)$/.test(r.name) && r.owner.endsWith('@sample.invalid')));
         deq(JSON.parse(shared.getItem('codementor-community-v1')).posts.filter(p => !p.sample), realBefore);
@@ -292,13 +294,15 @@ async function approve(adminTab, owner, channel) {
         const before = shared.getItem('codementor-community-v1');
         assert.equal(await admin.s.loadSample(), 0);
         deq(JSON.parse(shared.getItem('codementor-community-v1')).posts, JSON.parse(before).posts);
-        deq(admin.s.sampleStatus(), { loaded: true, posts: 7, replies: 5 });
+        deq(admin.s.sampleStatus(), { loaded: true, posts: 30, replies: 19 });
     });
     // Community v2 (intentional): sample posts sit in OPEN channels, so every signed-in student sees them, labelled SAMPLE.
-    await check('Sample data: visible as SAMPLE in open channels to every signed-in student', async () => {
-        const view = a.s.query({ search: '[SAMPLE]' }, A.email);
-        assert.ok(view.items.length > 0 && view.items.every(p => p.sample && Object.hasOwn(a.s.OPEN, p.channel)));
-        assert.equal(b.s.query({ search: '[SAMPLE]' }, B.email).total, view.total);
+    await check('Sample data: open-channel samples visible as SAMPLE to every signed-in student; study-group samples only to members', async () => {
+        const view = a.s.query({ search: '[SAMPLE]', pageSize: 50 }, A.email), other = b.s.query({ search: '[SAMPLE]', pageSize: 50 }, B.email);
+        assert.ok(view.items.length > 0 && view.items.every(p => p.sample));
+        assert.ok(other.items.every(p => p.sample && Object.hasOwn(b.s.OPEN, p.channel)), 'B (not a study-group member) sees open-channel samples only');
+        assert.equal(other.total, view.items.filter(p => Object.hasOwn(a.s.OPEN, p.channel)).length);
+        assert.equal(view.total - other.total, view.items.filter(p => p.channel === 'study-python').length, 'only the study-group samples differ');
         a.dom.ids.get('community-search').value = '[SAMPLE]';
         a.window.fire('community-changed');
         assert.ok(a.dom.walk().some(n => n.className === 'community-sample-badge' && n.textContent === 'SAMPLE'));
@@ -310,9 +314,9 @@ async function approve(adminTab, owner, channel) {
         const hasReal = JSON.parse(shared.getItem('codementor-community-v1')).posts.find(p => p.id === sampleId).replies.some(r => !r.sample);
         assert.ok(hasReal);
         await assert.rejects(admin.s.removeSample(), /real reply is attached/);
-        assert.equal(admin.s.sampleStatus().posts, 7);
+        assert.equal(admin.s.sampleStatus().posts, 30);
         const result = await admin.s.removeSample({ includeRealReplies: true });
-        assert.equal(result.posts, 7);
+        assert.equal(result.posts, 30);
         const after = JSON.parse(shared.getItem('codementor-community-v1')).posts;
         assert.equal(after.filter(p => p.sample).length, 0);
         deq(after, realBefore);
@@ -355,11 +359,11 @@ async function approve(adminTab, owner, channel) {
         assert.ok(nodes().some(n => n.tagName === 'B' && n.textContent === 'Sample data removed'));
         assert.match(adminPage.dom.ids.get('sample-state').textContent, /No sample data is loaded/);
         await adminPage.dom.ids.get('sample-load').fire('click');
-        assert.match(adminPage.dom.ids.get('sample-status').textContent, /7 sample posts added/);
+        assert.match(adminPage.dom.ids.get('sample-status').textContent, /30 sample posts added/);
         await adminPage.dom.ids.get('sample-load').fire('click');
         assert.match(adminPage.dom.ids.get('sample-status').textContent, /already loaded/);
         await adminPage.dom.ids.get('sample-remove').fire('click');
-        assert.match(adminPage.dom.ids.get('sample-status').textContent, /7 sample posts removed/);
+        assert.match(adminPage.dom.ids.get('sample-status').textContent, /30 sample posts removed/);
         assert.ok(!nodes().some(n => /password|hash|salt/i.test(n.textContent || '')), 'no credential data on the admin page');
     });
     console.log(`${count} community checks passed.`);

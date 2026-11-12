@@ -450,5 +450,69 @@ function curricula() {
         assert.equal(link.textContent, 'Related task: <b>Build a simple receipt</b>'); assert.equal(link.href, '../student/workspace.html?task=receipt');
     });
 
+    // ---------- group 6: admin and sample data ----------
+    const adminMem = memory(), adm = tab(adminMem, null, { admin: true }), st = tab(adminMem, A, { extraScripts: EXTRA }), other = tab(adminMem, B, { extraScripts: EXTRA });
+    await check('Sample data: idempotent load (posts and replies), removable, reloadable; real posts untouched; all labelled SAMPLE', async () => {
+        const real = await st.s.createPost({ channel: 'general', title: 'A real post', body: 'b' }, A.email);
+        assert.equal(await adm.s.loadSample(), 30);
+        const once = adminMem.getItem('codementor-community-v1');
+        assert.equal(await adm.s.loadSample(), 0);
+        deq(JSON.parse(adminMem.getItem('codementor-community-v1')).posts, JSON.parse(once).posts, 'second load changes nothing');
+        const posts = JSON.parse(once).posts.filter(p => p.sample);
+        assert.ok(posts.every(p => p.title.startsWith('[SAMPLE] ') && /\(SAMPLE\)$/.test(p.name) && p.owner.endsWith('@sample.invalid') && p.replies.every(r => r.sample && /\(SAMPLE\)$/.test(r.name))));
+        assert.equal(posts.filter(p => p.acceptedReplyId).length, 9, 'solved threads with accepted answers');
+        assert.equal((await adm.s.removeSample()).posts, 30);
+        deq(JSON.parse(adminMem.getItem('codementor-community-v1')).posts.map(p => p.id), [real]);
+        assert.equal(await adm.s.loadSample(), 30, 'can be loaded again after removal');
+        await assert.rejects(st.s.loadSample(), /administrator/);
+    });
+    await check('Sample reputation is computed from the sample threads and stays labelled SAMPLE', async () => {
+        const rep = st.s.reputation(A.email);
+        assert.ok(rep.helpers.length > 0 && rep.helpers.every(h => h.sample && /\(SAMPLE\)$/.test(h.name)));
+        const top = rep.helpers[0];
+        assert.ok(top.points > 0 && top.badges.includes('problem-solver'));
+    });
+    await check('Channel stats: exact counts per open channel and study group; admin only', async () => {
+        assert.throws(() => st.s.channelStats(), /administrator/);
+        const rows = adm.s.channelStats(), data = JSON.parse(adminMem.getItem('codementor-community-v1')).posts;
+        deq(rows.map(r => r.id), ['general', 'help', 'projects', 'python', 'javascript', 'csharp', 'cpp', 'study-python', 'study-javascript', 'study-general', 'study-projects', 'study-help']);
+        for (const r of rows) {
+            const list = data.filter(p => p.channel === r.id && p.moderation.state === 'visible');
+            assert.equal(r.posts, list.length, r.id); assert.equal(r.replies, list.reduce((n, p) => n + p.replies.length, 0), r.id);
+            assert.equal(r.solved, list.filter(p => p.solved).length, r.id);
+        }
+        assert.equal(rows.find(r => r.id === 'python').posts, 8); assert.equal(rows.find(r => r.id === 'general').posts, 5, '4 sample + 1 real');
+        assert.equal(rows.find(r => r.id === 'csharp').comingSoon, true);
+        assert.equal(rows.find(r => r.id === 'general').members, null, 'open channels have no member list');
+    });
+    await check('Pin and lock: admin only, audited; pinned first in Latest; locked threads refuse new replies until unlocked', async () => {
+        const target = 'sample-community-py-8';
+        await assert.rejects(st.s.pinPost(target, true), /administrator/);
+        assert.equal(await adm.s.pinPost(target, true, 'Good beginner question'), true);
+        assert.equal(await adm.s.pinPost(target, true), false, 'pinning twice changes nothing');
+        const latest = st.s.query({ channel: 'python' }, A.email).items;
+        assert.equal(latest[0].id, target); assert.equal(latest[0].pinned, true);
+        await assert.rejects(adm.s.lockPost(target, true, ''), /Reason must contain/);
+        assert.equal(await adm.s.lockPost(target, true, 'Answered elsewhere'), true);
+        await assert.rejects(other.s.reply(target, 'late reply', B.email), /locked by a moderator/);
+        assert.equal(st.s.get(target, A.email).locked, true);
+        await adm.s.lockPost(target, false, 'Reopened');
+        await other.s.reply(target, 'Now it works', B.email);
+        deq(adm.s.auditLog().filter(e => e.targetId === target).map(e => [e.action, e.reason]), [['post-pinned', 'Good beginner question'], ['thread-locked', 'Answered elsewhere'], ['thread-unlocked', 'Reopened']]);
+    });
+    await check('Admin page: channel table and pin/lock controls render as text and work', async () => {
+        await st.s.createPost({ channel: 'help', title: '<img src=x onerror=alert(1)> admin title', body: 'b' }, A.email);
+        const page = tab(adminMem, null, { admin: true });
+        page.run('js/admin-community.js');
+        const rows = page.dom.ids.get('channel-stats').children;
+        assert.equal(rows.length, 12); assert.equal(rows[0].dataset.channel, 'general');
+        assert.ok(page.dom.walk().some(n => n.tagName === 'H3' && n.textContent === '<img src=x onerror=alert(1)> admin title'));
+        assert.ok(!page.dom.walk().some(n => ['IMG', 'SCRIPT'].includes(n.tagName)));
+        const card = page.dom.ids.get('thread-list').children.find(c => c.dataset.postId && !c.dataset.postId.startsWith('sample-community-py-8'));
+        await card.children.find(n => n.className === 'community-post-actions').children[0].fire('click');
+        assert.match(page.dom.ids.get('thread-status').textContent, /Post pinned/);
+        assert.ok(page.dom.walk().some(n => n.tagName === 'B' && n.textContent === 'Post pinned'), 'audit log shows the new action');
+    });
+
     console.log(`${count} community v2 checks passed.`);
 })().catch(error => { console.error(error); process.exit(1); });

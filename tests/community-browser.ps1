@@ -30,7 +30,8 @@ try {
     function Open($p) { $n = Cdp 'Page.navigate' @{url=('http://127.0.0.1:8876/' + $p)}; if ($n.errorText) {throw $n.errorText}; Start-Sleep -Milliseconds 900; Eval "document.querySelector('#cm-user-guide[open] .cm-guide-skip')?.click();true" | Out-Null }
     function Size($w) { Cdp 'Emulation.setDeviceMetricsOverride' @{width=$w;height=900;deviceScaleFactor=1;mobile=($w -lt 600)} | Out-Null; Start-Sleep -Milliseconds 250 }
     # Full-page shot without captureBeyondViewport (it hung for 120 s at 390 px under mobile emulation in the group-4 run):
-    # grow the viewport to the page height, capture, then restore 900 px.
+    # grow the viewport to the page height, capture, then restore 900 px. The tab in use is brought to the
+    # front on every switch (a background tab may produce no frames; two captures hung in groups 4 and 6).
     function Shot($n) {
         $w = [int](Eval 'innerWidth'); $h = [int](Eval 'Math.min(Math.max(document.documentElement.scrollHeight, innerHeight), 8000)')
         Cdp 'Emulation.setDeviceMetricsOverride' @{width=$w;height=$h;deviceScaleFactor=1;mobile=($w -lt 600)} | Out-Null; Start-Sleep -Milliseconds 300
@@ -88,7 +89,7 @@ try {
     Wait 800
     $adminTarget=(Invoke-RestMethod "http://127.0.0.1:$port/json") | Where-Object {$_.id -eq $newTab.targetId}
     $adminSocket=New-Object CdpSocket($adminTarget.webSocketDebuggerUrl.Replace('localhost','127.0.0.1'))
-    $socket=$adminSocket
+    $socket=$adminSocket; Cdp 'Page.bringToFront' @{} | Out-Null
     Cdp 'Runtime.enable' @{} | Out-Null
     Check 'Admin community page is protected' (Eval "location.pathname.endsWith('/auth/admin-login.html')")
     Eval "document.getElementById('fill-demo').click();document.getElementById('login-form').requestSubmit();true" | Out-Null
@@ -96,7 +97,7 @@ try {
     Check 'Admin sees the study-group request' (Eval "location.pathname.endsWith('/admin-community.html') && document.querySelectorAll('#membership-requests article').length===1")
     Eval "document.querySelector('#membership-requests button').click();true" | Out-Null
     Wait 300
-    $socket=$studentSocket
+    $socket=$studentSocket; Cdp 'Page.bringToFront' @{} | Out-Null
     Check 'Approval opens the group in the student tab without reloading' (Eval "communityMembership.state('study-help')==='approved' && !document.getElementById('community-composer').hidden")
     Eval "document.getElementById('post-title').value='Help circle weekly plan';document.getElementById('post-body').value='Members only plan.';document.getElementById('community-composer').requestSubmit();true" | Out-Null
     Wait 400
@@ -137,6 +138,30 @@ try {
     Check 'Composer is prefilled with the task, the current code and a related link; nothing posted' (Eval "location.pathname.endsWith('/services/community.html') && document.getElementById('post-title').value==='Help with: Build a simple receipt' && document.getElementById('post-code').value==='price = float(input())\nprint(price)' && document.getElementById('community-related').textContent.includes('Related task') && (localStorage.getItem('codementor-community-v1')||'')===sessionStorage.getItem('qa-posts-before')")
     Shot 'ask-from-workspace-1440'
     Eval "document.getElementById('community-composer').reset();true" | Out-Null
+    # Admin: load SAMPLE data (idempotent), channel table with computed counts, pin a post; students see it.
+    $socket=$adminSocket; Cdp 'Page.bringToFront' @{} | Out-Null
+    Size 1440
+    Eval "document.getElementById('sample-load').click();true" | Out-Null
+    Wait 600
+    Check 'Admin loads SAMPLE data; channel table shows computed counts' (Eval "document.getElementById('sample-status').textContent.includes('30 sample posts added') && document.querySelectorAll('#channel-stats tr').length===12 && [...document.querySelectorAll('#channel-stats tr')].find(r=>r.dataset.channel==='python').children[2].textContent==='8'")
+    Eval "document.getElementById('sample-load').click();true" | Out-Null
+    Wait 400
+    Check 'Loading SAMPLE data again adds nothing' (Eval "document.getElementById('sample-status').textContent.includes('already loaded')")
+    Eval "const s=document.getElementById('thread-channel');s.value='python';s.dispatchEvent(new Event('change'));true" | Out-Null
+    Wait 200
+    Eval "[...document.querySelectorAll('#thread-list article')].find(a=>a.querySelector('h3').textContent.includes('read a file line by line')).querySelector('.community-post-actions button').click();true" | Out-Null
+    Wait 400
+    Check 'Pin is written to the audit log' (Eval "[...document.querySelectorAll('#audit-log li')].some(li=>li.textContent.includes('Post pinned'))")
+    Shot 'admin-1440'
+    $socket=$studentSocket; Cdp 'Page.bringToFront' @{} | Out-Null
+    Size 1440
+    Open 'pages/services/community.html'
+    Eval "[...document.querySelectorAll('#community-channels .community-channel')].find(b=>b.textContent.includes('Python')).click();true" | Out-Null
+    Wait 300
+    Check 'Students see labelled SAMPLE posts, the pinned post first and SAMPLE helpers ranked from real sample threads' (Eval "document.querySelector('.community-card').classList.contains('is-pinned') && document.querySelector('.community-card').textContent.includes('SAMPLE') && document.getElementById('community-helpers').textContent.includes('(SAMPLE)') && document.querySelectorAll('.community-card').length>=8")
+    Shot 'python-channel-1440'
+    Eval "[...document.querySelectorAll('#community-channels .community-channel')].find(b=>b.textContent.includes('All discussions')).click();true" | Out-Null
+    Wait 300
     # Layout at four widths, touch targets, mobile tabs.
     foreach ($w in @(1440, 1024, 768, 390)) { Size $w; Check "$w px: no horizontal scroll" (Eval 'document.documentElement.scrollWidth<=innerWidth+1') }
     Size 1440; Shot 'feed-1440'
@@ -154,12 +179,12 @@ try {
     Eval "[...document.querySelectorAll('#community-directory .community-channel')].find(b=>b.textContent.includes('Help circle')).click();true" | Out-Null
     Wait 200
     Eval "window.staleSave=[...document.querySelectorAll('.community-card .community-mini')].find(b=>b.textContent==='Save');true" | Out-Null
-    $socket=$adminSocket
+    $socket=$adminSocket; Cdp 'Page.bringToFront' @{} | Out-Null
     Eval "document.getElementById('membership-filter').value='approved';document.getElementById('membership-filter').dispatchEvent(new Event('change'));true" | Out-Null
     Eval "document.querySelector('#membership-requests textarea').value='Browser test removal reason';document.querySelector('#membership-requests button').click();true" | Out-Null
     Wait 300
     Check 'Member removal is written to the audit log' (Eval "[...document.querySelectorAll('#audit-log li')].some(li=>li.textContent.includes('Member removed') && li.textContent.includes('Browser test removal reason'))")
-    $socket=$studentSocket
+    $socket=$studentSocket; Cdp 'Page.bringToFront' @{} | Out-Null
     Wait 200
     Check 'Removal clears the private group in the other tab' (Eval "communityMembership.state('study-help')==='revoked' && document.querySelectorAll('.community-card').length===0 && document.getElementById('community-composer').hidden")
     Eval "window.beforePosts=localStorage.getItem('codementor-community-v1');window.staleSave?.click();true" | Out-Null
@@ -168,7 +193,7 @@ try {
     Eval "localStorage.setItem(communityMembership.key,'broken-records');true" | Out-Null
     Open 'pages/services/community.html'
     Check 'Corrupt membership records lock study groups only and are never overwritten' (Eval "localStorage.getItem(communityMembership.key)==='broken-records' && document.getElementById('community-status').textContent.includes('Access is locked') && !document.getElementById('community-composer').hidden && document.querySelectorAll('.community-card').length>=1")
-    $socket=$adminSocket
+    $socket=$adminSocket; Cdp 'Page.bringToFront' @{} | Out-Null
     Eval "sessionStorage.setItem('codementor-admin-session',JSON.stringify({role:'admin',isDemo:true,signedInAt:Date.now()-9*3600000}));true" | Out-Null
     Check 'Expired admin session cannot review requests' (Eval "(()=>{try{communityMembership.requests();return false}catch{return true}})()")
     Check 'No uncaught JavaScript exceptions' ($script:errors.Count -eq 0)

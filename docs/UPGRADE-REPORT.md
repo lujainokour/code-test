@@ -47,6 +47,8 @@ This covers the quality upgrade on branch `main`, after `2428a9c` (Phase 2). The
 
 ## Part 2 — Community
 
+> Superseded in part by Community v2 (open channels, private study groups, reputation, learning integration). See [COMMUNITY-V2.md](COMMUNITY-V2.md). The notes below describe Part 2 as it was delivered.
+
 - **Data model:** a new `js/community-store.js`. The existing membership model is kept, with five channels: Python, JavaScript, General, Projects and Help. Old topic channels migrate on read: questions→help, notes and resources→general, projects→projects. Reading never rewrites storage.
 - **Posts:** title, body, a code block with a language label and copy button, up to 5 tags, solved (author only), replies, Helpful/Thanks reactions, and edit (marked "edited") or delete of your own posts.
 - **Finding posts:** search covers title, body, code and tags. Filters are tag, solved, not solved and unanswered. Sorting is latest, most helpful or most replies. Results are paged 10 at a time. The active language channel is highlighted.

@@ -78,7 +78,48 @@
             if (!items.length) host.append(node("p", "Nothing to review. Reported posts appear here.", "community-empty"));
         } catch (error) { msg.textContent = error.message; host.replaceChildren(); }
     }
-    const actionLabels = {"membership-approved": "Membership approved", "membership-rejected": "Membership declined", "member-removed": "Member removed", "post-hidden": "Post hidden", "post-restored": "Post restored", "post-removed": "Post removed", "post-reports-dismissed": "Reports dismissed", "sample-loaded": "Sample data loaded", "sample-removed": "Sample data removed"};
+    // Channels table and pin/lock controls. Counts come from the store; text is set with textContent.
+    function renderChannels() {
+        const body = $("channel-stats");
+        try {
+            const rows = store.channelStats();
+            body.replaceChildren(...rows.map(r => {
+                const tr = node("tr"); tr.dataset.channel = r.id;
+                const name = node("th", r.label + (r.comingSoon ? " (path coming soon)" : "")); name.scope = "row";
+                tr.append(name, node("td", r.kind === "open" ? "Open" : "Study group"), ...[r.posts, r.replies, r.solved, r.hidden, r.pinned, r.locked].map(v => node("td", String(v))), node("td", r.members === null ? (r.kind === "open" ? "Everyone" : "Unavailable") : String(r.members)));
+                return tr;
+            }));
+            const select = $("thread-channel"), current = select.value || "all";
+            select.replaceChildren(Object.assign(node("option", "All channels"), {value: "all"}), ...rows.map(r => Object.assign(node("option", r.label), {value: r.id})));
+            select.value = rows.some(r => r.id === current) ? current : "all";
+        } catch (error) { body.replaceChildren(); $("thread-status").textContent = error.message; }
+    }
+    function renderThreads() {
+        const host = $("thread-list"), msg = $("thread-status");
+        try {
+            const items = store.adminThreads({channel: $("thread-channel").value || "all", limit: 25});
+            host.replaceChildren(...items.map(item => {
+                const card = node("article", undefined, "community-panel"); card.dataset.postId = item.id;
+                const flags = [item.pinned && "PINNED", item.locked && "LOCKED", item.state === "hidden" && "HIDDEN"].filter(Boolean);
+                if (flags.length) card.append(node("span", flags.join(" · "), "community-badge"));
+                if (item.sample) card.append(node("span", "SAMPLE", "community-sample-badge"));
+                card.append(node("h3", item.title), node("p", `${item.author} · ${store.channelLabel(item.channel)} · ${item.replies} replies · ${new Date(item.createdAt).toLocaleString()}`, "community-storage-note"));
+                const note = noteField(`thread-${item.id}`, item.locked ? "Reason for unlocking (required)" : "Reason for locking (required for lock)");
+                const actions = node("div", undefined, "community-post-actions");
+                actions.append(btn(item.pinned ? "Unpin" : "Pin to top", async () => {
+                    try { await store.pinPost(item.id, !item.pinned, note.input.value); msg.textContent = item.pinned ? "Post unpinned." : "Post pinned. It shows first in Latest."; } catch (error) { msg.textContent = error.message; }
+                    renderAll();
+                }), btn(item.locked ? "Unlock thread" : "Lock thread", async () => {
+                    try { await store.lockPost(item.id, !item.locked, note.input.value); msg.textContent = item.locked ? "Thread unlocked. Replies are open again." : "Thread locked. New replies are closed."; } catch (error) { msg.textContent = error.message; }
+                    renderAll();
+                }));
+                card.append(note.wrap, actions);
+                return card;
+            }));
+            if (!items.length) host.append(node("p", "No posts in this channel yet.", "community-empty"));
+        } catch (error) { msg.textContent = error.message; host.replaceChildren(); }
+    }
+    const actionLabels = {"post-pinned": "Post pinned", "post-unpinned": "Post unpinned", "thread-locked": "Thread locked", "thread-unlocked": "Thread unlocked", "membership-approved": "Membership approved", "membership-rejected": "Membership declined", "member-removed": "Member removed", "post-hidden": "Post hidden", "post-restored": "Post restored", "post-removed": "Post removed", "post-reports-dismissed": "Reports dismissed", "sample-loaded": "Sample data loaded", "sample-removed": "Sample data removed"};
     function renderAudit() {
         const host = $("audit-log");
         try {
@@ -102,9 +143,9 @@
             $("sample-remove").disabled = !s.loaded;
         } catch (error) { $("sample-state").textContent = error.message; }
     }
-    function renderAll() { renderMembership(); renderQueue(); renderAudit(); renderSample(); }
+    function renderAll() { renderChannels(); renderThreads(); renderMembership(); renderQueue(); renderAudit(); renderSample(); }
     $("sample-load").addEventListener("click", async () => {
-        try { const added = await store.loadSample(); $("sample-status").textContent = added ? `${added} sample posts added. Approve a student for Python, JavaScript or Help to see them.` : "Sample data was already loaded. Nothing was added."; }
+        try { const added = await store.loadSample(); $("sample-status").textContent = added ? `${added} sample posts added. They appear in the open channels for every signed-in student, labelled SAMPLE.` : "Sample data was already loaded. Nothing was added."; }
         catch (error) { $("sample-status").textContent = error.message; }
         renderAll();
     });
@@ -122,6 +163,7 @@
         renderAll();
     });
     Object.entries(membership.catalogue).forEach(([id, label]) => { const o = node("option", label); o.value = id; $("membership-channel").append(o); });
+    $("thread-channel").addEventListener("change", renderThreads);
     $("membership-filter").addEventListener("change", renderMembership); $("membership-channel").addEventListener("change", renderMembership);
     window.addEventListener("community-membership-changed", renderAll);
     window.addEventListener("community-changed", renderAll);
