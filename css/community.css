@@ -182,3 +182,31 @@
     .community-panel,.community-card { padding:14px; }
 }
 .community-feed [hidden] { display:none !important; }
+
+/* post drawer (dialog): focus is trapped by showModal, Esc closes, focus returns to the card */
+.community-drawer { position:fixed; inset:0 0 0 auto; width:min(760px,100vw); max-width:100vw; height:100dvh; max-height:100dvh; margin:0; padding:0; border:0; border-left:1px solid var(--cm-line); background:var(--cm-page); color:var(--cm-ink); overflow:auto; box-shadow:var(--cm-shadow-2); }
+.community-drawer::backdrop { background:rgba(23,32,38,.45); }
+@media (prefers-reduced-motion:no-preference) { .community-drawer[open] { animation:community-drawer-in .22s var(--cm-ease, ease-out); } }
+@keyframes community-drawer-in { from { transform:translateX(24px); opacity:.6; } to { transform:none; opacity:1; } }
+.community-detail { padding:20px clamp(16px,3vw,32px) 40px; }
+.community-drawer-head { display:flex; align-items:center; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding:10px 0; background:var(--cm-page); }
+.community-drawer-title { font-size:clamp(22px,2.4vw,28px); line-height:1.3; margin:8px 0 10px; overflow-wrap:anywhere; }
+.community-drawer-title:focus-visible { outline:3px solid var(--cm-focus); outline-offset:4px; border-radius:4px; }
+.community-detail .community-post-actions { margin:14px 0; padding-top:12px; border-top:1px solid var(--cm-line); }
+.community-detail label { display:block; font-size:13px; font-weight:650; }
+.community-detail :is(input,textarea,select) { display:block; width:100%; min-height:44px; border:1px solid var(--cm-line); border-radius:10px; padding:10px 12px; background:#fff; color:var(--cm-ink); font:inherit; font-size:14px; margin:6px 0 12px; }
+.community-replies { margin-top:8px; }
+.community-replies-title { font-size:17px; margin:18px 0 10px; }
+.community-reply { padding:12px 14px; border:1px solid var(--cm-line); border-radius:12px; background:var(--cm-surface); margin-bottom:10px; }
+.community-reply.is-nested { margin-left:clamp(14px,4vw,40px); border-left:3px solid var(--cm-line-strong); }
+.community-reply.is-accepted { border-color:var(--cm-success); box-shadow:inset 4px 0 0 var(--cm-success); }
+.community-reply-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--cm-ink-2); }
+.community-reply-meta b { color:var(--cm-ink); }
+.community-reply .community-post-actions { margin:8px 0 0; padding-top:0; border-top:0; }
+.community-reply-form { margin-top:14px; padding:14px; border:1px solid var(--cm-line); border-radius:12px; background:var(--cm-surface); }
+.community-replying { display:flex; align-items:center; gap:10px; margin:0 0 8px; font-size:13px; font-weight:650; color:var(--cm-burgundy-700); }
+.community-similar { margin:-4px 0 12px; padding:12px; border:1px dashed var(--cm-line-strong); border-radius:12px; background:var(--cm-surface-soft); }
+.community-similar ul { list-style:none; padding:0; margin:8px 0 0; display:grid; gap:6px; }
+.community-similar-title { margin:0; font-weight:700; }
+.community-similar .community-hint { margin:2px 0 0; font-size:12px; }
+.community-notification-list .community-widget-link { margin:0; }

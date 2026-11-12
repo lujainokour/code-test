@@ -125,8 +125,9 @@ async function approve(adminTab, owner, channel) {
     await check('XSS payloads render as text in the real page script (no element injected)', async () => {
         a.run('js/community.js');
         // Community v2: feed cards are compact; the full post (body, code, actions) opens from the title.
-        for (const opener of a.dom.walk().filter(n => n.tagName === 'BUTTON' && n.className.includes('community-card-open'))) await opener.fire('click');
-        const nodes = a.dom.walk();
+        // The post view is a drawer showing one discussion at a time, so open each card and collect what it shows.
+        const nodes = [...a.dom.walk()];
+        for (const opener of a.dom.walk().filter(n => n.tagName === 'BUTTON' && n.className.includes('community-card-open'))) { await opener.fire('click'); nodes.push(...a.dom.walk()); }
         assert.ok(!nodes.some(n => ['SCRIPT', 'IMG', 'IFRAME'].includes(n.tagName)), 'no executable element created');
         assert.ok(nodes.some(n => n.tagName === 'H3' && n.textContent === '<img src=x onerror="alert(1)">'));
         assert.ok(nodes.some(n => n.tagName === 'CODE' && n.textContent === '</code><script>alert(2)</script>'));

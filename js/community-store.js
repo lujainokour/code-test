@@ -8,7 +8,7 @@
     const membership = () => window.communityMembership;
     const LIMITS = Object.freeze({title: 140, body: 5000, code: 4000, reply: 2000, tags: 5, tag: 24, report: 500, reason: 500});
     const RATE = Object.freeze({windowMs: 5 * 60 * 1000, posts: 3, replies: 10});
-    const LANGUAGES = Object.freeze({python: "Python", javascript: "JavaScript", text: "Plain text"});
+    const LANGUAGES = Object.freeze({python: "Python", javascript: "JavaScript", csharp: "C#", cpp: "C++", text: "Plain text"});
     const REACTIONS = Object.freeze({helpful: "Helpful", thanks: "Thanks"});
     const PAGE_SIZE = 10;
     const MODERATION = ["visible", "hidden", "removed"];
@@ -49,7 +49,9 @@
             (p.code === null || (p.code && Object.hasOwn(LANGUAGES, p.code.language) && isText(p.code.text, LIMITS.code))) &&
             Array.isArray(p.tags) && p.tags.length <= LIMITS.tags && p.tags.every(t => isText(t, LIMITS.tag)) &&
             p.reactions && Object.keys(REACTIONS).every(r => ownerList(p.reactions[r])) && ownerList(p.saved) && typeof p.solved === "boolean" &&
-            (p.editedAt === null || isDate(p.editedAt)) && Array.isArray(p.replies) && p.replies.every(r => isText(r.id, 100) && isText(r.owner, 254) && isText(r.name, 160) && isDate(r.createdAt) && isText(r.body, LIMITS.reply)) &&
+            (p.editedAt === null || isDate(p.editedAt)) && Array.isArray(p.replies) && p.replies.every(r => isText(r.id, 100) && isText(r.owner, 254) && isText(r.name, 160) && isDate(r.createdAt) && isText(r.body, LIMITS.reply) &&
+                (r.parentId === undefined || r.parentId === null || isText(r.parentId, 100)) && (r.editedAt === undefined || r.editedAt === null || isDate(r.editedAt)) && (r.helpful === undefined || ownerList(r.helpful))) &&
+            (p.acceptedReplyId === undefined || p.acceptedReplyId === null || isText(p.acceptedReplyId, 100)) &&
             Array.isArray(p.reports) && p.reports.every(r => isText(r.id, 100) && isText(r.reporter, 254) && isText(r.reason, LIMITS.report) && ["open", "resolved"].includes(r.status)) &&
             p.moderation && MODERATION.includes(p.moderation.state) &&
             (p.solvedAt === undefined || p.solvedAt === null || isDate(p.solvedAt));
@@ -179,11 +181,19 @@
             return true;
         });
     }
-    function reply(id, body, expected) {
+    // Replies are threaded one level deep: answering a nested reply attaches to its top-level reply.
+    function reply(id, body, expected, parentId = null) {
         return transaction(() => studentOf(expected), (data, me) => {
             const post = findPost(data, id, me.email);
             if (post.moderation.state !== "visible") throw Error("Replies are closed while a moderator reviews this post.");
-            const record = {id: crypto.randomUUID(), owner: me.email, name: me.name, createdAt: new Date().toISOString(), body: plain(body, LIMITS.reply, "Reply")};
+            if (post.locked) throw Error("This thread is locked by a moderator. New replies are closed.");
+            let parent = null;
+            if (parentId) {
+                const target = post.replies.find(r => r.id === parentId);
+                if (!target) throw Error("The reply you answered was deleted. Refresh and try again.");
+                parent = target.parentId || target.id;
+            }
+            const record = {id: crypto.randomUUID(), owner: me.email, name: me.name, createdAt: new Date().toISOString(), body: plain(body, LIMITS.reply, "Reply"), parentId: parent, editedAt: null, helpful: []};
             rateCheck(data, me.email, "reply");
             post.replies.push(record); return record.id;
         });
@@ -193,6 +203,51 @@
             const post = findPost(data, id, me.email), target = post.replies.find(r => r.id === replyId);
             if (!target || target.owner !== me.email) throw Error("You can only delete your own replies.");
             post.replies.splice(post.replies.indexOf(target), 1);
+            if (post.acceptedReplyId === replyId) post.acceptedReplyId = null;
+            for (const r of post.replies) if (r.parentId === replyId) r.parentId = null; // keep answers to it
+        });
+    }
+    function editReply(id, replyId, body, expected) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            const post = findPost(data, id, me.email), target = post.replies.find(r => r.id === replyId);
+            if (!target || target.owner !== me.email) throw Error("You can only edit your own replies.");
+            const text = plain(body, LIMITS.reply, "Reply");
+            if (text === target.body) return false;
+            target.body = text; target.editedAt = new Date().toISOString(); return true;
+        });
+    }
+    function reactReply(id, replyId, expected) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            const target = findPost(data, id, me.email).replies.find(r => r.id === replyId);
+            if (!target) throw Error("This reply was deleted. Refresh and try again.");
+            if (target.owner === me.email) throw Error("You cannot mark your own reply as helpful.");
+            const list = target.helpful || (target.helpful = []), i = list.indexOf(me.email);
+            if (i < 0) list.push(me.email); else list.splice(i, 1);
+            return i < 0;
+        });
+    }
+    // The author accepts one reply from someone else; that also marks the post solved.
+    function acceptAnswer(id, replyId, expected) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            const post = findPost(data, id, me.email);
+            if (post.owner !== me.email) throw Error("Only the author can accept an answer.");
+            const before = {replyId: post.acceptedReplyId || null, solved: post.solved, solvedAt: post.solvedAt || null};
+            if (replyId === null) { post.acceptedReplyId = null; return before; }
+            const target = post.replies.find(r => r.id === replyId);
+            if (!target) throw Error("This reply was deleted. Refresh and try again.");
+            if (target.owner === me.email) throw Error("You cannot accept your own reply.");
+            post.acceptedReplyId = replyId;
+            if (!post.solved) { post.solved = true; post.solvedAt = new Date().toISOString(); }
+            return before;
+        });
+    }
+    // Undo for acceptAnswer: puts back exactly what the author had before.
+    function restoreAcceptance(id, before, expected) {
+        return transaction(() => studentOf(expected), (data, me) => {
+            const post = findPost(data, id, me.email);
+            if (post.owner !== me.email) throw Error("Only the author can change the accepted answer.");
+            post.acceptedReplyId = before.replyId && post.replies.some(r => r.id === before.replyId) ? before.replyId : null;
+            post.solved = Boolean(before.solved); post.solvedAt = post.solved ? before.solvedAt : null;
         });
     }
     function react(id, reaction, expected) {
@@ -240,7 +295,10 @@
             reactions: Object.fromEntries(Object.keys(REACTIONS).map(r => [r, {count: p.reactions[r].length, mine: p.reactions[r].includes(owner)}])),
             saved: p.saved.includes(owner), hidden: p.moderation.state === "hidden", hiddenReason: p.moderation.state === "hidden" ? p.moderation.reason || "" : "",
             reportedByMe: p.reports.some(r => r.reporter === owner && r.status === "open"),
-            replies: p.replies.map(r => ({id: r.id, name: r.name, mine: r.owner === owner, sample: r.sample === true, createdAt: r.createdAt, body: r.body}))
+            acceptedReplyId: p.acceptedReplyId || null, locked: p.locked === true, pinned: p.pinned === true, related: p.related ? {...p.related} : null,
+            replies: p.replies.map(r => ({id: r.id, name: r.name, mine: r.owner === owner, sample: r.sample === true, createdAt: r.createdAt, body: r.body,
+                parentId: r.parentId || null, editedAt: r.editedAt || null, accepted: p.acceptedReplyId === r.id,
+                helpful: {count: (r.helpful || []).length, mine: (r.helpful || []).includes(owner)}}))
         };
     }
     // Only channels the student may read; hidden posts only for their author; removed posts never.
@@ -270,6 +328,30 @@
         const size = Math.max(1, Math.min(50, Number(pageSize) || PAGE_SIZE)), pages = Math.max(1, Math.ceil(posts.length / size));
         const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), pages);
         return {items: posts.slice((current - 1) * size, current * size).map(p => view(p, me.email)), total: posts.length, page: current, pages, tags, channels: [...allowed]};
+    }
+
+    function get(id, expected) {
+        const me = studentOf(expected), post = accessible(read(), me.email).find(p => p.id === id);
+        if (!post) throw Error("This discussion is not available. It may have been removed, or you do not have access.");
+        return view(post, me.email);
+    }
+    // "Similar questions": plain keyword and tag matching over saved posts the student can read. Not AI.
+    const STOP = new Set("a an and are as at be but by can do does for from how i if in is it its me my no not of on or so that the this to was what when where which why with you your have has get got use using".split(" "));
+    function words(text) {
+        return [...new Set(String(text).toLowerCase().match(/[\p{L}\p{N}_+#]+/gu) || [])]
+            .map(w => w.length > 4 ? w.replace(/(ing|ed|es|s)$/, "") : w).filter(w => w.length > 2 && !STOP.has(w));
+    }
+    function similar(fields, expected, limit = 3) {
+        const me = studentOf(expected), title = words(fields?.title || ""), body = new Set(words(String(fields?.body || "").slice(0, 400)));
+        let tags = [];
+        try { tags = tagsOf(fields?.tags || ""); } catch { tags = []; }
+        if (title.length + tags.length < 2) return [];
+        return accessible(read(), me.email).filter(p => p.moderation.state === "visible").map(p => {
+            const theirs = new Set(words(p.title)), theirTags = new Set(p.tags);
+            const score = title.filter(w => theirs.has(w)).length * 2 + tags.filter(t => theirTags.has(t)).length * 3 + [...theirs].filter(w => body.has(w)).length;
+            return {post: p, score};
+        }).filter(x => x.score >= 4).sort((a, b) => b.score - a.score || Date.parse(b.post.createdAt) - Date.parse(a.post.createdAt)).slice(0, limit)
+            .map(({post, score}) => ({id: post.id, title: post.title, channel: post.channel, solved: post.solved, replies: post.replies.length, score}));
     }
 
     // Side panels. Every number is counted from the saved posts the student can read; nothing is estimated.
@@ -396,8 +478,9 @@
 
     window.communityStore = Object.freeze({
         key, LIMITS, RATE, LANGUAGES, REACTIONS, PAGE_SIZE,
-        UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, react, toggleSaved, setSolved, report, contactPolicy,
-        query, highlights, notifications, markNotificationsRead,
+        UNDO_WINDOW_MS, createPost, editPost, deletePost, undoDelete, reply, deleteReply, editReply, reactReply, acceptAnswer, restoreAcceptance,
+        react, toggleSaved, setSolved, report, contactPolicy,
+        query, get, similar, highlights, notifications, markNotificationsRead,
         queue, moderate, auditLog, sampleStatus, loadSample, removeSample, subscribe
     });
 })();

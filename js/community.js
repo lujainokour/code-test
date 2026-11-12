@@ -24,7 +24,8 @@
     };
     const TABS = [["latest", "Latest"], ["unanswered", "Unanswered"], ["solved", "Solved"], ["top", "Top"], ["mine", "My posts"]];
     let selected = "all", view = "latest", page = 1;
-    const expanded = new Set(), openReplies = new Set(), editing = new Set(), reporting = new Set();
+    const editing = new Set(), reporting = new Set(), editingReplies = new Set();
+    let openId = null, lastOpener = null, replyTo = null;
 
     function node(tag, content, cls) {
         const el = document.createElement(tag);
@@ -63,12 +64,14 @@
         const head = node("figcaption", undefined, "community-code-head");
         head.append(node("span", store.LANGUAGES[code.language] || code.language, "community-code-lang"));
         const copy = button("Copy code", async () => {
-            try { await navigator.clipboard.writeText(code.text); copy.textContent = "Copied"; }
+            try { await navigator.clipboard.writeText(code.text); copy.textContent = "Copied"; kit()?.toast("Code copied."); }
             catch { copy.textContent = "Copy failed: select the code"; }
             later(() => { copy.textContent = "Copy code"; }, 2000);
         }, "community-copy");
         head.append(copy);
-        const pre = node("pre"), text = node("code", code.text);
+        const pre = node("pre"), text = node("code");
+        const parts = window.communityHighlight ? window.communityHighlight.tokens(code.text, code.language) : [{ type: "plain", text: code.text }];
+        for (const part of parts) text.append(part.type === "plain" ? part.text : node("span", part.text, "tok-" + part.type));
         pre.dir = "ltr"; pre.tabIndex = 0; pre.setAttribute("aria-label", `${store.LANGUAGES[code.language] || "Code"} example`);
         pre.append(text); figure.append(head, pre); return figure;
     }
@@ -121,86 +124,175 @@
         if (!ok) return;
         kit().toast("Post deleted.", { duration: store.UNDO_WINDOW_MS, undo: async () => { await store.undoDelete(post.id, owner); say("Post restored."); render(); } });
     }
-    // Full discussion: body, code, actions, replies.
-    function detail(post) {
+    function meta(post) {
+        const row = node("div", undefined, "community-card-meta community-post-meta");
+        row.append(avatar(post.name), node("b", post.name));
+        if (post.sample) row.append(node("span", "SAMPLE", "community-sample-badge"));
+        row.append(node("span", channelLabel(post.channel), "community-lang-badge"));
+        const time = node("time", ago(post.createdAt)); time.dateTime = post.createdAt; time.title = new Date(post.createdAt).toLocaleString(); row.append(time);
+        if (post.editedAt) { const edited = node("span", "edited", "community-edited"); edited.title = `Edited ${new Date(post.editedAt).toLocaleString()}`; row.append(edited); }
+        return row;
+    }
+    function keyed(el, key) { el.dataset.key = key; return el; }
+    function replyForm(post) {
+        const form = node("form", undefined, "community-reply-form"), input = node("textarea"), label = node("label", replyTo ? "Your reply" : "Add a reply");
+        input.id = `reply-${post.id}`; input.required = true; input.maxLength = store.LIMITS.reply; input.rows = 3; input.dir = "auto"; label.htmlFor = input.id;
+        if (replyTo) {
+            const target = post.replies.find(r => r.id === replyTo);
+            const chip = node("p", undefined, "community-replying");
+            chip.append(node("span", `Replying to ${target ? target.name : "a reply"}`), keyed(button("Cancel", () => { replyTo = null; renderDrawer(); $(`reply-${post.id}`)?.focus(); }, "community-mini"), "cancel-reply-to"));
+            form.append(chip);
+        }
+        const submit = node("button", "Post reply", "button button-primary"); submit.type = "submit"; form.append(label, input, submit);
+        form.addEventListener("submit", async event => {
+            event.preventDefault(); submit.disabled = true;
+            let id = null;
+            const ok = await act(async () => { id = await store.reply(post.id, input.value, owner, replyTo); });
+            if (!ok) { submit.disabled = false; return; }
+            replyTo = null; say("Reply published.");
+            kit()?.toast("Reply published.", { undo: async () => { await store.deleteReply(post.id, id, owner); say("Reply removed."); render(); } });
+            $(`reply-${post.id}`)?.focus();
+        });
+        return form;
+    }
+    function replyRow(post, reply) {
+        const row = node("article", undefined, "community-reply"); row.dataset.replyId = reply.id;
+        if (reply.parentId) row.classList.add("is-nested");
+        if (reply.accepted) row.classList.add("is-accepted");
+        const head = node("div", undefined, "community-reply-meta"); head.append(avatar(reply.name), node("b", reply.name));
+        if (reply.sample) head.append(node("span", "SAMPLE", "community-sample-badge"));
+        if (reply.accepted) head.append(node("span", "Accepted answer ✓", "community-solved-badge"));
+        const t = node("time", ago(reply.createdAt)); t.dateTime = reply.createdAt; t.title = new Date(reply.createdAt).toLocaleString(); head.append(t);
+        if (reply.editedAt) head.append(node("span", "edited", "community-edited"));
+        row.append(head);
+        if (editingReplies.has(reply.id) && reply.mine) {
+            const form = node("form", undefined, "community-edit"), input = node("textarea"), label = node("label", "Edit your reply");
+            input.id = `edit-reply-${reply.id}`; input.value = reply.body; input.maxLength = store.LIMITS.reply; input.rows = 3; input.dir = "auto"; label.htmlFor = input.id;
+            const save = node("button", "Save reply", "button button-primary"); save.type = "submit";
+            const actions = node("div", undefined, "community-post-actions"); actions.append(save, button("Cancel", () => { editingReplies.delete(reply.id); renderDrawer(); }, "button button-outline"));
+            form.append(label, input, actions);
+            form.addEventListener("submit", async event => {
+                event.preventDefault();
+                await act(async () => { const changed = await store.editReply(post.id, reply.id, input.value, owner); editingReplies.delete(reply.id); say(changed ? "Reply updated. It shows an edited mark." : "No changes to save."); });
+            });
+            row.append(form); return row;
+        }
+        const content = node("p", reply.body, "community-reply-body"); content.dir = "auto"; row.append(content);
+        const actions = node("div", undefined, "community-post-actions");
+        if (!reply.mine) {
+            const h = keyed(button(`Helpful ${reply.helpful.count}`, () => act(() => store.reactReply(post.id, reply.id, owner))), `helpful-${reply.id}`);
+            h.setAttribute("aria-pressed", String(reply.helpful.mine)); h.setAttribute("aria-label", `Helpful, ${reply.helpful.count}`); actions.append(h);
+        } else if (reply.helpful.count) actions.append(node("span", `${reply.helpful.count} found this helpful`, "community-edited"));
+        if (!post.locked && !post.hidden) actions.append(keyed(button("Reply", () => { replyTo = reply.id; renderDrawer(); $(`reply-${post.id}`)?.focus(); }), `reply-to-${reply.id}`));
+        if (post.mine && !reply.mine) actions.append(keyed(button(reply.accepted ? "Unaccept answer" : "Accept answer", () => acceptWithUndo(post, reply.accepted ? null : reply.id), "community-owner-action"), `accept-${reply.id}`));
+        if (reply.mine) actions.append(
+            keyed(button("Edit reply", () => { editingReplies.add(reply.id); renderDrawer(); $(`edit-reply-${reply.id}`)?.focus(); }, "community-owner-action"), `edit-${reply.id}`),
+            button("Delete reply", () => { if (window.confirm("Delete your reply?")) act(() => store.deleteReply(post.id, reply.id, owner), "Reply deleted."); }, "community-delete"));
+        row.append(actions);
+        return row;
+    }
+    async function acceptWithUndo(post, replyId) {
+        let before = null;
+        const ok = await act(async () => { before = await store.acceptAnswer(post.id, replyId, owner); });
+        if (!ok) return;
+        const message = replyId ? "Answer accepted. The discussion is marked solved." : "Accepted answer removed.";
+        say(message);
+        kit()?.toast(message, { undo: async () => { await store.restoreAcceptance(post.id, before, owner); say("Change undone."); render(); } });
+    }
+    function postView(post) {
         const box = node("div", undefined, "community-detail"); box.id = `detail-${post.id}`;
+        const head = node("div", undefined, "community-drawer-head");
+        head.append(meta(post), keyed(button("Close", () => closePost(), "community-mini community-drawer-close"), "close"));
+        box.append(head);
+        const title = node("h2", post.title, "community-drawer-title"); title.id = "community-drawer-title"; title.tabIndex = -1; title.dir = "auto"; box.append(title);
+        const flags = node("div", undefined, "community-card-foot");
+        if (post.solved) flags.append(node("span", "Solved ✓", "community-solved-badge"));
+        if (post.locked) flags.append(node("span", "Locked by a moderator", "community-badge"));
+        if (post.related) { const link = node("a", `Related ${post.related.kind}: ${post.related.title}`, "community-related"); link.href = post.related.kind === "lesson" ? `../student/lesson.html?lesson=${encodeURIComponent(post.related.id)}` : `../student/workspace.html?task=${encodeURIComponent(post.related.id)}`; flags.append(link); }
+        if (flags.children.length) box.append(flags);
         if (post.hidden) box.append(node("p", `Hidden by a moderator. Only you can see this post. Reason: ${post.hiddenReason}`, "community-moderation-note"));
         if (editing.has(post.id) && post.mine) { box.append(editForm(post)); return box; }
         if (post.body) { const body = node("p", post.body, "community-post-body"); body.dir = "auto"; box.append(body); }
         if (post.code) box.append(codeBlock(post.code));
+        if (post.tags.length) box.append(tagList(post.tags));
         const actions = node("div", undefined, "community-post-actions");
         for (const [id, label] of Object.entries(store.REACTIONS)) {
-            const r = post.reactions[id], b = button(`${label} · ${r.count}`, () => act(() => store.react(post.id, id, owner)));
+            const r = post.reactions[id], b = keyed(button(`${label} · ${r.count}`, () => act(() => store.react(post.id, id, owner))), `react-${id}`);
             b.setAttribute("aria-pressed", String(r.mine)); b.dataset.reaction = id; actions.append(b);
         }
-        const replies = node("div", undefined, "community-replies"); replies.id = `replies-${post.id}`; replies.hidden = !openReplies.has(post.id);
-        const replyButton = button(`Replies · ${post.replies.length}`, () => {
-            replies.hidden = !replies.hidden; replyButton.setAttribute("aria-expanded", String(!replies.hidden));
-            if (replies.hidden) openReplies.delete(post.id); else { openReplies.add(post.id); replies.querySelector("textarea")?.focus(); }
-        });
-        replyButton.setAttribute("aria-expanded", String(!replies.hidden)); replyButton.setAttribute("aria-controls", replies.id);
-        const saved = button(post.saved ? "Saved" : "Save", () => act(() => store.toggleSaved(post.id, owner))); saved.setAttribute("aria-pressed", String(post.saved));
-        actions.append(replyButton, saved);
+        const saved = keyed(button(post.saved ? "Saved" : "Save", () => act(() => store.toggleSaved(post.id, owner))), "save"); saved.setAttribute("aria-pressed", String(post.saved));
+        actions.append(saved);
         if (post.mine) {
             actions.append(
-                button(post.solved ? "Mark as not solved" : "Mark as solved", () => act(() => store.setSolved(post.id, !post.solved, owner), post.solved ? "Marked as not solved." : "Marked as solved."), "community-owner-action"),
-                button("Edit post", () => { editing.add(post.id); render(); }, "community-owner-action"),
+                keyed(button(post.solved ? "Mark as not solved" : "Mark as solved", () => act(() => store.setSolved(post.id, !post.solved, owner), post.solved ? "Marked as not solved." : "Marked as solved."), "community-owner-action"), "solve"),
+                keyed(button("Edit post", () => { editing.add(post.id); renderDrawer(); }, "community-owner-action"), "edit"),
                 button("Delete post", () => deleteWithUndo(post), "community-delete"));
         } else if (post.reportedByMe) actions.append(node("span", "Reported", "community-edited"));
-        else actions.append(button("Report", () => { reporting.add(post.id); render(); }, "community-report-button"));
+        else actions.append(keyed(button("Report", () => { reporting.add(post.id); renderDrawer(); }, "community-report-button"), "report"));
         box.append(actions);
         if (reporting.has(post.id) && !post.mine) box.append(reportForm(post));
-        post.replies.forEach(reply => {
-            const row = node("div", undefined, "community-reply");
-            const head = node("div", undefined, "community-reply-meta"); head.append(avatar(reply.name), node("b", reply.name));
-            if (reply.sample) head.append(node("span", "SAMPLE", "community-sample-badge"));
-            const t = node("time", ago(reply.createdAt)); t.dateTime = reply.createdAt; head.append(t); row.append(head);
-            const content = node("p", reply.body, "community-reply-body"); content.dir = "auto"; row.append(content);
-            if (reply.mine) row.append(button("Delete reply", () => { if (window.confirm("Delete your reply?")) act(() => store.deleteReply(post.id, reply.id, owner), "Reply deleted."); }, "community-delete"));
-            replies.append(row);
-        });
-        if (!post.hidden) {
-            const form = node("form"), label = node("label", "Add a reply"), input = node("textarea");
-            input.id = `reply-${post.id}`; input.required = true; input.maxLength = store.LIMITS.reply; input.rows = 2; input.dir = "auto"; label.htmlFor = input.id;
-            const submit = node("button", "Post reply", "button button-outline"); submit.type = "submit"; form.append(label, input, submit);
-            form.addEventListener("submit", async event => {
-                event.preventDefault(); submit.disabled = true; openReplies.add(post.id);
-                const ok = await act(() => store.reply(post.id, input.value, owner), "Reply published.");
-                if (ok) $(`reply-${post.id}`)?.focus(); else submit.disabled = false;
-            });
-            replies.append(form);
+        const replies = node("section", undefined, "community-replies"); replies.id = `replies-${post.id}`;
+        replies.append(node("h3", `${post.replies.length} ${post.replies.length === 1 ? "reply" : "replies"}`, "community-replies-title"));
+        const top = post.replies.filter(r => !r.parentId || !post.replies.some(x => x.id === r.parentId));
+        const ordered = [...top].sort((a, b) => (b.accepted - a.accepted) || Date.parse(a.createdAt) - Date.parse(b.createdAt));
+        for (const r of ordered) {
+            replies.append(replyRow(post, r));
+            post.replies.filter(c => c.parentId === r.id).forEach(c => replies.append(replyRow(post, c)));
         }
+        if (post.locked) replies.append(node("p", "This thread is locked by a moderator. New replies are closed.", "community-moderation-note"));
+        else if (!post.hidden) replies.append(replyForm(post));
         box.append(replies);
         return box;
+    }
+    function renderDrawer() {
+        const dialog = $("community-post-dialog");
+        if (!openId) return;
+        const focusKey = document.activeElement?.dataset?.key;
+        let post;
+        try { post = store.get(openId, owner); }
+        catch (error) { dialog.replaceChildren(node("p", error.message, "community-empty"), button("Close", () => closePost(), "button button-outline")); return; }
+        dialog.replaceChildren(postView(post));
+        if (focusKey) dialog.querySelector?.(`[data-key="${focusKey}"]`)?.focus();
+    }
+    function openPost(id, opener = null) {
+        openId = id; lastOpener = opener; replyTo = null;
+        const dialog = $("community-post-dialog");
+        renderDrawer();
+        if (typeof dialog.showModal === "function" && !dialog.open) dialog.showModal(); else dialog.open = true;
+        $("community-drawer-title")?.focus();
+    }
+    function closePost() {
+        const dialog = $("community-post-dialog");
+        if (typeof dialog.close === "function" && dialog.open) dialog.close(); else { dialog.open = false; onDrawerClosed(); }
+    }
+    function onDrawerClosed() {
+        openId = null; replyTo = null; editing.clear(); reporting.clear(); editingReplies.clear();
+        const back = lastOpener; lastOpener = null;
+        if (back && back.isConnected !== false) back.focus();
     }
     // Compact card: who, where, when, title, two-line preview, tags and quick actions.
     function postCard(post) {
         const card = node("article", undefined, "community-card community-post"); card.dataset.postId = post.id;
         if (post.solved) card.classList.add("is-solved");
-        const meta = node("div", undefined, "community-card-meta community-post-meta");
-        meta.append(avatar(post.name), node("b", post.name));
-        if (post.sample) meta.append(node("span", "SAMPLE", "community-sample-badge"));
-        meta.append(node("span", channelLabel(post.channel), "community-lang-badge"));
-        const time = node("time", ago(post.createdAt)); time.dateTime = post.createdAt; time.title = new Date(post.createdAt).toLocaleString(); meta.append(time);
-        if (post.editedAt) { const edited = node("span", "edited", "community-edited"); edited.title = `Edited ${new Date(post.editedAt).toLocaleString()}`; meta.append(edited); }
-        card.append(meta);
-        const open = expanded.has(post.id);
+        if (post.pinned) card.classList.add("is-pinned");
+        card.append(meta(post));
         const title = node("h3", undefined, "community-card-title"); title.dir = "auto";
-        const opener = button(post.title, () => { if (open) expanded.delete(post.id); else expanded.add(post.id); render(); }, "community-card-open");
-        opener.setAttribute("aria-expanded", String(open)); opener.setAttribute("aria-controls", `detail-${post.id}`);
+        const opener = button(post.title, () => openPost(post.id, opener), "community-card-open");
+        opener.setAttribute("aria-haspopup", "dialog"); opener.dataset.key = `open-${post.id}`;
         title.append(opener); card.append(title);
-        if (!open && (post.body || post.code)) { const preview = node("p", post.body || post.code.text, "community-card-preview"); preview.dir = "auto"; card.append(preview); }
+        if (post.body || post.code) { const preview = node("p", post.body || post.code.text, "community-card-preview"); preview.dir = "auto"; card.append(preview); }
         if (post.tags.length) card.append(tagList(post.tags));
         const foot = node("div", undefined, "community-card-foot");
+        if (post.pinned) foot.append(node("span", "Pinned", "community-badge"));
         foot.append(node("span", `${post.replies.length} ${post.replies.length === 1 ? "reply" : "replies"}`));
         if (post.solved) foot.append(node("span", "Solved ✓", "community-solved-badge"));
         foot.append(node("span", undefined, "community-spacer"));
         const helpful = post.reactions.helpful, h = button(`Helpful ${helpful.count}`, () => act(() => store.react(post.id, "helpful", owner)), "community-mini");
         h.setAttribute("aria-pressed", String(helpful.mine)); h.setAttribute("aria-label", `Helpful, ${helpful.count}`);
-        const s = button(post.saved ? "Saved" : "Save", () => act(() => store.toggleSaved(post.id, owner)), "community-mini"); s.setAttribute("aria-pressed", String(post.saved));
-        foot.append(h, s);
+        const sv = button(post.saved ? "Saved" : "Save", () => act(() => store.toggleSaved(post.id, owner)), "community-mini"); sv.setAttribute("aria-pressed", String(post.saved));
+        foot.append(h, sv);
+        if (!post.mine && !post.reportedByMe) foot.append(button("Report", () => { reporting.add(post.id); openPost(post.id, opener); }, "community-mini"));
         card.append(foot);
-        if (open) card.append(detail(post));
         return card;
     }
 
@@ -215,9 +307,8 @@
         const statusText = { approved: "approved", rejected: "declined", revoked: "removed you from" };
         info.items.forEach(item => {
             const li = node("li");
-            li.textContent = item.type === "reply"
-                ? `${item.name} replied to "${item.title}" · ${ago(item.at)}`
-                : `An administrator ${statusText[item.status]} ${item.status === "revoked" ? "" : "your request for "}${channelLabel(item.channel)}${item.note ? ` — ${item.note}` : ""} · ${ago(item.at)}`;
+            if (item.type === "reply") { const b = button(`${item.name} replied to "${item.title}" · ${ago(item.at)}`, () => openPost(item.postId, b), "community-widget-link"); li.append(b); list.append(li); return; }
+            li.textContent = `An administrator ${statusText[item.status]} ${item.status === "revoked" ? "" : "your request for "}${channelLabel(item.channel)}${item.note ? ` — ${item.note}` : ""} · ${ago(item.at)}`;
             list.append(li);
         });
         panel.append(list);
@@ -258,7 +349,7 @@
         $("community-channels").replaceChildren(...list);
     }
     function widgetLink(item, extra) {
-        const b = button("", () => { selected = "all"; view = "latest"; expanded.add(item.id); page = 1; $("community-search").value = item.title; render(); showSection("feed"); }, "community-widget-link");
+        const b = button("", () => openPost(item.id, b), "community-widget-link");
         b.append(node("span", item.title)); const small = node("small", `${channelLabel(item.channel)} · ${extra}`); b.append(small); b.dir = "auto";
         return b;
     }
@@ -329,6 +420,7 @@
             renderChannels(result);
             renderHighlights();
             renderNotifications();
+            renderDrawer();
         } catch (error) {
             say(error.message); feed.replaceChildren(); $("community-composer").hidden = true;
             document.querySelector(".community-toolbar").hidden = true;
@@ -364,13 +456,30 @@
         gate.append(form);
     }
 
+    function renderSimilar() {
+        const host = $("community-similar");
+        let items = [];
+        try { items = store.similar({ title: $("post-title").value, body: $("post-body").value, tags: $("post-tags").value }, owner); } catch { items = []; }
+        host.hidden = !items.length; host.replaceChildren();
+        if (!items.length) return;
+        host.append(node("p", "Similar questions", "community-similar-title"), node("p", "System suggestion from matching words and tags in existing posts — not AI. Check them before posting.", "community-hint"));
+        const list = node("ul");
+        items.forEach(item => { const li = node("li"), b = button("", () => openPost(item.id, b), "community-widget-link"); b.append(node("span", item.title), node("small", `${channelLabel(item.channel)} · ${item.replies} ${item.replies === 1 ? "reply" : "replies"}${item.solved ? " · Solved ✓" : ""}`)); li.append(b); list.append(li); });
+        host.append(list);
+    }
+    let similarTimer = null;
+    for (const id of ["post-title", "post-tags", "post-body"]) $(id).addEventListener("input", () => { if (typeof clearTimeout === "function") clearTimeout(similarTimer); similarTimer = later(renderSimilar, 250); });
     $("community-composer").addEventListener("submit", async event => {
         event.preventDefault();
         const form = event.currentTarget, submit = form.querySelector("button[type=submit]"); submit.disabled = true;
         const fields = { channel: $("post-channel").value, title: $("post-title").value, body: $("post-body").value, code: $("post-code").value, language: $("post-language").value, tags: $("post-tags").value };
-        const ok = await act(() => store.createPost(fields, owner), "Your discussion is published.");
+        let id = null;
+        const ok = await act(async () => { id = await store.createPost(fields, owner); }, "Your discussion is published.");
         submit.disabled = false;
-        if (ok) { form.reset(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render(); $("community-feed-title").scrollIntoView({ block: "center" }); }
+        if (!ok) return;
+        form.reset(); renderSimilar(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render();
+        kit()?.toast("Your discussion is published.", { undo: async () => { await store.deletePost(id, owner); say("Post removed."); render(); } });
+        $("community-feed-title").scrollIntoView({ block: "center" });
     });
     $("community-notifications").addEventListener("click", () => {
         const panel = $("community-notification-panel"); panel.hidden = !panel.hidden;
@@ -380,7 +489,11 @@
     for (const id of ["channels", "feed", "highlights"]) $(`community-tab-${id}`).addEventListener("click", () => showSection(id));
     $("community-search").addEventListener("input", () => { page = 1; render(); });
     $("community-tag").addEventListener("change", () => { page = 1; render(); });
+    $("community-post-dialog").addEventListener("close", onDrawerClosed);
+    $("community-post-dialog").addEventListener("click", event => { if (event.target === $("community-post-dialog")) closePost(); });
     store.subscribe(render);
     window.addEventListener("pageshow", render);
     render();
+    // Deep link: community.html?post=<id> opens that discussion if the student can read it.
+    try { const id = new URLSearchParams(location.search).get("post"); if (id) openPost(id); } catch { /* no deep link */ }
 })();

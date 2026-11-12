@@ -6,7 +6,7 @@
 <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script><script src="../../js/access-guard.js"></script><script src="../../js/theme.js"></script>
 <link rel="icon" href="../../assets/images/Burgundy CMA cherry monogram logo.png" type="image/png">
 <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css"><link rel="stylesheet" href="../../css/interaction-kit.css"><link rel="stylesheet" href="../../css/community.css">
-<script src="../../js/language-catalog.js" defer></script><script src="../../js/workspace-shell.js" defer></script><script src="../../js/main.js" defer></script><script src="../../js/community-membership.js" defer></script><script src="../../js/community-store.js" defer></script><script src="../../js/community-challenges.js" defer></script><script src="../../js/interaction-kit.js" defer></script><script src="../../js/community.js" defer></script>
+<script src="../../js/language-catalog.js" defer></script><script src="../../js/workspace-shell.js" defer></script><script src="../../js/main.js" defer></script><script src="../../js/community-membership.js" defer></script><script src="../../js/community-store.js" defer></script><script src="../../js/community-challenges.js" defer></script><script src="../../js/community-highlight.js" defer></script><script src="../../js/interaction-kit.js" defer></script><script src="../../js/community.js" defer></script>
 </head>
 <body class="services-page student-ui" data-service-page="community">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -40,9 +40,10 @@
       <label for="post-channel">Channel<select id="post-channel" name="channel"></select></label>
       <label for="post-title" class="community-composer-grow">Title<input id="post-title" name="title" required maxlength="140" placeholder="What do you want to ask or share?" dir="auto"></label>
     </div>
+    <div id="community-similar" class="community-similar" aria-live="polite" hidden></div>
     <label for="post-body">Details</label><textarea id="post-body" name="body" maxlength="5000" rows="3" placeholder="What did you try? What happened? What did you expect?" dir="auto"></textarea>
     <details class="community-code-details"><summary>Add a code block</summary>
-      <div class="community-code-fields"><label for="post-language">Code language<select id="post-language" name="language"><option value="python">Python</option><option value="javascript">JavaScript</option><option value="text">Plain text</option></select></label><label for="post-code">Code<textarea id="post-code" name="code" maxlength="4000" rows="5" spellcheck="false" dir="ltr" class="community-code-input" placeholder="Paste a small example. It is shown as text, never run."></textarea></label></div>
+      <div class="community-code-fields"><label for="post-language">Code language<select id="post-language" name="language"><option value="python">Python</option><option value="javascript">JavaScript</option><option value="csharp">C#</option><option value="cpp">C++</option><option value="text">Plain text</option></select></label><label for="post-code">Code<textarea id="post-code" name="code" maxlength="4000" rows="5" spellcheck="false" dir="ltr" class="community-code-input" placeholder="Paste a small example. It is shown as text, never run."></textarea></label></div>
     </details>
     <label for="post-tags">Tags <span class="community-hint">(optional, up to 5, comma separated)</span></label><input id="post-tags" name="tags" maxlength="140" placeholder="loops, errors" autocomplete="off">
     <div class="community-composer-footer"><span>Make it helpful. Keep it kind.</span><button class="button button-primary" type="submit">Publish post</button></div>
@@ -67,6 +68,7 @@
   <details class="community-widget community-guidelines"><summary>Community guidelines</summary><ul><li>Include what you tried and a small example.</li><li>Explain ideas in your own words; do not post full graded solutions.</li><li>Be kind and give constructive feedback.</li><li>Keep personal details private.</li><li>There are no private messages here, and learners under 18 are never contacted privately.</li><li>Report anything unsafe. A moderator reviews every report.</li></ul></details>
 </aside>
 </div>
+<dialog id="community-post-dialog" class="community-drawer" aria-labelledby="community-drawer-title"></dialog>
 <noscript><p class="services-notice">Enable JavaScript and sign in to use the community.</p></noscript>
 </main>
 <footer class="services-footer"><div class="container"><a href="../../index.html" class="logo">CodeMentor AI</a><p>Learn with clarity. Grow together.</p></div></footer>
