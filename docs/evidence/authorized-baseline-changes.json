@@ -115,6 +115,16 @@
       "file": "js/company-workspace.js",
       "part": "Part 6",
       "reason": "Owner-approved QA follow-up: empty-state messages for empty dashboard lists and no dangling comma in the greeting when the profile has no name; data unchanged."
+    },
+    {
+      "file": "pages/auth/company-login.html",
+      "part": "Part 6",
+      "reason": "Layout and page-logic audit: heading no longer claims verified or university talent (the platform verifies neither); text only."
+    },
+    {
+      "file": "pages/auth/company-signup.html",
+      "part": "Part 6",
+      "reason": "Layout and page-logic audit: heading no longer claims verified or university talent (the platform verifies neither); text only."
     }
   ]
 }

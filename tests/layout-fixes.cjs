@@ -37,4 +37,9 @@ check('Admin and company: one sidebar style on every admin page, 4 KPI columns, 
     assert.match(block, /@media \(min-width: 1200px\) \{ body\.glass-ui \.overview-stats \{ grid-template-columns: repeat\(4, minmax\(0, 1fr\)\); \} \}/);
     assert.match(block, /body\.glass-ui \.company-chat-input-bar #company-chat-input \{ flex: 1 1 auto; min-width: 0; min-height: 44px;/);
 });
+check('Company sign-in and signup headings no longer claim verified or university talent', () => {
+    for (const page of ['pages/auth/company-login.html', 'pages/auth/company-signup.html']) assert.ok(!/verified coding talent|university software talent/i.test(read(page)), page);
+    const approved = JSON.parse(read('docs/evidence/authorized-baseline-changes.json')).changes;
+    for (const page of ['pages/auth/company-login.html', 'pages/auth/company-signup.html']) assert.ok(approved.some(c => c.file === page && /verified or university talent/.test(c.reason)), page + ' listed');
+});
 console.log(`${count} layout fix checks passed.`);
