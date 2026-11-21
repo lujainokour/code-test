@@ -35,3 +35,6 @@ docs/database-phase2-proposed-tables.json
 docs/*.png
 docs/*-git-status.txt
 docs/*-git-diff-stat.txt
+
+# Server database (accounts, passkeys, sessions) — never commit
+/data/

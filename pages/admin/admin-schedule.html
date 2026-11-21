@@ -12,9 +12,10 @@
 
     <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css">
     <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/workspace-shell.js?v=20261121c" defer></script>
     <script src="../../js/admin-sessions-store.js" defer></script>
-    <script src="../../js/admin-sessions-workspace.js" defer></script>
+    <script src="../../js/admin-sessions-workspace.js?v=20261121k" defer></script>
+    <link rel="stylesheet" href="../../css/admin-redesign.css?v=20261121s">
 </head>
 
 <body class="workspace-page admin-page glass-ui">
@@ -31,12 +32,14 @@
 
         <main class="workspace-main" id="teacher-main">
 <p class="services-notice">Platform sessions are managed by administrators. Student bookings and decisions are connected within this browser; no payment or external notification is sent. Sample records are labeled separately.</p>
-            <p class="eyebrow">SCHEDULING & RATES</p>
-            <h1>Availability and session pricing.</h1>
+            <p class="eyebrow">ADMIN / AVAILABILITY & PRICING</p>
+            <h1>Availability &amp; Session Pricing</h1>
 
             <p class="workspace-intro">
                 Define the platform session calendar, configure available booking slots, and set your default session hourly rate.
             </p>
+
+            <div id="schedule-stats" class="session-stats"></div>
 
             <form id="teacher-schedule-form" class="teacher-form-shell">
                 <div class="dashboard-grid">

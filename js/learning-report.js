@@ -49,14 +49,16 @@
             if (!learning) add("p", "No learning progress has been saved in this tab.");
             else {
                 add("p", `${window.pythonCurriculum.name} lessons completed: ${done.length} of ${Object.keys(lessons).length}. Coding tasks passed: ${passed.length} of ${Object.keys(tasks).length}.`);
-                list("Recorded lessons", done.map(id => lessons[id]), "No completed lessons recorded.");
+                // Slice 3: each lesson says how it was completed (check passed / task passed / self-checked), from the shared domain rules.
+                const kindOf = id => window.cmDomain.learning.lessonEvidence(learning, id, window.pythonCurriculum.taskTopics), evidenceUi = window.cmUi.evidence;
+                list("Recorded lessons", done.map(id => `${lessons[id]} (${evidenceUi.label(kindOf(id))})`), "No completed lessons recorded.");
                 list("Recorded tasks", passed.map(id => tasks[id]), "No passed tasks recorded.");
                 const known = window.pythonCurriculum.levels.map(level => String(level.id));
-                list("Saved assessment results", known.filter(id => Object.hasOwn(learning.assessments, id)).map(id => `Level ${id}: ${learning.assessments[id].score}% (saved demo result)`), "No assessment scores recorded.");
+                list("Saved assessment results", known.filter(id => Object.hasOwn(learning.assessments, id)).map(id => { const quiz = window.cmDomain.learning.quizSummary(learning, Number(id)); return `Level ${id}: best ${quiz.best}% · last ${quiz.last}% · ${quiz.hasHistory ? `${quiz.attempts} recorded ${quiz.attempts === 1 ? "attempt" : "attempts"}` : "earlier attempts not recorded"} (saved demo result)`; }), "No assessment scores recorded.");
                 const unknown = learning.lessons.filter(id => !Object.hasOwn(lessons, id)).length + learning.tasks.filter(id => !Object.hasOwn(tasks, id)).length;
                 if (unknown) add("p", `${unknown} unrecognised activity records were excluded from this summary. Saved data was not changed.`);
             }
-            list("Skills and topics studied", done.map(id => `${lessons[id]} — based on a recorded ${window.pythonCurriculum.name} lesson, not verified proficiency`), "No completed lesson evidence is available to summarise skills.");
+            list("Skills and topics studied", done.map(id => `${lessons[id]} — ${kindOf(id) === "self_checked" ? "self-checked" : "assessed by a lesson check or coding task in this browser"}, a demo record and not verified proficiency`), "No completed lesson evidence is available to summarise skills.");
             add("h2", "Projects");
             add("p", learning?.tasks.includes("task-manager") ? "Study Task Manager: passed the automated browser checks." : "Study Task Manager: no passing solution recorded yet. Build and submit the project in the coding workspace.");
             add("h2", "Report scope");

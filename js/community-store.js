@@ -150,12 +150,20 @@
         return {email: "admin"};
     }
     const approved = (channel, owner) => { try { return membership().state(channel, owner) === "approved"; } catch { return false; } };
-    function modeOf(data, id) { return groupsMeta()[id]?.kind === "study" ? "approval" : data.groupModes?.[id]?.mode === "open" ? "open" : "approval"; }
+    // A student's own selected language group is open by default (no join request). An explicit administrator
+    // choice stored in groupModes always wins, so an admin can still switch it to "Approval required".
+    function ownLanguage(id) { try { const g = groupsMeta()[id]; return g?.kind === "language" && !g.comingSoon && window.cmStorage?.activeLanguage?.() === id; } catch { return false; } }
+    function modeOf(data, id, student = false) {
+        if (groupsMeta()[id]?.kind === "study") return "approval";
+        const set = data.groupModes?.[id]?.mode;
+        if (set === "open" || set === "approval") return set;
+        return student && ownLanguage(id) ? "open" : "approval";
+    }
     // Approval-required groups: approved members only. Groups an administrator opened: any signed-in,
     // enabled student (checked by studentOf).
     function assertAccess(data, channel, owner) {
         if (!isChannel(channel)) throw Error("Choose a discussion group.");
-        if (modeOf(data, channel) === "open") return;
+        if (modeOf(data, channel, true) === "open") return;
         membership().assertMember(channel, owner);
     }
     function findPost(data, id, owner) {
@@ -354,7 +362,7 @@
         };
     }
     // Only channels the student may read; hidden posts only for their author; removed posts never.
-    const readable = (data, owner) => new Set(Object.keys(membership().catalogue).filter(c => modeOf(data, c) === "open" || approved(c, owner)));
+    const readable = (data, owner) => new Set(Object.keys(membership().catalogue).filter(c => modeOf(data, c, true) === "open" || approved(c, owner)));
     function accessible(data, owner) {
         const allowed = readable(data, owner);
         return data.posts.filter(p => allowed.has(p.channel) && p.moderation.state !== "removed" && (p.moderation.state === "visible" || p.owner === owner));
@@ -503,7 +511,7 @@
         return Object.entries(groupsMeta()).map(([id, g]) => {
             let state = "none", error = "";
             try { state = membership().state(id, me.email); } catch (e) { state = "unavailable"; error = e.message; }
-            const mode = modeOf(data, id);
+            const mode = modeOf(data, id, true);
             return {id, label: g.label, kind: g.kind, language: g.language || null, comingSoon: g.comingSoon, description: describe(id), mode, state, error, readable: mode === "open" || state === "approved"};
         });
     }

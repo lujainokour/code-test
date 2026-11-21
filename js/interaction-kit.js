@@ -81,7 +81,10 @@
         const canvas = document.createElement("canvas"); canvas.className = "ik-celebrate-canvas"; canvas.setAttribute("aria-hidden", "true");
         canvas.width = innerWidth; canvas.height = innerHeight; document.body.append(canvas);
         const ctx = canvas.getContext("2d"); if (!ctx) { canvas.remove(); return false; }
-        const colors = ["#70151c", "#b1d4e1", "#f2c14e", "#5fbf8f", "#99282c"];
+        // Official palette only (ACTION, PAGE, SURFACE), read from the CSS tokens in style.css.
+        const tokens = getComputedStyle(document.documentElement);
+        const colors = ["--color-action", "--color-page", "--color-surface"].map(name => tokens.getPropertyValue(name).trim()).filter(Boolean);
+        if (!colors.length) colors.push("#260204", "#B1D4E1", "#DAEAF0");
         const parts = Array.from({ length: pieces }, () => ({ x: innerWidth / 2 + (Math.random() - .5) * 120, y: innerHeight * .7, vx: (Math.random() - .5) * 9, vy: -(6 + Math.random() * 9), r: 3 + Math.random() * 4, c: colors[Math.floor(Math.random() * colors.length)], a: Math.random() * Math.PI }));
         const start = performance.now();
         (function frame(now) {

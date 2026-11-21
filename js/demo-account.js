@@ -45,6 +45,40 @@
             if (!form.reportValidity()) { say("Complete the highlighted fields.", true); return; }
             const address = email.value.toLowerCase(), secret = password.value;
             if (!secret.trim()) { say("Enter a password.", true); password.focus(); return; }
+            // Server mode (npm start): the server verifies the password and issues the session.
+            const serverInfo = window.cmServerAuth ? await window.cmServerAuth.status() : { server: false };
+            if (serverInfo.server) {
+                busy = true; button.disabled = true;
+                button.textContent = login ? "Signing in…" : "Creating company account…";
+                try {
+                    let user;
+                    if (login) {
+                        try { user = await window.cmServerAuth.passwordLogin(address, secret, "company"); }
+                        catch (error) {
+                            // One-time link of a company profile that so far existed only in this browser,
+                            // after its local password has been checked.
+                            const saved = store?.getProfile?.(), credential = saved?.localCredential;
+                            if (error.code !== "invalid_credentials" || !credential || saved.email.trim().toLowerCase() !== address || credential.iterations !== iterations || await derive(secret, credential.salt) !== credential.hash) throw error;
+                            user = await window.cmServerAuth.signup({ role: "company", name: saved.name || "Company workspace", email: address, password: secret });
+                        }
+                    } else {
+                        const nameInput = document.getElementById("company-name"), name = nameInput.value.trim();
+                        if (name.length < 2 || !/\p{L}/u.test(name)) { nameInput.focus(); throw new Error("Enter a name containing at least two characters and a letter."); }
+                        if (secret.length < 12) { password.focus(); throw new Error("Use at least 12 characters for your password."); }
+                        user = await window.cmServerAuth.signup({ role: "company", name, email: address, password: secret });
+                        // Workspace details stay in this browser as before; no password is stored locally.
+                        const existing = store?.getProfile?.().email.trim().toLowerCase();
+                        if (store && (!existing || existing === address) && !store.isSampleWorkspace?.()) {
+                            const value = id => document.getElementById(id)?.value.trim() || "";
+                            try { store.updateProfile({ name, email: address, industry: value("industry"), website: value("website"), location: value("location"), size: document.getElementById("size")?.value || "" }); }
+                            catch { /* the server account is created; local workspace details can be edited later */ }
+                        }
+                    }
+                    password.value = "";
+                    window.cmServerAuth.completeSignIn(user);
+                } catch (error) { say(error.message || "Sign-in failed. Try again.", true); reset(); }
+                return;
+            }
             busy = true; button.disabled = true;
             button.textContent = login ? "Checking local account…" : "Saving local profile…";
             try {

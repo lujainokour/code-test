@@ -221,14 +221,39 @@
     }
     function adminPage(root) {
         const status = message(root), content = n("div"); root.append(content);
+        const ICONS = { sessions: "M2 4h7a3 3 0 013 3v14a2 2 0 00-2-2H2z M22 4h-7a3 3 0 00-3 3v14a2 2 0 012-2h8z", requested: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", confirmed: "M12 21a9 9 0 100-18 9 9 0 000 18z M8 12l3 3 5-6", apps: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M19 8v6 M22 11h-6", cap: "M12 3l9 4.5-9 4.5-9-4.5z M7 10.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-5.5", bolt: "M13 2L3 14h8l-1 8 10-12h-8z", stack: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5" };
+    const icon = (key, cls = "admin-tutor-ico") => { const w = document.createElement("span"); w.className = cls; w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; };
+        const initialsOf = name => String(name || "?").trim().split(/\s+/).slice(0, 2).map(w => Array.from(w)[0] || "").join("").toUpperCase() || "?";
+        const appFilter = { search: "", status: "all" };
         function render() {
             content.replaceChildren();
             try {
                 const applications = store.applications().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
-                const stats = n("div", undefined, "peer-review-stats"); ["Pending", "Approved", "Changes requested", "Rejected"].forEach(value => stats.append(n("p", `${value}: ${applications.filter(a => a.status === value).length}`))); content.append(stats);
+                const stats = n("div", undefined, "peer-review-stats admin-status-pills"); ["Pending", "Approved", "Changes requested", "Rejected"].forEach(value => stats.append(n("p", `${value}: ${applications.filter(a => a.status === value).length}`))); content.append(stats);
+                const directory = n("section", undefined, "services-panel peer-panel admin-tutor-apps"); directory.id = "admin-tutor-apps";
+                const dirHead = n("div", undefined, "admin-tutor-head"); const dirTitle = n("h2"); dirTitle.append(icon("cap", "admin-tutor-ico admin-tutor-ico-title"), document.createTextNode("Tutor applications")); dirHead.append(dirTitle);
+                const dirStatus = n("select"); dirStatus.id = "admin-app-status"; dirStatus.setAttribute("aria-label", "Application status"); [["all", "All statuses"], ["Pending", "Pending"], ["Approved", "Approved"], ["Changes requested", "Changes requested"], ["Rejected", "Rejected"]].forEach(([value, label]) => { const option = n("option", label); option.value = value; dirStatus.append(option); }); dirStatus.value = appFilter.status; dirHead.append(dirStatus);
+                const dirSearch = n("input"); dirSearch.type = "search"; dirSearch.id = "admin-app-search"; dirSearch.placeholder = "Search applications by name, email or skill..."; dirSearch.setAttribute("aria-label", "Search applications"); dirSearch.value = appFilter.search;
+                const dirTable = n("table", undefined, "admin-tutor-table"); const dirBody = n("tbody"); const dirHeadRow = n("tr"); ["Student", "Expertise / track", "Submitted", "Status", "Actions"].forEach(label => { const th = n("th", label); th.scope = "col"; dirHeadRow.append(th); }); const dirThead = n("thead"); dirThead.append(dirHeadRow); dirTable.append(dirThead, dirBody);
+                const dirCount = n("p", "", "peer-muted"); dirCount.setAttribute("role", "status");
+                directory.append(dirHead, n("p", "Review applications, verify experience and portfolio, and decide on approval. Open a row to see the full application below.", "peer-muted"), dirSearch, n("div", undefined, "admin-tutor-table-wrap"), dirCount); directory.querySelector(".admin-tutor-table-wrap").append(dirTable);
+                const cards = new Map();
+                const applyApps = () => {
+                    appFilter.search = dirSearch.value; appFilter.status = dirStatus.value; const q = dirSearch.value.trim().toLowerCase(); let shown = 0;
+                    applications.forEach(a => { const ok = (appFilter.status === "all" || a.status === appFilter.status) && (!q || [a.name, a.owner, a.language, a.topics].join(" ").toLowerCase().includes(q)); dirBody.querySelector('[data-application-id="' + a.id + '"]').hidden = !ok; if (cards.get(a.id)) cards.get(a.id).hidden = !ok; if (ok) shown++; });
+                    dirCount.textContent = "Showing " + shown + " of " + applications.length + " applications";
+                };
+                dirSearch.addEventListener("input", applyApps); dirStatus.addEventListener("change", applyApps);
+                applications.forEach(a => {
+                    const tr = n("tr"); tr.dataset.applicationId = a.id;
+                    const who = n("td", undefined, "admin-tutor-who"); const avatar = n("span", initialsOf(a.name), "admin-tutor-avatar"); avatar.setAttribute("aria-hidden", "true"); who.append(avatar, n("strong", a.name), n("span", a.owner));
+                    const open = n("a", "Review", "dashboard-text-link"); open.href = "#application-" + a.id; const act = n("td"); act.append(open);
+                    tr.append(who, (() => { const td = n("td"); td.append(n("span", a.language, "admin-tutor-pill")); return td; })(), n("td", date(a.updatedAt)), (() => { const td = n("td"); td.append(badge(a.status)); return td; })(), act); dirBody.append(tr);
+                });
+                if (applications.length) content.append(directory);
                 if (!applications.length) empty(content, "No mentor applications yet", "Student applications will appear here with their experience, portfolio and sample teaching plan.");
                 applications.forEach(application => {
-                    const card = panel(application.name); card.dataset.applicationId = application.id;
+                    const card = panel(application.name); card.dataset.applicationId = application.id; card.id = "application-" + application.id; cards.set(application.id, card);
                     if (application.sample) card.append(n("p", "SAMPLE APPLICATION · Demonstration data", "eyebrow"), n("p", application.owner === "student@example.com" ? "This example belongs to the sample student account (student@example.com). Use the demo-only details on the student login screen. Its portfolio is a placeholder, not evidence of verified work." : "Fictional sample tutor. Its portfolio is a placeholder, not evidence of verified work.", "peer-muted"));
                     card.append(badge(application.status), n("p", `${application.owner} · ${application.language}`, "peer-muted"), n("h3", "Topics & introduction"), n("p", application.topics), n("p", application.bio), n("h3", "Experience"), n("p", application.experience), n("h3", "Sample teaching plan"), n("p", application.outline), external("Open portfolio (new tab)", application.portfolio));
                     if (application.feedback) card.append(n("p", "Last review: " + application.feedback, "peer-outcome"));
@@ -239,7 +264,9 @@
                         formAction(form, "Save review decision", () => store.reviewApplication(application.id, decision.value, feedback.value, application.revision), () => { status.textContent = "Review saved. The student can see the decision in My teaching sessions."; render(); }); card.append(form);
                     } content.append(card);
                 }); note(content);
-                content.append(samplePanel());
+                if (applications.length) applyApps();
+                const lower = n("div", undefined, "admin-tutor-lower"); const quick = n("section", undefined, "services-panel peer-panel admin-tutor-quick"); const quickTitle = n("h2"); quickTitle.append(icon("bolt", "admin-tutor-ico admin-tutor-ico-title"), document.createTextNode("Quick actions")); quick.append(quickTitle, link("Review applications →", "admin/admin-peer-mentoring.html#admin-tutor-apps", "button button-primary"), link("Manage sessions →", "admin/admin-sessions.html"), link("Manage bookings →", "admin/admin-bookings.html"));
+                lower.append(quick, samplePanel()); content.append(lower);
             } catch (error) { content.append(n("p", error.message, "services-notice"), link("Admin sign in", "auth/admin-login.html")); }
         }
         function samplePanel() {

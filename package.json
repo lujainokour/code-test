@@ -1,0 +1,22 @@
+{
+  "name": "codementor-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CodeMentor AI site with server-side authentication and WebAuthn passkeys.",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "migrate": "node server/cli.mjs migrate",
+    "migrate:down": "node server/cli.mjs migrate-down",
+    "test:auth": "node --test tests/auth-server.test.mjs",
+    "test:passkey-browser": "node tests/passkey-browser.mjs",
+    "test:attempt-browser": "node tests/attempt-assistant-browser.mjs"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@simplewebauthn/browser": "14.0.0",
+    "@simplewebauthn/server": "14.1.0",
+    "express": "5.3.0"
+  }
+}

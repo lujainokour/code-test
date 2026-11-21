@@ -11,6 +11,14 @@
     const next = document.getElementById("recovery-next");
     const submit = form.querySelector('button[type="submit"]');
 
+    // Server mode: server accounts cannot be reset here (no email service is connected).
+    window.cmServerAuth?.status().then(info => {
+        if (!info.server) return;
+        const note = document.createElement("p");
+        note.className = "form-message";
+        note.textContent = "Accounts saved on the CodeMentor AI server can't be reset from this page because no email service is connected. If you know your password, sign in and change it, or use a passkey you registered. Otherwise ask the platform administrator to reset it. The form below only removes this browser's local copy and its learning records.";
+        form.before(note);
+    });
     function say(text, error = false) { message.textContent = text; message.classList.toggle("is-error", error); }
     function updatePhrase() {
         const value = email.value.trim().toLowerCase();

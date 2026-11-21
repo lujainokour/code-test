@@ -45,6 +45,7 @@ function makeDocument() {
     const body = el('body');
     const document = {
         body, created,
+        addEventListener() { /* document-level listeners (e.g. Escape closes the New Post dialog) are not exercised here */ },
         createElement: tag => el(tag),
         getElementById(id) { if (!ids.has(id)) { const n = el(['post-channel', 'community-tag', 'community-filter', 'community-sort', 'membership-filter', 'membership-channel'].includes(id) ? 'select' : 'div'); n.id = id; ids.set(id, n); body.append(n); } return ids.get(id); },
         querySelector(sel) { if (!ids.has(sel)) { const n = el(); ids.set(sel, n); } return ids.get(sel); }
@@ -70,7 +71,7 @@ function tab(shared, account, { admin = false } = {}) {
                 return a;
             }
         },
-        cmStorage: { activeLanguage: () => state.language || 'python' }
+        cmStorage: { activeLanguage: () => state.language || 'swift' } // a coming-soon language: no group is open by default, so the approval model is tested
     };
     const context = { window, localStorage: shared, sessionStorage: session, navigator: globalThis.navigator, crypto: globalThis.crypto, structuredClone, Event: class { constructor(type) { this.type = type; } }, CustomEvent: class { constructor(type, o) { this.type = type; this.detail = o?.detail; } }, document: dom.document, setTimeout, console };
     vm.createContext(context);

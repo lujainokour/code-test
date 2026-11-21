@@ -10,10 +10,11 @@
 
     <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css">
     <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/workspace-shell.js?v=20261121c" defer></script>
 <script src="../../js/admin-workspace.js" defer></script>
 <script src="../../js/admin-student-data.js" defer></script>
-<script src="../../js/admin-students.js" defer></script>
+<script src="../../js/admin-students.js?v=20261121e" defer></script>
+    <link rel="stylesheet" href="../../css/admin-redesign.css?v=20261121s">
 </head>
 
 <body class="workspace-page admin-page glass-ui">
@@ -62,8 +63,8 @@
         </header>
 
         <main class="workspace-main" id="students-main">
-            <p class="eyebrow">STUDENT MANAGEMENT</p>
-            <h1>Your students, in one place.</h1>
+            <p class="eyebrow">ADMIN / STUDENTS</p>
+            <h1>Student Management</h1>
 
             <p class="workspace-intro">
                 Find a student and review their account
@@ -75,12 +76,10 @@
                 real student accounts or live activity.
             </p>
 
-            <section
-                class="dashboard-card"
-                aria-labelledby="student-directory-title"
-            >
-                <h2 id="student-directory-title">Student directory</h2>
+            <div id="student-overview-stats" class="student-stats"></div>
 
+            <section class="dashboard-card student-filter-card" aria-labelledby="student-filter-title">
+                <h2 id="student-filter-title" class="student-filter-title">Filter students</h2>
                 <form id="student-filter-form" class="student-filters">
                     <div class="form-field">
                         <label for="student-search">
@@ -106,6 +105,13 @@
                         </select>
                     </div>
 
+                    <div class="form-field">
+                        <label for="student-path-filter">Learning path</label>
+                        <select id="student-path-filter">
+                            <option value="all">All learning paths</option>
+                        </select>
+                    </div>
+
                     <button
                         type="button"
                         id="student-clear-filters"
@@ -114,6 +120,10 @@
                         Clear filters
                     </button>
                 </form>
+            </section>
+
+            <section class="dashboard-card student-directory-card" aria-labelledby="student-directory-title">
+                <h2 id="student-directory-title">Student directory</h2>
 
                 <p class="dashboard-footnote">
                     Account status controls access.
@@ -167,6 +177,8 @@
                     </p>
                 </noscript>
             </section>
+
+            <div class="student-lower" id="student-lower"></div>
 
             <footer class="workspace-footer">
                 CodeMentor AI · Frontend demo · Student directory

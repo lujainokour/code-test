@@ -10,26 +10,61 @@
     <title>Create Account | CodeMentor AI</title>
 
     <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/student-signup.css">
     <script src="../../js/language-catalog.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
     <script src="../../js/auth-video.js" defer></script>
     <script src="../../js/student-account.js" defer></script>
-    <script src="../../js/signup.js" defer></script>
+    <script src="../../js/server-auth.js" defer></script><script src="../../js/signup.js" defer></script>
 </head>
-<body class="auth-page signup-page">
+<body class="auth-page signup-page student-signup">
     <main class="auth-layout">
-        <section class="auth-story signup-visual" aria-label="CodeMentor AI">
+        <section class="auth-story signup-visual" aria-labelledby="signup-story-title">
             <a href="../../index.html" class="logo">CodeMentor AI</a>
-            <div class="signup-illustration">
-                <div class="auth-video-media">
-                    <video class="auth-student-video" autoplay muted loop playsinline preload="metadata" poster="../../assets/images/student-coding-poster.jpg" aria-label="An animated student learning to code on a laptop">
-                        <source src="../../assets/videos/student-coding.mp4" type="video/mp4">
-                        <img src="../../assets/images/student-coding-poster.jpg" alt="An animated student learning to code on a laptop">
-                    </video>
-                    <button class="auth-video-toggle" type="button" aria-label="Pause animation">Pause animation</button>
+
+            <div class="signup-card">
+                <svg class="signup-sparks" viewBox="0 0 40 40" width="40" height="40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M8 4l3 9"/><path d="M20 8l-6 9"/><path d="M33 16l-12 4"/></svg>
+
+                <div class="signup-illustration">
+                    <div class="auth-video-media">
+                        <video class="auth-student-video" autoplay muted loop playsinline preload="metadata" poster="../../assets/images/student-coding-poster.jpg" aria-label="An animated student learning to code on a laptop">
+                            <source src="../../assets/videos/student-coding.mp4" type="video/mp4">
+                            <img src="../../assets/images/student-coding-poster.jpg" alt="An animated student learning to code on a laptop">
+                        </video>
+                        <button class="auth-video-toggle" type="button" aria-label="Pause animation">Pause animation</button>
+                    </div>
+                </div>
+
+                <div class="signup-card-body">
+                    <h1 id="signup-story-title">Join CodeMentor AI</h1>
+                    <p>Create your account and start learning, practicing, and improving your coding skills with AI guidance.</p>
+
+                    <ul class="signup-features">
+                        <li>
+                            <span class="signup-feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M13.5 4l-3 16"/></svg>
+                            </span>
+                            <span class="signup-feature-text"><strong>Interactive learning</strong><span>Practice with real coding challenges.</span></span>
+                        </li>
+                        <li>
+                            <span class="signup-feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/><path d="M22 9v5"/></svg>
+                            </span>
+                            <span class="signup-feature-text"><strong>AI-powered support</strong><span>Get instant, tailored guidance.</span></span>
+                        </li>
+                        <li>
+                            <span class="signup-feature-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><rect x="5" y="13" width="3" height="5"/><rect x="10.5" y="9" width="3" height="9"/><rect x="16" y="5" width="3" height="13"/></svg>
+                            </span>
+                            <span class="signup-feature-text"><strong>Track your progress</strong><span>See your improvement over time.</span></span>
+                        </li>
+                    </ul>
+
+                    <div class="signup-dots" aria-hidden="true"><span></span><span class="is-active"></span><span></span></div>
                 </div>
             </div>
         </section>
+
         <section class="auth-panel" aria-labelledby="signup-title">
             <a href="../../index.html" class="auth-back">
                 <span aria-hidden="true">←</span> Back to home
@@ -37,6 +72,22 @@
 
             <div class="auth-form-container">
                 <p class="eyebrow">CREATE ACCOUNT</p>
+
+                <ol class="signup-steps" aria-label="Sign-up steps">
+                    <li class="is-current" aria-current="step">
+                        <span class="signup-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+                        <span>Account</span>
+                    </li>
+                    <li>
+                        <span class="signup-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg></span>
+                        <span>Preferences</span>
+                    </li>
+                    <li>
+                        <span class="signup-step-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                        <span>Get Started</span>
+                    </li>
+                </ol>
+
                 <h2 id="signup-title">Start your learning journey.</h2>
 
                 <p class="auth-intro">
@@ -45,50 +96,72 @@
 
                 <form id="signup-form" autocomplete="on" novalidate>
                     <div class="form-field">
-                        <label for="full-name">Full name</label>
+                        <label for="full-name">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="16" height="14" rx="3"/><circle cx="12" cy="12" r="2.5"/><path d="M8 17c.8-1.5 2.3-2 4-2s3.2.5 4 2"/><path d="M9 6V4h6v2"/></svg>
+                            Full name
+                        </label>
 
-                        <input
-                            type="text"
-                            id="full-name"
-                            name="fullName"
-                            placeholder="e.g. Lujain Okour"
-                            autocomplete="name"
-                            maxlength="80"
-                            aria-describedby="name-error"
-                            required
-                        >
+                        <div class="signup-input">
+                            <svg class="signup-input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+                            <input
+                                type="text"
+                                id="full-name"
+                                name="fullName"
+                                placeholder="e.g. Lujain Okour"
+                                autocomplete="name"
+                                maxlength="80"
+                                aria-describedby="name-error"
+                                required
+                            >
+                        </div>
 
                         <p class="field-error" id="name-error"></p>
                     </div>
 
                     <div class="form-field">
-                        <label for="email">Email address</label>
+                        <label for="email">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                            Email address
+                        </label>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="you@example.com"
-                            autocomplete="username"
-                            autocapitalize="none"
-                            spellcheck="false"
-                            aria-describedby="email-error"
-                            required
-                        >
+                        <div class="signup-input">
+                            <svg class="signup-input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                autocomplete="username"
+                                autocapitalize="none"
+                                spellcheck="false"
+                                aria-describedby="email-error"
+                                required
+                            >
+                        </div>
 
                         <p class="field-error" id="email-error"></p>
                     </div>
 
                     <div class="form-field">
-                        <label for="age">Age</label>
-                        <input type="number" id="age" name="age" min="1" max="120" step="1" inputmode="numeric" aria-describedby="age-help age-error" required>
+                        <label for="age">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16v-7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2z"/><path d="M4 15c1.3 1 2.7 1 4 0s2.7-1 4 0 2.7 1 4 0 2.7-1 4 0"/><path d="M8 11V8M12 11V8M16 11V8"/></svg>
+                            Age
+                        </label>
+                        <div class="signup-input">
+                            <svg class="signup-input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>
+                            <input type="number" id="age" name="age" min="1" max="120" step="1" inputmode="numeric" aria-describedby="age-help age-error" required>
+                        </div>
                         <p class="field-help" id="age-help">Private demo profile data. Your age is not shown in public profiles.</p>
                         <p class="field-error" id="age-error"></p>
                     </div>
                     <div class="form-field">
-                        <label for="password">Password</label>
+                        <label for="password">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                            Password
+                        </label>
 
                         <div class="password-field">
+                            <svg class="signup-input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg>
                             <input
                                 type="password"
                                 id="password"
@@ -134,9 +207,13 @@
                     </div>
 
                     <div class="form-field">
-                        <label for="confirm-password">Confirm password</label>
+                        <label for="confirm-password">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                            Confirm password
+                        </label>
 
                         <div class="password-field">
+                            <svg class="signup-input-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg>
                             <input
                                 type="password"
                                 id="confirm-password"
@@ -181,8 +258,6 @@
                     </button>
                 </form>
 
-                
-
                 <p class="auth-switch">
                     Hiring student talent?
                     <a href="company-signup.html">Register as a Company</a>
@@ -194,25 +269,29 @@
                 </p>
 
                 <aside class="demo-account">
-                    <h3>Where your account is saved</h3>
-                    <p>
-                        Your account is saved only in this browser on this device.
-                        It survives closing the tab and restarting the browser, but it is
-                        not synced to other browsers or devices and no server receives it.
-                        Your password is never stored in plain text: only a random salt and a
-                        PBKDF2 hash derived from it are kept. Clearing this site's browser data
-                        deletes the account. You can also sign in with the sample account shown
-                        on the login page.
-                    </p>
+                    <details open>
+                        <summary>
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.01"/></svg>
+                            <span>Where your account is saved</span>
+                        </summary>
+                        <p>
+                            Your account is saved only in this browser on this device.
+                            It survives closing the tab and restarting the browser, but it is
+                            not synced to other browsers or devices and no server receives it.
+                            Your password is never stored in plain text: only a random salt and a
+                            PBKDF2 hash derived from it are kept. Clearing this site's browser data
+                            deletes the account. You can also sign in with the sample account shown
+                            on the login page.
+                        </p>
+                    </details>
                 </aside>
             </div>
 
             <p class="auth-panel-footer">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
                 © CodeMentor AI · Learn with clarity.
             </p>
         </section>
     </main>
 </body>
 </html>
-
-

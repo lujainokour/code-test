@@ -8,6 +8,7 @@
     function render() {
         try {
             const progress = course.read();
+            const summary = course.summarize(level, progress), evidenceUi = window.cmUi.evidence;   // Slice 3: the same level summary every page uses
             byId('workspace-message').textContent = course.placedOut(level, progress) ? 'This level is placed out, not completed. Review it any time; complete its real lessons, quiz and required tasks to earn completion credit.' : '';
             document.querySelector('main h1').textContent = level.title;
             document.querySelector('main > .eyebrow').textContent = `LEVEL ${level.id} / ${course.name.toUpperCase()}`;
@@ -16,6 +17,8 @@
             level.lessons.forEach((lesson, index) => {
                 const item = node('li', ''), info = node('div', '');
                 info.append(node('h3', `${index + 1}. ${lesson.title}`), node('p', lesson.intro), node('span', `About ${lesson.minutes} minutes`));
+                const status = evidenceUi.lessonStatus(summary.lessons[index].evidence);
+                if (status) { const tag = node('span', status); tag.className = `lesson-evidence is-${summary.lessons[index].evidence}`; info.append(tag); }
                 const link = node('a', progress.lessons.includes(lesson.id) ? 'Review' : 'Start');
                 link.className = 'button button-outline'; link.href = `lesson.html?lesson=${lesson.id}`; link.dataset.lessonLink = lesson.id;
                 // Styling hook only: completed / current (first unfinished) / available.
@@ -35,10 +38,9 @@
             const progression = document.getElementById('level-progression');
             if (progression) progression.textContent = level.progression;
             const remaining = level.lessons.filter(lesson => !progress.lessons.includes(lesson.id));
-            byId('lesson-progress').textContent = `Lessons: ${level.lessons.length - remaining.length} / ${level.lessons.length}`;
-            byId('task-progress').textContent = `Practice tasks passed: ${level.tasks.filter(id => progress.tasks.includes(id)).length} / ${level.tasks.length}`;
-            const score = progress.assessments[level.id]?.score;
-            byId('assessment-progress').textContent = Number.isFinite(score) ? `Quiz best score: ${score}% / ${score >= 70 ? 'Passed' : 'Try again'}` : 'Quiz: not attempted';
+            byId('lesson-progress').textContent = `Lessons: ${summary.lessonsDone} / ${summary.lessonsTotal}${evidenceUi.evidencePhrase(summary) ? ` · ${evidenceUi.evidencePhrase(summary)}` : ''}`;
+            byId('task-progress').textContent = `Practice tasks passed: ${summary.tasksPassed} / ${summary.tasksTotal}`;
+            byId('assessment-progress').textContent = evidenceUi.quizLine(summary.quiz);
             byId('assessment-link').href = `level-assessment.html?level=${level.id}`;
             byId('assessment-link').hidden = remaining.length > 0;
             byId('assessment-locked').hidden = remaining.length === 0;

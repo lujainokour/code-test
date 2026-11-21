@@ -9,6 +9,8 @@
         if (cls) result.className = cls;
         return result;
     };
+const ICONS = { sessions: "M2 4h7a3 3 0 013 3v14a2 2 0 00-2-2H2z M22 4h-7a3 3 0 00-3 3v14a2 2 0 012-2h8z", requested: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", confirmed: "M12 21a9 9 0 100-18 9 9 0 000 18z M8 12l3 3 5-6", apps: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M19 8v6 M22 11h-6", cap: "M12 3l9 4.5-9 4.5-9-4.5z M7 10.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-5.5", bolt: "M13 2L3 14h8l-1 8 10-12h-8z", stack: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5" };
+    const icon = (key, cls = "admin-tutor-ico") => { const w = document.createElement("span"); w.className = cls; w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; };
     const status = node("p", "", "form-message"); status.setAttribute("role", "status");
     const content = node("div"); root.append(status, content);
     function action(card, label, task) {
@@ -24,9 +26,12 @@
         content.replaceChildren();
         try {
             const data = store.adminSnapshot();
-            const stats = node("div", undefined, "peer-review-stats");
-            stats.append(node("p", `Published student sessions: ${data.sessions.filter(s => s.status === "Published").length}`), node("p", `Requested bookings: ${data.bookings.filter(b => b.status === "Requested").length}`), node("p", `Confirmed bookings: ${data.bookings.filter(b => b.status === "Confirmed").length}`)); content.append(stats);
-            const sessions = node("details", undefined, "services-panel peer-panel"); sessions.append(node("summary", "Student sessions & availability"));
+            const stats = node("div", undefined, "peer-review-stats admin-tutor-stats");
+            let applicationCount = 0; try { applicationCount = store.applications().length; } catch { /* shown as 0 */ }
+            [["sessions", "Published sessions", data.sessions.filter(s => s.status === "Published").length], ["requested", "Requested bookings", data.bookings.filter(b => b.status === "Requested").length], ["confirmed", "Confirmed bookings", data.bookings.filter(b => b.status === "Confirmed").length], ["apps", "Tutor applications", applicationCount]].forEach(([key, label, value]) => {
+                const tile = node("article", undefined, "admin-tutor-stat"); tile.append(icon(key, "admin-tutor-ico admin-tutor-ico-lg"), node("h2", label), node("p", String(value))); stats.append(tile);
+            }); content.append(stats);
+            const sessions = node("details", undefined, "services-panel peer-panel"); sessions.id = "oversight-sessions"; sessions.append(node("summary", "Student sessions & availability"));
             if (!data.sessions.length) sessions.append(node("p", "Student sessions appear here after tutor approval and session creation."));
             data.sessions.forEach(session => {
                 const card = node("article", undefined, "services-card");
@@ -41,7 +46,7 @@
                 });
                 sessions.append(card);
             }); content.append(sessions);
-            const bookings = node("details", undefined, "services-panel peer-panel"); bookings.append(node("summary", "Student session bookings & outcomes"));
+            const bookings = node("details", undefined, "services-panel peer-panel"); bookings.id = "oversight-bookings"; bookings.append(node("summary", "Student session bookings & outcomes"));
             if (!data.bookings.length) bookings.append(node("p", "No student session bookings yet."));
             data.bookings.slice().sort((a,b) => Date.parse(b.updatedAt)-Date.parse(a.updatedAt)).forEach(booking => {
                 const card = node("article", undefined, "services-card");
@@ -57,6 +62,10 @@
             }); content.append(bookings);
         } catch (error) { status.textContent = error.message; }
     }
+    try { // the section tabs are plain in-page links; mark the last one used
+        const tabs = [...document.querySelectorAll(".admin-tutor-tabs a")];
+        tabs.forEach(tab => tab.addEventListener("click", () => tabs.forEach(other => other.setAttribute("aria-current", String(other === tab)))));
+    } catch { /* decoration only */ }
     render();
     window.addEventListener("storage", render);
     window.addEventListener("peer-mentoring-changed", render);

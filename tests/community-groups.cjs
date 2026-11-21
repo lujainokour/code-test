@@ -25,17 +25,36 @@ const groupButton = (t, label) => walk(t.dom.ids.get('community-channels')).find
         deq(Object.entries(t.m.groups).filter(([, g]) => g.kind === 'topic').map(([id]) => id), ['general', 'help', 'projects']);
     });
 
-    await check('Every group needs approval by default; study groups can never be opened', async () => {
+    await check('Every group needs approval by default except your own selected language; study groups can never be opened', async () => {
         const mem = memory(), t = tab(mem, A, { extraScripts: EXTRA }), admin = tab(mem, null, { admin: true });
         const groups = t.s.groupsFor(A.email);
-        assert.ok(groups.every(g => g.mode === 'approval' && !g.readable && g.state === 'none'));
-        await assert.rejects(t.s.createPost({ channel: 'python', title: 't', body: 'b' }, A.email), /approval is required/);
+        const own = groups.filter(g => g.mode === 'open');
+        assert.ok(own.length <= 1 && own.every(g => g.kind === 'language' && g.readable));
+        assert.ok(groups.filter(g => g.mode !== 'open').every(g => g.mode === 'approval' && !g.readable && g.state === 'none'));
+        await assert.rejects(t.s.createPost({ channel: 'general', title: 't', body: 'b' }, A.email), /approval is required/);
         await assert.rejects(admin.s.setGroupMode('study-python', 'open', 'x'), /always need approval/);
     });
 
     const shared = memory(), admin = tab(shared, null, { admin: true });
     const a = tab(shared, A, { extraScripts: EXTRA }), b = tab(shared, B, { extraScripts: EXTRA });
     a.state.language = 'javascript';
+
+    // Approved behaviour: the student's own language group is open by default (no request needed); every other group still needs approval.
+    const own = tab(shared, A, { extraScripts: EXTRA }); own.state.language = 'javascript';
+    await check('Default: the own-language group is open and readable without any request', async () => {
+        own.run('js/community.js');
+        const list = own.dom.ids.get('community-channels').children.filter(n => n.tagName === 'BUTTON' && n.className.includes('community-channel'));
+        assert.match(list[1].textContent, /JavaScript/); assert.match(list[1].textContent, /Your language/); assert.match(list[1].textContent, /Open/); assert.doesNotMatch(list[1].textContent, /Approval required/);
+        assert.equal(own.s.groupsFor(A.email).find(g => g.id === 'general').mode, 'approval', 'other groups still need approval');
+    });
+    // An explicit administrator choice always wins. The approval-flow checks below start from an explicit "approval required" setting.
+    // Known limitation (docs/PHASE-0.5-STABILIZATION.md): the admin view shows "approval" for an untouched language group,
+    // so a direct "approval" request is a no-op; open it explicitly first, then require approval.
+    await check('Explicit administrator choice overrides the open default: the group requires approval again', async () => {
+        await admin.s.setGroupMode('javascript', 'open', 'Exercise the explicit setting');
+        await admin.s.setGroupMode('javascript', 'approval', 'Exercise the approval flow');
+        assert.equal(own.s.groupsFor(A.email).find(g => g.id === 'javascript').mode, 'approval');
+    });
 
     await check('Your language group appears automatically, pinned first and marked; other languages are hidden behind "Browse other languages"', async () => {
         a.run('js/community.js');
@@ -96,6 +115,8 @@ const groupButton = (t, label) => walk(t.dom.ids.get('community-channels')).find
         await a.m.request('python', 'Python too.', A.email);
         const r = admin.m.requests().find(x => x.owner === A.email && x.channel === 'python');
         await admin.m.decide(r.id, 'rejected', 'Please add what you already know.');
+        // Python is now the student's own language, which is open by default; require approval explicitly so the declined state is tested.
+        await admin.s.setGroupMode('python', 'open', 'Exercise the explicit setting'); await admin.s.setGroupMode('python', 'approval', 'Exercise the declined flow');
         const c = tab(shared, A, { extraScripts: EXTRA }); c.state.language = 'python';
         c.run('js/community.js');
         assert.match(c.dom.ids.get('community-access').textContent, /Declined: Please add what you already know\. You can send a new request/);
@@ -183,6 +204,8 @@ const groupButton = (t, label) => walk(t.dom.ids.get('community-channels')).find
     await check('Ask the community: a member gets the prefilled draft; a non-member gets the group gate with a friendly message, nothing kept', async () => {
         const mem = memory(), ad = tab(mem, null, { admin: true });
         const draft = channel => ({ owner: A.email, at: Date.now(), channel, title: 'Help with: Build a simple receipt', body: 'What I tried:', code: 'print(1)', language: 'python', tags: 'task', related: null });
+        // Python is the default own language (open); require approval explicitly so the non-member path is tested.
+        await ad.s.setGroupMode('python', 'open', 'Exercise the explicit setting'); await ad.s.setGroupMode('python', 'approval', 'Exercise the non-member path');
         const t1 = tab(mem, A, { extraScripts: EXTRA });
         t1.context.sessionStorage.setItem('codementor-community-draft', JSON.stringify(draft('python'))); t1.run('js/community.js');
         assert.equal(t1.dom.ids.get('post-title').value, '', 'not prefilled for a non-member');

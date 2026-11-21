@@ -26,7 +26,7 @@ function fixture({ shared = { local: new Map(), session: new Map() }, owner = 'p
     const location = { pathname: '/index.html', search: '', href: '', replace(value) { this.href = value; } };
     const context = vm.createContext({ window, document, location, localStorage: memory(shared.local), sessionStorage: memory(shared.session), crypto, URL, URLSearchParams, CustomEvent });
     const load = file => vm.runInContext(fs.readFileSync(file, 'utf8'), context, { filename: file });
-    for (const file of ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum']) load('js/' + file + '.js');
+    for (const file of ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'domain/learning', 'data/learning-repository', 'python-curriculum']) load('js/' + file + '.js');
     function finish(answers) {
         let attempt = window.placementStore.begin(window.placementStore.capture());
         attempt = window.placementStore.save({ answers, currentQuestion: answers.length - 1 }, JSON.stringify(attempt), window.placementStore.capture());

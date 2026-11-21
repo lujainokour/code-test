@@ -12,9 +12,10 @@
 
     <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css">
     <script src="../../js/language-catalog.js" defer></script>
-    <script src="../../js/workspace-shell.js" defer></script>
+    <script src="../../js/workspace-shell.js?v=20261121c" defer></script>
     <script src="../../js/admin-sessions-store.js" defer></script>
-    <script src="../../js/admin-sessions-workspace.js" defer></script>
+    <script src="../../js/admin-sessions-workspace.js?v=20261121j" defer></script>
+    <link rel="stylesheet" href="../../css/admin-redesign.css?v=20261121s">
 </head>
 
 <body class="workspace-page admin-page glass-ui">
@@ -31,13 +32,16 @@
 
         <main class="workspace-main" id="teacher-main">
 <p class="services-notice">Platform sessions are managed by administrators. Student bookings and decisions are connected within this browser; no payment or external notification is sent. Sample records are labeled separately.</p>
-            <p class="eyebrow">CURRICULUM & SESSIONS</p>
-            <h1>Manage platform sessions.</h1>
+            <p class="eyebrow">ADMIN / SESSIONS</p>
+            <h1>Manage Platform Sessions</h1>
 
             <p class="workspace-intro">
                 Create structured 1-on-1 mentoring offerings, project consultations, and group code-review sessions for students.
             </p>
 
+            <div id="session-stats" class="session-stats"></div>
+
+            <section class="admin-quick-card" aria-labelledby="quick-heading"><h2 id="quick-heading">Quick actions</h2>
             <div class="teacher-action-bar">
                 <button type="button" class="button button-primary" id="open-create-modal">
                     + Create New Session
@@ -48,13 +52,18 @@
                 <a href="admin-bookings.html" class="button button-outline">
                     View Student Bookings
                 </a>
-            </div>
+            </div></section>
 
-            <section aria-labelledby="sessions-list-heading" style="margin-top: 36px;">
+            <aside id="session-overview" class="admin-overview-card" aria-label="Session overview"></aside>
+
+            <section class="session-list-card" aria-labelledby="sessions-list-heading">
                 <div class="teacher-section-header">
-                    <h2 id="sessions-list-heading" class="lesson-small-heading">Active session offerings</h2>
+                    <h2 id="sessions-list-heading" class="lesson-small-heading">Sessions list</h2>
                     <span class="dashboard-footnote">Active sessions with available appointments can be requested from Student-led Sessions.</span>
                 </div>
+
+                <div class="session-filters" id="session-filters"><div class="session-tabs" role="group" aria-label="Show sessions"><button type="button" class="session-tab" data-filter="all" aria-pressed="true">All sessions</button><button type="button" class="session-tab" data-filter="Active" aria-pressed="false">Active</button><button type="button" class="session-tab" data-filter="Paused" aria-pressed="false">Paused</button></div><label class="session-search"><span>Search sessions</span><input type="search" id="session-search" placeholder="Search sessions by title or topic..." autocomplete="off"></label><label><span>Topic</span><select id="session-topic"><option value="all">All topics</option></select></label><label><span>Level</span><select id="session-level-filter"><option value="all">All levels</option></select></label></div>
+                <p id="session-count" class="dashboard-footnote" role="status"></p>
 
                 <div id="teacher-sessions-list" class="teacher-sessions-grid">
                     <!-- Populated dynamically by admin-sessions-workspace.js -->

@@ -7,18 +7,13 @@
     const status = document.getElementById("task-support-status");
     let shown = 0, attempted = false;
     let supportOwner; try { supportOwner = window.cmStorage.captureOwner(); } catch { /* Saving remains blocked. */ }
-    function read() {
-        const raw = window.cmStorage.getItem("codementor-demo-learning");
-        const value = raw === null ? { version: 1, lessons: [], tasks: [], assessments: {} } : JSON.parse(raw);
-        if (value?.version !== 1 || !Array.isArray(value.lessons) || !Array.isArray(value.tasks) || !value.assessments || typeof value.assessments !== "object" || Array.isArray(value.assessments)) throw new Error("Saved learning support is unavailable. Existing records were kept.");
-        return value;
-    }
+    const unreadable = "Saved learning support is unavailable. Existing records were kept.";
+    // Slice 1: storage through js/data/learning-repository.js, the change itself from js/domain/learning.js.
+    function read() { return window.cmData.learning.read({ unreadableMessage: unreadable }).progress; }
     function save(change) {
         try {
             window.cmStorage.assertOwner(supportOwner);
-            const progress = read();
-            progress.support = { ...progress.support, [id]: { ...progress.support?.[id], ...change } };
-            window.cmStorage.setItem("codementor-demo-learning", JSON.stringify(progress));
+            window.cmData.learning.update(progress => window.cmDomain.learning.applySupport(progress, id, change), { unreadableMessage: unreadable });
         } catch (error) { status.textContent = error.message; }
     }
     function render() {

@@ -23,6 +23,12 @@
         const card = document.querySelector(".starting-level"); card.replaceChildren(); card.setAttribute("data-recommended-start", String(result.recommendedStart)); /* styling hook only */
         const info = node("div"), title = node("h2", `Recommended start: Level ${result.recommendedStart}`); title.id = "level-title";
         info.append(node("p", "PLACEMENT RECOMMENDATION · NOT COMPLETION", "eyebrow"), title);
+        // Plain-language reason for the recommended level (js/domain/onboarding.js explainPlacement; scoring itself is unchanged).
+        try {
+            const why = window.cmDomain.onboarding.explainPlacement(result), box = node("div", undefined, "placement-why"); box.id = "placement-why";
+            const list = node("ul"); why.lines.forEach(line => list.append(node("li", line)));
+            box.append(node("h3", why.headline), list, node("p", why.summary)); info.append(box);
+        } catch { /* the topic list below still explains the result */ }
         info.append(node("p", `Every topic of a level needs at least ${result.threshold}%. Levels are considered in order; at most ${result.maxSkip} levels can be placed out.`));
         const reasons = node("ul"); reasons.id = "placement-topic-reasons";
         result.topicScores.forEach(score => { reasons.append(node("li", `Level ${score.level} · ${score.topic}: ${score.correct}/${score.total} (${Math.round(score.percentage * 100) / 100}%) — ${score.meetsThreshold ? "meets" : "below"} ${result.threshold}%.${score.level > result.maxSkip ? " Reviewed for guidance; outside the maximum skip allowance." : ""}`)); });

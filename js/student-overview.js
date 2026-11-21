@@ -22,6 +22,8 @@
             if (preferences !== null) {
                 if (!object(preferences) || !catalog.has(preferences.language) || !["beginner", "basics", "practising"].includes(preferences.experience) || !["foundations", "problem-solving", "projects"].includes(preferences.goal)) throw new Error("Invalid preferences");
                 model.language = catalog.get(window.cmStorage.activeLanguage());
+                // Slice 2: the saved answers, for guidance only. "confirmed" is false when experience and goal were filled with defaults.
+                model.preferences = { experience: preferences.experience, goal: preferences.goal, confirmed: preferences.answersDefaulted !== true };
             }
             if (!model.language && read("codementor-demo-language") !== null) model.language = catalog.get(window.cmStorage.activeLanguage());
         } catch { model.preferenceError = true; issues.push("Saved learning preferences could not be read. They were not replaced."); }
@@ -43,6 +45,8 @@
         const assessment = !model.learningError ? progress.assessments[currentLevel.id] || null : null;
         const levelDone = done.length === lessonData.length && assessment?.score >= 70;
         model.level = { done: done.length, total: lessonData.length, tasksPassed: passed.length, tasksTotal: tasks.length, assessment, completion: Math.round((done.length + (levelDone ? 1 : 0)) / (lessonData.length + 1) * 100) };
+        // Slice 3: the shared level summary (lesson evidence kinds, quiz best/last/attempts). Its counts always equal the numbers above.
+        model.level.summary = course.summarize(currentLevel, progress);
         model.pathDone = !model.learningError && Boolean(model.learning) && course.levels.every(level => course.completed(level, progress));
         const allTasks = course.levels.flatMap(level => level.tasks);
         model.totals = {
@@ -118,6 +122,11 @@
             const nextTask = tasks.find(task => !passed.some(value => value.id === task.id));
             if (model.pathDone) action(`${course.name} learning path completed`, `You passed all ${course.levels.length} published levels. Review your progress, practise any topic or build your project.`, "View progress", "../student/progress.html");
             else if (!window.subscriptionStore.canAccessLevel(currentLevel.id)) action("Continue with Premium", "Your free Levels 1–5 remain available. Review the Premium preview to continue into Level 6.", "View plans", "../student/subscription.html");
+            else if (window.cmDomain?.onboarding && model.preferences?.confirmed && ["basics", "practising"].includes(model.preferences.experience) && !model.totals.lessonsDone && pl.state === "missing" && window.placementBanks.get(course.id)) {
+                // Slice 2: the same rule as the onboarding plan, so the dashboard never suggests something different from it.
+                const plan = window.cmDomain.onboarding.planFor({ track: { id: model.language.id, name: model.language.name, ready: true }, experience: model.preferences.experience, goal: model.preferences.goal, confirmed: true, lessonsDone: 0, placement: { available: true, state: "missing", maxSkip: window.placementEngine?.policy?.maxSkip }, alternatives: [] });
+                action("Take the placement check", plan.reasons.filter(text => /placement check|repeating/.test(text) || /at most/.test(text)).join(" "), plan.primary.label, "../student/placement-intro.html", { label: plan.secondary[0].label, href: "learning-path.html" });
+            }
             else if (nextLesson) action(nextLesson.title, "Read the explanation, try the example and answer the lesson check to save your progress.", "Continue", `../student/lesson.html?lesson=${encodeURIComponent(nextLesson.id)}`);
             else if (nextTask) action(`Practise: ${nextTask.title}`, `Coding task · ${course.name} · Level ${currentLevel.id}. Practice is recommended before the quiz.`, "Continue", `../student/workspace.html?task=${nextTask.id}`, { label: "Go to level quiz", href: `level-assessment.html?level=${currentLevel.id}` });
             else if (!model.level.assessment || model.level.assessment.score < 70) action(`Level ${currentLevel.id} quiz`, `Your ${lessonData.length} lessons are complete. Score at least 70% to unlock the next level.`, "Continue", `../student/level-assessment.html?level=${currentLevel.id}`);

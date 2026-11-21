@@ -10,18 +10,21 @@
 
     <title>Coding Workspace | CodeMentor AI</title>
 
-    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css"><link rel="stylesheet" href="../../css/interaction-kit.css"><link rel="stylesheet" href="../../css/coding-workspace.css">
+    <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css"><link rel="stylesheet" href="../../css/interaction-kit.css"><link rel="stylesheet" href="../../css/coding-workspace.css"><link rel="stylesheet" href="../../css/attempt-assistant.css">
     <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script><script src="../../js/subscription-store.js" defer></script>
     <script src="../../js/learning-context.js" defer></script>
     <script src="../../js/python-runner.js" defer></script><script src="../../js/javascript-worker.js" defer></script><script src="../../js/javascript-runner.js" defer></script>
-    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/python-curriculum.js" defer></script>
+    <script src="../../js/python-lessons.js" defer></script><script src="../../js/python-extension.js" defer></script><script src="../../js/curriculum-registry.js" defer></script><script src="../../js/curricula/python.js" defer></script><script src="../../js/curricula/javascript.js" defer></script><script src="../../js/domain/learning.js" defer></script><script src="../../js/data/learning-repository.js" defer></script><script src="../../js/python-curriculum.js" defer></script>
     <script src="../../js/learning-support.js" defer></script>
     <script src="../../js/workspace.js" defer></script><script src="../../js/mentor-quick-actions.js" defer></script>
     <script src="../../js/workspace-completion.js" defer></script>
     <script src="../../js/workspace-support.js" defer></script>
     <script src="../../js/interaction-kit.js" defer></script>
     <script src="../../js/community-ask.js" defer></script>
+    <script src="../../js/community-membership.js" defer></script><script src="../../js/community-store.js" defer></script>
+    <script src="../../js/attempt-assistant.js" defer></script>
+    <link rel="stylesheet" href="../../css/student-redesign.css">
 </head>
 <body class="coding-page student-ui glass-ui">
     <a href="#coding-main" class="skip-link">Skip to coding task</a>
@@ -131,9 +134,12 @@
                 </button>
                 <button type="button" class="button button-outline" id="stop-code" hidden>Stop execution</button>
             </div>
+            <p id="run-submit-help" class="coding-help run-submit-help"></p>
 
             <p id="workspace-message" class="form-message"
                role="status" aria-live="polite"></p>
+
+            <section id="attempt-result" class="attempt-result" aria-live="polite" aria-label="Result of your last run or submission" hidden></section>
 
             <section class="coding-output-panel" aria-labelledby="output-title">
                 <h2 id="output-title">Output</h2>
@@ -184,6 +190,42 @@
             </button>
         </div>
     </dialog>
+
+    <aside id="attempt-assistant" class="attempt-assistant" role="dialog" aria-modal="false" aria-labelledby="assistant-title" hidden>
+        <header class="assistant-header">
+            <div>
+                <h2 id="assistant-title" tabindex="-1">CodeMentor · this attempt</h2>
+                <p id="assistant-context" class="assistant-context"></p>
+            </div>
+            <button type="button" class="button button-outline assistant-close" id="assistant-close" aria-label="Close CodeMentor and return to your code">Close</button>
+        </header>
+        <p class="assistant-mode">Prepared analysis from your saved test result and the course lessons. It is not a live AI model, and nothing leaves this browser.</p>
+        <div id="assistant-log" class="assistant-log" aria-live="polite"></div>
+        <div class="assistant-chips" role="group" aria-label="Quick questions">
+            <button type="button" class="button button-outline" data-ask="What does the lesson say about this?">What does the lesson say?</button>
+            <button type="button" class="button button-outline" data-ask="Show a similar example">Show a similar example</button>
+        </div>
+        <form id="assistant-form" class="assistant-form">
+            <label for="assistant-question">Ask about this attempt (English or Arabic)</label>
+            <textarea id="assistant-question" rows="2" maxlength="500" placeholder="e.g. Why is 70 a problem? / ليش 70 مشكلة؟"></textarea>
+            <button type="submit" class="button button-primary">Ask</button>
+        </form>
+        <section class="assistant-community" aria-labelledby="assistant-community-title">
+            <h3 id="assistant-community-title">Still stuck?</h3>
+            <div id="assistant-related"></div>
+            <button type="button" class="button button-outline" id="share-open" aria-expanded="false" aria-controls="share-box">Ask the community about this task</button>
+            <div id="share-box" class="assistant-share" hidden>
+                <label for="share-tried">What I tried</label>
+                <textarea id="share-tried" rows="2" maxlength="600"></textarea>
+                <label class="assistant-check"><input type="checkbox" id="share-include-result"> Include the check result (input, expected, my output or error)</label>
+                <label class="assistant-check"><input type="checkbox" id="share-include-code"> Include my code</label>
+                <p class="assistant-muted">Preview. Nothing is posted until you press Publish in the community.</p>
+                <pre id="share-preview" class="assistant-preview"></pre>
+                <button type="button" class="button button-primary" id="share-continue">Continue to the community</button>
+                <p id="share-status" class="form-message" role="status"></p>
+            </div>
+        </section>
+    </aside>
 
     <footer class="container onboarding-footer">
         CodeMentor AI · Frontend coding workspace

@@ -13,7 +13,7 @@
 .coding-editor-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
 .coding-language { padding: 4px 10px; background: var(--sage); border-radius: 6px; font-size: 11px; }
 #coding-main .coding-save-status { font-size: 11px; color: var(--muted); }
-#coding-main .code-editor { min-height: 390px; padding: 20px; background: #260204; color: #daeaf0; border: 1px solid var(--border); font: 14px/1.8 Consolas, monospace; }
+#coding-main .code-editor { min-height: 390px; padding: 20px; background: var(--color-action); color: var(--color-surface); border: 1px solid var(--border); font: 14px/1.8 Consolas, monospace; }
 #coding-main .coding-toolbar { justify-content: flex-start; gap: 8px; margin-top: 18px; padding-block: 16px; border-block: 1px solid var(--border); }
 #coding-main .coding-toolbar .button { flex: 1 1 auto; min-height: 42px; padding: 10px 13px; font-size: 12px; }
 #coding-main .button-primary { background: var(--action-bg); color: var(--action-text); border-color: var(--action-bg); }

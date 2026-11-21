@@ -60,7 +60,7 @@
                             }
                             const raw = window.cmStorage.getItem("codementor-demo-onboarding"); const previous = raw === null ? {} : JSON.parse(raw);
                             if (!previous || typeof previous !== "object" || Array.isArray(previous) || (raw !== null && (!catalog.has(previous.language) || !["beginner", "basics", "practising"].includes(previous.experience) || !["foundations", "problem-solving", "projects"].includes(previous.goal)))) throw new Error("Invalid preferences");
-                            window.cmStorage.setItem("codementor-demo-onboarding", JSON.stringify({ experience: "beginner", goal: "foundations", ...previous, language: entry.id }));
+                            window.cmStorage.setItem("codementor-demo-onboarding", JSON.stringify({ experience: "beginner", goal: "foundations", ...(raw === null ? { answersDefaulted: true } : {}), ...previous, language: entry.id }));
                             window.cmStorage.setItem("codementor-demo-language", JSON.stringify(entry.id));
                             location.href = "../student/learning-path.html";
                         } catch { root.prepend(el("p", "Preferences could not be saved. Existing data was not replaced.", "services-notice")); }

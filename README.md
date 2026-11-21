@@ -65,6 +65,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests/serve.ps1
 
 افتح <http://127.0.0.1:8765/>. أوقف الخادم باستخدام `Ctrl+C`.
 
+### الخادم مع Face ID / Passkeys
+
+لتشغيل الحسابات والجلسات على الخادم، مع تسجيل الدخول عبر Face ID وWindows Hello وTouch ID (WebAuthn):
+
+```powershell
+npm install
+npm start          # افتح http://localhost:8780/ (localhost وليس 127.0.0.1)
+node server/cli.mjs create-admin admin@yourdomain.org "Your Name"
+```
+
+التفاصيل والأمان والاختبارات (`npm run test:auth` و`npm run test:passkey-browser`) والنشر في [docs/PASSKEYS.md](docs/PASSKEYS.md). البيانات الحيوية لا تغادر الجهاز أبدًا.
+
 ## الملفات
 
 ```text

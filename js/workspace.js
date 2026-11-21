@@ -254,16 +254,14 @@ function busy(value) {
     [runButton, submitButton, resetButton, saveButton, editor, programInput].forEach(element => element.disabled = value || accountChanged);
     stopButton.hidden = !value;
 }
-function normalize(text) { return text.replace(/\r\n/g, "\n").trimEnd(); }
+// Grading and recording rules live in js/domain/learning.js; storage in js/data/learning-repository.js (Slice 1).
+// Client-side grading is not tamper-resistant: results are stored with the demo labels already shown on this page.
 function saveTestResult(passed, cases, solution) {
     assertWorkspaceOwner();
-    const raw = window.cmStorage.getItem("codementor-demo-learning");
-    const progress = raw === null ? { version: 1, lessons: [], tasks: [], assessments: {} } : JSON.parse(raw);
-    if (progress?.version !== 1 || !Array.isArray(progress.lessons) || !Array.isArray(progress.tasks) || !progress.assessments || typeof progress.assessments !== "object" || Array.isArray(progress.assessments)) throw new Error("Saved progress is unavailable. Your solution was kept, but results could not be recorded.");
-    if (passed === task.tests.length && !progress.tasks.includes(taskId)) progress.tasks.push(taskId);
-    progress.taskResults = { ...progress.taskResults, [taskId]: { passed, total: task.tests.length, cases, code: solution, submittedAt: new Date().toISOString() } };
-    if (passed === task.tests.length) progress.submissions = { ...progress.submissions, [taskId]: { code: solution, passed, total: task.tests.length, submittedAt: progress.taskResults[taskId].submittedAt } };
-    window.cmStorage.setItem("codementor-demo-learning", JSON.stringify(progress));
+    window.cmData.learning.update(
+        progress => window.cmDomain.learning.applyTaskResult(progress, taskId, { passed, total: task.tests.length, cases, code: solution, now: new Date().toISOString() }),
+        { unreadableMessage: "Saved progress is unavailable. Your solution was kept, but results could not be recorded." }
+    );
     window.dispatchEvent(new CustomEvent("task-attempt-recorded", { detail: { taskId } }));
 }
 async function execute(submit) {
@@ -294,7 +292,7 @@ async function execute(submit) {
             showMessage(`Checking test ${index + 1} of ${task.tests.length}...`);
             const result = await window.learningRunner.execute(solution + (task.verify || ""), test.input, text => { if (text === `Running ${window.pythonCurriculum.name}...`) executionStarted = true; showMessage(`Test ${index + 1}: ${text}`); });
             assertWorkspaceOwner();
-            const correct = !result.error && normalize(result.output) === normalize(test.output);
+            const correct = window.cmDomain.learning.isCaseCorrect(result, test);
             cases.push({ passed: correct, input: test.input, expected: test.output, output: result.output, error: result.error });
             outputPanel.textContent += `Test ${index + 1}: ${correct ? "Passed" : "Needs work"}\n`;
             if (!correct) {
@@ -306,7 +304,15 @@ async function execute(submit) {
             passed++;
         }
         saveTestResult(passed, cases, solution);
-        showMessage(`All ${passed} checks passed! Task completion saved on this device.`);
+        // Slice 3: say which lessons this passed task backs as assessed evidence (task.topics), from the saved record.
+        let evidenceNote = "";
+        try {
+            const cover = window.cmDomain.learning.taskCoverage(window.cmData.learning.read().progress, taskId, window.pythonCurriculum.taskTopics);
+            const title = id => window.pythonCurriculum.allLessons.find(lesson => lesson.id === id)?.title || id;
+            if (cover.backed.length) evidenceNote += ` It now backs ${cover.backed.map(title).join(", ")} as assessed task evidence.`;
+            if (cover.pending.length) evidenceNote += ` Complete ${cover.pending.map(title).join(", ")} so this task counts as evidence there.`;
+        } catch { /* the saved result above is unaffected */ }
+        showMessage(`All ${passed} checks passed! Task completion saved on this device.${evidenceNote}`);
     } catch (error) {
         if (executionStarted && !accountChanged) window.dispatchEvent(new CustomEvent("task-attempt-recorded", { detail: { taskId } }));
         showMessage(error.message, true);

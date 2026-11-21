@@ -221,6 +221,7 @@
                 experience: experienceInput.value,
                 goal: goalInput.value
             };
+            delete updatedPreferences.answersDefaulted;   // the student chose experience and goal explicitly here
 
             window.cmStorage.setItem(
                 sessionKey,

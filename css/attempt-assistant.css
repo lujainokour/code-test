@@ -1,0 +1,126 @@
+/* Coding workspace: result card, Run/Submit help and the "Ask CodeMentor about this attempt" panel.
+   Uses only the existing palette and status tokens from css/style.css (no new colour values). */
+
+.run-submit-help { margin: 8px 0 0; max-width: 72ch; line-height: 1.5; }
+
+/* ---------- Result card ---------- */
+.attempt-result {
+    margin: 14px 0;
+    padding: 16px 18px;
+    border: 1px solid var(--color-line-strong);
+    border-left-width: 5px;
+    border-radius: 14px;
+    background: var(--color-surface);
+    color: var(--color-action);
+}
+.attempt-result[data-state="passed"] { border-left-color: var(--color-success); }
+.attempt-result[data-state="failed"],
+.attempt-result[data-state="error"] { border-left-color: var(--color-error); }
+.attempt-result[data-state="running"] { border-left-color: var(--color-action); }
+.attempt-status { margin: 0; font-size: 1.05rem; font-weight: 750; line-height: 1.35; }
+.attempt-result[data-state="passed"] .attempt-status { color: var(--color-success); }
+.attempt-result:is([data-state="failed"], [data-state="error"]) .attempt-status { color: var(--color-error); }
+.attempt-detail { margin: 4px 0 0; color: var(--color-text-muted); line-height: 1.5; }
+
+.attempt-compare {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin: 14px 0 0;
+}
+.attempt-compare > div { min-width: 0; padding: 10px 12px; border: 1px solid var(--color-line); border-radius: 10px; background: color-mix(in srgb, var(--color-page) 35%, transparent); }
+.attempt-compare dt { margin: 0 0 4px; font-size: .78rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: var(--color-text-muted); }
+.attempt-compare dd { margin: 0; }
+.attempt-compare pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .95rem; line-height: 1.45; }
+.attempt-compare-actual { border-color: var(--color-line-strong) !important; }
+
+.attempt-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.attempt-actions .button { min-height: 44px; }
+
+/* ---------- Assistant panel (side panel on desktop, bottom sheet on phones) ---------- */
+.attempt-assistant {
+    position: fixed;
+    z-index: 60;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: min(440px, 100%);
+    padding: 18px 20px 20px;
+    overflow-y: auto;
+    border-left: 1px solid var(--color-line-strong);
+    background: var(--color-surface);
+    color: var(--color-action);
+    box-shadow: -18px 0 40px -24px color-mix(in srgb, var(--color-action) 45%, transparent);
+}
+.attempt-assistant[hidden] { display: none; }
+/* Keep the editor visible beside the panel on wide screens. */
+@media (min-width: 1200px) {
+    body.assistant-open .workspace-body { margin-right: 440px; }
+}
+
+.assistant-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.assistant-header h2 { margin: 0; font-size: 1.2rem; line-height: 1.3; }
+.assistant-header h2:focus { outline: none; }
+.assistant-header h2:focus-visible { outline: 3px solid color-mix(in srgb, var(--color-action) 45%, transparent); outline-offset: 3px; }
+.assistant-context { margin: 4px 0 0; color: var(--color-text-muted); font-size: .92rem; overflow-wrap: anywhere; }
+.assistant-close { flex: none; min-height: 40px; }
+.assistant-mode { margin: 0; padding: 8px 12px; border: 1px dashed var(--color-line-strong); border-radius: 10px; font-size: .88rem; line-height: 1.45; color: var(--color-text-muted); }
+
+.assistant-log { display: grid; gap: 12px; }
+.assistant-reply { padding: 12px 14px; border: 1px solid var(--color-line); border-radius: 12px; background: color-mix(in srgb, var(--color-page) 30%, transparent); }
+.assistant-reply h3 { margin: 10px 0 2px; font-size: .82rem; font-weight: 750; letter-spacing: .04em; text-transform: uppercase; color: var(--color-text-muted); }
+.assistant-reply[lang="ar"] h3 { letter-spacing: 0; text-transform: none; font-size: .95rem; }
+.assistant-reply h3:first-child, .assistant-asked + h3 { margin-top: 0; }
+.assistant-reply p { margin: 0; line-height: 1.55; overflow-wrap: anywhere; }
+.assistant-asked { margin-bottom: 8px !important; font-weight: 650; }
+.assistant-code { margin: 6px 0; padding: 10px 12px; overflow-x: auto; border-radius: 10px; background: #fff; text-align: left; }
+.assistant-action { margin-top: 10px; min-height: 40px; }
+.assistant-source { margin-top: 10px !important; font-size: .92rem; }
+.assistant-source a { font-weight: 700; color: var(--color-action); }
+.assistant-quote { display: block; margin-top: 4px; color: var(--color-text-muted); font-style: italic; quotes: "\201C" "\201D"; }
+
+.assistant-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.assistant-chips .button { min-height: 40px; padding: 6px 12px; font-size: .9rem; }
+
+.assistant-form { display: grid; gap: 6px; }
+.assistant-form label { font-weight: 700; font-size: .92rem; }
+.assistant-form textarea, .assistant-share textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--color-line-strong); border-radius: 10px; background: #fff; color: var(--color-action); font: inherit; resize: vertical; }
+.assistant-form .button { justify-self: start; min-height: 42px; }
+
+.assistant-community { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--color-line); }
+.assistant-community h3 { margin: 0; font-size: 1rem; }
+.assistant-muted { margin: 0; color: var(--color-text-muted); font-size: .9rem; line-height: 1.5; }
+.assistant-related-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.assistant-related-list li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
+.assistant-related-list a { font-weight: 650; color: var(--color-action); overflow-wrap: anywhere; }
+.assistant-tag { padding: 2px 8px; border: 1px solid var(--color-line-strong); border-radius: 999px; font-size: .78rem; font-weight: 700; }
+.assistant-tag.is-solved { border-color: var(--color-success); color: var(--color-success); background: var(--color-success-bg); }
+.assistant-share { display: grid; gap: 8px; }
+.assistant-share > label:first-child { font-weight: 700; font-size: .92rem; }
+.assistant-check { display: flex; align-items: flex-start; gap: 8px; font-size: .92rem; line-height: 1.4; }
+.assistant-check input { width: 18px; height: 18px; margin-top: 1px; flex: none; }
+.assistant-preview { max-height: 220px; margin: 0; padding: 10px 12px; overflow: auto; border: 1px solid var(--color-line); border-radius: 10px; background: #fff; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .85rem; }
+.assistant-share .button { justify-self: start; min-height: 42px; }
+
+@media (max-width: 900px) {
+    .attempt-compare { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 700px) {
+    .attempt-assistant {
+        top: auto;
+        left: 0;
+        width: 100%;
+        max-height: 88vh;
+        padding: 16px 16px 20px;
+        border-left: 0;
+        border-top: 1px solid var(--color-line-strong);
+        border-radius: 18px 18px 0 0;
+        box-shadow: 0 -18px 40px -24px color-mix(in srgb, var(--color-action) 45%, transparent);
+    }
+    .attempt-actions .button, .assistant-share .button, .assistant-form .button { width: 100%; justify-self: stretch; }
+}
+
+.assistant-reply p code { padding: 1px 5px; border-radius: 5px; background: #fff; font-size: .92em; }

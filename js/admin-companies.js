@@ -8,6 +8,21 @@
     const day = iso => iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "Not recorded";
     const stamp = iso => iso ? new Date(iso).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "Not recorded";
     const stageLabels = { applied: "Applied", interview: "Interview", accepted: "Accepted", rejected: "Rejected", completed: "Completed" };
+    // Presentation helpers (icons / initials only; no data is added or estimated).
+    const ICONS = { total: "M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16", verified: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z M9 12l2 2 4-4", active: "M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16", week: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M16 13H8 M16 17H8", dist: "M12 3a9 9 0 109 9 M12 3v9h9", shield: "M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z", search: "M11 19a8 8 0 100-16 8 8 0 000 16z M21 21l-4.3-4.3", stack: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5", screen: "M3 4h18v12H3z M8 20h8 M12 16v4" };
+    const ico = (key, cls = "overview-ico") => { const w = el("span", undefined, cls); w.setAttribute("aria-hidden", "true"); const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key] || ICONS.total); svg.append(p); w.append(svg); return w; };
+    const initialsOf = name => String(name || "?").trim().split(/\s+/).slice(0, 2).map(w => Array.from(w)[0] || "").join("").toUpperCase() || "?";
+    const heading = (key, text) => { const h = el("h2"); h.append(ico(key, "overview-ico overview-ico-title"), document.createTextNode(text)); return h; };
+    const SHADES = ["var(--ax-action)", "var(--ax-tint-300)", "var(--ax-tint-200)", "var(--ax-line-strong)"];
+    function distribution(title, key, rows, centerLabel) {
+        const panel = el("section", undefined, "overview-panel admin-co-dist"); panel.append(heading(key, title));
+        const total = rows.reduce((n, [, c]) => n + c, 0);
+        if (!total) { panel.append(el("p", "Nothing to show yet.", "overview-source-note")); return panel; }
+        let acc = 0; const stops = rows.filter(([, c]) => c).map(([, c], i) => { const from = acc; acc += (c / total) * 100; return SHADES[i % SHADES.length] + " " + from + "% " + acc + "%"; });
+        const donut = el("div", undefined, "overview-donut"); donut.setAttribute("aria-hidden", "true"); donut.style.setProperty("--donut", "conic-gradient(" + stops.join(", ") + ")"); donut.append(el("strong", String(total)), el("span", centerLabel));
+        const legend = el("ul", undefined, "analytics-legend"); rows.forEach(([label, c], i) => { const li = el("li"); const dot = el("i"); dot.style.background = SHADES[i % SHADES.length]; li.append(dot, el("span", label), el("b", c + " (" + Math.round((c / total) * 100) + "%)")); legend.append(li); });
+        const wrap = el("div", undefined, "analytics-summary"); wrap.append(donut, legend); panel.append(wrap); return panel;
+    }
     const filters = { search: "", status: "all", flagged: false, sort: "name" };
     const open = new Set();
     let message = "";
@@ -76,7 +91,7 @@
         const v = el("span", company.verification.status, "admin-badge"); v.dataset.verification = company.verification.status; badges.append(v);
         if (company.flag) badges.append(el("span", "Flagged for review", "admin-badge admin-badge-flag"));
         if (company.sample) badges.append(el("span", "SAMPLE", "admin-badge"));
-        head.append(el("h2", company.profile.name), badges);
+        const mark = el("span", initialsOf(company.profile.name), "admin-company-avatar"); mark.setAttribute("aria-hidden", "true"); const titleBox = el("div", undefined, "admin-company-title"); titleBox.append(el("h2", company.profile.name), badges); head.append(mark, titleBox);
         article.append(head, el("p", `${company.profile.industry || "Industry not provided"} · ${company.profile.location || "Location not provided"} · ${company.opportunities.length} opportunities · ${company.applicationsTotal} applications · last activity ${day(company.lastActivityAt)}`, "overview-source-note"));
         if (company.flag) article.append(el("p", `Review flag: ${company.flag.reason}`, "services-notice"));
         const toggle = el("button", open.has(company.id) ? "Hide details" : "View details", "button button-outline"); toggle.type = "button";
@@ -107,19 +122,19 @@
     }
     function sampleSection() {
         const section = el("section", undefined, "overview-panel"); section.id = "company-sample-data";
-        section.append(el("h2", "Sample data"), el("p", "Loads six clearly labelled fictional SAMPLE companies in different verification states, with opportunities and application counts, for demonstrations. Loading twice adds nothing. Removing deletes only sample companies; the company portal record is never changed."));
+        const grid = el("div", undefined, "admin-sample-grid"), boxA = el("div", undefined, "admin-sample-card"), boxB = el("div", undefined, "admin-sample-card"); section.append(heading("stack", "Sample data & workspace"), grid); boxA.append(el("h3", "Sample data"), el("p", "Loads six clearly labelled fictional SAMPLE companies in different verification states, with opportunities and application counts, for demonstrations. Loading twice adds nothing. Removing deletes only sample companies; the company portal record is never changed."));
         const state = api.sampleStatus();
-        section.append(el("p", state.loaded ? `Loaded: ${state.companies} sample companies.` : "No sample companies are loaded.", "overview-source-note"));
+        boxA.append(el("p", state.loaded ? `Loaded: ${state.companies} sample companies.` : "No sample companies are loaded.", "overview-source-note"));
         const row = el("div", undefined, "overview-top-actions");
         const load = el("button", "Load sample data", "button button-primary"); load.type = "button";
         load.addEventListener("click", () => act(async () => { const n = api.loadSample(); if (!n) throw new Error("Sample companies were already loaded. Nothing was added."); }, "Six sample companies added."));
         const remove = el("button", "Remove sample data", "button button-outline"); remove.type = "button"; remove.disabled = !state.loaded;
         remove.addEventListener("click", () => act(async () => { const n = api.removeSample(); if (!n) throw new Error("No sample companies to remove."); }, "Sample companies removed. Other records were not changed."));
-        row.append(load, remove); section.append(row);
+        row.append(load, remove); boxA.append(row);
         // The company-portal workspace (CloudPeak) is separate: it is what company@example.com signs in to.
         const portal = api.sampleCompanyStatus();
-        section.append(el("h3", "Sample company portal workspace"), el("p", "Loads the fictional CloudPeak Innovations (SAMPLE) workspace with sample opportunities, applicants and messages, so the sample company login on the company sign-in page works. It is loaded only when no real company is saved in this browser."));
-        section.append(el("p", portal.loaded ? "Loaded: the company portal currently shows the SAMPLE workspace." : portal.realWorkspace ? "A real company workspace is saved, so the sample cannot be loaded." : "Not loaded.", "overview-source-note"));
+        boxB.append(ico("screen", "overview-ico overview-ico-title"), el("h3", "Sample company workspace"), el("p", "Loads the fictional CloudPeak Innovations (SAMPLE) workspace with sample opportunities, applicants and messages, so the sample company login on the company sign-in page works. It is loaded only when no real company is saved in this browser."));
+        boxB.append(el("p", portal.loaded ? "Loaded: the company portal currently shows the SAMPLE workspace." : portal.realWorkspace ? "A real company workspace is saved, so the sample cannot be loaded." : "Not loaded.", "overview-source-note"));
         const portalRow = el("div", undefined, "overview-top-actions");
         const loadPortal = el("button", "Load sample company data", "button button-primary"); loadPortal.type = "button"; loadPortal.id = "sample-company-load"; loadPortal.disabled = portal.realWorkspace;
         loadPortal.addEventListener("click", () => act(async () => { if (!api.loadSampleCompany()) throw new Error("Sample company data was already loaded. Nothing was added."); }, "Sample company workspace loaded. Sign in with the sample company details on the company sign-in page."));
@@ -132,7 +147,7 @@
                 api.removeSampleCompany({ includeReal: true });
             }
         }, "Sample company workspace removed."));
-        portalRow.append(loadPortal, removePortal); section.append(portalRow);
+        portalRow.append(loadPortal, removePortal); boxB.append(portalRow); grid.append(boxA, boxB);
         return section;
     }
     function render() {
@@ -143,9 +158,16 @@
             const status = el("p", message, "overview-source-note"); status.id = "company-admin-status"; status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite"); root.append(status);
             const stats = el("div", undefined, "overview-stats admin-company-stats");
             [["total", "Total companies", summary.total], ["verified", "Verified", summary.verified], ["active", "Active opportunities", summary.activeOpportunities], ["week", "Applications this week", summary.applicationsThisWeek]].forEach(([id, label, value]) => {
-                const box = el("div", undefined, "overview-stat"); box.dataset.stat = id; box.append(el("span", label), el("strong", String(value))); stats.append(box);
+                const box = el("div", undefined, "overview-stat"); box.dataset.stat = id; box.append(ico(id), el("span", label), el("strong", String(value))); stats.append(box);
             });
             root.append(stats);
+            if (companies.length) {
+                const oppCount = {}; companies.forEach(c => c.opportunities.forEach(o => { const k = o.status || "Status not set"; oppCount[k] = (oppCount[k] || 0) + 1; }));
+                const verCount = {}; companies.forEach(c => { const k = c.verification.status; verCount[k] = (verCount[k] || 0) + 1; });
+                const top = el("div", undefined, "admin-co-top");
+                top.append(distribution("Opportunities by status", "active", Object.entries(oppCount), "Opportunities"), distribution("Companies by verification", "shield", Object.entries(verCount), "Companies"));
+                root.append(top);
+            }
             if (!companies.length) {
                 const empty = el("section", undefined, "overview-panel");
                 empty.append(el("h2", "No company profile saved yet"), el("p", "A company appears here after its profile is saved in this browser. Example data is never added just by opening this page; use Load sample data below for a demonstration."));

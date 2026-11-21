@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/student-premium.css"><link rel="stylesheet" href="../../css/interaction-kit.css">
     <script src="../../js/language-catalog.js" defer></script><script src="../../js/learning-language.js" defer></script><script src="../../js/placement-banks.js" defer></script><script src="../../js/placement-engine.js" defer></script><script src="../../js/placement-store.js" defer></script>
     <script src="../../js/workspace-shell.js" defer></script>
-    <script src="../../js/onboarding.js" defer></script>
+    <script src="../../js/domain/onboarding.js" defer></script><script src="../../js/data/onboarding-repository.js" defer></script><script src="../../js/onboarding.js" defer></script>
     <script src="../../js/interaction-kit.js" defer></script>
+    <link rel="stylesheet" href="../../css/student-redesign.css">
 </head>
 <body class="onboarding-page student-ui glass-ui">
     <header class="onboarding-header container">
@@ -78,8 +79,11 @@
                 Choose one option in each group to shape your learning path.
             </p>
 
+            <div class="onboarding-progress" id="onboarding-progress-wrap"><progress id="onboarding-progress-bar" max="3" value="0" aria-labelledby="onboarding-progress"></progress><p id="onboarding-progress" role="status" aria-live="polite">0 of 3 answered</p></div>
+            <p class="services-notice" id="onboarding-resume" hidden></p>
+
             <form id="onboarding-form">
-                <fieldset class="preference-group"><legend>01 · Choose your language</legend><p class="preference-help">Python has a frontend demo. Other full learning paths and assessments are coming soon. Locally authored lessons can be browsed separately.</p><label for="onboarding-language">Programming language</label><select id="onboarding-language" name="language" required></select></fieldset>
+                <fieldset class="preference-group"><legend>01 · Choose your language</legend><p class="preference-help">Python and JavaScript have full learning paths you can start today. Other languages are marked “Coming soon”: they have no path or placement check yet. Locally authored lessons can be browsed separately.</p><label for="onboarding-language">Programming language</label><select id="onboarding-language" name="language" required></select></fieldset>
 
                 <fieldset class="preference-group"><legend>02 · Your programming experience</legend><div class="choice-grid"><label class="choice-card"><input type="radio" name="experience" value="beginner" required><span class="choice-content"><strong>Just starting</strong></span></label><label class="choice-card"><input type="radio" name="experience" value="basics" required><span class="choice-content"><strong>Know the basics</strong></span></label><label class="choice-card"><input type="radio" name="experience" value="practising" required><span class="choice-content"><strong>Have some practice</strong></span></label></div></fieldset>
 
@@ -93,17 +97,25 @@
                 ></p>
 
                 <div class="preferences-actions">
-                    <span>Next: your learning dashboard. Placement is optional.</span>
+                    <span id="onboarding-next-note">Next: your starting plan. Placement is optional.</span>
 
                     <button
                         type="submit"
                         class="button button-primary"
                         id="continue-button"
                     >
-                        Continue →
+                        Show my starting plan →
                     </button>
                 </div>
             </form>
+
+            <section id="onboarding-plan" class="onboarding-plan" aria-labelledby="plan-title" tabindex="-1" hidden>
+                <h2 id="plan-title"></h2>
+                <p class="plan-notice services-notice" id="plan-notice" hidden></p>
+                <ul id="plan-reasons" class="plan-reasons"></ul>
+                <div class="plan-actions"><a id="plan-primary" class="button button-primary" href="dashboard.html">Continue</a><div id="plan-secondary" class="plan-secondary"></div></div>
+                <button type="button" id="plan-edit" class="button button-outline">Change my answers</button>
+            </section>
         </section>
     </main>
 

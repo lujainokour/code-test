@@ -105,7 +105,7 @@
         try {
             const rows = store.channelStats();
             body.replaceChildren(...rows.map(r => {
-                const tr = node("tr"); tr.dataset.channel = r.id; tr.dataset.mode = r.mode;
+                const tr = node("tr"); tr.dataset.channel = r.id; tr.dataset.mode = r.mode; tr.dataset.kind = r.kind;
                 const name = node("th", r.label + (r.comingSoon ? " (path coming soon)" : "")); name.scope = "row";
                 const access = node("td");
                 access.append(node("span", r.mode === "open" ? "Open" : "Approval required", r.mode === "open" ? "community-badge community-mode-open" : "community-badge"));
@@ -172,7 +172,29 @@
             $("sample-remove").disabled = !s.loaded;
         } catch (error) { $("sample-state").textContent = error.message; }
     }
-    function renderAll() { renderChannels(); renderThreads(); renderMembership(); renderQueue(); renderAudit(); renderSample(); }
+    // ---- presentation only: summary tiles, section icons and group filters (no data is changed) ----
+    const ICONS = { groups: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M23 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75", members: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z", pending: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M16 13H8 M16 17H8", reported: "M4 22V4 M4 4h14l-2 4 2 4H4", pin: "M12 17v5 M9 3h6l-1 7 3 3H7l3-3z", queue: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5", audit: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M9 13h6 M9 17h6", sample: "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6 M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" };
+    function ico(key, cls = "community-admin-ico") { const w = node("span", undefined, cls); w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; }
+    try { [["channels-heading", "groups"], ["threads-heading", "pin"], ["membership-heading", "members"], ["review-heading", "queue"], ["audit-heading", "audit"], ["sample-heading", "sample"]].forEach(([id, key]) => { const h = $(id); if (h && !h.querySelector(".community-admin-ico")) h.prepend(ico(key, "community-admin-ico community-admin-ico-title")); }); } catch { /* icons are decoration only */ }
+    function renderStats() {
+        const host = $("community-admin-stats"); if (!host) return;
+        try {
+            const rows = store.channelStats(), reports = store.queue().reduce((n, p) => n + p.reports.filter(r => r.status === "open").length, 0);
+            const members = rows.some(r => r.members === null) ? "Unavailable" : String(rows.reduce((n, r) => n + r.members, 0));
+            const pending = rows.some(r => r.pending === null) ? "Unavailable" : String(rows.reduce((n, r) => n + r.pending, 0));
+            host.replaceChildren(...[["groups", "Total groups", String(rows.length)], ["members", "Total members", members], ["pending", "Pending requests", pending], ["reported", "Reported posts", String(reports)]].map(([key, label, value]) => {
+                const tile = node("article", undefined, "community-admin-stat"); tile.append(ico(key, "community-admin-ico community-admin-ico-lg"), node("h2", label), node("p", value)); return tile;
+            }));
+        } catch (error) { host.replaceChildren(); }
+    }
+    function applyGroupFilters() { try {
+        const search = ($("group-search")?.value || "").trim().toLowerCase(), type = $("group-type")?.value || "all", access = $("group-access")?.value || "all";
+        let shown = 0; const rows = [...document.querySelectorAll("#channel-stats tr")];
+        rows.forEach(tr => { const ok = (!search || tr.firstElementChild.textContent.toLowerCase().includes(search)) && (type === "all" || tr.dataset.kind === type) && (access === "all" || tr.dataset.mode === access); tr.hidden = !ok; if (ok) shown++; });
+        if ($("group-count")) $("group-count").textContent = `Showing ${shown} of ${rows.length} groups`;
+    } catch { /* filters are an enhancement */ } }
+    ["group-search", "group-type", "group-access"].forEach(id => { $(id)?.addEventListener(id === "group-search" ? "input" : "change", applyGroupFilters); });
+    function renderAll() { renderChannels(); renderThreads(); renderMembership(); renderQueue(); renderAudit(); renderSample(); renderStats(); applyGroupFilters(); }
     $("sample-load").addEventListener("click", async () => {
         try { const added = await store.loadSample(); $("sample-status").textContent = added ? `${added} sample posts added. They appear in the open channels for every signed-in student, labelled SAMPLE.` : "Sample data was already loaded. Nothing was added."; }
         catch (error) { $("sample-status").textContent = error.message; }
@@ -209,4 +231,9 @@
     window.addEventListener("storage", event => { if ([membership.key, store.key, null].includes(event.key)) renderAll(); });
     window.addEventListener("pageshow", renderAll);
     renderAll();
+    // Highlight the section tab that was last used (the tabs stay plain in-page links).
+    try {
+        const tabs = [...document.querySelectorAll(".community-admin-tabs a")];
+        tabs.forEach((tab, index) => { tab.setAttribute("aria-current", String(index === 0)); tab.addEventListener("click", () => tabs.forEach(other => other.setAttribute("aria-current", String(other === tab)))); });
+    } catch { /* decoration only */ }
 })();

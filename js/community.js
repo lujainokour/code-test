@@ -456,7 +456,7 @@
             if (!groupsNow.some(g => g.readable)) { selected = activeLanguage && info(activeLanguage) ? activeLanguage : "general"; render(); say("Request to join a group first. You can post once an administrator approves you."); showSection("feed"); $("join-reason")?.focus(); return; }
             selected = "all"; render();
         }
-        showSection("feed");
+        showSection("feed"); composer.classList.add("is-open");
         if (prefill.channel && [...$("post-channel").options].some(o => o.value === prefill.channel)) $("post-channel").value = prefill.channel;
         if (prefill.title !== undefined) $("post-title").value = prefill.title;
         $("post-title").focus(); composer.scrollIntoView({ block: "start" });
@@ -603,7 +603,7 @@
         const ok = await act(async () => { id = await store.createPost(fields, owner); }, "Your discussion is published.");
         submit.disabled = false;
         if (!ok) return;
-        form.reset(); pendingRelated = null; renderRelated(); renderSimilar(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render();
+        form.reset(); form.classList.remove("is-open"); pendingRelated = null; renderRelated(); renderSimilar(); selected = fields.channel; view = "latest"; page = 1; $("community-search").value = ""; render();
         kit()?.toast("Your discussion is published.", { undo: async () => { await store.deletePost(id, owner); say("Post removed."); render(); } });
         $("community-feed-title").scrollIntoView({ block: "center" });
     });
@@ -612,6 +612,8 @@
         $("community-notifications").setAttribute("aria-expanded", String(!panel.hidden)); render();
     });
     $("community-ask").addEventListener("click", () => focusComposer());
+    $("community-composer-cancel").addEventListener("click", () => $("community-composer").classList.remove("is-open"));
+    document.addEventListener("keydown", event => { if (event.key === "Escape") $("community-composer").classList.remove("is-open"); });
     for (const id of ["channels", "feed", "highlights"]) $(`community-tab-${id}`).addEventListener("click", () => showSection(id));
     $("community-search").addEventListener("input", () => { page = 1; render(); });
     $("community-tag").addEventListener("change", () => { page = 1; render(); });

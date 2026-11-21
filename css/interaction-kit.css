@@ -8,16 +8,14 @@
 
 /* 1. TOKENS */
 :root {
-    --ik-burgundy: #70151c;
-    --ik-burgundy-900: #260204;
-    --ik-ink: #1d1416;
-    --ik-blue: #b1d4e1;
-    --ik-surface: #daeaf0;
-    --ik-success: #176139;
+    --ik-ink: var(--color-action);
+    --ik-blue: var(--color-page);
+    --ik-surface: var(--color-surface);
+    --ik-success: var(--color-success);
     --ik-ease: cubic-bezier(.2, .7, .2, 1);
-    --ik-shadow-rest: 0 1px 0 rgb(38 2 4 / 14%), 0 2px 6px rgb(38 2 4 / 8%);
-    --ik-shadow-hover: 0 2px 0 rgb(38 2 4 / 12%), 0 10px 22px rgb(38 2 4 / 12%);
-    --ik-shadow-lift: 0 4px 10px rgb(38 2 4 / 8%), 0 16px 32px rgb(38 2 4 / 12%);
+    --ik-shadow-rest: 0 1px 0 color-mix(in srgb, var(--color-action) 14%, transparent), 0 2px 6px color-mix(in srgb, var(--color-action) 8%, transparent);
+    --ik-shadow-hover: 0 2px 0 color-mix(in srgb, var(--color-action) 12%, transparent), 0 10px 22px color-mix(in srgb, var(--color-action) 12%, transparent);
+    --ik-shadow-lift: 0 4px 10px color-mix(in srgb, var(--color-action) 8%, transparent), 0 16px 32px color-mix(in srgb, var(--color-action) 12%, transparent);
 }
 
 /* 2. TACTILE BUTTONS: press depth, soft shadow, visible focus */
@@ -26,8 +24,8 @@
     box-shadow: var(--ik-shadow-rest);
 }
 .ik .button:hover { transform: translateY(-1px); box-shadow: var(--ik-shadow-hover); }
-.ik .button:active { transform: translateY(2px); box-shadow: inset 0 2px 4px rgb(38 2 4 / 18%); }
-.ik .button:focus-visible { outline: 3px solid var(--ik-burgundy); outline-offset: 3px; }
+.ik .button:active { transform: translateY(2px); box-shadow: inset 0 2px 4px color-mix(in srgb, var(--color-action) 18%, transparent); }
+.ik .button:focus-visible { outline: 3px solid var(--color-action); outline-offset: 3px; }
 .ik .button:disabled, .ik .button[aria-disabled="true"] { transform: none; box-shadow: none; cursor: not-allowed; }
 
 /* 3. CARD HOVER LIFT (~4px) */
@@ -49,10 +47,10 @@
 
 /* 6. TOASTS (aria-live region, optional Undo) */
 .ik-toasts { position: fixed; left: 50%; bottom: 24px; z-index: 300; transform: translateX(-50%); display: grid; gap: 8px; width: min(520px, calc(100vw - 32px)); pointer-events: none; }
-.ik-toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 16px; border-radius: 12px; background: var(--ik-ink); color: #fff; font-size: 14px; line-height: 1.4; box-shadow: 0 12px 30px rgb(29 20 22 / 28%); border-left: 4px solid var(--ik-blue); animation: ik-toast-in .26s var(--ik-ease) both; }
-.ik-toast[data-tone="success"] { border-left-color: #5fbf8f; }
-.ik-toast[data-tone="celebrate"] { border-left-color: #f2c14e; }
-.ik-toast[data-tone="error"] { border-left-color: #e36d6d; }
+.ik-toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; padding: 12px 14px 12px 16px; border-radius: 12px; background: var(--ik-ink); color: #fff; font-size: 14px; line-height: 1.4; box-shadow: 0 12px 30px color-mix(in srgb, var(--color-action) 28%, transparent); border-left: 4px solid var(--ik-blue); animation: ik-toast-in .26s var(--ik-ease) both; }
+.ik-toast[data-tone="success"] { border-left-color: var(--color-success); }
+.ik-toast[data-tone="celebrate"] { border-left-color: var(--color-line-strong); }
+.ik-toast[data-tone="error"] { border-left-color: var(--color-error); }
 .ik-toast-text { flex: 1; }
 .ik-toast button { flex-shrink: 0; border: 1px solid rgb(255 255 255 / 40%); background: transparent; color: #fff; border-radius: 8px; padding: 6px 12px; font: inherit; font-weight: 700; cursor: pointer; }
 .ik-toast button:hover { background: rgb(255 255 255 / 12%); }
@@ -64,7 +62,7 @@
 /* 7. SHINE (one-time, e.g. a newly unlocked badge) */
 .ik-shine { position: relative; overflow: hidden; }
 .ik-shine::before { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 85%) 50%, transparent 70%); transform: translateX(-120%); animation: ik-shine 1.4s .2s var(--ik-ease) 2 both; }
-.ik-shine { box-shadow: 0 0 0 3px #f2c14e, var(--ik-shadow-lift); }
+.ik-shine { box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-action) 30%, transparent), var(--ik-shadow-lift); }
 @keyframes ik-shine { to { transform: translateX(120%); } }
 
 /* 8. CELEBRATION LAYER (confetti canvas, rocket, check ring) */
@@ -77,8 +75,8 @@
 @keyframes ik-draw { to { stroke-dashoffset: 0; } }
 
 /* 8b. COMPLETION MOMENTS (lesson / level) */
-.cm-moment { display: flex; align-items: center; gap: 14px; margin: 12px 0; padding: 12px 16px; border-radius: 12px; background: #e7f5ee; border: 1px solid #b9e0cb; color: var(--ik-ink); animation: ik-rise .4s var(--ik-ease) both; }
-.cm-moment p { margin: 2px 0 0; font-size: 14px; color: #2f4a3c; }
+.cm-moment { display: flex; align-items: center; gap: 14px; margin: 12px 0; padding: 12px 16px; border-radius: 12px; background: var(--color-success-bg); border: 1px solid color-mix(in srgb, var(--color-success) 25%, transparent); color: var(--ik-ink); animation: ik-rise .4s var(--ik-ease) both; }
+.cm-moment p { margin: 2px 0 0; font-size: 14px; color: var(--color-success); }
 .cm-moment strong { font-size: 16px; color: var(--ik-success); }
 .cm-moment-lesson .ik-check { width: 44px; height: 44px; flex-shrink: 0; }
 .cm-moment-level { padding: 18px 20px; }

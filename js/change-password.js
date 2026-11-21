@@ -73,6 +73,25 @@
             firstInvalid.focus();
             return;
         }
+        // Server mode (npm start): the server checks the current password, stores the new hash and
+        // signs out every other device.
+        const serverInfo = window.cmServerAuth ? await window.cmServerAuth.status() : { server: false };
+        if (serverInfo.server) {
+            submit.disabled = true;
+            say("Checking your current password…");
+            try {
+                await window.cmServerAuth.api("auth/change-password", { method: "POST", body: { currentPassword: currentPassword.value, newPassword: newPassword.value } });
+                form.reset();
+                hidePasswords();
+                say("Password changed. Other devices were signed out. Your progress and code drafts were kept.");
+            } catch (error) {
+                if (error.code === "invalid_password") { showError(currentPassword, "This is not your current password."); currentPassword.focus(); }
+                say(error.message, true);
+            } finally {
+                submit.disabled = false;
+            }
+            return;
+        }
         if (!owner || owner === "guest") {
             say("Sign in to a local student account before changing its password.", true);
             return;

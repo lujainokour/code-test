@@ -22,7 +22,8 @@
         $("current-level").textContent = model.learningError ? "Unavailable" : !ready ? "Choose a path" : model.pathDone ? `${model.course.name} path completed` : `${model.course.name} · Level ${model.currentLevel.id}: ${model.currentLevel.title}`;
         $("level-progress-bar").value = ready ? model.level.completion : 0;
         $("level-progress-bar").setAttribute("aria-label", `${model.course.name} Level ${model.currentLevel.id} completion`);
-        $("level-progress-label").textContent = ready ? `${model.level.completion}% of Level ${model.currentLevel.id} · ${model.level.done}/${model.level.total} lessons + quiz` : "";
+        const evidence = ready && window.cmUi?.evidence ? window.cmUi.evidence.evidencePhrase(model.level.summary) : "";
+        $("level-progress-label").textContent = ready ? `${model.level.completion}% of Level ${model.currentLevel.id} · ${model.level.done}/${model.level.total} lessons + quiz${evidence ? ` · ${evidence}` : ""}` : "";
     }
     function renderKpis(model) {
         const ok = !model.learningError, t = model.totals;

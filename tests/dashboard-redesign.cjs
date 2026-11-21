@@ -10,7 +10,7 @@ const plain = v => JSON.parse(JSON.stringify(v));
 const key = (owner, k, lang = 'python') => `codementor-learning-v1:${encodeURIComponent(owner)}:${lang === 'python' ? k : `${lang}:${k}`}`;
 const day = n => new Date(Date.now() - n * 86400000).toISOString();
 
-const CORE = ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'placement-data', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum', 'learning-support', 'progress-insights', 'student-overview', 'student-premium'];
+const CORE = ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'placement-data', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'domain/learning', 'data/learning-repository', 'python-curriculum', 'learning-support', 'progress-insights', 'student-overview', 'student-premium'];
 function page({ shared, owner = 'learner-a@example.test', name = 'Test Learner', language = 'python', pathname = '/pages/student/dashboard.html', extra = [], preferences = true, core = CORE } = {}) {
     if (owner) shared.local.setItem('codementor-profile-v1', JSON.stringify({ name, email: owner, role: 'student', isDemo: true }));
     if (owner && preferences) shared.local.setItem(key(owner, 'codementor-demo-onboarding'), JSON.stringify({ language, experience: 'beginner', goal: 'foundations' }));
@@ -268,7 +268,7 @@ check('No invented statistics: no random numbers, no hours, styles in one dedica
     for (const file of ['js/dashboard.js', 'js/student-overview.js', 'js/progress-overview.js', 'js/progress-insights.js', 'js/student-premium.js']) assert.ok(!/Math\.random/.test(fs.readFileSync(file, 'utf8')), file);
     const html = fs.readFileSync('pages/student/dashboard.html', 'utf8');
     assert.ok(!/\bhours?\b/i.test(html.replace(/hours are not shown/, '')), 'no learning-hours metric');
-    assert.match(fs.readFileSync('css/student-premium.css', 'utf8'), /1\. TOKENS[\s\S]*--cm-burgundy-700[\s\S]*prefers-reduced-motion/);
+    assert.match(fs.readFileSync('css/student-premium.css', 'utf8'), /1\. TOKENS[\s\S]*--cm-ink: var\(--color-action\)[\s\S]*prefers-reduced-motion/);
     assert.ok(!/bookings? &amp; service|booking-count/i.test(html), 'bookings moved off the dashboard');
     assert.match(fs.readFileSync('pages/student/progress.html', 'utf8'), /id="booking-count"/);
 });

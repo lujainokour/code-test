@@ -125,6 +125,61 @@
       "file": "pages/auth/company-signup.html",
       "part": "Part 6",
       "reason": "Layout and page-logic audit: heading no longer claims verified or university talent (the platform verifies neither); text only."
+    },
+    {
+      "file": "pages/auth/login.html",
+      "part": "Part 7",
+      "reason": "Owner-approved passkey / Face ID sign-in (docs/PASSKEYS.md): passkeys.css link, server-auth.js script and the Sign in with Face ID block; tests/qa-sweep.cjs pins these exact insertions."
+    },
+    {
+      "file": "pages/auth/admin-login.html",
+      "part": "Part 7",
+      "reason": "Owner-approved passkey / Face ID sign-in (docs/PASSKEYS.md): passkeys.css link, server-auth.js script and the Sign in with Face ID block; tests/qa-sweep.cjs pins these exact insertions."
+    },
+    {
+      "file": "js/admin-mentoring-monitor.js",
+      "part": "Part 7",
+      "reason": "Admin UI redesign (approved 2026-11-21): summary tiles with icons, element ids for section anchors, tab highlight. Reads the same adminSnapshot and store.applications() data; no store write, permission or action handler changed."
+    },
+    {
+      "file": "js/admin-sessions-workspace.js",
+      "part": "Part 7",
+      "reason": "Admin UI redesign (approved 2026-11-21): summary tiles, status chart, search/topic/level filters, booking tab counts, search/session/sort controls and schedule tiles. Adds read-only store.getSessions/getBookings/getSchedule calls only. One behaviour change: the bookings list default order is now newest requested date first (was store order). Create, pause, delete, accept, decline and schedule actions are unchanged."
+    },
+    {
+      "file": "js/lesson.js",
+      "part": "Part 8",
+      "reason": "Student Cycle Slice 1 (approved 2026-11-21): Progress reads and the two completion saves (answer check, mark complete) now go through js/data/learning-repository.js with pure changes from js/domain/learning.js. The stored progress record keeps its key and shape; one additive field, revision, is written. User-visible behaviour, messages and grading results are unchanged (tests/learning-domain.cjs compares the new rules with verbatim copies of the old code)."
+    },
+    {
+      "file": "js/level-assessment.js",
+      "part": "Part 8",
+      "reason": "Student Cycle Slice 1 (approved 2026-11-21): Quiz scoring, the stored attempt and the progress read/write now use js/domain/learning.js and the repository; the owner and Premium checks run in the same order before the write. The stored progress record keeps its key and shape; one additive field, revision, is written. User-visible behaviour, messages and grading results are unchanged (tests/learning-domain.cjs compares the new rules with verbatim copies of the old code)."
+    },
+    {
+      "file": "js/workspace.js",
+      "part": "Part 8",
+      "reason": "Student Cycle Slice 1 (approved 2026-11-21): Output comparison and recording of a coding-task attempt now use js/domain/learning.js and the repository. The runners, test cases, execution limits and sandbox are untouched. The stored progress record keeps its key and shape; one additive field, revision, is written. User-visible behaviour, messages and grading results are unchanged (tests/learning-domain.cjs compares the new rules with verbatim copies of the old code)."
+    },
+    {
+      "file": "js/workspace-support.js",
+      "part": "Part 8",
+      "reason": "Student Cycle Slice 1 (approved 2026-11-21): Hint and attempt notes are saved through the repository with js/domain/learning.js applySupport. The stored progress record keeps its key and shape; one additive field, revision, is written. User-visible behaviour, messages and grading results are unchanged (tests/learning-domain.cjs compares the new rules with verbatim copies of the old code)."
+    },
+    {
+      "file": "js/lesson.js",
+      "part": "Part 9",
+      "reason": "Slice 3 (approved 2026-11-21). After a lesson check or self-check the page shows what was completed, whether it passed, what to improve and one next step, and labels how the lesson was evidenced (check passed, task passed, self-checked) using js/domain/learning.js. Self-check completion and level unlocking are unchanged; no stored field is added."
+    },
+    {
+      "file": "js/level-assessment.js",
+      "part": "Part 9",
+      "reason": "Slice 3 (approved 2026-11-21). Each quiz submission also appends an attempt (timestamp, score, correct, total, passed, language) to an additive quizAttempts list; best score, last score, the 70% pass mark and unlocking are unchanged. Feedback and history are rendered with one next action. Old records without attempts still load."
+    },
+    {
+      "file": "js/workspace.js",
+      "part": "Part 9",
+      "reason": "Slice 3 (approved 2026-11-21). The task success message adds a note on which lessons the passed task supports as evidence (js/domain/learning.js taskCoverage). Runners, tests cases, limits and sandbox are untouched."
     }
   ]
 }

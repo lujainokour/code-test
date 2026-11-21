@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../js/learning-storage.js"></script><script src="../../js/platform-store.js"></script>
+    <script src="../../js/access-guard.js"></script>
+    <script src="../../js/theme.js"></script>
+    <meta charset="UTF-8"><link rel="icon" href="../../assets/images/Burgundy CMA cherry monogram logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security & Passkeys | CodeMentor AI</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/passkeys.css">
+    <script src="../../js/server-auth.js" defer></script>
+    <script src="../../js/security-settings.js" defer></script>
+</head>
+<body class="security-page">
+    <div class="security-shell">
+        <header class="security-top">
+            <a href="../../index.html" class="logo">CodeMentor AI</a>
+            <a href="../../index.html" class="security-back" id="security-back"><span aria-hidden="true">←</span> Back to workspace</a>
+        </header>
+
+        <main id="security-main" aria-busy="true">
+            <section class="security-card" aria-labelledby="security-title">
+                <p class="security-eyebrow">Account security</p>
+                <h1 id="security-title">Security &amp; passkeys</h1>
+                <p id="security-intro">Sign in with Face ID, Windows Hello, Touch ID, your phone or your device PIN instead of typing a password.</p>
+
+                <div class="security-status" id="passkey-status" data-on="false" hidden>
+                    <span class="security-status-dot" aria-hidden="true"></span>
+                    <div><strong id="passkey-status-title">Checking…</strong><span id="passkey-status-text"></span></div>
+                </div>
+
+                <div class="security-actions" id="security-actions" hidden>
+                    <button type="button" class="pk-btn pk-btn-primary" id="add-passkey">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 16v2a2 2 0 0 1-2 2h-2"/><path d="M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M9 9.5v1"/><path d="M15 9.5v1"/><path d="M12 9.5v3.5h-1"/><path d="M9.5 15.5a3.5 3.5 0 0 0 5 0"/></svg>
+                        <span id="add-passkey-label">Enable Face ID / Passkey</span>
+                    </button>
+                    <a class="pk-btn pk-btn-secondary" id="change-password-link" href="change-password.html">Change password</a>
+                </div>
+
+                <p class="security-message" id="security-message" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="security-card" aria-labelledby="devices-title" id="devices-card" hidden>
+                <h2 id="devices-title">Registered devices</h2>
+                <p>Each passkey belongs to one device or password manager. Remove any you no longer use.</p>
+                <ul class="passkey-list" id="passkey-list"></ul>
+                <p class="passkey-empty" id="passkey-empty" hidden>No passkeys yet. Your password is your only sign-in method.</p>
+            </section>
+
+            <section class="security-card" aria-labelledby="privacy-title">
+                <h2 id="privacy-title">How your face or fingerprint is protected</h2>
+                <ul class="security-facts">
+                    <li>Face ID, Windows Hello and Touch ID check you on your own device. CodeMentor AI never receives or stores images of your face, fingerprints or any biometric data.</li>
+                    <li>Your device creates a private key that never leaves it. Our server keeps only the matching public key and checks a fresh, single-use signature each time you sign in.</li>
+                    <li>Passkeys only work on this website's address, so a fake look-alike site can't use them.</li>
+                    <li>Your password always remains as a backup. If you lose a device, sign in with your password and remove its passkey here.</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <dialog class="reauth-dialog" id="reauth-dialog" aria-labelledby="reauth-title">
+        <form class="reauth-form" id="reauth-form" method="dialog" novalidate>
+            <h2 id="reauth-title">Confirm it's you</h2>
+            <p>For your security, enter your password before changing how you sign in.</p>
+            <label for="reauth-password">Password</label>
+            <input type="password" id="reauth-password" autocomplete="current-password" required>
+            <p class="security-message" id="reauth-message" role="status" aria-live="polite"></p>
+            <div class="security-actions">
+                <button type="button" class="pk-btn pk-btn-secondary" id="reauth-cancel">Cancel</button>
+                <button type="submit" class="pk-btn pk-btn-primary" id="reauth-submit">Confirm</button>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>

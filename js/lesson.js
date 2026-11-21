@@ -6,7 +6,8 @@ const lessons = window.pythonLessons;
 const level = window.pythonCurriculum.selected;
 document.querySelector(".module-back").href = `module.html?level=${level.id}`;
 document.querySelector(".module-back").textContent = `Back to ${level.title}`;
-const progressKey = "codementor-demo-learning";
+const progressRepository = window.cmData.learning, learning = window.cmDomain.learning;   // Slice 1: rules in js/domain, storage in js/data
+const evidenceUi = window.cmUi.evidence, taskTopics = window.pythonCurriculum.taskTopics;   // Slice 3: evidence kinds and shared feedback rendering
 let lessonOwner; try { lessonOwner = window.cmStorage.captureOwner(); } catch { /* Saving remains blocked. */ }
 
 const title = document.getElementById("lesson-title");
@@ -46,31 +47,30 @@ function showError(message) {
 }
 
 function readProgress() {
-    const saved = window.cmStorage.getItem(progressKey);
+    return progressRepository.read({ unreadableMessage: "Invalid learning progress" }).progress;
+}
 
-    if (!saved) {
-        return {
-            version: 1,
-            lessons: [],
-            tasks: [],
-            assessments: {}
-        };
-    }
+// Every save goes through the repository: it re-reads the newest record, applies a pure domain change,
+// runs the owner and access checks, and stores revision + 1.
+function saveProgress(change) {
+    return progressRepository.update(change, {
+        unreadableMessage: "Invalid learning progress",
+        beforeWrite() {
+            window.cmStorage.assertOwner(lessonOwner);
+            if (!window.subscriptionStore.canAccessLevel(level.id)) throw new Error("Premium access is required for this level.");
+        }
+    });
+}
 
-    const progress = JSON.parse(saved);
-
-    if (
-        progress?.version !== 1 ||
-        !Array.isArray(progress.lessons) ||
-        !Array.isArray(progress.tasks) ||
-        !progress.assessments ||
-        typeof progress.assessments !== "object" ||
-        Array.isArray(progress.assessments)
-    ) {
-        throw new Error("Invalid learning progress");
-    }
-
-    return progress;
+// Structured feedback (completed / to improve / one next action). The page's single "next" link follows the recommendation.
+function showFeedback(feedback) {
+    const host = document.getElementById("lesson-feedback-panel");
+    if (!host) return;
+    evidenceUi.renderFeedback(host, feedback);
+    const link = evidenceUi.linkFor(feedback.next);
+    if (link) { nextActivity.href = link.href; nextActivity.textContent = `${link.label} →`; }
+    // A failed check recommends trying again, so the single link points back to the check instead of advertising the next lesson.
+    else if (feedback.next && feedback.next.target === "stay") { nextActivity.href = "#check-title"; nextActivity.textContent = `${feedback.next.label} ↑`; }
 }
 
 function updateCompletion() {
@@ -88,16 +88,15 @@ function updateCompletion() {
             : "Complete lesson";
 
         completionStatus.textContent = completed
-            ? "Completed"
+            ? `Completed · ${evidenceUi.lessonStatus(learning.lessonEvidence(progress, currentLesson.id, taskTopics))}`
             : "Not completed yet";
 
         navigation.querySelectorAll("[data-lesson-id]").forEach(
             function (link) {
                 const status = link.querySelector(".lesson-nav-status");
 
-                status.textContent = progress.lessons.includes(
-                    link.dataset.lessonId
-                ) ? "Done" : "";
+                const kind = learning.lessonEvidence(progress, link.dataset.lessonId, taskTopics);
+                status.textContent = !kind ? "" : kind === "self_checked" ? "Done (self-checked)" : "Done";
             }
         );
     } catch {
@@ -233,13 +232,11 @@ knowledgeForm.addEventListener("submit", function (event) {
 
     knowledgeFeedback.classList.toggle("is-error", !correct);
     try {
-        const progress = readProgress();
-        progress.checks = { ...progress.checks, [currentLesson.id]: { correct, answer: Number(selected.value), checkedAt: new Date().toISOString() } };
-        if (correct && !progress.lessons.includes(currentLesson.id)) progress.lessons.push(currentLesson.id);
-        window.cmStorage.assertOwner(lessonOwner);
-        if (!window.subscriptionStore.canAccessLevel(level.id)) throw new Error("Premium access is required for this level.");
-        window.cmStorage.setItem(progressKey, JSON.stringify(progress));
+        let alreadyCompleted = false;
+        try { alreadyCompleted = readProgress().lessons.includes(currentLesson.id); } catch { /* the save below reports unreadable data */ }
+        const saved = saveProgress(progress => learning.applyLessonCheck(progress, currentLesson.id, { correct, answer: Number(selected.value), now: new Date().toISOString() }));
         updateCompletion();
+        showFeedback(learning.lessonFeedback({ lesson: currentLesson, level, via: "check", correct, progress: saved.progress, taskTopics, alreadyCompleted }));
         workspaceMessage.textContent = correct ? "Correct answer saved. Your lesson progress has been updated." : "Answer saved. Review the explanation or video and try again.";
         workspaceMessage.classList.remove("is-error");
     } catch {
@@ -265,16 +262,10 @@ completeButton.addEventListener("click", function () {
         return;
     }
 
+    let saved;
     try {
-        const progress = readProgress();
-
-        if (!progress.lessons.includes(currentLesson.id)) {
-            progress.lessons.push(currentLesson.id);
-        }
-
-        window.cmStorage.assertOwner(lessonOwner);
-        if (!window.subscriptionStore.canAccessLevel(level.id)) throw new Error("Premium access is required for this level.");
-        window.cmStorage.setItem(progressKey, JSON.stringify(progress));
+        // Self-checked completion: recorded as "self_checked" evidence (derived), never as assessed evidence.
+        saved = saveProgress(progress => learning.applySelfCheckedLesson(progress, currentLesson.id));
     } catch {
         showError("Couldn’t save lesson completion. Try again.");
         return;
@@ -284,6 +275,7 @@ completeButton.addEventListener("click", function () {
     workspaceMessage.classList.remove("is-error");
 
     updateCompletion();
+    showFeedback(learning.lessonFeedback({ lesson: currentLesson, level, via: "self", progress: saved.progress, taskTopics }));
 });
 
 if (currentLesson) {

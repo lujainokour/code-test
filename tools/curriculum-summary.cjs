@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..');
 function describe() {
     const window = { cmStorage: { getItem: () => null, activeLanguage: () => 'python' } };
     const context = vm.createContext({ window, URLSearchParams, location: { pathname: '/index.html', search: '' } });
-    for (const file of ['language-catalog', 'placement-banks', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum']) {
+    for (const file of ['language-catalog', 'placement-banks', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'domain/learning', 'data/learning-repository', 'python-curriculum']) {
         vm.runInContext(fs.readFileSync(path.join(root, 'js', file + '.js'), 'utf8'), context, { filename: file + '.js' });
     }
     const levels = window.pythonCurriculum.levels;

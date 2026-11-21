@@ -7,7 +7,7 @@
 #progress-main .dashboard-card { padding: 26px; border-radius: 14px; margin-top: 0; }
 #progress-main .dashboard-card h2 { font-size: 23px; line-height: 1.35; margin-bottom: 16px; }
 #progress-main .dashboard-card > p { font-size: 14px; line-height: 1.8; color: var(--muted); }
-#progress-main .progress-next-step { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 28px; margin-bottom: 20px; border-left: 4px solid var(--brand-accent); }
+#progress-main .progress-next-step { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 28px; margin-bottom: 20px; border-left: 4px solid var(--color-action); }
 #progress-main .progress-next-step h2 { margin: 0; grid-column: 1; }
 #progress-main .progress-next-step p { margin: 0; grid-column: 1; }
 #progress-main #next-step-link { grid-column: 2; grid-row: 1 / 3; }

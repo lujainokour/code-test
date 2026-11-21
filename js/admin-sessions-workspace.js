@@ -69,11 +69,13 @@
 
             if (sessions.length === 0) {
                 listRoot.innerHTML = `<p class="workspace-empty">No tutoring sessions created yet. Click "Create New Session" to offer a platform learning session.</p>`;
+                afterRender([]);
                 return;
             }
 
             sessions.forEach(session => {
                 const card = el("article", null, "teacher-session-card");
+                card.dataset.status = session.status; card.dataset.subject = session.subject; card.dataset.level = session.level; card.dataset.search = [session.title, session.subject, session.type, session.description].join(" ").toLowerCase();
                 card.innerHTML = `
                     <div class="teacher-session-main">
                         <div class="teacher-session-badges">
@@ -101,7 +103,51 @@
                 `;
                 listRoot.appendChild(card);
             });
+            afterRender(sessions);
         }
+
+        // ---- presentation only: summary tiles, status chart and list filters (no data is changed) ----
+        const filterState = { status: "all", search: "", topic: "all", level: "all" };
+        const ICONS = { calendar: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", people: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M23 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75", pause: "M12 21a9 9 0 100-18 9 9 0 000 18z M10 9v6 M14 9v6", check: "M12 21a9 9 0 100-18 9 9 0 000 18z M8 12l3 3 5-6", chart: "M4 20V10 M10 20V4 M16 20v-7 M22 20H2" };
+        function icon(key, cls) { const w = document.createElement("span"); w.className = cls || "session-ico"; w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; }
+        function fillSelect(select, values, current) { if (!select) return; const keep = values.includes(current) ? current : "all"; select.replaceChildren(...[["all", select.options[0] ? select.options[0].textContent : "All"], ...values.map(v => [v, v])].map(([value, label]) => { const o = document.createElement("option"); o.value = value; o.textContent = label; return o; })); select.value = keep; filterState[select.id === "session-topic" ? "topic" : "level"] = keep; }
+        function applyFilters() {
+            try {
+                let shown = 0; const cards = [...listRoot.querySelectorAll(".teacher-session-card")];
+                cards.forEach(card => { const ok = (filterState.status === "all" || card.dataset.status === filterState.status) && (filterState.topic === "all" || card.dataset.subject === filterState.topic) && (filterState.level === "all" || card.dataset.level === filterState.level) && (!filterState.search || card.dataset.search.includes(filterState.search)); card.hidden = !ok; if (ok) shown++; });
+                const count = document.getElementById("session-count"); if (count) count.textContent = cards.length ? "Showing " + shown + " of " + cards.length + " sessions" : "";
+            } catch { /* filters are an enhancement */ }
+        }
+        function afterRender(sessions) {
+            try {
+                const active = sessions.filter(s => s.status === "Active").length, paused = sessions.filter(s => s.status === "Paused").length;
+                const enrolled = sessions.reduce((n, s) => n + (Number(s.enrolledCount) || 0), 0);
+                const stats = document.getElementById("session-stats");
+                if (stats) stats.replaceChildren(...[["calendar", "Total sessions", sessions.length], ["check", "Active sessions", active], ["pause", "Paused sessions", paused], ["people", "Total enrollments", enrolled]].map(([key, label, value]) => { const tile = el("article", null, "session-stat"); tile.append(icon(key, "session-ico session-ico-lg"), el("h2", label), el("p", String(value))); return tile; }));
+                const overview = document.getElementById("session-overview");
+                if (overview) {
+                    const other = sessions.length - active - paused; const rows = [["Active", active], ["Paused", paused], ["Other", other]].filter(([, c]) => c);
+                    const shades = ["var(--ax-action)", "var(--ax-tint-300)", "var(--ax-tint-200)"]; const title = el("h2"); title.append(icon("chart", "session-ico session-ico-title"), document.createTextNode("Session overview"));
+                    overview.replaceChildren(title);
+                    if (!sessions.length) overview.append(el("p", "No sessions yet.", "dashboard-footnote"));
+                    else {
+                        let acc = 0; const stops = rows.map(([, c], i) => { const from = acc; acc += (c / sessions.length) * 100; return shades[i % 3] + " " + from + "% " + acc + "%"; });
+                        const donut = el("div", null, "overview-donut"); donut.setAttribute("aria-hidden", "true"); donut.style.setProperty("--donut", "conic-gradient(" + stops.join(", ") + ")"); donut.append(el("strong", String(sessions.length)), el("span", "Sessions"));
+                        const legend = el("ul", null, "analytics-legend"); rows.forEach(([label, c], i) => { const li = el("li"); const dot = el("i"); dot.style.background = shades[i % 3]; li.append(dot, el("span", label), el("b", c + " (" + Math.round((c / sessions.length) * 100) + "%)")); legend.append(li); });
+                        const wrap = el("div", null, "analytics-summary"); wrap.append(donut, legend); overview.append(wrap);
+                    }
+                }
+                fillSelect(document.getElementById("session-topic"), [...new Set(sessions.map(s => s.subject).filter(Boolean))].sort(), filterState.topic);
+                fillSelect(document.getElementById("session-level-filter"), [...new Set(sessions.map(s => s.level).filter(Boolean))].sort(), filterState.level);
+            } catch { /* decoration only */ }
+            applyFilters();
+        }
+        try {
+            document.querySelectorAll("#session-filters .session-tab").forEach(tab => tab.addEventListener("click", () => { filterState.status = tab.dataset.filter; document.querySelectorAll("#session-filters .session-tab").forEach(other => other.setAttribute("aria-pressed", String(other === tab))); applyFilters(); }));
+            const search = document.getElementById("session-search"); if (search) search.addEventListener("input", () => { filterState.search = search.value.trim().toLowerCase(); applyFilters(); });
+            const topic = document.getElementById("session-topic"); if (topic) topic.addEventListener("change", () => { filterState.topic = topic.value; applyFilters(); });
+            const level = document.getElementById("session-level-filter"); if (level) level.addEventListener("change", () => { filterState.level = level.value; applyFilters(); });
+        } catch { /* decoration only */ }
 
         renderSessions();
 
@@ -210,6 +256,19 @@
             });
         }
 
+        // ---- presentation only: summary tiles built from the saved schedule ----
+        function renderScheduleStats() {
+            try {
+                const host = document.getElementById("schedule-stats"); if (!host) return;
+                const saved = store.getSchedule(), days = Object.values(saved.availability || {});
+                const active = days.filter(d => d.active).length, slots = days.reduce((n, d) => n + (d.slots ? d.slots.length : 0), 0);
+                const ICONS = { calendar: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", stack: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5", tag: "M20 12l-8 8-9-9V3h8z M7.5 7.5h.01", video: "M3 6h12v12H3z M15 10l6-3v10l-6-3" };
+                const icon = key => { const w = document.createElement("span"); w.className = "session-ico session-ico-lg"; w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; };
+                host.replaceChildren(...[["calendar", "Available days", active + " / 7"], ["stack", "Total time slots", String(slots)], ["tag", "Base hourly rate", "$" + (saved.defaultRate === undefined ? "-" : saved.defaultRate) + " USD"], ["video", "Preferred platform", saved.meetingPlatform || "Not set"]].map(([key, label, value]) => { const tile = el("article", null, "session-stat"); tile.append(icon(key), el("h2", label), el("p", value)); return tile; }));
+            } catch { /* decoration only */ }
+        }
+        renderScheduleStats();
+
         // Slot adding prompt
         if (daysRoot) {
             listen(daysRoot, "click", async (e) => {
@@ -237,6 +296,7 @@
                     if (!sched.availability[day]) sched.availability[day] = { active: false, slots: [] };
                     sched.availability[day].active = toggle.checked;
                     await store.updateSchedule(sched);
+                    renderScheduleStats();
                     const slotContainer = document.getElementById(`slots-${day}`);
                     if (slotContainer) slotContainer.classList.toggle("day-disabled", !toggle.checked);
                     const btn = slotContainer?.querySelector(".btn-add-slot");
@@ -253,6 +313,7 @@
             if (platformInput) sched.meetingPlatform = platformInput.value;
 
             await store.updateSchedule(sched);
+            renderScheduleStats();
 
             if (statusMsg) {
                 statusMsg.textContent = "Schedule and pricing updated successfully.";
@@ -269,10 +330,32 @@
         if (!root) return;
 
         let currentFilter = "all";
+        const extra = { search: "", session: "all", sort: "newest" };
+
+        // ---- presentation only: summary tiles, tab counts, search / session / sort controls ----
+        const ICONS = { calendar: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", hourglass: "M6 2h12 M6 22h12 M7 2v4l5 6-5 6v4 M17 2v4l-5 6 5 6v4", check: "M12 21a9 9 0 100-18 9 9 0 000 18z M8 12l3 3 5-6", flag: "M4 22V4 M4 4h14l-2 4 2 4H4" };
+        function icon(key) { const w = document.createElement("span"); w.className = "session-ico session-ico-lg"; w.setAttribute("aria-hidden", "true"); if (typeof document.createElementNS !== "function") return w; const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key]); svg.append(p); w.append(svg); return w; }
+        const tabLabels = { all: "All Bookings", pending: "Pending Review", confirmed: "Confirmed", completed: "Completed" };
+        function afterBookings(bookings) {
+            try {
+                const count = status => bookings.filter(b => b.status.toLowerCase() === status).length;
+                const counts = { all: bookings.length, pending: count("pending"), confirmed: count("confirmed"), completed: count("completed") };
+                const stats = document.getElementById("booking-stats");
+                if (stats) stats.replaceChildren(...[["calendar", "Total bookings", counts.all], ["hourglass", "Pending review", counts.pending], ["check", "Confirmed", counts.confirmed], ["flag", "Completed", counts.completed]].map(([key, label, value]) => { const tile = el("article", null, "session-stat"); tile.append(icon(key), el("h2", label), el("p", String(value))); return tile; }));
+                filterBtns.forEach(btn => { const key = btn.dataset.bookingFilter; if (tabLabels[key]) btn.textContent = tabLabels[key] + " (" + counts[key] + ")"; });
+                const select = document.getElementById("booking-session");
+                if (select) { const titles = [...new Set(bookings.map(b => b.sessionTitle).filter(Boolean))].sort(); const keep = titles.includes(extra.session) ? extra.session : "all"; select.replaceChildren(...[["all", "All sessions"], ...titles.map(t => [t, t])].map(([value, label]) => { const o = document.createElement("option"); o.value = value; o.textContent = label; return o; })); select.value = keep; extra.session = keep; }
+            } catch { /* decoration only */ }
+        }
 
         function render() {
             const bookings = store.getBookings();
-            const filtered = currentFilter === "all" ? bookings : bookings.filter(b => b.status.toLowerCase() === currentFilter.toLowerCase());
+            afterBookings(bookings);
+            const byStatus = currentFilter === "all" ? bookings : bookings.filter(b => b.status.toLowerCase() === currentFilter.toLowerCase());
+            const when = b => { const t = Date.parse(b.requestedDate); return Number.isFinite(t) ? t : 0; };
+            const filtered = byStatus
+                .filter(b => (!extra.search || [b.studentName, b.studentEmail, b.sessionTitle].join(" ").toLowerCase().includes(extra.search)) && (extra.session === "all" || b.sessionTitle === extra.session))
+                .sort((a, b) => extra.sort === "oldest" ? when(a) - when(b) : when(b) - when(a));
 
             root.innerHTML = "";
 
@@ -324,6 +407,11 @@
 
         render();
 
+        try {
+            const search = document.getElementById("booking-search"); if (search) search.addEventListener("input", () => { extra.search = search.value.trim().toLowerCase(); render(); });
+            const session = document.getElementById("booking-session"); if (session) session.addEventListener("change", () => { extra.session = session.value; render(); });
+            const sort = document.getElementById("booking-sort"); if (sort) sort.addEventListener("change", () => { extra.sort = sort.value; render(); });
+        } catch { /* decoration only */ }
         filterBtns.forEach(btn => {
             listen(btn, "click", () => {
                 filterBtns.forEach(b => b.classList.remove("active"));

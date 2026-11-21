@@ -30,7 +30,9 @@
         const steps = STEPS.map(step => {
             let state = done[step.id] ? "done" : step.needsLanguage && !input.ready ? "locked" : "todo";
             if (step.id === "placement" && !done.placement && input.placementAvailable === false) state = "unavailable";
-            const note = step.id === "community" && input.community === "pending" ? "Request sent, waiting for approval" : state === "locked" ? "Choose a ready language first" : state === "unavailable" ? "No placement check for this language yet" : "";
+            let note = step.id === "community" && input.community === "pending" ? "Request sent, waiting for approval" : state === "locked" ? "Choose a ready language first" : state === "unavailable" ? "No placement check for this language yet" : "";
+            // Slice 2: experienced students are told the optional check can spare them repeating levels (never required).
+            if (step.id === "placement" && state === "todo" && ["basics", "practising"].includes(input.experience)) note = "Recommended for you: it can save you from repeating levels";
             return { ...step, state, note };
         });
         const required = steps.filter(s => !s.optional);
@@ -54,7 +56,8 @@
         return {
             ready: Boolean(model.ready && !model.learningError), placementState: model.placement?.state,
             placementAvailable: Boolean(window.placementBanks?.get?.(model.course?.id)),
-            lessonsDone: model.totals?.lessonsDone || 0, ranCode: runs.length > 0, tasksDone: model.totals?.tasksDone || 0, community
+            lessonsDone: model.totals?.lessonsDone || 0, ranCode: runs.length > 0, tasksDone: model.totals?.tasksDone || 0, community,
+            experience: model.preferences?.confirmed ? model.preferences.experience : undefined
         };
     }
     const el = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
@@ -87,7 +90,8 @@
             if (step.state === "current") li.setAttribute("aria-current", "step");
             list.append(li);
         }
-        host.replaceChildren(head, bar, list);
+        const line = window.cmDomain?.onboarding?.guidanceLine({ experience: model.preferences?.experience, goal: model.preferences?.goal, confirmed: model.preferences?.confirmed, trackReady: Boolean(model.ready) });
+        host.replaceChildren(head, ...(line ? [el("p", line, "sp-small sp-guidance")] : []), bar, list);
         if (result.allDone && !celebrated) {
             // Once per account: mark first so a reload during the animation never replays it.
             const saved = seen?.set("checklistCelebrated", true);

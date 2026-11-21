@@ -4,8 +4,12 @@
     if (!root) return;
     const node = (tag, text, cls) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (cls) n.className = cls; return n; };
     const link = (text, href, cls = "button button-outline") => { const a = node("a", text, cls); a.href = href; return a; };
+    // Presentation only: small line icons and initials used by the card layout.
+    const ICONS = { sessions: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4", bookings: "M9 4h6a1 1 0 011 1v1H8V5a1 1 0 011-1z M6 6h12v15H6z M9 12h6 M9 16h4", students: "M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M23 21v-2a4 4 0 00-3-3.87 M16 3.13a4 4 0 010 7.75", enabled: "M12 21a9 9 0 100-18 9 9 0 000 18z M8 12l3 3 5-6", pending: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M16 13H8 M16 17H8", approved: "M12 3l9 4.5-9 4.5-9-4.5z M7 10.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-5.5", published: "M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14 M15 6v14", drafts: "M12 20h9 M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z", activity: "M13 2L3 14h8l-1 8 10-12h-8z", dist: "M12 3l9 4.5-9 4.5-9-4.5z M7 10.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-5.5", attention: "M12 3l10 18H2z M12 10v5 M12 18h.01", companies: "M3 21h18 M9 8h1 M9 12h1 M9 16h1 M14 8h1 M14 12h1 M14 16h1 M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16", latest: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z M14 2v6h6 M16 13H8 M16 17H8", regs: "M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2 M9 11a4 4 0 100-8 4 4 0 000 8z M19 8v6 M22 11h-6", manage: "M12 2l9 5-9 5-9-5z M3 12l9 5 9-5 M3 17l9 5 9-5", calendar: "M3 5h18v16H3z M3 10h18 M8 3v4 M16 3v4" };
+    function ico(key, cls = "overview-ico") { const w = node("span", undefined, cls); w.setAttribute("aria-hidden", "true"); const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg"); svg.setAttribute("viewBox", "0 0 24 24"); const p = document.createElementNS(svg.namespaceURI, "path"); p.setAttribute("d", ICONS[key] || ICONS.activity); svg.append(p); w.append(svg); return w; }
+    const initialsOf = name => String(name || "?").trim().split(/s+/).slice(0, 2).map(w => Array.from(w)[0] || "").join("").toUpperCase() || "?";
     let range = 7, counted = false; // range tabs state; count-up runs on the first render only
-    function section(title) { const n = node("section", undefined, "overview-panel"); n.append(node("h2", title)); return n; }
+    function section(title, key) { const n = node("section", undefined, "overview-panel"); const h = node("h2"); if (key) h.append(ico(key, "overview-ico overview-ico-title")); h.append(document.createTextNode(title)); n.append(h); return n; }
     function render() {
         root.replaceChildren();
         try { window.peerMentoringStore.admin(); } catch (error) { root.append(node("p", error.message, "services-notice"), link("Admin sign in", "../auth/admin-login.html")); return; }
@@ -21,11 +25,12 @@
         const pendingBookings = platformBookings?.filter(b => b.status === "Pending");
         const pending = applications?.filter(a => a.status === "Pending");
         const drafts = lessons?.filter(l => (l.status || "draft") === "draft");
-        const intro = node("div", undefined, "overview-top-actions"); intro.append(link("Review student tutors", "admin-peer-mentoring.html", "button button-primary"), link("Create a learning path", "admin-course-create.html")); root.append(intro);
+        const intro = node("div", undefined, "overview-top-actions"); const dateChip = node("span", undefined, "overview-date"); dateChip.append(ico("calendar", "overview-ico overview-ico-inline"), document.createTextNode(new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })));
+        intro.append(link("Review student tutors", "admin-peer-mentoring.html", "button button-primary"), link("Create a learning path", "admin-course-create.html"), dateChip); root.append(intro);
         root.append(node("p", "Live counts from records saved in this browser. Example student rows and the built-in curriculum are not counted as newly registered users or authored lessons.", "overview-source-note"));
         const stats = node("div", undefined, "overview-stats");
         [["sessions", "Published platform sessions", platformSessions?.filter(s => s.status === "Active" && !s.sample).length, "admin-sessions.html"], ["bookings", "Platform bookings awaiting review", pendingBookings?.length, "admin-bookings.html"], ["students", "Registered students", students?.length, "admin-students.html"], ["enabled", "Enabled accounts", students?.filter(s => s.status === "enabled").length, "admin-students.html"], ["pending", "Awaiting tutor review", pending?.length, "admin-peer-mentoring.html"], ["approved", "Approved student tutors", applications?.filter(a => a.status === "Approved").length, "admin-peer-mentoring.html"], ["published", "Published authored lessons", lessons?.filter(l => l.status === "published").length, "admin-courses.html"], ["drafts", "Draft lessons", drafts?.length, "admin-courses.html"]].forEach(([id, label, value, href]) => {
-            const a = link("", href, "overview-stat"); a.append(node("span", label), node("strong", value === undefined ? "Unavailable" : String(value))); a.dataset.stat = id; stats.append(a);
+            const a = link("", href, "overview-stat"); a.append(ico(id), node("span", label), node("strong", value === undefined ? "Unavailable" : String(value))); a.dataset.stat = id; stats.append(a);
         }); root.append(stats);
         const kit = window.interactionKit, ai = window.adminInsights;
         if (kit && !counted) stats.querySelectorAll("strong").forEach(s => { const v = Number(s.textContent); if (Number.isInteger(v)) kit.countUp(s, v); });
@@ -34,7 +39,7 @@
         const studentDates = (students || []).map(s => s.createdAt), appDates = realApps.map(a => a.createdAt);
         // Range tabs and trends only when real timestamped records support them.
         if (ai && ai.supportsRanges(studentDates, appDates)) {
-            const activity = section("New activity");
+            const activity = section("New activity", "activity");
             const tabs = node("div", undefined, "overview-range"); tabs.setAttribute("role", "group"); tabs.setAttribute("aria-label", "Time range");
             [7, 30].forEach(days => {
                 const b = node("button", `${days} days`, "overview-range-tab"); b.type = "button"; b.dataset.days = String(days); b.setAttribute("aria-pressed", String(range === days));
@@ -54,31 +59,34 @@
             activity.append(tabs, grid, node("p", "Counts use the saved creation time of each record. Sample records are not counted.", "overview-source-note"));
             root.append(activity);
         }
-        const dist = section("Teaching applications by status");
+        const dist = section("Teaching applications by status", "dist");
         if (applications === null) dist.append(node("p", "Application data is unavailable. Existing records have been kept."));
         else {
             const d = ai ? ai.distribution(realApps, "status", ["Pending", "Approved", "Changes requested", "Rejected"]) : { total: 0, rows: [] };
             if (!d.total) dist.append(node("p", "No real teaching applications yet. Sample applications are not counted.", "overview-source-note"));
             else {
+                const wrap = node("div", undefined, "overview-dist"); let acc = 0; const shades = ["var(--ax-action)", "var(--ax-tint-300)", "var(--ax-tint-200)", "var(--ax-line-strong)"];
+                const stops = d.rows.filter(r => r.count).map((r, i) => { const from = acc; acc += r.percent; return `${shades[i % shades.length]} ${from}% ${acc}%`; });
+                const donut = node("div", undefined, "overview-donut"); donut.setAttribute("aria-hidden", "true"); donut.style.setProperty("--donut", stops.length ? `conic-gradient(${stops.join(", ")})` : "none"); donut.append(node("strong", String(d.total)), node("span", "Applications")); wrap.append(donut);
                 const list = node("ul", undefined, "overview-bars"); list.setAttribute("aria-label", `${d.total} teaching applications by status`);
                 d.rows.forEach(r => { const li = node("li"); li.dataset.status = r.label; li.append(node("span", r.label), node("span", `${r.count} · ${r.percent}%`, "overview-bar-value")); const bar = node("span", undefined, "overview-bar"); bar.style.setProperty("--w", `${r.percent}%`); bar.setAttribute("aria-hidden", "true"); li.append(bar); list.append(li); });
-                dist.append(list, node("p", "Real applications only; sample applications are not counted.", "overview-source-note"));
+                wrap.append(list); dist.append(wrap, node("p", "Real applications only; sample applications are not counted.", "overview-source-note"));
             }
         }
         root.append(dist);
-        const attention = section("Needs your attention"); const queue = node("div", undefined, "overview-queue");
+        const attention = section("Needs your attention", "attention"); const queue = node("div", undefined, "overview-queue");
         [[pendingBookings?.length, "platform booking requests awaiting an administrator decision", "Manage bookings", "admin-bookings.html"], [pending?.length, "teaching applications awaiting review", "Review applications", "admin-peer-mentoring.html"], [students?.filter(s => s.status === "suspended").length, "student accounts currently suspended", "Review account access", "admin-students.html"], [drafts?.length, "lesson drafts to prepare for publication", "Continue content editing", "admin-courses.html"]].forEach(([count, label, action, href]) => { const row = node("div", undefined, "overview-queue-row"); row.append(node("p", `${count === undefined ? "Unavailable" : count} ${label}`), link(action, href, "overview-text-link")); queue.append(row); }); attention.append(queue); root.append(attention);
-        const companies = section("Companies & opportunities");
+        const companies = section("Companies & opportunities", "companies");
         companies.append(node("p", company ? `${company.profile.name} · ${company.sample ? "Sample company" : "Saved company profile"} · ${company.opportunities.filter(job => job.status === "Active").length} active opportunities` : issues.some(issue => issue.startsWith("Company profiles:")) ? "Company data is unavailable. Existing records were kept." : "No company profile is saved in this browser yet."), link("View company directory", "admin-companies.html")); root.append(companies);
-        const columns = node("div", undefined, "overview-columns"); const reviews = section("Latest teaching applications");
+        const columns = node("div", undefined, "overview-columns"); const reviews = section("Latest teaching applications", "latest");
         if (applications === null) reviews.append(node("p", "Application data is unavailable. Existing records have been kept."));
         else if (!applications.length) reviews.append(node("p", "No student teaching applications yet. Submitted applications will appear here."));
-        else applications.slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, 4).forEach(a => { const row = node("article", undefined, "overview-list-row"); row.append(node("h3", a.name), node("p", `${a.language} · ${a.status}`), link("Open review", "admin-peer-mentoring.html", "overview-text-link")); reviews.append(row); });
-        const registrations = section("Recent registrations");
+        else applications.slice().sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, 4).forEach(a => { const row = node("article", undefined, "overview-list-row"); row.append(node("span", initialsOf(a.name), "overview-avatar"), node("h3", a.name), node("p", `${a.language} · ${a.status}`), link("Open review", "admin-peer-mentoring.html", "overview-text-link")); reviews.append(row); });
+        const registrations = section("Recent registrations", "regs");
         if (students === null) registrations.append(node("p", "Registered account data is unavailable."));
         else if (!students.length) registrations.append(node("p", "No registered profiles are saved in this browser yet."));
-        else students.slice().sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 5).forEach(s => { const row = node("article", undefined, "overview-list-row"); row.append(node("h3", s.name), node("p", `${s.status === "enabled" ? "Enabled" : "Suspended"} · ${new Date(s.createdAt).toLocaleDateString("en-GB", { dateStyle: "medium" })}`), link("View student", `admin-student-details.html?id=${encodeURIComponent(s.id)}`, "overview-text-link")); registrations.append(row); }); columns.append(reviews, registrations); root.append(columns);
-        const management = section("Quick management"); const actions = node("div", undefined, "overview-shortcuts");
+        else students.slice().sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)).slice(0, 5).forEach(s => { const row = node("article", undefined, "overview-list-row"); row.append(node("span", initialsOf(s.name), "overview-avatar"), node("h3", s.name), node("p", `${s.status === "enabled" ? "Enabled" : "Suspended"} · ${new Date(s.createdAt).toLocaleDateString("en-GB", { dateStyle: "medium" })}`), link("View student", `admin-student-details.html?id=${encodeURIComponent(s.id)}`, "overview-text-link")); registrations.append(row); }); columns.append(reviews, registrations); root.append(columns);
+        const management = section("Quick management", "manage"); const actions = node("div", undefined, "overview-shortcuts");
         [["Platform sessions", "Create or pause sessions and set prices.", "admin-sessions.html"], ["Availability", "Manage the weekly calendar and meeting platform.", "admin-schedule.html"], ["Bookings", "Confirm with a meeting link, decline with a reason, and track completion.", "admin-bookings.html"], ["Session follow-up", "View enrolled students and keep progress notes.", "admin-session-students.html"], ["Students & access", "Review student profiles and account status.", "admin-students.html"], ["Learning content", "Manage learning paths, levels and lessons.", "admin-courses.html"], ["Tutor applications", "Review experience and teaching plans.", "admin-peer-mentoring.html"], ["Learning analytics", "Open the existing learning analytics view.", "admin-analytics.html"]].forEach(([title, text, href]) => { const card = link("", href, "overview-shortcut"); card.append(node("h3", title), node("p", text), node("span", "Open →")); actions.append(card); }); management.append(actions); root.append(management);
         if (issues.length) { const notice = node("p", issues.join(" "), "services-notice"); notice.setAttribute("role", "status"); root.prepend(notice); }
     }

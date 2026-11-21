@@ -7,7 +7,7 @@
 .overview-stat { display: flex; flex-direction: column; gap: 16px; padding: 22px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
 .overview-stat > span { color: var(--muted); font-size: 12px; }
 .overview-stat strong { font-size: 30px; line-height: 1.2; overflow-wrap: anywhere; }
-.overview-stat:hover, .overview-shortcut:hover { border-color: var(--brand-accent); }
+.overview-stat:hover, .overview-shortcut:hover { border-color: var(--color-action); }
 .overview-panel { padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); margin-bottom: 24px; min-width: 0; }
 .overview-panel h2 { font-size: 23px; margin-bottom: 18px; line-height: 1.3; }
 .overview-panel p { font-size: 13px; color: var(--muted); line-height: 1.8; }
@@ -65,23 +65,23 @@
 /* Delight 5: glass-style cards on the existing blue (solid fallback), range tabs, bars, grouped nav */
 .admin-overview .overview-panel, .admin-overview .overview-stat, .admin-overview .overview-shortcut { background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .admin-overview .overview-panel, .admin-overview .overview-stat, .admin-overview .overview-shortcut { background: rgb(255 255 255 / 55%); border-color: rgb(255 255 255 / 75%); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2); box-shadow: 0 1px 2px rgb(38 2 4 / 5%), 0 10px 28px rgb(38 2 4 / 7%); }
+    .admin-overview .overview-panel, .admin-overview .overview-stat, .admin-overview .overview-shortcut { background: rgb(255 255 255 / 55%); border-color: rgb(255 255 255 / 75%); -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2); box-shadow: 0 1px 2px color-mix(in srgb, var(--color-action) 5%, transparent), 0 10px 28px color-mix(in srgb, var(--color-action) 7%, transparent); }
 }
-.overview-stat strong { font-variant-numeric: tabular-nums; color: var(--brand-deep); }
+.overview-stat strong { font-variant-numeric: tabular-nums; color: var(--color-action); }
 .overview-range { display: inline-flex; gap: 4px; padding: 4px; margin-bottom: 16px; border-radius: 999px; background: rgb(255 255 255 / 45%); border: 1px solid var(--border); }
 .overview-range-tab { border: 0; border-radius: 999px; padding: 8px 16px; background: transparent; color: var(--primary); font: inherit; font-size: 13px; font-weight: 650; cursor: pointer; }
-.overview-range-tab[aria-pressed="true"] { background: var(--brand-accent); color: #fff; }
-.overview-range-tab:focus-visible { outline: 3px solid var(--brand-accent); outline-offset: 2px; }
+.overview-range-tab[aria-pressed="true"] { background: var(--color-action); color: #fff; }
+.overview-range-tab:focus-visible { outline: 3px solid var(--color-action); outline-offset: 2px; }
 .overview-trends { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-bottom: 12px; }
 .overview-delta { display: block; margin-top: 8px; font-size: 12px; color: var(--muted); }
-.overview-delta[data-direction="up"] { color: #176139; }
-.overview-delta[data-direction="down"] { color: #844800; }
+.overview-delta[data-direction="up"] { color: var(--color-success); }
+.overview-delta[data-direction="down"] { color: var(--color-warning); }
 .overview-bars { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 12px; }
 .overview-bars li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; font-size: 14px; }
 .overview-bar-value { font-variant-numeric: tabular-nums; color: var(--muted); }
-.overview-bar { grid-column: 1 / -1; height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--brand-accent) var(--w), rgb(255 255 255 / 55%) var(--w)); }
+.overview-bar { grid-column: 1 / -1; height: 10px; border-radius: 999px; background: linear-gradient(90deg, var(--color-action) var(--w), rgb(255 255 255 / 55%) var(--w)); }
 .admin-page .admin-nav-group { margin-bottom: 14px; }
 .admin-page .admin-nav-group .shell-group-label { margin: 0 0 6px 12px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
 .admin-page .admin-nav-group a { display: block; border-radius: 9px; padding: 9px 12px; border-left: 3px solid transparent; }
-.admin-page .admin-nav-group a[aria-current="page"] { border-left-color: #b1d4e1; font-weight: 700; }
+.admin-page .admin-nav-group a[aria-current="page"] { border-left-color: var(--color-page); font-weight: 700; }
 @media (max-width: 600px) { .overview-trends { grid-template-columns: minmax(0, 1fr); } }

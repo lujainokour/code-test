@@ -9,7 +9,7 @@ const legacy = {
 const original = JSON.stringify(legacy);
 const window = { cmStorage: { activeLanguage: () => 'python', getItem: key => key === 'codementor-demo-learning' ? original : null } };
 const context = vm.createContext({ window, URLSearchParams, location: { pathname: '/index.html', search: '' } });
-for (const file of ['language-catalog', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum']) vm.runInContext(fs.readFileSync('js/' + file + '.js', 'utf8'), context);
+for (const file of ['language-catalog', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'domain/learning', 'data/learning-repository', 'python-curriculum']) vm.runInContext(fs.readFileSync('js/' + file + '.js', 'utf8'), context);
 let checks = 0;
 function check(name, condition) { assert.ok(condition, name); checks++; console.log('PASS ' + name); }
 const course = window.pythonCurriculum, progress = course.read();
@@ -24,6 +24,6 @@ check('Only languages with implemented paths advertise ready status', window.lan
 const summaries = [{ textContent: 'Six JavaScript levels' }], access = [{ textContent: 'Level 6 Premium' }];
 const jsWindow = { curriculumRegistry: window.curriculumRegistry, cmStorage: { activeLanguage: () => 'javascript', getItem: () => null } };
 const jsContext = vm.createContext({ window: jsWindow, document: { querySelectorAll: selector => selector === '[data-curriculum-summary]' ? summaries : selector === '[data-curriculum-access]' ? access : [] }, URLSearchParams, location: { pathname: '/index.html', search: '' } });
-vm.runInContext(fs.readFileSync('js/python-curriculum.js', 'utf8'), jsContext);
+for (const file of ['domain/learning', 'data/learning-repository', 'python-curriculum']) vm.runInContext(fs.readFileSync('js/' + file + '.js', 'utf8'), jsContext);
 check('Active JavaScript summaries use its real level count and free access', summaries[0].textContent.startsWith(`${js.levels.length} JavaScript levels`) && !summaries[0].textContent.includes('Six') && access[0].textContent.includes('All published JavaScript levels are included in Free'));
 console.log(`${checks} curriculum migration checks passed.`);

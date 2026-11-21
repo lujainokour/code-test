@@ -1,0 +1,263 @@
+/* Student sign-up (pages/auth/signup.html): parts that only the sign-up page has.
+   The shared glass layout of every sign-in / sign-up page (background, cards, fields,
+   buttons, links, responsive sizing) is the "AUTH PAGES" section at the end of
+   css/style.css. Load after style.css. Official palette only. */
+
+body.student-signup {
+    --sg-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 15l6-6 6 6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Left: illustration card ---------- */
+body.student-signup .signup-card {
+    position: relative;
+    padding: 4px 4px 0;
+    border-radius: 38px;
+    animation: sg-rise .7s cubic-bezier(.2, .7, .2, 1) both;
+}
+
+body.student-signup .signup-sparks {
+    position: absolute;
+    top: -34px;
+    right: -26px;
+    color: var(--color-action);
+}
+
+body.student-signup .signup-illustration {
+    display: block;
+    flex: none;
+    /* Portrait frame matching the 1080x1920 video so it shows uncropped;
+       height comes from the viewport-scaled rules below, width follows. */
+    width: auto;
+    max-width: 100%;
+    height: 440px;
+    aspect-ratio: 9 / 16;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 3px solid rgb(255 255 255 / 85%);
+    border-radius: 34px;
+    box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--color-action) 55%, transparent);
+}
+
+body.student-signup .auth-video-media {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
+    margin: 0;
+    border-radius: 0;
+    background: var(--color-page);
+}
+
+body.student-signup .auth-video-media .auth-student-video { object-fit: contain; object-position: center; }
+
+body.student-signup .signup-card-body { padding: 30px 30px 26px; }
+
+body.student-signup .signup-card-body h1 {
+    margin: 0 0 10px;
+    color: var(--sg-ink);
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.3px;
+}
+
+body.student-signup .signup-card-body > p {
+    margin: 0 0 22px;
+    color: var(--sg-ink-2);
+    font-size: 14.5px;
+    line-height: 1.5;
+}
+
+body.student-signup .signup-features { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+body.student-signup .signup-features li { display: flex; align-items: center; gap: 20px; padding-left: 6px; }
+
+body.student-signup .signup-feature-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgb(255 255 255 / 90%);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 62%);
+    box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--color-action) 30%, transparent);
+    color: var(--color-action);
+}
+
+body.student-signup .signup-feature-text { display: grid; gap: 2px; line-height: 1.35; }
+body.student-signup .signup-feature-text strong { color: var(--sg-ink); font-size: 15.5px; font-weight: 700; }
+body.student-signup .signup-feature-text > span { color: var(--sg-ink-2); font-size: 14px; }
+
+body.student-signup .signup-dots { display: flex; justify-content: center; gap: 18px; margin-top: 24px; }
+body.student-signup .signup-dots span { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in srgb, var(--color-action) 22%, transparent); }
+body.student-signup .signup-dots .is-active { background: var(--color-action); }
+
+/* ---------- Step indicator ---------- */
+body.student-signup .signup-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 400px;
+    margin: 0 auto 18px;
+    padding: 0;
+    list-style: none;
+}
+
+body.student-signup .signup-steps li {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--sg-ink-2);
+    font-size: 13px;
+}
+
+body.student-signup .signup-steps li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: calc(50% + 28px);
+    right: calc(-50% + 28px);
+    height: 2px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-action) 20%, transparent);
+}
+
+body.student-signup .signup-step-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(255 255 255 / 95%);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 72%);
+    box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--color-action) 35%, transparent);
+    color: var(--sg-ink);
+}
+
+body.student-signup .signup-steps .is-current { color: var(--color-action); font-weight: 700; }
+body.student-signup .signup-steps .is-current .signup-step-icon {
+    border-color: var(--color-action);
+    background: var(--color-action);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-action) 14%, transparent), 0 8px 16px -6px color-mix(in srgb, var(--color-action) 55%, transparent);
+    color: #fff;
+}
+
+/* ---------- Fields with leading icons ---------- */
+body.student-signup .signup-input { position: relative; }
+
+body.student-signup .signup-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    z-index: 1;
+    color: var(--sg-ink);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+body.student-signup .form-field input { padding-left: 56px; }
+body.student-signup .password-field input { padding-right: 76px; }
+
+body.student-signup .form-field input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+body.student-signup .form-field input[type="number"]::-webkit-inner-spin-button,
+body.student-signup .form-field input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+body.student-signup .password-suggestion {
+    border: 1px solid rgb(255 255 255 / 95%);
+    border-radius: 14px;
+    background: rgb(255 255 255 / 96%);
+    box-shadow: 0 18px 40px -16px color-mix(in srgb, var(--color-action) 45%, transparent);
+}
+
+/* ---------- Storage disclosure (collapsible) ---------- */
+body.student-signup .demo-account summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--sg-ink);
+    font-size: 16px;
+    font-weight: 700;
+    list-style: none;
+    cursor: pointer;
+}
+body.student-signup .demo-account summary::-webkit-details-marker { display: none; }
+body.student-signup .demo-account summary > span { flex: 1; }
+body.student-signup .demo-account summary::after {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: currentColor;
+    -webkit-mask: var(--sg-chevron) center / contain no-repeat;
+    mask: var(--sg-chevron) center / contain no-repeat;
+    transition: transform .2s;
+}
+body.student-signup .demo-account details:not([open]) summary::after { transform: rotate(180deg); }
+
+body.student-signup .demo-account details p {
+    margin: 6px 0 0 32px;
+    color: var(--sg-ink-2);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 1100px) and (min-width: 801px) {
+    body.student-signup .signup-illustration { height: 380px; }
+}
+
+@media (max-width: 800px) {
+    body.student-signup .signup-sparks { display: none; }
+    body.student-signup .signup-card {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        align-items: center;
+        padding: 4px;
+    }
+    body.student-signup .signup-illustration { height: 320px; }
+    body.student-signup .signup-card-body { padding: 18px 22px; }
+    body.student-signup .signup-dots { display: none; }
+}
+
+@media (max-width: 600px) {
+    body.student-signup .signup-card { display: block; border-radius: 30px; }
+    body.student-signup .signup-illustration { height: 240px; border-radius: 26px; }
+    body.student-signup .signup-card-body { padding: 22px 18px 20px; }
+    body.student-signup .signup-card-body h1 { font-size: 22px; }
+    body.student-signup .signup-features li { gap: 14px; padding-left: 0; }
+    body.student-signup .signup-feature-icon { width: 46px; height: 46px; }
+    body.student-signup .signup-dots { display: flex; margin-top: 18px; }
+    body.student-signup .signup-steps li { font-size: 12px; }
+    body.student-signup .signup-steps li:not(:last-child)::after { left: calc(50% + 24px); right: calc(-50% + 24px); }
+    body.student-signup .demo-account details p { margin-left: 0; }
+}
+
+/* Desktop: the sign-up card and steps follow the shared viewport scale (--u, set in style.css). */
+@media (min-width: 801px) {
+    body.student-signup .signup-card { border-radius: calc(38 * var(--u)); }
+    body.student-signup .signup-sparks { top: calc(-34 * var(--u)); }
+    body.student-signup .signup-illustration { height: calc(385 * var(--u)); border-radius: calc(34 * var(--u)); }
+    body.student-signup .signup-card-body { padding: calc(24 * var(--u)) 30px calc(20 * var(--u)); }
+    body.student-signup .signup-card-body h1 { margin-bottom: calc(8 * var(--u)); font-size: calc(25 * var(--u)); }
+    body.student-signup .signup-card-body > p { margin-bottom: calc(18 * var(--u)); font-size: calc(14.5 * var(--u)); }
+    body.student-signup .signup-features { gap: calc(12 * var(--u)); }
+    body.student-signup .signup-feature-icon { width: calc(50 * var(--u)); height: calc(50 * var(--u)); }
+    body.student-signup .signup-feature-text strong { font-size: calc(15.5 * var(--u)); }
+    body.student-signup .signup-feature-text > span { font-size: calc(14 * var(--u)); }
+    body.student-signup .signup-dots { margin-top: calc(18 * var(--u)); }
+
+    body.student-signup .signup-steps { margin-bottom: calc(8 * var(--u)); }
+    body.student-signup .signup-steps li { gap: calc(4 * var(--u)); font-size: calc(13 * var(--u)); }
+    body.student-signup .signup-step-icon { width: calc(36 * var(--u)); height: calc(36 * var(--u)); }
+    body.student-signup .signup-steps li:not(:last-child)::after { top: calc(18 * var(--u)); }
+
+    body.student-signup .demo-account summary { font-size: calc(15 * var(--u)); }
+    body.student-signup .demo-account details p {
+        display: -webkit-box;
+        margin-top: calc(4 * var(--u));
+        overflow: hidden;
+        font-size: calc(12.5 * var(--u));
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+}

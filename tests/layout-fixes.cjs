@@ -31,7 +31,7 @@ check('Student layer fixes: task board columns, placement facts, profile divider
 });
 check('Admin and company: one sidebar style on every admin page, 4 KPI columns, a full-width chat input', () => {
     const css = read('css/student-premium.css'), block = css.slice(css.indexOf('/* 20. LAYOUT AUDIT FIXES'));
-    assert.ok(block.includes('body.glass-ui.admin-page .admin-nav-group a[aria-current="page"] { border-left-color: #b1d4e1; font-weight: 700; }'));
+    assert.ok(block.includes('body.glass-ui.admin-page .admin-nav-group a[aria-current="page"] { border-left-color: var(--color-page); font-weight: 700; }'));
     assert.ok(read('css/admin-overview.css').includes('.admin-page .admin-nav-group a[aria-current="page"]'), 'original rules kept');
     for (const page of fs.readdirSync('pages/admin').filter(f => f.endsWith('.html'))) assert.ok(read('pages/admin/' + page).includes('css/student-premium.css'), page + ' loads the shared rules');
     assert.match(block, /@media \(min-width: 1200px\) \{ body\.glass-ui \.overview-stats \{ grid-template-columns: repeat\(4, minmax\(0, 1fr\)\); \} \}/);

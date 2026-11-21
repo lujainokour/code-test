@@ -13,31 +13,24 @@ if (schema.id === "javascript") {
 }
 const allLessons = levels.flatMap(level => level.lessons);
 window.pythonLessonSources = schema.sources;
-    function read() {
-        const raw = window.cmStorage.getItem("codementor-demo-learning");
-        const progress = raw === null ? { version: 1, lessons: [], tasks: [], assessments: {} } : JSON.parse(raw);
-        if (progress?.version !== 1 || !Array.isArray(progress.lessons) || !progress.lessons.every(id => typeof id === "string") || !Array.isArray(progress.tasks) || !progress.tasks.every(id => typeof id === "string") || !progress.assessments || typeof progress.assessments !== "object" || Array.isArray(progress.assessments) || !Object.values(progress.assessments).every(value => value && Number.isFinite(value.score) && value.score >= 0 && value.score <= 100)) throw new Error("Saved progress could not be read. Your records were kept.");
-        return progress;
-    }
-    const completed = (level, progress) => level.lessons.every(item => progress.lessons.includes(item.id)) && Number.isFinite(progress.assessments[level.id]?.score) && progress.assessments[level.id].score >= 70;
+    // Rules live in js/domain/learning.js and storage access in js/data/learning-repository.js (Slice 1); this file keeps its public API.
+    const learning = window.cmDomain.learning, repository = window.cmData.learning;
+    function read() { return repository.read({ strict: true }).progress; }
+    const completed = (level, progress) => learning.isLevelCompleted(level, progress);
     const placementChoice = () => window.placementStore?.choice() || null;
-    const placedOut = (level, progress) => !completed(level, progress) && level.id < (placementChoice()?.startLevel || 1);
-    const available = (level, progress) => {
-        const choice = placementChoice();
-        if (!choice) return levels.filter(value => value.id < level.id).every(value => completed(value, progress));
-        const highestRealCompletion = Math.max(0, ...levels.filter(value => completed(value, progress)).map(value => value.id));
-        return level.id <= Math.max(choice.startLevel, highestRealCompletion + 1);
-    };
-    const current = progress => {
-        const start = placementChoice()?.startLevel || 1;
-        return levels.find(level => level.id >= start && !completed(level, progress)) || levels.find(level => !completed(level, progress)) || levels[levels.length - 1];
-    };
+    const placedOut = (level, progress) => learning.isPlacedOut(level, progress, placementChoice());
+    const available = (level, progress) => learning.isLevelAvailable(levels, level, progress, placementChoice());
+    const current = progress => learning.currentLevel(levels, progress, placementChoice());
+    // Slice 3: one summary of a level (lessons with evidence kinds, quiz best/last/attempts, tasks) shared by every page.
+    // task.topics lists the lesson ids a coding task covers; a passed task is then "task_passed" evidence for those lessons.
+    const taskTopics = Object.fromEntries(Object.values(schema.tasks || {}).map(task => [task.id, Array.isArray(task.topics) ? task.topics : []]));
+    const summarize = (level, progress) => learning.summarizeLevel(level, progress, { taskTopics });
     const params = new URLSearchParams(location.search);
     const requestedLesson = params.get("lesson");
     let selected = levels.find(level => level.lessons.some(item => item.id === requestedLesson)) || levels.find(level => level.id === Number(params.get("level"))) || levels[0];
     if (location.pathname.endsWith("/dashboard.html")) { try { selected = current(read()); } catch { /* Dashboard reports unreadable data. */ } }
     window.pythonLessons = selected.lessons;
-    window.pythonCurriculum = Object.freeze({ ...schema, levels, allLessons, selected, read, completed, available, current, placedOut, placementChoice });
+    window.pythonCurriculum = Object.freeze({ ...schema, levels, allLessons, selected, read, completed, available, current, placedOut, placementChoice, summarize, taskTopics });
     window.activeCurriculum = window.pythonCurriculum;
     window.learningRunner = schema.runner === "javascript" ? window.javascriptRunner : window.pythonRunner;
     const protectedView = /\/(lesson|module|level-assessment)\.html$/.test(location.pathname);

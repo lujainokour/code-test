@@ -151,7 +151,7 @@ const tick = () => new Promise(r => setImmediate(r));
     });
 
     // ================= 2. GETTING-STARTED CHECKLIST =================
-    const CORE = ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'placement-data', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'python-curriculum', 'learning-support', 'progress-insights', 'student-overview', 'student-premium', 'interaction-kit', 'community-membership', 'getting-started'];
+    const CORE = ['learning-storage', 'language-catalog', 'placement-banks', 'placement-engine', 'placement-store', 'placement-data', 'python-lessons', 'python-extension', 'curriculum-registry', 'curricula/python', 'curricula/javascript', 'domain/learning', 'data/learning-repository', 'python-curriculum', 'learning-support', 'progress-insights', 'student-overview', 'student-premium', 'interaction-kit', 'community-membership', 'getting-started'];
     const lkey = (owner, k, lang = 'python') => `codementor-learning-v1:${encodeURIComponent(owner)}:${lang === 'python' ? k : `${lang}:${k}`}`;
     function studentPage({ local = memory(), session = memory(), owner = 'learner-a@example.test', language = 'python', reduced = false, extra = [] } = {}) {
         local.setItem(lkey(owner, 'codementor-demo-onboarding'), JSON.stringify({ language, experience: 'beginner', goal: 'foundations' }));

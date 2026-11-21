@@ -36,8 +36,12 @@ function makeDocument() {
         return [];
     }
     const body = el('body');
+    const docHandlers = {};
     const document = {
         body, created,
+        // The page registers document-level listeners (e.g. Escape closes the New Post dialog); record them like a browser would.
+        addEventListener(t, fn) { (docHandlers[t] ||= []).push(fn); },
+        fire(t, e = {}) { for (const fn of docHandlers[t] || []) fn({ type: t, target: body, ...e }); },
         createElement: tag => el(tag),
         getElementById(id) { if (!ids.has(id)) { const n = el(['post-channel', 'community-tag', 'community-filter', 'community-sort', 'membership-filter', 'membership-channel'].includes(id) ? 'select' : 'div'); n.id = id; ids.set(id, n); body.append(n); } return ids.get(id); },
         querySelector(sel) { if (!ids.has(sel)) { const n = el(); ids.set(sel, n); } return ids.get(sel); }

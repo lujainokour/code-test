@@ -213,6 +213,25 @@ signupForm.addEventListener("submit", async function (event) {
         return;
     }
 
+    // Server mode (npm start): the account is created on the server, which also starts the session.
+    const serverInfo = window.cmServerAuth ? await window.cmServerAuth.status() : { server: false };
+    if (serverInfo.server) {
+        submitButton.disabled = true;
+        showMessage("Creating your account…");
+        try {
+            const user = await window.cmServerAuth.signup({ role: "student", name, email, age, password });
+            try { window.cmServerAuth.establishLocalSession(user); }
+            catch (error) { window.cmServerAuth.logout(); throw error; }
+            signupForm.reset();
+            submitButton.textContent = requestedServicePage ? "Opening service…" : "Opening onboarding…";
+            window.location.href = requestedServicePage || "../student/onboarding.html";
+        } catch (error) {
+            submitButton.disabled = false;
+            showMessage(error.message || "Your account could not be created. Try again.", true);
+        }
+        return;
+    }
+
     /*
        Persistent browser-local account (js/student-account.js).
        Only a salt and PBKDF2 hash are stored, never the password.

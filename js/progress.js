@@ -79,6 +79,7 @@ function updateProgress() {
     }
 
     const level = course.current(progress);
+    const summary = course.summarize(level, progress), evidenceUi = window.cmUi.evidence;   // Slice 3: the same level summary every page uses
     requiredLessons = level.lessons;
     requiredTasks = level.tasks.map(id => ({id, title: id.replaceAll("-", " ")}));
     document.querySelector(".workspace-intro").textContent = `${course.levels.filter(item => course.completed(item, progress)).length} of ${course.levels.length} levels completed. Current level: ${level.title}. Saved on this device.`;
@@ -94,8 +95,8 @@ function updateProgress() {
         return progress.tasks.includes(task.id);
     });
 
-    const lessonsDone = completedLessons.length;
-    const tasksDone = completedTasks.length;
+    const lessonsDone = summary.lessonsDone;
+    const tasksDone = summary.tasksPassed;
 
     const assessment = progress.assessments[level.id];
 
@@ -140,10 +141,11 @@ function updateProgress() {
     const assessmentStatus = document.getElementById("assessment-status");
 
     if (hasAssessment) {
+        const attempts = summary.quiz.hasHistory ? `${summary.quiz.attempts} ${summary.quiz.attempts === 1 ? "attempt" : "attempts"}` : "earlier attempts not recorded";
         assessmentStatus.textContent =
             `${assessment.score}% · ${
                 assessment.score >= 70 ? "Passed" : "Not passed"
-            }`;
+            } · last ${summary.quiz.last}% · ${attempts}`;
     } else {
         assessmentStatus.textContent = activitiesComplete
             ? "Available · Pass mark: 70%"
@@ -154,7 +156,7 @@ function updateProgress() {
 
     completedLessons.forEach(function (lesson) {
         addActivity(
-            "LESSON COMPLETED",
+            `LESSON COMPLETED · ${evidenceUi.label(summary.lessons.find(item => item.id === lesson.id)?.evidence).toUpperCase()}`,
             lesson.title,
             `../student/lesson.html?lesson=${lesson.id}`
         );

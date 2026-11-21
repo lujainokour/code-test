@@ -1,0 +1,494 @@
+/* =========================================================================
+   CodeMentor AI - Company workspace design system (UI only).
+   Scoped to body.company-page. Same finalized palette as the student site:
+   Page #B1D4E1, Surface #DAEAF0, Action #260204; every other shade is mixed from them.
+   No behaviour, routes, permissions or markup are changed by this file.
+   ========================================================================= */
+
+/* 1. TOKENS ------------------------------------------------------------- */
+body.company-page,
+html[data-theme="dark"] body.company-page {
+    color-scheme: light;
+    /* brand: ONLY these three approved colours; every other shade is mixed from them */
+    --ax-page: #B1D4E1;      /* page background */
+    --ax-surface: #DAEAF0;   /* cards / panels */
+    --ax-action: #260204;    /* buttons, active nav, primary accents */
+    --ax-navy-900: var(--ax-action);
+    --ax-navy-800: var(--ax-action);
+    --ax-navy-700: color-mix(in srgb, var(--ax-action) 82%, var(--ax-surface));
+    --ax-tint-700: var(--ax-action);
+    --ax-tint-600: var(--ax-action);
+    --ax-tint-500: color-mix(in srgb, var(--ax-action) 78%, var(--ax-surface));
+    --ax-tint-300: color-mix(in srgb, var(--ax-action) 38%, var(--ax-page));
+    --ax-tint-200: color-mix(in srgb, var(--ax-action) 16%, var(--ax-page));
+    --ax-tint-100: color-mix(in srgb, var(--ax-page) 55%, var(--ax-surface));
+    --ax-tint-50:  color-mix(in srgb, var(--ax-page) 25%, var(--ax-surface));
+    --ax-hover: color-mix(in srgb, var(--ax-action) 84%, var(--ax-surface));
+    --ax-input: color-mix(in srgb, var(--ax-surface) 55%, var(--ax-card));
+    /* neutrals */
+    --ax-bg: var(--ax-page);
+    --ax-card: var(--ax-surface);
+    --ax-ink: var(--ax-action);
+    --ax-ink-2: color-mix(in srgb, var(--ax-action) 88%, var(--ax-surface));
+    --ax-muted: color-mix(in srgb, var(--ax-action) 74%, var(--ax-surface));
+    --ax-line: color-mix(in srgb, var(--ax-action) 14%, var(--ax-surface));
+    --ax-line-strong: color-mix(in srgb, var(--ax-action) 26%, var(--ax-surface));
+    --ax-on-action: var(--ax-surface);
+    /* status (semantic, kept readable on the surface) */
+    --ax-success: #0b5c3a; --ax-success-bg: color-mix(in srgb, #0b5c3a 14%, var(--ax-surface));
+    --ax-warning: #7a4600; --ax-warning-bg: color-mix(in srgb, #b36b00 16%, var(--ax-surface));
+    --ax-danger:  #9c1a37; --ax-danger-bg:  color-mix(in srgb, #9c1a37 13%, var(--ax-surface));
+    --ax-info:    var(--ax-action); --ax-info-bg: var(--ax-tint-100);
+    /* shape, depth, motion */
+    --ax-r-xs: 8px; --ax-r-sm: 12px; --ax-r: 16px; --ax-r-lg: 24px; --ax-r-pill: 999px;
+    --ax-shadow-1: 0 1px 2px rgba(38, 2, 4, .06), 0 4px 16px rgba(38, 2, 4, .07);
+    --ax-shadow-2: 0 2px 6px rgba(38, 2, 4, .08), 0 14px 40px rgba(38, 2, 4, .16);
+    --ax-focus: 0 0 0 3px var(--ax-surface), 0 0 0 5px var(--ax-tint-600);
+    --ax-ease: cubic-bezier(.2, .7, .2, 1);
+    --ax-font: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    --ax-rail: 80px;
+    --ax-rail-open: 245px;
+    --ax-topbar-h: 68px;
+
+    /* ---- remap of the legacy variables, so every existing component picks up the new look ---- */
+    --color-page: var(--ax-bg);
+    --color-surface: var(--ax-card);
+    --color-action: var(--ax-tint-600);
+    --color-text-muted: var(--ax-muted);
+    --color-line: var(--ax-line);
+    --color-line-strong: var(--ax-line-strong);
+    --color-action-soft: var(--ax-tint-50);
+    --color-on-action: var(--ax-on-action);
+    --color-success: var(--ax-success); --color-success-bg: var(--ax-success-bg);
+    --color-warning: var(--ax-warning); --color-warning-bg: var(--ax-warning-bg);
+    --color-error: var(--ax-danger);    --color-error-bg: var(--ax-danger-bg);
+    --page-bg: var(--ax-bg);
+    --surface-bg: var(--ax-card);
+    --surface-alt: var(--ax-tint-50);
+    --text-color: var(--ax-ink);
+    --text-muted: var(--ax-muted);
+    --line-color: var(--ax-line-strong);
+    --action-bg: var(--ax-tint-600);
+    --action-text: var(--ax-on-action);
+    --background: var(--ax-bg);
+    --primary: var(--ax-ink);
+    --sage: var(--ax-tint-50);
+    --card: var(--ax-card);
+    --border: var(--ax-line);
+    --muted: var(--ax-muted);
+    --light-text: var(--ax-on-action);
+    /* "premium" layer tokens */
+    --cm-page: var(--ax-bg); --cm-surface: var(--ax-card); --cm-surface-soft: var(--ax-tint-50);
+    --cm-blue-300: var(--ax-tint-200); --cm-blue-200: var(--ax-tint-100); --cm-blue-100: var(--ax-tint-50); --cm-blue-50: var(--ax-tint-50);
+    --cm-ink: var(--ax-ink); --cm-ink-2: var(--ax-ink-2); --cm-ink-3: var(--ax-muted);
+    --cm-line: var(--ax-line); --cm-line-strong: var(--ax-line-strong);
+    --cm-success: var(--ax-success); --cm-success-bg: var(--ax-success-bg); --cm-amber: var(--ax-warning); --cm-amber-bg: var(--ax-warning-bg);
+    --cm-radius: var(--ax-r); --cm-radius-sm: var(--ax-r-xs);
+    --cm-shadow-1: var(--ax-shadow-1); --cm-shadow-2: var(--ax-shadow-2);
+    --cm-focus: var(--ax-focus); --cm-font: var(--ax-font);
+    /* glass layer becomes plain white surfaces (no blur, no blobs) */
+    --glass-bg: var(--ax-card); --glass-bg-strong: var(--ax-card); --glass-bg-item: var(--ax-card);
+    --glass-border: var(--ax-line); --glass-border-top: var(--ax-line);
+    --glass-blur: 0px; --glass-shadow: var(--ax-shadow-1); --glass-radius: var(--ax-r);
+    --glass-sidebar: var(--ax-navy-800); --glass-sidebar-text: var(--ax-on-action); --glass-sidebar-muted: rgba(218, 234, 240, .72);
+    --font-interface: var(--ax-font);
+}
+
+/* 2. PAGE CANVAS & TYPOGRAPHY ------------------------------------------- */
+body.company-page {
+    background: var(--ax-bg);
+    color: var(--ax-ink);
+    font-family: var(--ax-font);
+}
+body.company-page.glass-ui { background-color: var(--ax-bg); }
+body.company-page.glass-ui::before {
+    inset: 0; animation: none; transform: none;
+    background: linear-gradient(180deg, var(--ax-tint-100) 0, rgba(177, 212, 225, 0) 360px), var(--ax-bg);
+}
+body.company-page :is(h1, h2, h3, h4) { font-family: var(--ax-font); color: var(--ax-ink); letter-spacing: -.01em; }
+body.company-page .workspace-main > h1,
+body.company-page #dashboard-main > h1 { letter-spacing: -.02em; }
+body.company-page .eyebrow { color: var(--ax-tint-600); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+body.company-page a:not(.button):not([class*="btn"]) { text-decoration-color: color-mix(in srgb, currentColor 35%, transparent); }
+body.company-page :focus-visible { outline: 2px solid var(--ax-tint-600); outline-offset: 2px; }
+
+/* 4. TOP BAR & FOOTER ----------------------------------------------------- */
+html body.company-page.shell-active .workspace-topbar {
+    position: sticky; top: 0; z-index: 50; min-height: var(--ax-topbar-h); padding: 12px 32px; gap: 16px;
+    background: rgba(177, 212, 225, .88); border-bottom: 1px solid var(--ax-line);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+body.company-page .workspace-topbar-left { color: var(--ax-muted); font-size: 13px; font-weight: 500; }
+body.company-page .workspace-topbar-left > span { color: var(--ax-muted); }
+body.company-page .workspace-menu-toggle { border: 1px solid var(--ax-line-strong); border-radius: 12px; background: var(--ax-card); color: var(--ax-tint-700); min-width: 44px; min-height: 44px; }
+body.company-page .workspace-topbar .account-pill,
+html body.company-page.shell-active .workspace-topbar .account-pill {
+    display: inline-flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border: 1px solid var(--ax-line); border-radius: var(--ax-r-pill);
+    background: var(--ax-card); color: var(--ax-ink); font-weight: 600; font-size: 13px; box-shadow: var(--ax-shadow-1);
+}
+body.company-page .account-initials { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--ax-tint-500), var(--ax-tint-700)); color: var(--ax-on-action); font-size: 12px; font-weight: 700; border: 0; }
+body.company-page .shell-active .workspace-footer, body.company-page .workspace-app-footer { color: var(--ax-muted); border-top-color: var(--ax-line); }
+body.company-page .workspace-footer-name { color: var(--ax-tint-700); }
+body.company-page .workspace-app-footer nav a:hover { color: var(--ax-tint-600); }
+body.company-page .shell-message:empty { display: none; }
+
+/* 5. BASE COMPONENTS -------------------------------------------------------- */
+/* buttons */
+body.company-page .button, body.company-page button.button, body.company-page a.button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 20px;
+    border: 1px solid transparent; border-radius: 12px; font: 600 14px/1.2 var(--ax-font); letter-spacing: 0; text-transform: none;
+    cursor: pointer; transition: background-color .18s, border-color .18s, box-shadow .18s, transform .18s;
+}
+body.company-page .button-primary { background: var(--ax-tint-600); color: var(--ax-on-action); border-color: var(--ax-tint-600); box-shadow: 0 4px 14px rgba(38, 2, 4, .28); }
+body.company-page .button-primary:hover { background: var(--ax-tint-700); border-color: var(--ax-tint-700); box-shadow: 0 6px 18px rgba(38, 2, 4, .36); transform: translateY(-1px); }
+body.company-page .button-outline, body.company-page .button-light { background: var(--ax-card); color: var(--ax-tint-700); border-color: var(--ax-line-strong); }
+body.company-page .button-outline:hover, body.company-page .button-light:hover { background: var(--ax-tint-50); border-color: var(--ax-tint-300); color: var(--ax-tint-700); }
+body.company-page .button:disabled, body.company-page .button[aria-disabled="true"] { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* inputs */
+body.company-page :is(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) {
+    min-height: 44px; border: 1px solid var(--ax-line-strong); border-radius: 12px; background: var(--ax-card); color: var(--ax-ink);
+    font-family: var(--ax-font); transition: border-color .15s, box-shadow .15s;
+}
+body.company-page :is(input, select, textarea):focus { border-color: var(--ax-tint-500); box-shadow: 0 0 0 3px rgba(38, 2, 4, .11); outline: none; }
+body.company-page :is(input, textarea)::placeholder { color: var(--ax-muted); }
+body.company-page label { color: var(--ax-ink-2); font-weight: 600; }
+body.company-page :is(input[type="checkbox"], input[type="radio"]) { accent-color: var(--ax-tint-600); }
+body.company-page .form-message { border-radius: 12px; }
+
+/* cards: every white panel across the admin pages shares one surface style */
+body.company-page :is(.dashboard-card, .dashboard-stat, .module-section, .peer-panel, .overview-panel, .overview-stat, .admin-company-card, .request-record, .request-tab-panel, .teacher-dialog, .student-detail-list, .services-notice, .mentor-demo-notice) {
+    background: var(--ax-card); border: 1px solid var(--ax-line); border-radius: var(--ax-r); box-shadow: var(--ax-shadow-1);
+    -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+
+/* tables */
+body.company-page table { border-collapse: separate; border-spacing: 0; background: var(--ax-card); border-radius: var(--ax-r-sm); overflow: hidden; }
+body.company-page th { background: var(--ax-tint-50); color: var(--ax-ink-2); font-weight: 700; }
+body.company-page :is(th, td) { border-color: var(--ax-line); }
+
+/* progress bars */
+body.company-page :is(progress) { accent-color: var(--ax-tint-600); }
+
+/* dialogs */
+body.company-page dialog { border: 1px solid var(--ax-line); border-radius: var(--ax-r-lg); box-shadow: var(--ax-shadow-2); }
+
+/* 11. POLISH: contrast, focus, hover, empty states ------------------------------ */
+body.company-page .sp-footnote { opacity: 1; color: var(--ax-ink-2); }
+body.company-page :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid var(--ax-action); outline-offset: 2px; border-radius: inherit; }
+body.company-page .shell-sidebar :is(a, button):focus-visible, body.company-page aside :is(a, button):focus-visible { outline-color: var(--ax-surface); }
+body.company-page :is(.button, button.button) { transition: background-color .15s, border-color .15s, box-shadow .15s, transform .15s; }
+body.company-page .button:not(:disabled):not([aria-disabled="true"]):hover { transform: translateY(-1px); }
+body.company-page .button:active { transform: none; }
+body.company-page :is(.empty-state, .empty, [class*="-empty"]) { padding: 28px 22px; border: 1.5px dashed var(--ax-line-strong); border-radius: var(--ax-r); background: var(--ax-tint-50); color: var(--ax-ink-2); text-align: center; line-height: 1.6; }
+body.company-page :is(h1, h2, h3, h4, p, li, a, button, label, span):not(.code-editor) { overflow-wrap: break-word; }
+body.company-page ::placeholder { color: color-mix(in srgb, var(--ax-action) 68%, var(--ax-input)); opacity: 1; }
+body.company-page :disabled { cursor: not-allowed; }
+@media (max-width: 700px) {
+}
+
+
+/* A1. SHARED SIDEBAR (same collapsible icon rail as the student site) ------------------------------------------------------
+   One markup (built by workspace-shell.js), two states:
+   - collapsed rail (80px): icons only, hover tooltips
+   - expanded (245px): on hover / keyboard focus / tap; overlays the page (no layout shift)  */
+html body.company-page.shell-active .workspace-sidebar {
+    position: fixed; inset: 0 auto 0 0; z-index: 60;
+    width: var(--ax-rail); max-width: none; padding: 18px 14px 14px;
+    display: flex; flex-direction: column; overflow: visible;
+    background: linear-gradient(180deg, var(--ax-navy-900) 0%, var(--ax-navy-800) 45%, var(--ax-navy-700) 100%);
+    color: var(--ax-on-action); border: 0; border-right: 1px solid rgba(218, 234, 240, .08);
+    box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+    transition: width .28s var(--ax-ease), box-shadow .28s var(--ax-ease);
+}
+html body.company-page.shell-active .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) {
+    width: var(--ax-rail-open); box-shadow: 18px 0 48px rgba(38, 2, 4, .35);
+}
+body.company-page .workspace-sidebar > * { min-width: 0; }
+
+/* brand */
+body.company-page .workspace-sidebar a.site-brand { display: flex; align-items: center; gap: 12px; padding: 0 4px; min-height: 44px; flex-shrink: 0; white-space: nowrap; overflow: hidden; color: var(--ax-on-action); }
+body.company-page .workspace-sidebar a.site-brand > img { width: 44px; height: 44px; padding: 7px; border-radius: 12px; background: var(--ax-card); flex-shrink: 0; }
+body.company-page .workspace-sidebar a.site-brand > span { font-size: 17px; font-weight: 700; letter-spacing: -.01em; color: var(--ax-on-action); }
+html body.company-page.shell-active .workspace-sidebar > .sidebar-label { margin: 12px 6px 18px; font-size: 10px; font-weight: 700; letter-spacing: .14em; color: rgba(218, 234, 240, .6); white-space: nowrap; overflow: hidden; }
+html body.company-page.shell-active .workspace-sidebar :is(.site-brand > span, .sidebar-label, .shell-label, .shell-group-label, .shell-chevron, .cm-guide-launcher > span) {
+    opacity: 0; transition: opacity .18s var(--ax-ease); pointer-events: none;
+}
+html body.company-page.shell-active .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) :is(.site-brand > span, .sidebar-label, .shell-label, .shell-group-label, .shell-chevron, .cm-guide-launcher > span) {
+    opacity: 1; pointer-events: auto; transition-delay: .08s;
+}
+
+/* navigation */
+html body.company-page.shell-active .workspace-navigation { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 4px; overflow-x: hidden; overflow-y: auto; padding: 0; scrollbar-width: none; overscroll-behavior: contain; }
+body.company-page .workspace-navigation::-webkit-scrollbar { display: none; }
+body.company-page .shell-nav-group { display: block; margin: 0; }
+body.company-page .shell-group-label { margin: 6px 6px 6px; height: 14px; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: rgba(218, 234, 240, .5); white-space: nowrap; overflow: hidden; opacity: 0; }
+body.company-page .shell-group-links { display: grid; gap: 4px; }
+html body.company-page.shell-active .workspace-navigation a,
+html body.company-page.shell-active .sidebar-bottom :is(a, button),
+body.company-page .shell-group-toggle {
+    display: flex; align-items: center; gap: 14px; width: 100%; height: 46px; min-height: 46px; padding: 0 16px;
+    border: 0; border-radius: 12px; background: transparent; color: rgba(218, 234, 240, .78); opacity: 1;
+    font: 500 14px/1.2 var(--ax-font); text-align: left; white-space: nowrap; overflow: hidden; cursor: pointer;
+    box-shadow: none; transition: background-color .18s, color .18s;
+}
+html body.company-page.shell-active .workspace-navigation a:hover,
+html body.company-page.shell-active .sidebar-bottom :is(a, button):hover,
+body.company-page .shell-group-toggle:hover { background: rgba(218, 234, 240, .1); color: var(--ax-on-action); }
+html body.company-page.shell-active .workspace-navigation a[aria-current="page"],
+html body.company-page.shell-active .sidebar-bottom a[aria-current="page"] {
+    background: rgba(218, 234, 240, .16); color: var(--ax-on-action); font-weight: 700; box-shadow: none;
+}
+html body.company-page.shell-active .workspace-navigation a[aria-current="page"] .shell-nav-icon { stroke: var(--ax-on-action); opacity: 1; }
+body.company-page .shell-nav-icon { width: 20px; height: 20px; flex: 0 0 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+body.company-page .shell-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+body.company-page .shell-group-toggle { justify-content: flex-start; font-size: 14px; font-weight: 600; letter-spacing: 0; }
+body.company-page .shell-group-toggle::after, body.company-page .shell-nav-group[open] > .shell-group-toggle::after { content: none; }
+body.company-page .shell-group-collapsible > .shell-group-links a { white-space: normal; line-height: 1.25; }
+body.company-page .shell-group-collapsible > .shell-group-links a .shell-label { overflow: visible; }
+body.company-page .shell-group-toggle .shell-chevron { width: 16px; height: 16px; flex: 0 0 16px; margin-left: auto; transition: transform .2s var(--ax-ease), opacity .18s; }
+body.company-page .shell-group-collapsible.is-open > .shell-group-toggle .shell-chevron { transform: rotate(180deg); }
+/* collapsed groups show just their icon; the group of the current page stays highlighted */
+body.company-page .shell-group-collapsible > .shell-group-links { display: none; }
+body.company-page .shell-group-collapsible.has-active > .shell-group-toggle { background: rgba(218, 234, 240, .16); color: var(--ax-on-action); }
+body.company-page .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) .shell-group-collapsible.has-active:not(.is-open) > .shell-group-toggle { background: rgba(218, 234, 240, .1); }
+body.company-page .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) .shell-group-collapsible.is-open > .shell-group-links {
+    display: grid; margin: 2px 0 6px 25px; padding-left: 10px; border-left: 1px solid rgba(218, 234, 240, .2);
+}
+body.company-page .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) .shell-group-collapsible.is-open > .shell-group-links a { height: auto; min-height: 40px; font-size: 13px; padding: 8px 12px; white-space: normal; line-height: 1.25; }
+body.company-page .workspace-sidebar:is(.is-hover-expanded, .is-expanded, .is-open, :has(:focus-visible)) .shell-group-collapsible.is-open > .shell-group-toggle { color: var(--ax-on-action); }
+body.company-page .shell-group-collapsible.is-open .shell-group-links .shell-nav-icon { width: 18px; height: 18px; flex-basis: 18px; }
+
+/* footer actions (user guide, profile, log out) */
+html body.company-page.shell-active .workspace-sidebar .sidebar-bottom { flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(218, 234, 240, .12); }
+body.company-page .sidebar-bottom .cm-guide-launcher svg { width: 20px; height: 20px; flex: 0 0 20px; }
+
+/* rail toggle: half outside the sidebar edge, like the reference */
+body.company-page .shell-rail-toggle {
+    position: absolute; top: 26px; right: -14px; z-index: 2; width: 28px; height: 28px; padding: 0;
+    display: none; place-items: center; border: 0; border-radius: 50%; background: var(--ax-card); color: var(--ax-navy-800);
+    box-shadow: 0 2px 10px rgba(38, 2, 4, .3); cursor: pointer;
+}
+body.company-page .shell-rail-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transform: rotate(-90deg); transition: transform .25s var(--ax-ease); }
+body.company-page .shell-rail-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+body.company-page .workspace-sidebar > :not(.shell-rail-toggle) { position: relative; }
+
+/* tooltip shown beside collapsed icons */
+.shell-tooltip { position: fixed; z-index: 120; transform: translateY(-50%); padding: 8px 14px; border-radius: 10px; background: var(--ax-card); color: var(--ax-ink); font: 600 13px/1.2 "Inter", "Segoe UI", system-ui, sans-serif; white-space: nowrap; pointer-events: none; box-shadow: 0 8px 28px rgba(38, 2, 4, .28); }
+.shell-tooltip::before { content: ""; position: absolute; left: -5px; top: 50%; width: 10px; height: 10px; background: var(--ax-card); transform: translateY(-50%) rotate(45deg); border-radius: 2px; }
+.shell-tooltip[hidden] { display: none; }
+
+@media (min-width: 901px) {
+    body.company-page.shell-active .workspace-body { margin-left: var(--ax-rail); }
+    body.company-page .shell-rail-toggle { display: grid; }
+}
+/* mobile / small tablets: the shell's existing hamburger opens the drawer (labels always visible) */
+@media (max-width: 900px) {
+    html body.company-page.shell-active .workspace-sidebar { top: var(--ax-topbar-h); width: 270px; max-width: calc(100vw - 48px); display: none; padding-top: 14px; }
+    html body.company-page.shell-active .workspace-sidebar.is-open { display: flex; box-shadow: 18px 0 48px rgba(38, 2, 4, .35); }
+    html body.company-page.shell-active .workspace-sidebar > a.site-brand,
+    html body.company-page.shell-active .workspace-sidebar > .sidebar-label { display: none; }
+    body.company-page .workspace-sidebar .shell-group-collapsible.is-open > .shell-group-links { display: grid; margin: 2px 0 6px 25px; padding-left: 10px; border-left: 1px solid rgba(218, 234, 240, .2); }
+    body.company-page .workspace-sidebar .shell-group-collapsible > .shell-group-links a { height: 40px; min-height: 40px; font-size: 13px; }
+    body.company-page .shell-tooltip { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    html body.company-page.shell-active .workspace-sidebar, body.company-page .workspace-sidebar * { transition-duration: .01ms !important; transition-delay: 0s !important; }
+}
+
+/* A2. TOP BAR badge, hero, overview, stats --------------------------------------------- */
+body.company-page .admin-preview-label { background: var(--ax-tint-100); color: var(--ax-action); border: 1px solid var(--ax-line-strong); border-radius: var(--ax-r-pill); font-weight: 700; }
+body.company-page .workspace-main > h1, body.company-page #admin-main > h1 { letter-spacing: -.02em; font-weight: 800; }
+body.company-page .workspace-intro { color: var(--ax-ink-2); }
+body.company-page :is(.overview-stat, .dashboard-stat, .overview-panel, .dashboard-card, .admin-company-card) { padding-block: 18px; }
+body.company-page .overview-stat strong { color: var(--ax-action); }
+body.company-page .overview-stat > span, body.company-page .overview-source-note, body.company-page .dashboard-footnote { color: var(--ax-ink-2); opacity: 1; }
+body.company-page .overview-range-tab { border: 1px solid var(--ax-line-strong); background: var(--ax-card); color: var(--ax-ink-2); border-radius: var(--ax-r-pill); font-weight: 600; min-height: 40px; }
+body.company-page .overview-range-tab[aria-pressed="true"] { background: var(--ax-action); color: var(--ax-on-action); border-color: var(--ax-action); }
+body.company-page .overview-bar { background: var(--ax-action); }
+body.company-page :is(.admin-badge, .student-status) { border-radius: var(--ax-r-pill); font-weight: 700; background: var(--ax-tint-100); color: var(--ax-action); }
+body.company-page .admin-badge[data-verification="Verified"] { background: var(--ax-success-bg); color: var(--ax-success); }
+body.company-page .admin-badge[data-verification="Suspended"] { background: var(--ax-danger-bg); color: var(--ax-danger); }
+body.company-page .overview-delta[data-direction="up"] { color: var(--ax-success); }
+body.company-page .overview-delta[data-direction="down"] { color: var(--ax-danger); }
+body.company-page :is(.services-notice, .mentor-demo-notice) { border: 1px solid var(--ax-line-strong); background: var(--ax-tint-50); color: var(--ax-ink-2); border-radius: var(--ax-r-sm); }
+body.company-page .form-message.is-error { background: var(--ax-danger-bg); color: var(--ax-danger); border: 1px solid color-mix(in srgb, var(--ax-danger) 40%, var(--ax-surface)); }
+body.company-page .form-message:not(.is-error):not(:empty) { background: var(--ax-success-bg); color: var(--ax-success); }
+body.company-page :is(.teacher-filter-btn) { border: 1px solid var(--ax-line-strong); background: var(--ax-card); color: var(--ax-ink-2); border-radius: var(--ax-r-pill); font-weight: 600; min-height: 40px; }
+body.company-page .teacher-filter-btn:is([aria-pressed="true"], .is-active, [aria-selected="true"]) { background: var(--ax-action); color: var(--ax-on-action); border-color: var(--ax-action); }
+body.company-page .teacher-dialog { background: var(--ax-card); color: var(--ax-ink); }
+body.company-page .module-back { color: var(--ax-action); font-weight: 600; }
+body.company-page :is(.field-help, .form-field small) { color: var(--ax-ink-2); }
+body.company-page :is(.glass-ui)::before { background: linear-gradient(180deg, var(--ax-tint-100) 0, transparent 360px), var(--ax-bg); }
+body.company-page :is(textarea.code-editor, #code-editor, .code-editor) { background: #1a0103; color: var(--ax-surface); border-color: #4a2326; }
+body.company-page .button-primary { color: var(--ax-on-action); }
+body.company-page :is(.button-primary, .button-outline) :is(svg) { flex-shrink: 0; }
+@media (max-width: 700px) { body.company-page .workspace-topbar { padding: 10px 16px; } }
+html body.company-page table, html body.company-page table :is(thead, tbody, tr, td) { background-color: var(--ax-card); }
+html body.company-page table th { background-color: var(--ax-tint-50); }
+html body.company-page table tbody tr:hover td { background-color: var(--ax-tint-50); }
+html body.company-page.admin-page.glass-ui table, html body.company-page.admin-page.glass-ui table :is(thead, tbody, tr, td) { background-color: var(--ax-card); color: var(--ax-ink); }
+html body.company-page.admin-page.glass-ui table th { background-color: var(--ax-tint-50); }
+html body.company-page table { background-color: var(--ax-card) !important; }
+
+/* A3. ADMIN OVERVIEW (card dashboard layout, palette colours only) ---------------------- */
+body.company-page .admin-overview { gap: 20px; }
+body.company-page .admin-overview > .eyebrow { color: var(--ax-ink-2); letter-spacing: .1em; }
+body.company-page .admin-overview > h1 { font-size: clamp(30px, 3.4vw, 44px); }
+body.company-page .overview-top-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+body.company-page .overview-top-actions .button { border-radius: var(--ax-r-pill); padding-inline: 24px; }
+body.company-page .overview-date { margin-left: auto; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border: 1px solid var(--ax-line); border-radius: 14px; background: var(--ax-card); box-shadow: var(--ax-shadow-1); font-weight: 600; font-size: 14px; color: var(--ax-ink); }
+body.company-page .overview-ico { display: inline-grid; place-items: center; flex: none; width: 44px; height: 44px; border-radius: 50%; background: var(--ax-tint-100); color: var(--ax-action); }
+body.company-page .overview-ico svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+body.company-page .overview-ico-title { width: 36px; height: 36px; margin-right: 12px; vertical-align: middle; background: transparent; }
+body.company-page .overview-ico-inline { width: 22px; height: 22px; background: transparent; }
+body.company-page .overview-ico-inline svg { width: 20px; height: 20px; }
+
+/* stat tiles: icon circle, label, big number */
+body.company-page .overview-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+body.company-page .overview-stat { display: grid; grid-template-columns: 48px minmax(0, 1fr); grid-template-areas: "ico label" "ico num"; align-items: center; column-gap: 14px; row-gap: 2px; padding: 18px 20px; text-decoration: none; }
+body.company-page .overview-stat > .overview-ico { grid-area: ico; width: 48px; height: 48px; align-self: start; }
+body.company-page .overview-stat > span:not(.overview-ico) { grid-area: label; font-size: 14px; font-weight: 600; color: var(--ax-ink-2); line-height: 1.3; }
+body.company-page .overview-stat > strong { grid-area: num; font-size: 34px; line-height: 1.1; }
+body.company-page .overview-stat > small { grid-column: 1 / -1; }
+body.company-page .overview-stat:hover { box-shadow: var(--ax-shadow-2); transform: translateY(-2px); }
+body.company-page .overview-trend { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; }
+body.company-page .overview-trend > * { grid-area: auto !important; }
+
+/* panels */
+body.company-page .overview-panel { padding: 22px 24px; border-radius: 20px; }
+body.company-page .overview-panel h2 { display: flex; align-items: center; font-size: 19px; font-weight: 800; margin: 0 0 16px; }
+body.company-page .overview-range { display: inline-flex; gap: 8px; margin-bottom: 14px; }
+body.company-page .overview-trends { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+
+/* status donut + legend */
+body.company-page .overview-dist { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 28px; align-items: center; }
+body.company-page .overview-donut { position: relative; display: grid; place-content: center; width: 150px; height: 150px; border-radius: 50%; text-align: center; background: var(--donut, none), var(--ax-tint-100); }
+body.company-page .overview-donut::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; background: var(--ax-card); }
+body.company-page .overview-donut > * { position: relative; line-height: 1.2; }
+body.company-page .overview-donut strong { font-size: 28px; font-weight: 800; color: var(--ax-action); }
+body.company-page .overview-donut span { font-size: 12px; color: var(--ax-ink-2); }
+@media (max-width: 560px) { body.company-page .overview-dist { grid-template-columns: 1fr; justify-items: center; } body.company-page .overview-dist .overview-bars { width: 100%; } }
+
+/* attention queue rows */
+body.company-page .overview-queue { display: grid; gap: 10px; }
+body.company-page .overview-queue-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border: 1px solid var(--ax-line); border-radius: 14px; background: var(--ax-tint-50); box-shadow: var(--ax-shadow-1); }
+body.company-page .overview-queue-row p { margin: 0; font-weight: 600; }
+body.company-page .overview-text-link { color: var(--ax-action); font-weight: 700; white-space: nowrap; }
+
+/* list rows with an initials avatar */
+body.company-page .overview-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+body.company-page .overview-list-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; grid-template-areas: "av name act" "av meta act"; column-gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--ax-line); }
+body.company-page .overview-list-row:first-of-type { border-top: 0; }
+body.company-page .overview-avatar { grid-area: av; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--ax-tint-100); color: var(--ax-action); font-weight: 800; font-size: 14px; }
+body.company-page .overview-list-row h3 { grid-area: name; margin: 0; font-size: 15px; }
+body.company-page .overview-list-row p { grid-area: meta; margin: 0; font-size: 13px; color: var(--ax-ink-2); }
+body.company-page .overview-list-row .overview-text-link { grid-area: act; padding: 7px 16px; border-radius: var(--ax-r-pill); background: var(--ax-tint-50); border: 1px solid var(--ax-line); font-size: 13px; }
+
+/* quick management tiles */
+body.company-page .overview-shortcuts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+body.company-page .overview-shortcut { padding: 16px 18px; border: 1px solid var(--ax-line); border-radius: 16px; background: var(--ax-tint-50); box-shadow: var(--ax-shadow-1); text-decoration: none; transition: box-shadow .15s, transform .15s; }
+body.company-page .overview-shortcut:hover { box-shadow: var(--ax-shadow-2); transform: translateY(-2px); }
+body.company-page .overview-shortcut h3 { margin: 0 0 4px; font-size: 16px; }
+body.company-page .overview-shortcut p { margin: 0 0 8px; font-size: 13px; color: var(--ax-ink-2); }
+body.company-page .overview-shortcut > span { color: var(--ax-action); font-weight: 700; font-size: 13px; }
+
+/* sidebar: icon + label rows (icons added by workspace-shell.js) */
+
+/* top bar account pill */
+body.company-page .workspace-topbar { justify-content: space-between; }
+body.company-page .admin-account-pill { margin-left: 12px; }
+body.company-page .admin-account-text { display: grid; line-height: 1.2; }
+body.company-page .admin-account-text b { font-size: 13px; }
+body.company-page .admin-account-text small { font-size: 11px; color: var(--ax-ink-2); }
+@media (max-width: 700px) { body.company-page .admin-account-text, body.company-page .overview-date { display: none; } }
+body.company-page .workspace-topbar .admin-preview-label { margin-left: auto; }
+
+/* A4. Two-column dashboard grid (as in the reference layout) ----------------------------- */
+body.company-page #admin-overview-content { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
+body.company-page #admin-overview-content > :is(.overview-top-actions, .overview-source-note, .overview-stats, .overview-columns, .overview-panel:last-child, .services-notice) { grid-column: 1 / -1; }
+body.company-page #admin-overview-content > .overview-panel { margin: 0; }
+body.company-page .overview-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 1250px) { body.company-page .overview-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1000px) { body.company-page #admin-overview-content { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 560px) { body.company-page .overview-stats { grid-template-columns: minmax(0, 1fr); } }
+
+/* C1. Dark Action-colour hero: light text */
+body.company-page .company-dashboard-hero { background: linear-gradient(135deg, var(--ax-action), var(--ax-navy-700)); border-radius: var(--ax-r-lg); }
+body.company-page .company-dashboard-hero :is(h1, h2, h3, p, .eyebrow, .workspace-intro, .company-live-indicator):not(.button) { color: var(--ax-on-action); }
+body.company-page .company-dashboard-hero .workspace-intro { color: color-mix(in srgb, var(--ax-surface) 88%, var(--ax-action)); }
+body.company-page .company-dashboard-hero .button-primary { background: var(--ax-surface); color: var(--ax-action); border-color: var(--ax-surface); }
+body.company-page .company-dashboard-hero .button-primary span, body.company-page .company-dashboard-hero .button-outline span { color: inherit; }
+
+/* C2. COMPANY CYCLE - premium compact layout (same language as the admin cycle) -------------- */
+html body.company-page .workspace-main { max-width: none; width: 100%; display: flex; flex-direction: column; gap: 16px; padding-block: 20px 28px; }
+body.company-page .workspace-main > * { margin-top: 0; margin-bottom: 0; }
+/* slim info strip instead of a tall notice card */
+body.company-page .workspace-main > .services-notice { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; line-height: 1.4; border-radius: 12px; background: var(--ax-tint-50); border: 1px solid var(--ax-line); box-shadow: none; }
+body.company-page .workspace-main > .services-notice::before { content: "i"; flex: none; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ax-action); color: var(--ax-action); font: 700 12px/1 var(--ax-font); }
+/* page heading block */
+body.company-page .workspace-main > .eyebrow { margin: 0; font-size: 11px; color: var(--ax-ink-2); }
+body.company-page .workspace-main > h1 { font-size: clamp(24px, 2.3vw, 32px); line-height: 1.2; font-weight: 800; letter-spacing: -.015em; }
+body.company-page .workspace-main > .workspace-intro { max-width: 80ch; margin: -6px 0 0; font-size: 14px; line-height: 1.55; color: var(--ax-ink-2); }
+body.company-page .teacher-action-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+body.company-page .teacher-action-bar .button, body.company-page .company-dashboard-hero .button { min-height: 42px; border-radius: var(--ax-r-pill); padding-inline: 20px; }
+body.company-page .teacher-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; }
+body.company-page .teacher-filter-btn { min-height: 40px; padding: 8px 18px; border: 1px solid var(--ax-line); border-radius: var(--ax-r-pill); background: var(--ax-card); color: var(--ax-ink); font: 700 13px/1 var(--ax-font); cursor: pointer; box-shadow: var(--ax-shadow-1); }
+body.company-page .teacher-filter-btn.active { background: var(--ax-action); border-color: var(--ax-action); color: var(--ax-on-action); }
+
+/* dashboard hero: compact */
+body.company-page .company-dashboard-hero { padding: 22px 28px; min-height: 0; }
+body.company-page .company-dashboard-hero h1 { font-size: clamp(24px, 2.4vw, 30px); margin: 6px 0; }
+body.company-page .company-dashboard-hero .company-hero-mark { width: 96px; height: 96px; }
+body.company-page .company-dashboard-hero .workspace-intro { margin: 0 0 14px; font-size: 14px; max-width: 60ch; }
+body.company-page .company-overview-section { display: grid; gap: 10px; padding: 0; }
+body.company-page .company-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 0; }
+body.company-page .company-section-heading h2 { margin: 0; font-size: 20px; font-weight: 800; }
+body.company-page .company-section-heading .eyebrow { margin: 0 0 2px; font-size: 11px; }
+body.company-page .company-stat-card { padding: 14px 18px; border-radius: 16px; min-height: 0; }
+body.company-page .company-stat-num { font-size: 30px; line-height: 1.1; }
+body.company-page .company-stat-footnote { font-size: 12px; }
+body.company-page .company-dashboard-grid { gap: 16px; align-items: start; }
+body.company-page .company-dashboard-grid .dashboard-primary-col { display: grid; gap: 12px; align-content: start; }
+body.company-page .company-dashboard-grid .dashboard-secondary-col { position: sticky; top: 84px; }
+
+/* cards: tighter, equal radius and shadow */
+body.company-page .company-job-card, body.company-page .company-app-card, body.company-page .company-talent-card, body.company-page .company-app-row {
+    padding: 16px 18px; border: 1px solid var(--ax-line); border-radius: 18px; background: var(--ax-card); box-shadow: var(--ax-shadow-1); gap: 10px;
+}
+body.company-page .company-job-card:hover, body.company-page .company-talent-card:hover { box-shadow: var(--ax-shadow-2); }
+body.company-page .company-job-title { font-size: 17px; line-height: 1.3; }
+body.company-page .company-job-desc { font-size: 13px; line-height: 1.5; margin: 0; }
+body.company-page .company-jobs-grid, body.company-page .company-talent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; align-items: stretch; }
+body.company-page .company-apps-grid { display: grid; gap: 12px; }
+body.company-page .company-job-footer { margin-top: auto; padding-top: 10px; }
+body.company-page .company-skill-tag, body.company-page .company-meta-item { font-size: 12px; }
+body.company-page .company-search-filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; padding: 14px 18px; border: 1px solid var(--ax-line); border-radius: 18px; background: var(--ax-card); box-shadow: var(--ax-shadow-1); }
+body.company-page .company-search-filters .form-field { flex: 1 1 260px; margin: 0; }
+body.company-page .company-search-filters :is(input, select) { border-radius: var(--ax-r-pill); padding-inline: 16px; }
+
+/* profile */
+body.company-page .company-profile-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0; }
+body.company-page .company-profile-heading h1 { font-size: clamp(24px, 2.3vw, 32px); margin: 4px 0; }
+body.company-page .company-profile-avatar { width: 64px; height: 64px; border-radius: 18px; background: var(--ax-tint-100); color: var(--ax-action); }
+body.company-page .company-profile-layout { display: grid; grid-template-columns: minmax(0, 7fr) minmax(260px, 3fr); gap: 16px; align-items: start; }
+body.company-page .company-profile-aside { position: sticky; top: 84px; display: grid; gap: 12px; }
+body.company-page .company-profile-form { display: grid; gap: 14px; }
+
+/* messages */
+body.company-page .company-chat-layout { display: grid; grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); gap: 0; border: 1px solid var(--ax-line); border-radius: 20px; overflow: hidden; background: var(--ax-card); box-shadow: var(--ax-shadow-1); min-height: 520px; height: calc(100vh - 230px); max-height: 760px; }
+body.company-page .company-chat-sidebar { border-right: 1px solid var(--ax-line); overflow: auto; }
+body.company-page .company-chat-main { min-width: 0; display: flex; flex-direction: column; }
+
+@media (max-width: 1100px) {
+    body.company-page .company-profile-layout, body.company-page .company-dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+    body.company-page .company-profile-aside, body.company-page .company-dashboard-grid .dashboard-secondary-col { position: static; }
+}
+@media (max-width: 760px) {
+    body.company-page .company-chat-layout { grid-template-columns: minmax(0, 1fr); height: auto; max-height: none; }
+    body.company-page .company-chat-sidebar { border-right: 0; border-bottom: 1px solid var(--ax-line); max-height: 240px; }
+    body.company-page .company-dashboard-hero { padding: 18px; }
+    body.company-page .company-dashboard-hero .company-hero-mark { display: none; }
+    body.company-page .company-jobs-grid, body.company-page .company-talent-grid { grid-template-columns: minmax(0, 1fr); }
+}
+body.company-page .company-talent-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }

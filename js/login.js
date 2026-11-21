@@ -111,6 +111,35 @@ loginForm.addEventListener("submit", async function (event) {
         return;
     }
 
+    // Server mode (npm start): the server verifies the password and issues the session.
+    const serverInfo = window.cmServerAuth ? await window.cmServerAuth.status() : { server: false };
+    if (serverInfo.server) {
+        submitButton.disabled = true;
+        showMessage("Signing in…");
+        try {
+            if (!adminLogin) window.platformStore?.assertAccess(email);
+            let user;
+            try {
+                user = await window.cmServerAuth.passwordLogin(email, password, adminLogin ? "admin" : "student");
+            } catch (error) {
+                // One-time link: a student account that so far existed only in this browser is saved on
+                // the server after its local password has been checked.
+                if (adminLogin || error.code !== "invalid_credentials" || !window.studentAccount) throw error;
+                let local;
+                try { local = await window.studentAccount.authenticate(email, password); } catch { throw error; }
+                user = await window.cmServerAuth.signup({ role: "student", name: local.name, email, age: local.age, password });
+            }
+            passwordInput.value = "";
+            submitButton.textContent = adminLogin ? "Opening admin workspace…" : "Opening your workspace…";
+            showMessage("Signed in.");
+            window.cmServerAuth.completeSignIn(user);
+        } catch (error) {
+            submitButton.disabled = false;
+            showMessage(error.message || "Sign-in failed. Try again.", true);
+        }
+        return;
+    }
+
     if (adminLogin && (email !== demoEmail || password !== demoPassword)) {
         showMessage(
             "This frontend demo accepts the sample account shown below.",
